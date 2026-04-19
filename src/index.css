@@ -10,16 +10,16 @@
   :root {
     /* Cosmic Playground — warm cream + vibrant violet */
     --background: 40 100% 96%;             /* #FFF8EC warm cream */
-    --foreground: 239 47% 20%;             /* deep indigo #1A1B4B */
+    --foreground: 239 40% 28%;             /* softer indigo */
 
     --card: 0 0% 100%;
-    --card-foreground: 239 47% 20%;
+    --card-foreground: 239 40% 28%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 239 47% 20%;
+    --popover-foreground: 239 40% 28%;
 
-    /* Vibrant violet #6C5CE7 */
-    --primary: 248 74% 63%;
+    /* Vibrant violet, slightly friendlier */
+    --primary: 248 78% 66%;
     --primary-foreground: 0 0% 100%;
     --primary-glow: 250 92% 78%;           /* lavender glow */
 
@@ -59,17 +59,17 @@
     --spark: 178 70% 42%;
     --spark-dark: 178 70% 28%;
 
-    /* Gradients */
-    --gradient-sky: linear-gradient(135deg, hsl(250 92% 78%), hsl(248 74% 63%));
-    --gradient-sunshine: linear-gradient(135deg, hsl(45 100% 75%), hsl(42 100% 55%));
-    --gradient-coral: linear-gradient(135deg, hsl(14 100% 78%), hsl(0 100% 71%));
-    --gradient-hero: linear-gradient(135deg, hsl(40 100% 96%) 0%, hsl(255 80% 94%) 50%, hsl(20 100% 92%) 100%);
-    --gradient-cosmic: linear-gradient(135deg, hsl(239 60% 28%) 0%, hsl(248 74% 63%) 55%, hsl(0 100% 71%) 100%);
+    /* Gradients — soft cosmic, kid-friendly */
+    --gradient-sky: linear-gradient(135deg, hsl(250 95% 86%), hsl(248 80% 72%));
+    --gradient-sunshine: linear-gradient(135deg, hsl(48 100% 84%), hsl(42 100% 62%));
+    --gradient-coral: linear-gradient(135deg, hsl(18 100% 86%), hsl(8 95% 76%));
+    --gradient-hero: linear-gradient(135deg, hsl(40 100% 97%) 0%, hsl(255 90% 96%) 50%, hsl(20 100% 95%) 100%);
+    --gradient-cosmic: linear-gradient(135deg, hsl(255 95% 88%) 0%, hsl(248 80% 74%) 55%, hsl(18 100% 84%) 100%);
 
-    /* Shadows — violet tinted */
-    --shadow-soft: 0 4px 16px -4px hsl(248 60% 40% / 0.18);
-    --shadow-pop: 0 14px 36px -10px hsl(248 74% 50% / 0.38);
-    --shadow-glow: 0 0 48px hsl(250 92% 78% / 0.6);
+    /* Shadows — softer violet tint */
+    --shadow-soft: 0 4px 16px -4px hsl(248 60% 40% / 0.12);
+    --shadow-pop: 0 14px 36px -10px hsl(248 74% 50% / 0.22);
+    --shadow-glow: 0 0 48px hsl(250 92% 82% / 0.55);
 
     --transition-bounce: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     --transition-smooth: all 0.25s ease-out;
