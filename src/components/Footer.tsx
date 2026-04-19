@@ -6,7 +6,10 @@ export const Footer = () => {
   const { t } = useTranslation();
   return (
     <footer className="border-t border-border/60 bg-background/60 backdrop-blur-sm mt-20">
-      <div className="container py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="container pt-8 pb-4 text-center">
+        <p className="font-display text-base text-foreground/80">{t("footer.tagline")}</p>
+      </div>
+      <div className="container pb-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-3">
           <Spark size={44} animate={false} />
           <span className="font-display text-lg">{t("common.appName")}</span>

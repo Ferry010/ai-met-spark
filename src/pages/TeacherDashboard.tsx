@@ -195,7 +195,7 @@ export const TeacherDashboard = () => {
                     <div className="text-sm w-20 text-right">
                       {s.passed === true ? <span className="text-success font-semibold">✓ Passed</span> :
                        s.passed === false ? <span className="text-destructive">Retry</span> :
-                       <span className="text-muted-foreground">—</span>}
+                       <span className="text-muted-foreground">·</span>}
                     </div>
                   </li>
                 );
