@@ -87,7 +87,10 @@ export const Auth = () => {
       return;
     }
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword(parsed.data);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: parsed.data.email,
+      password: parsed.data.password,
+    });
     setBusy(false);
     if (error) {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
