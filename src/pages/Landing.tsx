@@ -135,7 +135,7 @@ export const Landing = () => {
       <section className="relative overflow-hidden bg-gradient-hero">
         <div className="container py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
           <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-white/70 rounded-full px-4 py-1.5 mb-6 text-sm font-semibold text-primary shadow-soft">
+            <div className="inline-flex items-center gap-2 bg-gradient-cosmic rounded-full px-4 py-1.5 mb-6 text-sm font-semibold text-white shadow-pop">
               <Sparkles className="h-4 w-4" /> {t("landing.heroBadge")}
             </div>
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mb-5">
@@ -337,12 +337,12 @@ export const Landing = () => {
 
       {/* Final CTA */}
       <section className="container pb-20">
-        <div className="rounded-3xl bg-gradient-coral text-accent-foreground p-10 md:p-16 shadow-pop text-center">
+        <div className="rounded-3xl bg-gradient-cosmic text-white p-10 md:p-16 shadow-pop text-center">
           <h2 className="font-display text-3xl sm:text-5xl mb-4">{t("landing.finalCta.title")}</h2>
-          <p className="text-accent-foreground/90 text-lg mb-8">{t("landing.finalCta.subtitle")}</p>
+          <p className="text-white/90 text-lg mb-8">{t("landing.finalCta.subtitle")}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/auth?mode=signup">
-              <Button className="h-14 px-8 rounded-full font-display bg-white text-accent hover:bg-white/90 shadow-pop text-base">
+              <Button className="h-14 px-8 rounded-full font-display bg-white text-primary hover:bg-white/90 shadow-pop text-base">
                 🚀 {t("landing.finalCta.cta")}
               </Button>
             </Link>
