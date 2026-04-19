@@ -1,87 +1,74 @@
 
 
-# AI Smart Kids — Full Build Plan
+# Beef up the copy and add real juice
 
-A bright, playful AI literacy app for kids 8–12, built with React + Vite + Tailwind, Lovable Cloud (auth, database, storage), built-in Stripe payments, and Lovable's transactional emails.
+The landing and pricing pages are too thin right now. They tell visitors *what* the product is, but they don't sell the transformation, explain *how* it works, or build trust. Let's fix that with much more copy, more energy, and zero em-dashes anywhere.
 
-## Design foundation
-- **Colors**: sky blue `#4FC3F7`, yellow `#FFD54F`, success green `#81C784`, coral `#FF8A65`, background `#F5F9FF`. All registered as HSL design tokens.
-- **Fonts**: Fredoka (headings), Nunito (body) via Google Fonts.
-- **Components**: 24px rounded cards, soft shadows, 56px+ buttons, confetti on success, gentle shake on wrong, fade/scale transitions.
-- **Mascot Spark**: custom inline SVG component — teal round body, big eyes, multiple expressions (default, happy, thinking, celebrating).
+## Copy rules I'll follow everywhere
+- No "—" character anywhere. Use periods, commas, "and", "or", colons, parentheses, or two short sentences instead.
+- Punchy, kid-friendly, parent-trusting voice.
+- Active verbs, short sentences, vivid words ("zap", "level up", "decode", "outsmart").
+- Numbers and specifics over vague claims (12 lessons, 5 minutes a day, 3 worlds, 36 mini-quizzes).
 
-## i18n
-- `react-i18next` with `/src/locales/en.json`, `nl.json`, `es.json`.
-- English fully populated; NL and ES start as empty objects with English fallback enabled.
-- Language stored in `profiles.language`, also persisted to localStorage for first-visit selection.
+## New landing page sections (in order)
 
-## Pages & flows
+1. **Hero** (rewritten)
+   Bigger promise. New subhead, new microcopy under the buttons ("No credit card to try Lesson 1. 60 seconds to start."), and a row of 3 trust chips ("GDPR safe", "No AI chat for kids", "Loved by parents").
 
-**1. Language selector** (first-visit gate) — full-screen, 3 huge flag buttons 🇬🇧 🇳🇱 🇪🇸.
+2. **The problem** (NEW section)
+   "Your kid is already using AI. Are they using it well?" Three short paragraphs about why kids need this now: AI is everywhere, schools aren't teaching it yet, and the wrong habits stick fast.
 
-**2. Landing `/`** — hero with Spark, 3 pillar cards (SAFE 🛡️ / SMART 🧠 / STRONGER 💪), "Try First Lesson Free" + "Log In", €14 pricing teaser, schools section, parent reassurance footer.
+3. **What's inside** (NEW section)
+   Visual breakdown: 3 Worlds, 12 Lessons, 36 Mini-Quizzes, 1 Certificate. Each with one juicy sentence describing what kids actually do.
 
-**3. Pricing `/pricing`** — Individual €14 vs Schools (from €4/seat, min 20). FAQ accordion.
+4. **The 3 superpowers** (expanded pillars)
+   Each pillar gets a longer description, a "Kids will learn to..." bullet list of 3 concrete skills, and a sample lesson title preview.
 
-**4. School contact `/schools/contact`** — form (name, school, country, seat count, email) → stored in `school_inquiries` table, notification email to admin.
+5. **How a lesson works** (NEW section)
+   5 numbered steps with icons: Meet Spark → Discover → Play → Quiz → Earn your star. Reassures parents this isn't a chatbot or a video dump.
 
-**5. Auth `/auth`** — email/password + Google. Signup collects: kid first name, age, parent email, language, optional class code.
+6. **Why parents pick AI Smart Kids** (NEW, replaces tiny parents block)
+   6-card grid: No chat with AI, Hand-written by educators, GDPR and COPPA friendly, Works on any device, 5 minutes a day, Money-back guarantee.
 
-**6. Dashboard `/dashboard`** — greeting, overall progress bar, 3 world tiles with per-world progress, lock states, badge shelf, "Take Final Test" (locked until 12/12).
+7. **Social proof / quote** (NEW)
+   One big punchy quote-style block ("Finally, AI for kids that doesn't feel like a creepy chatbot.") with a "Built with teachers and parents in the Netherlands" line. Uses placeholder voices since there are no real testimonials yet.
 
-**7. World `/world/:id`** — 4 lessons on a winding path, completed lessons glow, locked behind paywall (except 1.1).
+8. **Pricing teaser** (rewritten, more energy)
+   New headline, new feature list (6 items instead of 4), a "what you DON'T pay" line (no subscription, no upsells, no ads).
 
-**8. Lesson `/lesson/:id`** — 5 steps: intro with Spark → "Did you know?" card → interactive (drag-drop / multi-choice / tap-reveal) → mini-quiz (2–3 Qs with instant feedback) → completion with confetti and +1 star.
+9. **Schools strip** (rewritten with more substance)
 
-**9. Final test `/final-test`** — 10 mixed questions, 80% to pass, 24h cooldown on fail, confetti + certificate unlock on pass.
+10. **Big final CTA** (NEW)
+    Full-width bright block: "Ready to raise an AI Smart Kid?" with the primary button and a "Lesson 1 is free, forever" reassurance.
 
-**10. Certificate `/certificate`** — jsPDF generation with kid name, date, score, 3 pillar badges, "Certified AI Smart Kid". Uploaded to Supabase storage and emailed to parent/teacher.
+## Pricing page additions
 
-**11. Teacher dashboard `/teacher`** — class list, student progress bars, pass/fail status, generate class codes, bulk certificate ZIP download, invoice history (placeholder until Stripe seat checkout ships).
+- New intro paragraph under the title explaining the philosophy ("One fair price. No subscriptions. No tricks.").
+- Each plan card gets a 1-2 sentence description above the price.
+- Individual plan: features expanded from 4 to 7 items.
+- Schools plan: features expanded from 4 to 7 items, plus a "Best for" line.
+- New "What's included in every plan" comparison strip below the cards.
+- FAQ expanded from 4 to 9 questions covering: device support, offline use, multiple kids, school invoicing, refund process, what happens after the 12 lessons, parent controls, language switching, and data deletion.
 
-**12. Account settings `/account`** — change name / parent email / language, view progress, reset progress, delete account.
+## Other touch-ups
 
-## Content
-All 12 lessons populated in English exactly as you wrote them, with hand-crafted interactives and quizzes per lesson.
+- **Hero badge** changes from "For curious kids 8-12" to "For curious kids ages 8 to 12" (no dash).
+- **`features` array in `Landing.tsx`**: rewrite the "No chat — kids never type to AI" line to "No chat. Kids never type to an AI."
+- **`landing.heroSubtitle`**: rewrite without the en-dash in "8–12" by saying "ages 8 to 12".
+- **`languageSelect.subtitle`**: keep middle dot separators, no em-dashes (already clean).
+- **Spark mascot copy**: add a one-liner under the hero Spark ("Hi, I'm Spark. I'll be your AI guide!").
+- **Footer**: add a one-line tagline above the nav row ("Raising the first generation of AI smart kids.").
 
-## Backend (Lovable Cloud)
-Tables:
-- `profiles` (id, first_name, age, parent_email, language, paid, role)
-- `user_roles` (separate table; roles: `student`, `teacher`, `admin`) — enforced via `has_role()` security definer
-- `schools` (id, name, teacher_id, seat_count)
-- `class_codes` (code, school_id, expires_at)
-- `class_memberships` (student_id, school_id)
-- `user_progress` (user_id, lesson_id, completed_at, stars)
-- `final_test_attempts` (user_id, score, passed, attempted_at)
-- `certificates` (user_id, pdf_url, issued_at)
-- `school_inquiries` (form submissions)
+## Files I'll change
 
-RLS on all tables. Students see only their own rows; teachers see students in their school via `has_role` + membership check.
+- `src/locales/en.json` — add ~40 new copy keys, rewrite existing ones, scrub all em-dashes.
+- `src/locales/nl.json` and `src/locales/es.json` — leave as empty objects so English fallback handles them (you can translate later).
+- `src/pages/Landing.tsx` — add 5 new sections, restructure hero, replace inline strings with t() keys.
+- `src/pages/Pricing.tsx` — add intro, plan descriptions, comparison strip, expand FAQ rendering.
+- `src/components/Footer.tsx` — add tagline line.
+- Quick scan of other pages (`Auth.tsx`, `Dashboard.tsx`, `LessonPage.tsx`, etc.) and removal of any "—" found in user-facing strings.
 
-## Payments
-- **Lovable's built-in Stripe payments** (no external account). One-time €14 product unlocks all lessons → flips `profiles.paid = true` via webhook.
-- Free tier: only Lesson 1.1 accessible; 1.2+ shows lock and opens paywall on tap.
-- Schools: contact form only in v1 (Stripe seat checkout deferred per your choice).
-
-## Emails (Lovable transactional)
-- Welcome email on signup
-- Certificate delivery to parent (individual) or teacher (school)
-- School inquiry confirmation + admin notification
-
-## Compliance
-- Cookie consent banner, privacy policy + terms pages in footer.
-- No free-text AI input from kids — all content pre-scripted.
-- Minimal data: first name + age + parent email only.
-
-## Build order
-1. Design tokens, fonts, Spark mascot, i18n setup, language selector
-2. Landing + pricing + school contact pages
-3. Lovable Cloud + auth + profiles + roles + signup with class code
-4. Stripe €14 unlock + paywall logic
-5. Dashboard + world pages with progress tracking
-6. Lesson template + all 12 lessons content
-7. Final test + certificate PDF + email delivery
-8. Teacher dashboard + class code generation + bulk certificate ZIP
-9. Account settings, cookie banner, privacy/terms pages
-10. Responsive polish for tablet & phone
+## What I will NOT touch
+- Backend, auth, payments, lessons content, database, routes. Pure copy and layout work.
+- Color palette, fonts, component library. Visual system stays the same.
 
