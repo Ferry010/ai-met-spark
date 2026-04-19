@@ -298,6 +298,17 @@ export type Database = {
         Args: { _student_id: string }
         Returns: boolean
       }
+      validate_school_inquiry: {
+        Args: {
+          _country: string
+          _email: string
+          _message: string
+          _name: string
+          _school: string
+          _seats: number
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_language: "en" | "nl" | "es"
