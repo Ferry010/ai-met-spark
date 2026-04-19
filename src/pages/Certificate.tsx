@@ -90,7 +90,7 @@ export const Certificate = () => {
     // Score + date
     doc.setFontSize(14);
     doc.setTextColor(34, 50, 80);
-    doc.text(`Score: ${score ?? "—"} / 10`, w / 2, 470, { align: "center" });
+    doc.text(`Score: ${score ?? "·"} / 10`, w / 2, 470, { align: "center" });
     doc.text(`Issued: ${new Date(issued ?? Date.now()).toLocaleDateString()}`, w / 2, 490, { align: "center" });
 
     // Signature line
@@ -146,7 +146,7 @@ export const Certificate = () => {
             <div className="font-display text-3xl text-accent mt-1">{profile?.first_name}</div>
             <div className="mt-3 text-sm">has completed all 12 lessons and passed the final test.</div>
             <div className="mt-4 flex gap-3 text-2xl">🛡️ 🧠 💪</div>
-            <div className="mt-3 text-sm text-muted-foreground">Score: {score ?? "—"} / 10</div>
+            <div className="mt-3 text-sm text-muted-foreground">Score: {score ?? "·"} / 10</div>
           </div>
 
           <Button onClick={downloadPdf} className="h-14 px-8 rounded-full font-display bg-primary shadow-pop gap-2">
