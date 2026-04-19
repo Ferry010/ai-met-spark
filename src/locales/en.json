@@ -1,0 +1,114 @@
+{
+  "common": {
+    "appName": "AI Smart Kids",
+    "tagline": "Learn how to use AI like a pro!",
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Log Out",
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "tryFree": "Try First Lesson Free",
+    "unlockNow": "Unlock now",
+    "comingSoon": "Coming soon",
+    "loading": "Loading…",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "languageSelect": {
+    "title": "Choose your language",
+    "subtitle": "Kies je taal · Elige tu idioma",
+    "english": "English",
+    "dutch": "Nederlands",
+    "spanish": "Español"
+  },
+  "landing": {
+    "heroTitle": "Learn how to use AI like a pro!",
+    "heroSubtitle": "A fun adventure for kids 8–12 to use AI safely, smartly, and to make themselves smarter.",
+    "ctaPrimary": "Try First Lesson Free",
+    "ctaSecondary": "Log In",
+    "pillars": {
+      "title": "Three superpowers you'll learn",
+      "safe": { "name": "SAFE", "icon": "🛡️", "desc": "Stay safe online and protect your secrets from AI." },
+      "smart": { "name": "SMART", "icon": "🧠", "desc": "Ask better questions and double-check what AI tells you." },
+      "stronger": { "name": "STRONGER", "icon": "💪", "desc": "Use AI as a study buddy to learn 10x faster." }
+    },
+    "pricingTeaser": {
+      "title": "One price. Forever access.",
+      "price": "€14",
+      "subtitle": "One-time payment. All 12 lessons. Lifetime access for one child.",
+      "cta": "Unlock now"
+    },
+    "schools": {
+      "title": "For schools and teachers",
+      "desc": "Bring AI literacy to your classroom. From €4 per student.",
+      "cta": "See school pricing"
+    },
+    "parents": {
+      "title": "Built for parents who want their kids to thrive with AI, not fear it",
+      "desc": "No chat. No data harvesting. No scary stuff. Just kid-tested lessons that build confidence and critical thinking."
+    }
+  },
+  "pricing": {
+    "title": "Simple, fair pricing",
+    "subtitle": "Pick the plan that fits.",
+    "individual": {
+      "name": "Individual",
+      "price": "€14",
+      "billing": "one-time",
+      "features": [
+        "All 12 lessons forever",
+        "1 child account",
+        "Personal certificate",
+        "Email to parent on completion"
+      ],
+      "cta": "Get started"
+    },
+    "schools": {
+      "name": "Schools",
+      "price": "From €4",
+      "billing": "per seat · min 20 seats",
+      "features": [
+        "Teacher dashboard",
+        "Class progress tracking",
+        "Bulk certificate downloads",
+        "Invoice and PO support"
+      ],
+      "cta": "Contact us"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": [
+        { "q": "Is this safe for my child?", "a": "Yes. Kids never type to an AI. All content is hand-written and reviewed. We collect only a first name, age, and parent email." },
+        { "q": "Is my child's data private?", "a": "Yes. We're GDPR and COPPA-friendly. We never sell data and never use it to train AI models." },
+        { "q": "Can I get a refund?", "a": "Yes, within 14 days, no questions asked. Email us." },
+        { "q": "What ages is it for?", "a": "Ages 8 to 12. Reading level is tuned for a 9-year-old." }
+      ]
+    }
+  },
+  "schoolForm": {
+    "title": "Bring AI Smart Kids to your school",
+    "subtitle": "Tell us a bit about your school and we'll get back within 1 working day.",
+    "fields": {
+      "name": "Your name",
+      "school": "School name",
+      "country": "Country",
+      "seats": "How many students?",
+      "email": "Your email",
+      "message": "Anything else? (optional)"
+    },
+    "submit": "Send inquiry",
+    "success": "Thanks! We'll be in touch soon.",
+    "error": "Something went wrong. Please try again."
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "cookies": {
+    "message": "We use a few cookies to make the app work. No tracking, no ads.",
+    "accept": "OK, got it"
+  }
+}
