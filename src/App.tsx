@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import LanguageSelect from "./pages/LanguageSelect.tsx";
@@ -12,6 +13,14 @@ import Pricing from "./pages/Pricing.tsx";
 import SchoolContact from "./pages/SchoolContact.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
+import Auth from "./pages/Auth.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import WorldPage from "./pages/WorldPage.tsx";
+import LessonPage from "./pages/LessonPage.tsx";
+import FinalTest from "./pages/FinalTest.tsx";
+import Certificate from "./pages/Certificate.tsx";
+import Account from "./pages/Account.tsx";
+import TeacherDashboard from "./pages/TeacherDashboard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +37,63 @@ const App = () => (
           <Route path="/schools/contact" element={<SchoolContact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/world/:worldId"
+            element={
+              <ProtectedRoute>
+                <WorldPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/lesson/:lessonId"
+            element={
+              <ProtectedRoute>
+                <LessonPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/final-test"
+            element={
+              <ProtectedRoute>
+                <FinalTest />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/certificate"
+            element={
+              <ProtectedRoute>
+                <Certificate />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <TeacherDashboard />
+              </ProtectedRoute>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

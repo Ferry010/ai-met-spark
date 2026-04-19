@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
 import { Spark } from "@/components/Spark";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Required").max(100),
@@ -41,13 +42,21 @@ export const SchoolContact = () => {
       return;
     }
     setSubmitting(true);
-    // Inquiries will be persisted to the school_inquiries table once Cloud is enabled.
-    // For now we acknowledge the submission so the marketing flow works end to end.
-    setTimeout(() => {
-      setSubmitting(false);
-      setDone(true);
-      toast({ title: t("schoolForm.success") });
-    }, 600);
+    const { error } = await supabase.from("school_inquiries").insert({
+      name: parsed.data.name,
+      school: parsed.data.school,
+      country: parsed.data.country,
+      seats: parsed.data.seats,
+      email: parsed.data.email,
+      message: parsed.data.message || null,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast({ title: "Could not send", description: error.message, variant: "destructive" });
+      return;
+    }
+    setDone(true);
+    toast({ title: t("schoolForm.success") });
   };
 
   return (
