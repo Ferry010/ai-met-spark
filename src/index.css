@@ -152,6 +152,7 @@
   .bg-gradient-sky { background: var(--gradient-sky); }
   .bg-gradient-sunshine { background: var(--gradient-sunshine); }
   .bg-gradient-coral { background: var(--gradient-coral); }
+  .bg-gradient-cosmic { background: var(--gradient-cosmic); }
 
   .transition-bounce { transition: var(--transition-bounce); }
 }
