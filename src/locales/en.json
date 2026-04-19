@@ -23,26 +23,115 @@
     "spanish": "Español"
   },
   "landing": {
+    "heroBadge": "For curious kids ages 8 to 12",
     "heroTitle": "Learn how to use AI like a pro!",
-    "heroSubtitle": "A fun adventure for kids 8–12 to use AI safely, smartly, and to make themselves smarter.",
+    "heroSubtitle": "A fun adventure that teaches kids to use AI safely, ask smarter questions, and become unstoppable learners. Built for ages 8 to 12.",
+    "heroSparkLine": "Hi, I'm Spark. I'll be your AI guide!",
+    "heroMicroCopy": "No credit card to try Lesson 1. 60 seconds to start.",
     "ctaPrimary": "Try First Lesson Free",
     "ctaSecondary": "Log In",
+    "trustChips": {
+      "gdpr": "GDPR safe",
+      "noChat": "No AI chat for kids",
+      "parents": "Loved by parents"
+    },
+    "problem": {
+      "eyebrow": "Why this matters now",
+      "title": "Your kid is already using AI. Are they using it well?",
+      "p1": "AI is everywhere. In homework apps, in games, in their friends' phones. Most kids are figuring it out alone, and they're picking up bad habits fast.",
+      "p2": "Schools are still catching up. Most classrooms won't teach AI literacy for years. By then, the wrong reflexes are already locked in.",
+      "p3": "AI Smart Kids gives your child the right foundation now: how to spot AI mistakes, protect their secrets, and use AI as a brain booster instead of a shortcut."
+    },
+    "inside": {
+      "eyebrow": "What's inside",
+      "title": "Everything your kid needs in one playful course",
+      "items": {
+        "worlds": { "n": "3", "label": "Worlds", "desc": "Safe, Smart, and Stronger. Each world unlocks a new superpower." },
+        "lessons": { "n": "12", "label": "Lessons", "desc": "Bite-sized adventures of 5 to 7 minutes each. Perfect after school." },
+        "quizzes": { "n": "36", "label": "Mini-quizzes", "desc": "Hands-on tap, sort, and choose puzzles. No boring multiple choice marathons." },
+        "certificate": { "n": "1", "label": "Certificate", "desc": "A real, named PDF certificate kids can print and show off." }
+      }
+    },
     "pillars": {
       "title": "Three superpowers you'll learn",
-      "safe": { "name": "SAFE", "icon": "🛡️", "desc": "Stay safe online and protect your secrets from AI." },
-      "smart": { "name": "SMART", "icon": "🧠", "desc": "Ask better questions and double-check what AI tells you." },
-      "stronger": { "name": "STRONGER", "icon": "💪", "desc": "Use AI as a study buddy to learn 10x faster." }
+      "subtitle": "Three worlds. Twelve lessons. One smarter kid.",
+      "safe": {
+        "name": "SAFE",
+        "icon": "🛡️",
+        "desc": "Stay safe online and protect your secrets from AI. Kids learn what to share, what to keep private, and how to spot a fake.",
+        "skills": ["Spot AI-made images and videos", "Keep personal info private", "Recognise scams and deepfakes"],
+        "sample": "Sample lesson: Spot the Fake"
+      },
+      "smart": {
+        "name": "SMART",
+        "icon": "🧠",
+        "desc": "Ask better questions and double-check what AI tells you. Kids learn that AI is a confident guesser, not a know-it-all.",
+        "skills": ["Write clear, specific prompts", "Double-check AI answers", "Notice when AI is hallucinating"],
+        "sample": "Sample lesson: The Hallucination Trap"
+      },
+      "stronger": {
+        "name": "STRONGER",
+        "icon": "💪",
+        "desc": "Use AI as a study buddy to learn faster, not a shortcut to skip thinking. Kids build real skills, faster.",
+        "skills": ["Turn AI into a tutor", "Brainstorm without copying", "Learn 10x faster on hard topics"],
+        "sample": "Sample lesson: Your Personal Study Buddy"
+      }
+    },
+    "how": {
+      "eyebrow": "How a lesson works",
+      "title": "5 minutes. 5 steps. Real learning.",
+      "subtitle": "Every lesson follows the same friendly rhythm, so kids always know what's coming next.",
+      "steps": {
+        "meet": { "title": "Meet Spark", "desc": "Our friendly mascot sets the scene with a quick, fun intro." },
+        "discover": { "title": "Discover", "desc": "A short story or example shows the idea in action." },
+        "play": { "title": "Play", "desc": "Tap, sort, drag, and explore. Kids learn by doing, not watching." },
+        "quiz": { "title": "Quiz", "desc": "Three quick questions lock in what they just learned." },
+        "star": { "title": "Earn your star", "desc": "Stars unlock the next lesson and build a streak to be proud of." }
+      }
+    },
+    "whyParents": {
+      "eyebrow": "Why parents pick AI Smart Kids",
+      "title": "Built for families who want their kids to thrive with AI, not fear it",
+      "items": {
+        "noChat": { "title": "No chat with AI", "desc": "Kids never type to a real AI. Zero risk of weird outputs or unsafe content." },
+        "educators": { "title": "Hand-written by educators", "desc": "Every lesson is written and reviewed by teachers and parents. No auto-generated filler." },
+        "privacy": { "title": "GDPR and COPPA friendly", "desc": "We collect a first name, age, and parent email. That's it. We never sell data." },
+        "devices": { "title": "Works on any device", "desc": "Phone, tablet, Chromebook, or laptop. Just open and learn. No app to install." },
+        "time": { "title": "5 minutes a day", "desc": "Designed to fit between homework and dinner. Short, focused, and finishable." },
+        "refund": { "title": "Money-back guarantee", "desc": "Not for your child? Email us within 14 days for a full refund. No hard feelings." }
+      }
+    },
+    "quote": {
+      "text": "Finally, AI for kids that doesn't feel like a creepy chatbot.",
+      "byline": "Built with teachers and parents in the Netherlands."
     },
     "pricingTeaser": {
-      "title": "One price. Forever access.",
+      "eyebrow": "Simple pricing",
+      "title": "One price. Forever access. Zero surprises.",
       "price": "€14",
-      "subtitle": "One-time payment. All 12 lessons. Lifetime access for one child.",
-      "cta": "Unlock now"
+      "subtitle": "Pay once. Your child keeps every lesson, every update, and their certificate forever.",
+      "cta": "Unlock now",
+      "features": [
+        "12 fun, hand-crafted lessons",
+        "3 superpower worlds to explore",
+        "No chat. Kids never type to an AI.",
+        "Personal printable certificate",
+        "Works on phone, tablet, and laptop",
+        "Free updates as new lessons drop"
+      ],
+      "noPay": "What you don't pay: no subscription, no upsells, no ads, ever."
     },
     "schools": {
-      "title": "For schools and teachers",
-      "desc": "Bring AI literacy to your classroom. From €4 per student.",
+      "eyebrow": "For schools and teachers",
+      "title": "Bring AI literacy to your classroom",
+      "desc": "Equip your students with the AI skills they'll need this decade. From €4 per student, with a teacher dashboard, class codes, and bulk certificate downloads built in.",
       "cta": "See school pricing"
+    },
+    "finalCta": {
+      "title": "Ready to raise an AI Smart Kid?",
+      "subtitle": "Lesson 1 is free, forever. No card, no catch.",
+      "cta": "Start the adventure",
+      "secondary": "See pricing"
     },
     "parents": {
       "title": "Built for parents who want their kids to thrive with AI, not fear it",
@@ -52,37 +141,63 @@
   "pricing": {
     "title": "Simple, fair pricing",
     "subtitle": "Pick the plan that fits.",
+    "intro": "One fair price. No subscriptions. No tricks. Just the AI skills your child needs, for life.",
     "individual": {
       "name": "Individual",
+      "tagline": "Perfect for one curious kid at home. Pay once and they're set.",
       "price": "€14",
       "billing": "one-time",
       "features": [
-        "All 12 lessons forever",
+        "All 12 lessons, forever",
+        "Access to all 3 superpower worlds",
         "1 child account",
-        "Personal certificate",
-        "Email to parent on completion"
+        "Personal printable certificate",
+        "Email to parent on completion",
+        "Free future lesson updates",
+        "14-day money-back guarantee"
       ],
       "cta": "Get started"
     },
     "schools": {
       "name": "Schools",
+      "tagline": "Built for classrooms, after-school clubs, and education networks.",
+      "bestFor": "Best for: schools, libraries, and after-school programs.",
       "price": "From €4",
-      "billing": "per seat · min 20 seats",
+      "billing": "per seat, minimum 20 seats",
       "features": [
-        "Teacher dashboard",
-        "Class progress tracking",
+        "Teacher dashboard with live progress",
+        "Easy class code signups (no email needed)",
+        "Class progress and quiz analytics",
         "Bulk certificate downloads",
-        "Invoice and PO support"
+        "Invoice and PO support",
+        "Onboarding call with our team",
+        "Priority email support"
       ],
       "cta": "Contact us"
+    },
+    "included": {
+      "title": "What's included in every plan",
+      "items": [
+        "All 12 hand-crafted lessons",
+        "3 superpower worlds",
+        "Personal certificates",
+        "GDPR and COPPA friendly",
+        "No AI chat for kids",
+        "Works on any device"
+      ]
     },
     "faq": {
       "title": "Frequently asked questions",
       "items": [
         { "q": "Is this safe for my child?", "a": "Yes. Kids never type to an AI. All content is hand-written and reviewed. We collect only a first name, age, and parent email." },
-        { "q": "Is my child's data private?", "a": "Yes. We're GDPR and COPPA-friendly. We never sell data and never use it to train AI models." },
-        { "q": "Can I get a refund?", "a": "Yes, within 14 days, no questions asked. Email us." },
-        { "q": "What ages is it for?", "a": "Ages 8 to 12. Reading level is tuned for a 9-year-old." }
+        { "q": "Is my child's data private?", "a": "Yes. We're GDPR and COPPA friendly. We never sell data and never use it to train AI models." },
+        { "q": "Can I get a refund?", "a": "Yes, within 14 days, no questions asked. Just email us and we'll process it the same day." },
+        { "q": "What ages is it for?", "a": "Ages 8 to 12. Reading level is tuned for a 9-year-old, and older kids still find the activities fun." },
+        { "q": "What devices does it work on?", "a": "Any modern phone, tablet, Chromebook, or laptop with a web browser. There's no app to install." },
+        { "q": "Do you support multiple kids in one family?", "a": "Each €14 plan covers one child account. Buy one per child, or contact us for a family bundle if you have 3 or more kids." },
+        { "q": "What happens after the 12 lessons?", "a": "Your child keeps lifetime access. They can replay any lesson, retake quizzes, and download their certificate any time. New bonus lessons are added free." },
+        { "q": "Can I switch the language later?", "a": "Yes. Kids can switch between English, Dutch, and Spanish at any time from their account." },
+        { "q": "How do I delete my child's data?", "a": "Email us and we'll wipe the account and all data within 7 days, no questions asked." }
       ]
     }
   },
@@ -102,6 +217,7 @@
     "error": "Something went wrong. Please try again."
   },
   "footer": {
+    "tagline": "Raising the first generation of AI smart kids.",
     "privacy": "Privacy",
     "terms": "Terms",
     "contact": "Contact",
