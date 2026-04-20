@@ -335,7 +335,10 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
       setShowButton(true);
       return;
     }
-    const t1 = window.setTimeout(() => setShowBubble(true), KICKOFF_BUBBLE_DELAY);
+    const t1 = window.setTimeout(() => {
+      setShowBubble(true);
+      playBubblePop();
+    }, KICKOFF_BUBBLE_DELAY);
     const buttonDelay = KICKOFF_BUBBLE_DELAY + text.length * KICKOFF_TYPING_SPEED + 400;
     const t2 = window.setTimeout(() => setShowButton(true), buttonDelay);
     return () => {
