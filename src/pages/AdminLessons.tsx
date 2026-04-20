@@ -276,7 +276,7 @@ export const AdminLessons = () => {
                       className="rounded-2xl bg-background border border-border overflow-hidden"
                     >
                       <header className="p-4 flex items-start gap-3 flex-wrap border-b border-border bg-muted/20">
-                        <div className="text-2xl shrink-0">{lesson.emoji}</div>
+                        <div className="shrink-0"><Spark size={36} mood="happy" animate={false} /></div>
                         <div className="flex-1 min-w-0">
                           <div className="text-xs font-display text-muted-foreground">Les {lesson.id}</div>
                           <h3 className="font-display text-lg leading-tight truncate">{lesson.title}</h3>
