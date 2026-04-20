@@ -153,7 +153,7 @@ export const FinalTest = () => {
               {passed ? "Je bent een gecertificeerd AI Smart Kid!" : "Je hebt 8 nodig. Probeer het over 24 uur opnieuw!"}
             </p>
             {passed ? (
-              <Link to="/certificate"><Button className="h-14 px-8 rounded-full font-display bg-primary shadow-pop">Bekijk certificaat →</Button></Link>
+              <Link to="/certificate"><Button className="h-14 px-8 rounded-full font-display bg-primary shadow-pop">Bekijk diploma →</Button></Link>
             ) : (
               <Link to="/dashboard"><Button variant="outline" className="h-14 px-8 rounded-full font-display border-2"><Lock className="h-4 w-4 mr-1" /> Terug naar dashboard</Button></Link>
             )}

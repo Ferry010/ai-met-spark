@@ -172,7 +172,7 @@ export const Dashboard = () => {
         <div className="rounded-3xl bg-card border border-border p-6 text-center shadow-soft">
           <Star className="h-10 w-10 mx-auto text-secondary-foreground mb-2" />
           <h2 className="font-display text-2xl mb-1">Eindtoets</h2>
-          <p className="text-muted-foreground mb-4">Haal 8/10 om je certificaat te verdienen!</p>
+          <p className="text-muted-foreground mb-4">Haal 8/10 om je diploma te verdienen!</p>
           <Link to={allDone ? "/final-test" : "#"}>
             <Button
               disabled={!allDone}

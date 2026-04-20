@@ -155,7 +155,7 @@ export const Auth = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="parent_email">E-mail van ouder <span className="text-muted-foreground text-xs">(voor het certificaat)</span></Label>
+                    <Label htmlFor="parent_email">E-mail van ouder <span className="text-muted-foreground text-xs">(voor het diploma)</span></Label>
                     <Input id="parent_email" name="parent_email" type="email" required className="h-12 rounded-xl" />
                   </div>
                   <div className="space-y-2">

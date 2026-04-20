@@ -50,7 +50,7 @@ export const Certificate = () => {
     doc.setTextColor(34, 50, 80);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(40);
-    doc.text("Certificaat AI Smart Kid", w / 2, 130, { align: "center" });
+    doc.text("Diploma AI Smart Kid", w / 2, 130, { align: "center" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(16);
@@ -98,7 +98,7 @@ export const Certificate = () => {
     generatingRef.current = true;
     try {
       const doc = buildPdf();
-      doc.save(`AI-Smart-Kid-${profile?.first_name ?? "certificaat"}.pdf`);
+      doc.save(`AI-Smart-Kid-${profile?.first_name ?? "diploma"}.pdf`);
 
       const blob = doc.output("blob");
       const path = `${user.id}/certificate.pdf`;
@@ -125,7 +125,7 @@ export const Certificate = () => {
 
         <section className="rounded-3xl bg-gradient-hero border-2 border-primary p-8 text-center shadow-pop">
           <Spark size={140} mood="celebrating" />
-          <h1 className="font-display text-4xl mt-4">Jouw certificaat</h1>
+          <h1 className="font-display text-4xl mt-4">Jouw diploma</h1>
           <p className="text-muted-foreground mt-1">
             Persoonlijk · {new Date(issued ?? Date.now()).toLocaleDateString()}
           </p>
