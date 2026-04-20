@@ -45,6 +45,7 @@ interface OverrideRow {
   sparkIntro: string;
   theoryIntro: string;
   fact: string;
+  sparkMiddle: string;
   theoryDeep: string;
   interactive: string;
   summary: string;
@@ -60,6 +61,7 @@ const emptyRow = (id: string): OverrideRow => ({
   sparkIntro: "",
   theoryIntro: "",
   fact: "",
+  sparkMiddle: "",
   theoryDeep: "",
   interactive: "",
   summary: "",
@@ -97,6 +99,7 @@ export const AdminLessons = () => {
           sparkIntro: "",
           theoryIntro: o.theory_intro ?? "",
           fact: o.fact ?? "",
+          sparkMiddle: o.spark_middle ?? "",
           theoryDeep: o.theory_deep ?? "",
           interactive: stringifyJson(o.interactive),
           summary: arrayToLines(o.summary),
@@ -174,6 +177,7 @@ export const AdminLessons = () => {
       emoji: row.emoji.trim() || null,
       fact: row.fact.trim() || null,
       theory_intro: row.theoryIntro.trim() || null,
+      spark_middle: row.sparkMiddle.trim() || null,
       theory_deep: row.theoryDeep.trim() || null,
       summary: summaryArr.length > 0 ? summaryArr : null,
       interactive: interactiveResult as any,
@@ -200,7 +204,7 @@ export const AdminLessons = () => {
     toast({ title: "Teruggezet", description: `Les ${id} gebruikt weer de standaardtekst.` });
   };
 
-  const loadDefault = (id: string, field: "interactive" | "quiz" | "theoryIntro" | "theoryDeep" | "summary") => {
+  const loadDefault = (id: string, field: "interactive" | "quiz" | "theoryIntro" | "theoryDeep" | "summary" | "sparkMiddle") => {
     const lesson = ALL_LESSONS.find((l) => l.id === id);
     if (!lesson) return;
     if (field === "interactive" || field === "quiz") {
@@ -390,6 +394,33 @@ export const AdminLessons = () => {
                                 maxLength={400}
                                 rows={3}
                                 className="rounded-lg resize-none"
+                              />
+                            </AccordionContent>
+                          </AccordionItem>
+
+                          {/* 3b. Spark tussenstuk */}
+                          <AccordionItem value="sparkMiddle" className="border-b border-border last:border-0">
+                            <AccordionTrigger className="px-4 py-3 hover:no-underline text-sm font-display">
+                              <span className="flex items-center gap-2">
+                                <Sparkles className="h-4 w-4 text-primary" /> 3b. Spark tussenstuk
+                                {row.sparkMiddle.trim() && <span className="ml-1 text-xs text-success">●</span>}
+                              </span>
+                            </AccordionTrigger>
+                            <AccordionContent className="px-4 pb-4 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <p className="text-xs text-muted-foreground">Korte overgang van Spark, na 'Wist je dat'. Leeg = sla over.</p>
+                                {lesson.sparkMiddle && (
+                                  <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={() => loadDefault(lesson.id, "sparkMiddle")}>
+                                    Laad standaard
+                                  </Button>
+                                )}
+                              </div>
+                              <Textarea
+                                value={row.sparkMiddle}
+                                onChange={(e) => updateField(lesson.id, "sparkMiddle", e.target.value)}
+                                placeholder={lesson.sparkMiddle ?? "Bv. 'Oké, basis snap je. Nu het gave deel...'"}
+                                rows={3}
+                                className="rounded-lg resize-y"
                               />
                             </AccordionContent>
                           </AccordionItem>

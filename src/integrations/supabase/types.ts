@@ -101,6 +101,9 @@ export type Database = {
           interactive: Json | null
           lesson_id: string
           quiz: Json | null
+          reflection: string | null
+          spark_intro: string | null
+          spark_middle: string | null
           summary: string[] | null
           theory_deep: string | null
           theory_intro: string | null
@@ -114,6 +117,9 @@ export type Database = {
           interactive?: Json | null
           lesson_id: string
           quiz?: Json | null
+          reflection?: string | null
+          spark_intro?: string | null
+          spark_middle?: string | null
           summary?: string[] | null
           theory_deep?: string | null
           theory_intro?: string | null
@@ -127,6 +133,9 @@ export type Database = {
           interactive?: Json | null
           lesson_id?: string
           quiz?: Json | null
+          reflection?: string | null
+          spark_intro?: string | null
+          spark_middle?: string | null
           summary?: string[] | null
           theory_deep?: string | null
           theory_intro?: string | null

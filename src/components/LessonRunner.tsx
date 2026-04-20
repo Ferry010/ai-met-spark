@@ -21,7 +21,7 @@ if (typeof window !== "undefined") {
   window.addEventListener("touchstart", unlock, { once: false });
 }
 
-type Step = "intro" | "theoryIntro" | "fact" | "theoryDeep" | "interactive" | "summary" | "quiz" | "done";
+type Step = "intro" | "theoryIntro" | "fact" | "sparkMiddle" | "theoryDeep" | "interactive" | "summary" | "quiz" | "done";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "bg-gradient-sky text-primary-foreground",
@@ -47,6 +47,7 @@ const buildSteps = (lesson: Lesson): Step[] => {
   const steps: Step[] = ["intro"];
   if (lesson.theoryIntro?.trim()) steps.push("theoryIntro");
   steps.push("fact");
+  if (lesson.sparkMiddle?.trim()) steps.push("sparkMiddle");
   if (lesson.theoryDeep?.trim()) steps.push("theoryDeep");
   steps.push("interactive");
   if (lesson.summary && lesson.summary.length > 0) steps.push("summary");
@@ -135,6 +136,26 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
           <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
           <p className="font-display text-2xl sm:text-3xl leading-snug">{lesson.fact}</p>
           <Button onClick={() => goNext("fact")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">
+            Verder →
+          </Button>
+        </section>
+      )}
+
+      {step === "sparkMiddle" && (
+        <section className={`rounded-3xl p-6 sm:p-8 shadow-soft animate-pop-in ${PILLAR_BG[lesson.pillar]}`}>
+          <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+            <div className="shrink-0">
+              <Spark size={96} mood="explaining" />
+            </div>
+            <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-4 shadow-soft">
+              <div className="text-xs uppercase tracking-wider text-primary font-display mb-1">Spark zegt</div>
+              <p className="font-body text-base leading-relaxed whitespace-pre-line">{lesson.sparkMiddle}</p>
+            </div>
+          </div>
+          <Button
+            onClick={() => goNext("sparkMiddle")}
+            className="mt-6 w-full sm:w-auto sm:mx-auto sm:flex h-14 px-8 rounded-full font-display bg-white text-foreground hover:bg-white/90 shadow-pop"
+          >
             Verder →
           </Button>
         </section>
