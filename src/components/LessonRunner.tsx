@@ -387,7 +387,7 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
         disabled={!allPlaced}
         className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft"
       >
-        {allPlaced ? (allCorrect ? "Perfect! Verder →" : "Verder →") : "Plaats elk item"}
+        {allPlaced ? (allCorrect ? "Perfect! Verder →" : "Verder →") : "Tik elk item aan"}
       </Button>
     </section>
   );

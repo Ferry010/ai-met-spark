@@ -40,10 +40,19 @@ export interface Lesson {
   pillar: Pillar;
   title: string;
   emoji: string;
-  /** Spark's intro line for "Ontmoet Spark". */
+  /** STAP 1, Spark's intro line. */
   sparkIntro?: string;
+  /** STAP 2, eerste theorieblok (optioneel). */
+  theoryIntro?: string;
+  /** STAP 3, wist-je-dat. */
   fact: string;
+  /** STAP 4, tweede theorieblok (optioneel). */
+  theoryDeep?: string;
+  /** STAP 5, oefening. */
   interactive: InteractiveStep;
+  /** STAP 6, samenvatting in bullets (optioneel). */
+  summary?: string[];
+  /** STAP 7, oefenvragen. */
   quiz: QuizQuestion[];
   /** Optional reflection line for Spark at the "Verdien je ster" step. */
   reflection?: string;
@@ -106,7 +115,7 @@ export const WORLDS: World[] = [
         sparkIntro: "Hoi! Ik ben Spark. Denk jij dat AI nadenkt zoals jij? Spoiler: nee. En dat is juist het hele punt.",
         fact: "AI is geen tovenaar en geen denkend brein. Het is een patroon-herkenner die leerde van miljoenen voorbeelden.",
         interactive: sort(
-          "Sleep elk kaartje naar de juiste bak: is het AI of niet?",
+          "Tik op de juiste bak voor elk kaartje: is het AI of niet?",
           ["🤖 Dit is AI", "📦 Dit is geen AI"],
           [
             { label: "ChatGPT", bucket: 0 },
@@ -306,7 +315,7 @@ export const WORLDS: World[] = [
         sparkIntro: "Oplichters waren al smerig. Met AI zijn ze geniepiger. Maar je kunt ze spotten.",
         fact: "Drie tekenen van scam: HAAST, EMOTIE en de vraag om GELD of INFO. Alle drie? Bijna altijd oplichting.",
         interactive: sort(
-          "Scam of echt? Sleep elk bericht naar de juiste bak:",
+          "Scam of echt? Tik op de juiste bak voor elk bericht:",
           ["🚨 Scam", "✅ Lijkt echt"],
           [
             { label: "'Stuur je adres snel snel snel!'", bucket: 0 },
