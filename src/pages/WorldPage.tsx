@@ -37,8 +37,8 @@ export const WorldPage = () => {
       <div className="min-h-screen bg-background">
         <AppHeader />
         <main className="container py-12 text-center">
-          <h1 className="font-display text-3xl">World not found</h1>
-          <Link to="/dashboard"><Button className="mt-4 rounded-full font-display">Back home</Button></Link>
+          <h1 className="font-display text-3xl">Wereld niet gevonden</h1>
+          <Link to="/dashboard"><Button className="mt-4 rounded-full font-display">Terug naar start</Button></Link>
         </main>
       </div>
     );
@@ -56,7 +56,7 @@ export const WorldPage = () => {
 
         <div className={`rounded-3xl bg-gradient-to-br ${PILLAR_BG[world.pillar]} p-8 text-center mb-8 shadow-pop`}>
           <span className="text-6xl block mb-2" aria-hidden>{world.emoji}</span>
-          <h1 className="font-display text-4xl text-white drop-shadow">World {world.id}: {world.name}</h1>
+          <h1 className="font-display text-4xl text-white drop-shadow">Wereld {world.id}: {world.name}</h1>
           <p className="text-white/90 mt-1">{world.tagline}</p>
         </div>
 
@@ -89,7 +89,7 @@ export const WorldPage = () => {
                       {isDone ? <Check className="h-6 w-6" /> : locked ? <Lock className="h-5 w-5 text-muted-foreground" /> : lesson.emoji}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-display text-muted-foreground">Lesson {lesson.id}</div>
+                      <div className="text-xs font-display text-muted-foreground">Les {lesson.id}</div>
                       <div className="font-display text-lg truncate">{lesson.title}</div>
                     </div>
                   </div>

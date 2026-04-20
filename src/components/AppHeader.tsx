@@ -44,18 +44,18 @@ export const AppHeader = () => {
               {isTeacher && (
                 <DropdownMenuItem asChild className="rounded-xl">
                   <Link to="/teacher" className="cursor-pointer">
-                    <GraduationCap className="h-4 w-4 mr-2" /> Teacher dashboard
+                    <GraduationCap className="h-4 w-4 mr-2" /> Dashboard leerkracht
                   </Link>
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem asChild className="rounded-xl">
                 <Link to="/account" className="cursor-pointer">
-                  <Settings className="h-4 w-4 mr-2" /> Account settings
+                  <Settings className="h-4 w-4 mr-2" /> Accountinstellingen
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logout} className="rounded-xl cursor-pointer">
-                <LogOut className="h-4 w-4 mr-2" /> Log out
+                <LogOut className="h-4 w-4 mr-2" /> Uitloggen
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

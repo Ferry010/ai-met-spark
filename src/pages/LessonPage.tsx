@@ -34,7 +34,6 @@ export const LessonPage = () => {
   const [pickedAnswer, setPickedAnswer] = useState<number | null>(null);
   const [paywall, setPaywall] = useState(false);
 
-  // Paywall guard for non-1.1 lessons
   useEffect(() => {
     if (!lesson || !profile) return;
     if (lesson.id === "1.1") return;
@@ -46,8 +45,8 @@ export const LessonPage = () => {
       <div className="min-h-screen bg-background">
         <AppHeader />
         <main className="container py-12 text-center">
-          <h1 className="font-display text-2xl">Lesson not found</h1>
-          <Link to="/dashboard"><Button className="mt-4 rounded-full font-display">Back home</Button></Link>
+          <h1 className="font-display text-2xl">Les niet gevonden</h1>
+          <Link to="/dashboard"><Button className="mt-4 rounded-full font-display">Terug naar start</Button></Link>
         </main>
       </div>
     );
@@ -75,20 +74,20 @@ export const LessonPage = () => {
       <AppHeader />
       <main className="container py-6 max-w-2xl">
         <Link to={`/world/${lesson.worldId}`} className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground mb-4 font-display">
-          <ChevronLeft className="h-4 w-4" /> Back to World {lesson.worldId}
+          <ChevronLeft className="h-4 w-4" /> Terug naar Wereld {lesson.worldId}
         </Link>
 
         {step === "intro" && (
           <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
-            <div className="text-xs font-display opacity-90">Lesson {lesson.id}</div>
+            <div className="text-xs font-display opacity-90">Les {lesson.id}</div>
             <h1 className="font-display text-4xl mt-1 mb-6">{lesson.title}</h1>
             <Spark size={140} mood="happy" />
-            <p className="mt-6 text-lg opacity-95">Spark is ready! Tap to begin.</p>
+            <p className="mt-6 text-lg opacity-95">Spark is er klaar voor! Tik om te beginnen.</p>
             <Button
               onClick={() => setStep("fact")}
               className="mt-6 h-14 px-8 rounded-full font-display text-base bg-white text-foreground hover:bg-white/90 shadow-pop"
             >
-              Let's go! →
+              Kom op! →
             </Button>
           </section>
         )}
@@ -96,13 +95,13 @@ export const LessonPage = () => {
         {step === "fact" && (
           <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center">
             <div className="text-5xl mb-3" aria-hidden>{lesson.emoji}</div>
-            <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Did you know?</div>
+            <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
             <p className="font-display text-2xl sm:text-3xl leading-snug">{lesson.fact}</p>
             <Button
               onClick={() => setStep("interactive")}
               className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft"
             >
-              Try it →
+              Probeer het →
             </Button>
           </section>
         )}
@@ -140,7 +139,7 @@ export const LessonPage = () => {
         {step === "done" && (
           <section className="rounded-3xl bg-success/15 border-2 border-success p-8 text-center shadow-pop animate-pop-in">
             <Spark size={140} mood="celebrating" />
-            <h2 className="font-display text-3xl mt-4">Nice work!</h2>
+            <h2 className="font-display text-3xl mt-4">Goed gedaan!</h2>
             <div className="flex justify-center gap-1 mt-3">
               {Array.from({ length: 3 }).map((_, i) => (
                 <Star
@@ -154,11 +153,11 @@ export const LessonPage = () => {
                 />
               ))}
             </div>
-            <p className="mt-4 text-muted-foreground">You got {quizScore} of {lesson.quiz.length} correct.</p>
+            <p className="mt-4 text-muted-foreground">Je had er {quizScore} van de {lesson.quiz.length} goed.</p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Link to={`/world/${lesson.worldId}`}>
                 <Button className="h-14 px-8 rounded-full font-display bg-primary shadow-soft">
-                  Back to map
+                  Terug naar de kaart
                 </Button>
               </Link>
             </div>
@@ -189,7 +188,7 @@ const QuizCard = ({
   const wrong = picked !== null && picked !== correct;
   return (
     <section className={cn("rounded-3xl bg-card border border-border p-6 shadow-soft", wrong && "animate-shake")}>
-      <div className="text-xs font-display text-muted-foreground mb-2">Question {index + 1} of {total}</div>
+      <div className="text-xs font-display text-muted-foreground mb-2">Vraag {index + 1} van {total}</div>
       <h3 className="font-display text-xl mb-5">{question.question}</h3>
       <div className="space-y-3">
         {question.options.map((opt: string, i: number) => {
@@ -220,12 +219,12 @@ const QuizCard = ({
       </div>
       {picked !== null && (
         <div className="mt-4 p-4 rounded-2xl bg-muted/60 text-sm">
-          <strong className="font-display">Why? </strong>{question.why}
+          <strong className="font-display">Waarom? </strong>{question.why}
         </div>
       )}
       {picked !== null && (
         <Button onClick={onNext} className="mt-5 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-          {index + 1 >= total ? "Finish lesson →" : "Next question →"}
+          {index + 1 >= total ? "Maak les af →" : "Volgende vraag →"}
         </Button>
       )}
     </section>
@@ -275,7 +274,7 @@ const MultiChoice = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
         <>
           <div className="mt-4 p-4 rounded-2xl bg-muted/60 text-sm">{step.explanation}</div>
           <Button onClick={onDone} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-            Continue →
+            Verder →
           </Button>
         </>
       )}
@@ -309,7 +308,7 @@ const TapReveal = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "t
         disabled={!allOpen}
         className="mt-5 w-full h-14 rounded-full font-display bg-primary shadow-soft"
       >
-        {allOpen ? "Continue →" : `Tap each one (${opened.size}/${step.reveals.length})`}
+        {allOpen ? "Verder →" : `Tik elk item aan (${opened.size}/${step.reveals.length})`}
       </Button>
     </section>
   );
@@ -367,7 +366,7 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
         disabled={!allPlaced}
         className="w-full h-14 rounded-full font-display bg-primary shadow-soft"
       >
-        {allPlaced ? (allCorrect ? "Perfect! Continue →" : "Continue →") : "Place every item"}
+        {allPlaced ? (allCorrect ? "Perfect! Verder →" : "Verder →") : "Plaats elk item"}
       </Button>
     </section>
   );

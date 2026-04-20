@@ -1,1 +1,231 @@
-{}
+{
+  "common": {
+    "appName": "AI Smart Kids",
+    "tagline": "¡Aprende a usar la IA como un pro!",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión",
+    "continue": "Continuar",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "tryFree": "Prueba la primera lección gratis",
+    "unlockNow": "Desbloquear ahora",
+    "comingSoon": "Próximamente",
+    "loading": "Cargando…",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "languageSelect": {
+    "title": "Elige tu idioma",
+    "subtitle": "Choose your language · Kies je taal",
+    "english": "English",
+    "dutch": "Nederlands",
+    "spanish": "Español"
+  },
+  "landing": {
+    "heroBadge": "Para niños curiosos de 8 a 12 años",
+    "heroTitle": "¡Aprende a usar la IA como un pro!",
+    "heroSubtitle": "Una aventura divertida que enseña a los niños a usar la IA con seguridad, hacer preguntas más inteligentes y convertirse en aprendices imparables. Hecho para 8 a 12 años.",
+    "heroSparkLine": "¡Hola, soy Spark. Seré tu guía de IA!",
+    "heroMicroCopy": "Sin tarjeta para probar la lección 1. 60 segundos para empezar.",
+    "ctaPrimary": "Prueba la primera lección gratis",
+    "ctaSecondary": "Iniciar sesión",
+    "trustChips": {
+      "gdpr": "Seguro con RGPD",
+      "noChat": "Sin chat de IA para niños",
+      "parents": "Adorado por padres"
+    },
+    "problem": {
+      "eyebrow": "Por qué importa ahora",
+      "title": "Tu hijo ya está usando IA. ¿La está usando bien?",
+      "p1": "La IA está en todas partes. En apps de tareas, en juegos, en los móviles de sus amigos. La mayoría de los niños lo descubren solos y adoptan malos hábitos rápido.",
+      "p2": "Las escuelas van por detrás. La mayoría de las aulas no enseñarán alfabetización en IA en años. Para entonces, los reflejos equivocados ya están fijados.",
+      "p3": "AI Smart Kids le da a tu hijo la base correcta ahora: cómo detectar errores de la IA, proteger sus secretos y usar la IA como un potenciador del cerebro en vez de un atajo."
+    },
+    "inside": {
+      "eyebrow": "Qué incluye",
+      "title": "Todo lo que tu hijo necesita en un curso divertido",
+      "items": {
+        "worlds": { "n": "3", "label": "Mundos", "desc": "Seguro, Listo y Más Fuerte. Cada mundo desbloquea un nuevo superpoder." },
+        "lessons": { "n": "12", "label": "Lecciones", "desc": "Aventuras de 5 a 7 minutos. Perfectas después del cole." },
+        "quizzes": { "n": "36", "label": "Mini-quizzes", "desc": "Toca, ordena y elige. Sin maratones aburridos de opción múltiple." },
+        "certificate": { "n": "1", "label": "Certificado", "desc": "Un certificado PDF real con nombre que los niños pueden imprimir y mostrar." }
+      }
+    },
+    "pillars": {
+      "title": "Tres superpoderes que aprenderás",
+      "subtitle": "Tres mundos. Doce lecciones. Un niño más listo.",
+      "safe": {
+        "name": "SEGURO",
+        "icon": "🛡️",
+        "desc": "Mantente seguro en línea y protege tus secretos de la IA. Aprende qué compartir, qué guardar y cómo detectar lo falso.",
+        "skills": ["Detecta imágenes y vídeos hechos por IA", "Mantén privada tu info personal", "Reconoce estafas y deepfakes"],
+        "sample": "Lección de muestra: Detecta lo Falso"
+      },
+      "smart": {
+        "name": "LISTO",
+        "icon": "🧠",
+        "desc": "Haz mejores preguntas y comprueba lo que la IA te dice. Aprende que la IA adivina con confianza, no lo sabe todo.",
+        "skills": ["Escribe prompts claros y específicos", "Comprueba dos veces las respuestas de la IA", "Nota cuándo la IA alucina"],
+        "sample": "Lección de muestra: La Trampa de la Alucinación"
+      },
+      "stronger": {
+        "name": "MÁS FUERTE",
+        "icon": "💪",
+        "desc": "Usa la IA como compañero de estudio para aprender más rápido, no como atajo para no pensar. Construyes habilidades reales, más rápido.",
+        "skills": ["Convierte la IA en tu tutor", "Lluvia de ideas sin copiar", "Aprende 10 veces más rápido temas difíciles"],
+        "sample": "Lección de muestra: Tu Compañero de Estudio Personal"
+      }
+    },
+    "how": {
+      "eyebrow": "Cómo funciona una lección",
+      "title": "5 minutos. 5 pasos. Aprendizaje real.",
+      "subtitle": "Cada lección sigue el mismo ritmo amistoso, así los niños siempre saben qué viene.",
+      "steps": {
+        "meet": { "title": "Conoce a Spark", "desc": "Nuestra mascota amistosa pone el escenario con una intro corta y divertida." },
+        "discover": { "title": "Descubre", "desc": "Una historia o ejemplo corto muestra la idea en acción." },
+        "play": { "title": "Juega", "desc": "Toca, ordena, arrastra y explora. Los niños aprenden haciendo." },
+        "quiz": { "title": "Quiz", "desc": "Tres preguntas rápidas afianzan lo que acaban de aprender." },
+        "star": { "title": "Gana tu estrella", "desc": "Las estrellas desbloquean la siguiente lección y construyen una racha de la que enorgullecerse." }
+      }
+    },
+    "whyParents": {
+      "eyebrow": "Por qué los padres eligen AI Smart Kids",
+      "title": "Hecho para familias que quieren que sus hijos prosperen con la IA, no que le teman",
+      "items": {
+        "noChat": { "title": "Sin chat con IA", "desc": "Los niños nunca escriben a una IA real. Cero riesgo de respuestas raras o contenido inseguro." },
+        "educators": { "title": "Escrito a mano por educadores", "desc": "Cada lección está escrita y revisada por profesores y padres. Sin relleno autogenerado." },
+        "privacy": { "title": "Compatible con RGPD y COPPA", "desc": "Recogemos un nombre, edad y email del padre. Eso es todo. Nunca vendemos datos." },
+        "devices": { "title": "Funciona en cualquier dispositivo", "desc": "Móvil, tablet, Chromebook o portátil. Solo abre y aprende. Sin app que instalar." },
+        "time": { "title": "5 minutos al día", "desc": "Diseñado para encajar entre los deberes y la cena. Corto, enfocado y terminable." },
+        "refund": { "title": "Garantía de devolución", "desc": "¿No es para tu hijo? Escríbenos en 14 días para reembolso completo. Sin rencores." }
+      }
+    },
+    "quote": {
+      "text": "Por fin, IA para niños que no parece un chatbot espeluznante.",
+      "byline": "Hecho con profesores y padres en los Países Bajos."
+    },
+    "pricingTeaser": {
+      "eyebrow": "Precio simple",
+      "title": "Un precio. Acceso para siempre. Cero sorpresas.",
+      "price": "€14",
+      "subtitle": "Paga una vez. Tu hijo conserva cada lección, cada actualización y su certificado para siempre.",
+      "cta": "Desbloquear ahora",
+      "features": [
+        "12 lecciones divertidas hechas a mano",
+        "3 mundos de superpoderes para explorar",
+        "Sin chat. Los niños nunca escriben a una IA.",
+        "Certificado personal imprimible",
+        "Funciona en móvil, tablet y portátil",
+        "Actualizaciones gratis con nuevas lecciones"
+      ],
+      "noPay": "Lo que no pagas: sin suscripción, sin ventas adicionales, sin anuncios, nunca."
+    },
+    "schools": {
+      "eyebrow": "Para escuelas y profesores",
+      "title": "Lleva la alfabetización en IA a tu aula",
+      "desc": "Equipa a tus alumnos con las habilidades de IA que necesitarán esta década. Desde €4 por alumno, con panel de profesor, códigos de clase y descargas masivas de certificados.",
+      "cta": "Ver precios para escuelas"
+    },
+    "finalCta": {
+      "title": "¿Listo para criar a un AI Smart Kid?",
+      "subtitle": "La lección 1 es gratis para siempre. Sin tarjeta, sin trampa.",
+      "cta": "Empieza la aventura",
+      "secondary": "Ver precios"
+    },
+    "parents": {
+      "title": "Hecho para padres que quieren que sus hijos prosperen con la IA, no que le teman",
+      "desc": "Sin chat. Sin recolección de datos. Nada que dé miedo. Solo lecciones probadas con niños que construyen confianza y pensamiento crítico."
+    }
+  },
+  "pricing": {
+    "title": "Precio simple y justo",
+    "subtitle": "Elige el plan que encaje.",
+    "intro": "Un precio justo. Sin suscripciones. Sin trucos. Solo las habilidades de IA que tu hijo necesita, de por vida.",
+    "individual": {
+      "name": "Individual",
+      "badge": "Más popular",
+      "tagline": "Perfecto para un niño curioso en casa. Paga una vez y listo.",
+      "price": "€14",
+      "billing": "pago único",
+      "features": [
+        "Las 12 lecciones, para siempre",
+        "Acceso a los 3 mundos de superpoderes",
+        "1 cuenta de niño",
+        "Certificado personal imprimible",
+        "Email al padre al completar",
+        "Actualizaciones futuras gratis",
+        "Garantía de devolución de 14 días"
+      ],
+      "cta": "Empezar"
+    },
+    "schools": {
+      "name": "Escuelas",
+      "tagline": "Hecho para aulas, clubes extraescolares y redes educativas.",
+      "bestFor": "Mejor para: escuelas, bibliotecas y programas extraescolares.",
+      "price": "Desde €4",
+      "billing": "por plaza, mínimo 20 plazas",
+      "features": [
+        "Panel de profesor con progreso en vivo",
+        "Registro fácil con código de clase (sin email)",
+        "Análisis de progreso y quizzes",
+        "Descarga masiva de certificados",
+        "Soporte de factura y PO",
+        "Llamada de bienvenida con nuestro equipo",
+        "Soporte prioritario por email"
+      ],
+      "cta": "Contáctanos"
+    },
+    "included": {
+      "title": "Qué incluye cada plan",
+      "items": [
+        "Las 12 lecciones hechas a mano",
+        "3 mundos de superpoderes",
+        "Certificados personales",
+        "Compatible con RGPD y COPPA",
+        "Sin chat de IA para niños",
+        "Funciona en cualquier dispositivo"
+      ]
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": [
+        { "q": "¿Es seguro para mi hijo?", "a": "Sí. Los niños nunca escriben a una IA. Todo el contenido está escrito a mano y revisado. Solo recogemos un nombre, edad y email del padre." },
+        { "q": "¿Los datos de mi hijo son privados?", "a": "Sí. Somos compatibles con RGPD y COPPA. Nunca vendemos datos ni los usamos para entrenar modelos de IA." },
+        { "q": "¿Puedo recibir un reembolso?", "a": "Sí, dentro de 14 días, sin preguntas. Escríbenos y lo procesamos el mismo día." },
+        { "q": "¿Para qué edades es?", "a": "De 8 a 12 años. El nivel de lectura está ajustado a un niño de 9 años, y los mayores también disfrutan las actividades." },
+        { "q": "¿En qué dispositivos funciona?", "a": "Cualquier móvil, tablet, Chromebook o portátil moderno con navegador. Sin app que instalar." },
+        { "q": "¿Soportáis varios hijos en una familia?", "a": "Cada plan de €14 cubre una cuenta. Compra uno por hijo, o escríbenos por un pack familiar a partir de 3 niños." },
+        { "q": "¿Qué pasa después de las 12 lecciones?", "a": "Tu hijo conserva acceso de por vida. Puede repetir cualquier lección, rehacer quizzes y descargar el certificado en cualquier momento. Las nuevas lecciones bonus son gratis." },
+        { "q": "¿Puedo cambiar el idioma después?", "a": "Sí. Los niños pueden cambiar entre español, inglés y neerlandés desde su cuenta." },
+        { "q": "¿Cómo elimino los datos de mi hijo?", "a": "Escríbenos y borraremos la cuenta y todos los datos en 7 días, sin preguntas." }
+      ]
+    }
+  },
+  "schoolForm": {
+    "title": "Lleva AI Smart Kids a tu escuela",
+    "subtitle": "Cuéntanos un poco sobre tu escuela y respondemos en 1 día laborable.",
+    "fields": {
+      "name": "Tu nombre",
+      "school": "Nombre de la escuela",
+      "country": "País",
+      "seats": "¿Cuántos alumnos?",
+      "email": "Tu email",
+      "message": "¿Algo más? (opcional)"
+    },
+    "submit": "Enviar consulta",
+    "success": "¡Gracias! Te contactaremos pronto.",
+    "error": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "footer": {
+    "tagline": "Criando la primera generación de niños listos en IA.",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "contact": "Contacto",
+    "rights": "Todos los derechos reservados."
+  },
+  "cookies": {
+    "message": "Usamos algunas cookies para que la app funcione. Sin rastreo, sin anuncios.",
+    "accept": "Vale, entendido"
+  }
+}

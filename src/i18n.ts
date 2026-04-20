@@ -17,11 +17,11 @@ i18n
       nl: { translation: nl },
       es: { translation: es },
     },
-    fallbackLng: "en",
+    fallbackLng: "nl",
     supportedLngs: SUPPORTED_LANGUAGES as unknown as string[],
     interpolation: { escapeValue: false },
     detection: {
-      order: ["localStorage", "navigator"],
+      order: ["localStorage"],
       lookupLocalStorage: "aisk_lang",
       caches: ["localStorage"],
     },

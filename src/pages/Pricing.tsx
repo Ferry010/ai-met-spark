@@ -34,7 +34,7 @@ export const Pricing = () => {
         {/* Individual */}
         <div className="relative rounded-3xl bg-card border-2 border-primary shadow-pop p-8 flex flex-col">
           <div className="absolute -top-3 left-6 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wide rounded-full px-3 py-1 flex items-center gap-1">
-            <Star className="h-3 w-3" /> Most popular
+            <Star className="h-3 w-3" /> {t("pricing.individual.badge")}
           </div>
           <h2 className="font-display text-2xl mb-1">{t("pricing.individual.name")}</h2>
           <p className="text-sm text-muted-foreground mb-5">{t("pricing.individual.tagline")}</p>
