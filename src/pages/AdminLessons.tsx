@@ -138,13 +138,13 @@ export const AdminLessons = () => {
       title: row.title.trim() || null,
       fact: row.fact.trim() || null,
       emoji: row.emoji.trim() || null,
-      interactive: interactiveResult,
-      quiz: quizResult,
+      interactive: interactiveResult as any,
+      quiz: quizResult as any,
       updated_by: user.id,
     };
     const { error } = await supabase
       .from("lesson_overrides")
-      .upsert(payload, { onConflict: "lesson_id" });
+      .upsert([payload], { onConflict: "lesson_id" });
     setSavingId(null);
     if (error) {
       toast({ title: "Opslaan mislukt", description: error.message, variant: "destructive" });
