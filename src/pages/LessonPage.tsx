@@ -27,12 +27,33 @@ export const LessonPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, profile } = useAuth();
-  const lesson = useMemo(() => getLesson(id || ""), [id]);
+  const baseLesson = useMemo(() => getLesson(id || ""), [id]);
+  const [override, setOverride] = useState<{ title?: string | null; fact?: string | null; emoji?: string | null } | null>(null);
   const [step, setStep] = useState<Step>("intro");
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [pickedAnswer, setPickedAnswer] = useState<number | null>(null);
   const [paywall, setPaywall] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    supabase
+      .from("lesson_overrides")
+      .select("title, fact, emoji")
+      .eq("lesson_id", id)
+      .maybeSingle()
+      .then(({ data }) => setOverride(data as any));
+  }, [id]);
+
+  const lesson = useMemo(() => {
+    if (!baseLesson) return undefined;
+    return {
+      ...baseLesson,
+      title: override?.title?.trim() || baseLesson.title,
+      fact: override?.fact?.trim() || baseLesson.fact,
+      emoji: override?.emoji?.trim() || baseLesson.emoji,
+    };
+  }, [baseLesson, override]);
 
   useEffect(() => {
     if (!lesson || !profile) return;

@@ -21,6 +21,7 @@ import FinalTest from "./pages/FinalTest.tsx";
 import Certificate from "./pages/Certificate.tsx";
 import Account from "./pages/Account.tsx";
 import TeacherDashboard from "./pages/TeacherDashboard.tsx";
+import AdminLessons from "./pages/AdminLessons.tsx";
 
 const queryClient = new QueryClient();
 
@@ -91,6 +92,14 @@ const App = () => (
             element={
               <ProtectedRoute requireRole="teacher">
                 <TeacherDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/lessons"
+            element={
+              <ProtectedRoute requireRole="admin">
+                <AdminLessons />
               </ProtectedRoute>
             }
           />

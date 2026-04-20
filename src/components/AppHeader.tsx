@@ -10,10 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, GraduationCap } from "lucide-react";
+import { LogOut, Settings, GraduationCap, ShieldCheck } from "lucide-react";
 
 export const AppHeader = () => {
-  const { profile, isTeacher } = useAuth();
+  const { profile, isTeacher, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -43,6 +43,13 @@ export const AppHeader = () => {
                 <DropdownMenuItem asChild className="rounded-xl">
                   <Link to="/teacher" className="cursor-pointer">
                     <GraduationCap className="h-4 w-4 mr-2" /> Dashboard leerkracht
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              {isAdmin && (
+                <DropdownMenuItem asChild className="rounded-xl">
+                  <Link to="/admin/lessons" className="cursor-pointer">
+                    <ShieldCheck className="h-4 w-4 mr-2" /> Beheer lessen
                   </Link>
                 </DropdownMenuItem>
               )}

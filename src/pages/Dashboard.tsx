@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { PaywallDialog } from "@/components/PaywallDialog";
 import { WORLDS, ALL_LESSONS } from "@/content/lessons";
-import { Lock, Trophy, Star, Award } from "lucide-react";
+import { Lock, Star, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import confetti from "canvas-confetti";
+import { BADGES, TONE_BG } from "@/lib/badges";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "bg-gradient-sky text-primary-foreground",
@@ -21,6 +22,7 @@ const PILLAR_BG: Record<string, string> = {
 export const Dashboard = () => {
   const { profile, user, refreshProfile } = useAuth();
   const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const [finalPassed, setFinalPassed] = useState(false);
   const [paywall, setPaywall] = useState(false);
   const [search, setSearch] = useSearchParams();
   const { toast } = useToast();
@@ -34,6 +36,13 @@ export const Dashboard = () => {
       .then(({ data }) => {
         setCompleted(new Set((data ?? []).map((r: any) => r.lesson_id)));
       });
+    supabase
+      .from("final_test_attempts")
+      .select("passed")
+      .eq("user_id", user.id)
+      .eq("passed", true)
+      .limit(1)
+      .then(({ data }) => setFinalPassed((data ?? []).length > 0));
   }, [user]);
 
   useEffect(() => {
@@ -119,35 +128,45 @@ export const Dashboard = () => {
         </div>
 
         <section className="mb-10">
-          <h2 className="font-display text-2xl mb-4 flex items-center gap-2">
-            <Award className="h-6 w-6 text-secondary-foreground" /> Je badges
-          </h2>
-          <div className="flex gap-4 flex-wrap">
-            {WORLDS.map((w) => {
-              const earned = w.lessons.every((l) => completed.has(l.id));
-              return (
-                <div
-                  key={w.id}
-                  className={`rounded-2xl p-4 w-32 text-center transition-bounce ${
-                    earned
-                      ? `${PILLAR_BG[w.pillar]} shadow-pop animate-pop-in`
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  <div className="text-4xl">{earned ? w.emoji : "🔒"}</div>
-                  <div className="font-display text-sm mt-2">{w.name}</div>
+          {(() => {
+            const ctx = { completed, finalPassed };
+            const earnedCount = BADGES.filter((b) => b.earned(ctx)).length;
+            return (
+              <>
+                <h2 className="font-display text-2xl mb-1 flex items-center gap-2">
+                  <Award className="h-6 w-6 text-secondary-foreground" /> Je badges
+                </h2>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {earnedCount} van {BADGES.length} verdiend
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                  {BADGES.map((b) => {
+                    const earned = b.earned(ctx);
+                    const Icon = b.icon;
+                    return (
+                      <div
+                        key={b.id}
+                        title={b.description}
+                        className={`rounded-2xl p-4 text-center transition-bounce ${
+                          earned
+                            ? `${TONE_BG[b.tone ?? "primary"]} shadow-pop animate-pop-in`
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        <div className="text-3xl" aria-hidden>
+                          {earned ? b.emoji : "🔒"}
+                        </div>
+                        <div className="font-display text-sm mt-2 leading-tight">{b.name}</div>
+                        <div className="text-[11px] mt-1 opacity-80 leading-tight">
+                          {b.description}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
-            <div
-              className={`rounded-2xl p-4 w-32 text-center ${
-                allDone ? "bg-success text-success-foreground shadow-pop animate-pop-in" : "bg-muted text-muted-foreground"
-              }`}
-            >
-              <Trophy className="h-10 w-10 mx-auto" />
-              <div className="font-display text-sm mt-2">Smart Kid</div>
-            </div>
-          </div>
+              </>
+            );
+          })()}
         </section>
 
         <div className="rounded-3xl bg-card border border-border p-6 text-center shadow-soft">
