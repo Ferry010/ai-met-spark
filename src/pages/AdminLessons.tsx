@@ -398,6 +398,33 @@ export const AdminLessons = () => {
                             </AccordionContent>
                           </AccordionItem>
 
+                          {/* 3b. Spark tussenstuk */}
+                          <AccordionItem value="sparkMiddle" className="border-b border-border last:border-0">
+                            <AccordionTrigger className="px-4 py-3 hover:no-underline text-sm font-display">
+                              <span className="flex items-center gap-2">
+                                <Sparkles className="h-4 w-4 text-primary" /> 3b. Spark tussenstuk
+                                {row.sparkMiddle.trim() && <span className="ml-1 text-xs text-success">●</span>}
+                              </span>
+                            </AccordionTrigger>
+                            <AccordionContent className="px-4 pb-4 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <p className="text-xs text-muted-foreground">Korte overgang van Spark, na 'Wist je dat'. Leeg = sla over.</p>
+                                {lesson.sparkMiddle && (
+                                  <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={() => loadDefault(lesson.id, "sparkMiddle")}>
+                                    Laad standaard
+                                  </Button>
+                                )}
+                              </div>
+                              <Textarea
+                                value={row.sparkMiddle}
+                                onChange={(e) => updateField(lesson.id, "sparkMiddle", e.target.value)}
+                                placeholder={lesson.sparkMiddle ?? "Bv. 'Oké, basis snap je. Nu het gave deel...'"}
+                                rows={3}
+                                className="rounded-lg resize-y"
+                              />
+                            </AccordionContent>
+                          </AccordionItem>
+
                           {/* 4. Theorie deel 2 */}
                           <AccordionItem value="theoryDeep" className="border-b border-border last:border-0">
                             <AccordionTrigger className="px-4 py-3 hover:no-underline text-sm font-display">
