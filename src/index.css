@@ -189,6 +189,37 @@
   60%  { opacity: 1; transform: translate(0, -6px) scale(1.05) rotate(2deg); }
   100% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
 }
+
+/* Spark jetpack arcade entry */
+@keyframes spark-jet-fly {
+  0%   { opacity: 0; transform: translate(-180%, 140%) scale(0.5) skew(-12deg, 4deg); }
+  55%  { opacity: 1; transform: translate(0, 0) scale(1.15, 0.9) skew(0, 0); }
+  70%  { transform: translate(0, 0) scale(0.92, 1.08); }
+  85%  { transform: translate(0, 0) scale(1.04, 0.98); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes spark-jet-trail {
+  0%   { opacity: 0; transform: translate(-180%, 140%) scaleX(0.4); }
+  40%  { opacity: 1; }
+  60%  { opacity: 1; transform: translate(0, 0) scaleX(1); }
+  80%  { opacity: 0.4; transform: translate(20%, -10%) scaleX(0.2); }
+  100% { opacity: 0; transform: translate(30%, -14%) scaleX(0.1); }
+}
+@keyframes spark-speedlines {
+  0%   { opacity: 0; transform: translate(-200%, 160%) scaleX(0); }
+  30%  { opacity: 1; transform: translate(-50%, 40%) scaleX(1); }
+  60%  { opacity: 0; transform: translate(0, 0) scaleX(0.6); }
+  100% { opacity: 0; }
+}
+@keyframes spark-shockwave {
+  0%   { opacity: 0; transform: scale(0.2); }
+  20%  { opacity: 0.7; }
+  100% { opacity: 0; transform: scale(2.6); }
+}
+.animate-spark-jet-fly { animation: spark-jet-fly 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s both; }
+.animate-spark-jet-trail { animation: spark-jet-trail 0.8s ease-out 0.1s both; }
+.animate-spark-speedlines { animation: spark-speedlines 0.55s ease-out both; }
+.animate-spark-shockwave { animation: spark-shockwave 0.7s ease-out 0.6s both; }
 @keyframes spark-wave {
   0%, 100% { transform: rotate(-10deg); }
   50%      { transform: rotate(20deg); }
