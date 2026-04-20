@@ -45,6 +45,7 @@ interface OverrideRow {
   sparkIntro: string;
   theoryIntro: string;
   fact: string;
+  sparkMiddle: string;
   theoryDeep: string;
   interactive: string;
   summary: string;
@@ -60,6 +61,7 @@ const emptyRow = (id: string): OverrideRow => ({
   sparkIntro: "",
   theoryIntro: "",
   fact: "",
+  sparkMiddle: "",
   theoryDeep: "",
   interactive: "",
   summary: "",
@@ -97,6 +99,7 @@ export const AdminLessons = () => {
           sparkIntro: "",
           theoryIntro: o.theory_intro ?? "",
           fact: o.fact ?? "",
+          sparkMiddle: o.spark_middle ?? "",
           theoryDeep: o.theory_deep ?? "",
           interactive: stringifyJson(o.interactive),
           summary: arrayToLines(o.summary),
@@ -174,6 +177,7 @@ export const AdminLessons = () => {
       emoji: row.emoji.trim() || null,
       fact: row.fact.trim() || null,
       theory_intro: row.theoryIntro.trim() || null,
+      spark_middle: row.sparkMiddle.trim() || null,
       theory_deep: row.theoryDeep.trim() || null,
       summary: summaryArr.length > 0 ? summaryArr : null,
       interactive: interactiveResult as any,
@@ -200,7 +204,7 @@ export const AdminLessons = () => {
     toast({ title: "Teruggezet", description: `Les ${id} gebruikt weer de standaardtekst.` });
   };
 
-  const loadDefault = (id: string, field: "interactive" | "quiz" | "theoryIntro" | "theoryDeep" | "summary") => {
+  const loadDefault = (id: string, field: "interactive" | "quiz" | "theoryIntro" | "theoryDeep" | "summary" | "sparkMiddle") => {
     const lesson = ALL_LESSONS.find((l) => l.id === id);
     if (!lesson) return;
     if (field === "interactive" || field === "quiz") {
