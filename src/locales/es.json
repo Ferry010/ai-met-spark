@@ -144,6 +144,7 @@
     "intro": "Un precio justo. Sin suscripciones. Sin trucos. Solo las habilidades de IA que tu hijo necesita, de por vida.",
     "individual": {
       "name": "Individual",
+      "badge": "Más popular",
       "tagline": "Perfecto para un niño curioso en casa. Paga una vez y listo.",
       "price": "€14",
       "billing": "pago único",
