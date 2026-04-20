@@ -53,7 +53,7 @@ const Pillar = ({
     <h3 className="font-display text-3xl mb-2">{name}</h3>
     <p className="font-body text-base opacity-95 leading-relaxed mb-4">{desc}</p>
     <div className="rounded-2xl bg-white/20 p-4 mb-3">
-      <p className="text-xs font-bold uppercase tracking-wide opacity-90 mb-2">Kids will learn to</p>
+      <p className="text-xs font-bold uppercase tracking-wide opacity-90 mb-2">{useTranslation().t("landing.pillars.skillsLabel")}</p>
       <ul className="space-y-1.5">
         {skills.map((s) => (
           <li key={s} className="flex items-start gap-2 text-sm leading-snug">
@@ -313,7 +313,7 @@ export const Landing = () => {
           <div className="text-center">
             <div className="inline-block rounded-3xl bg-gradient-sunshine p-8 shadow-soft">
               <div className="font-display text-7xl text-secondary-foreground">€14</div>
-              <div className="font-display text-secondary-foreground/80 mt-2">one-time · forever</div>
+              <div className="font-display text-secondary-foreground/80 mt-2">{t("landing.pricingTeaser.priceCaption")}</div>
             </div>
           </div>
         </div>
