@@ -197,7 +197,78 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 };
 
 const KICKOFF_TYPING_SPEED = 22;
-const KICKOFF_BUBBLE_DELAY = 800;
+const KICKOFF_BUBBLE_DELAY = 1200;
+const KICKOFF_ENTRY_DURATION = 1100;
+
+const SparkJetEntry = ({ size = 140 }: { size?: number }) => {
+  const [entryDone, setEntryDone] = useState(false);
+
+  useEffect(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setEntryDone(true);
+      return;
+    }
+    const t = window.setTimeout(() => setEntryDone(true), KICKOFF_ENTRY_DURATION);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  if (entryDone) {
+    return <Spark size={size} mood="happy" waving />;
+  }
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      {/* Speed lines */}
+      <div className="pointer-events-none absolute inset-0 overflow-visible" aria-hidden>
+        <div
+          className="absolute h-1 w-16 rounded-full bg-white/85 animate-spark-speedlines"
+          style={{ left: "-40%", top: "30%", animationDelay: "0s" }}
+        />
+        <div
+          className="absolute h-1 w-20 rounded-full bg-secondary/80 animate-spark-speedlines"
+          style={{ left: "-50%", top: "55%", animationDelay: "0.05s" }}
+        />
+        <div
+          className="absolute h-1 w-14 rounded-full bg-white/70 animate-spark-speedlines"
+          style={{ left: "-30%", top: "75%", animationDelay: "0.1s" }}
+        />
+      </div>
+
+      {/* Shockwave ring */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-full border-4 border-white/70 animate-spark-shockwave"
+        style={{ mixBlendMode: "screen" }}
+        aria-hidden
+      />
+
+      {/* Spark + jet flame */}
+      <div className="relative animate-spark-jet-fly" style={{ width: size, height: size }}>
+        {/* Jet flame trail */}
+        <div
+          className="pointer-events-none absolute animate-spark-jet-trail"
+          style={{
+            right: "62%",
+            bottom: "26%",
+            width: size * 0.9,
+            height: size * 0.32,
+            transformOrigin: "right center",
+            background:
+              "linear-gradient(90deg, transparent 0%, hsl(18 100% 60% / 0.0) 8%, hsl(18 100% 60% / 0.55) 35%, hsl(45 100% 60% / 0.85) 65%, hsl(0 0% 100% / 0.95) 92%, hsl(0 0% 100%) 100%)",
+            borderTopLeftRadius: "999px",
+            borderBottomLeftRadius: "999px",
+            borderTopRightRadius: "40% 100%",
+            borderBottomRightRadius: "40% 100%",
+            filter: "blur(6px)",
+            mixBlendMode: "screen",
+          }}
+          aria-hidden
+        />
+        <Spark size={size} mood="happy" />
+      </div>
+    </div>
+  );
+};
 
 const TypewriterText = ({ text, speed }: { text: string; speed: number }) => {
   const [shown, setShown] = useState("");
@@ -262,9 +333,7 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
       <h1 className="font-display text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
 
       <div className="flex justify-center mb-2 min-h-[160px] items-end">
-        <div className="animate-spark-fly-in">
-          <Spark size={140} mood="happy" waving />
-        </div>
+        <SparkJetEntry size={140} />
       </div>
 
       <div className="min-h-[120px] mt-2 flex flex-col items-center justify-start">
