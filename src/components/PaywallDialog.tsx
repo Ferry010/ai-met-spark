@@ -50,7 +50,7 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
               <span className="font-display text-secondary-foreground/80 ml-2">eenmalig</span>
             </div>
             <p className="text-muted-foreground mb-6">
-              Voor altijd toegang tot alle 3 werelden, de eindtoets en een persoonlijk certificaat dat naar de ouder gemaild wordt.
+              Voor altijd toegang tot alle 3 werelden, de eindtoets en een persoonlijk diploma dat naar de ouder gemaild wordt.
             </p>
             <Button
               onClick={() => {

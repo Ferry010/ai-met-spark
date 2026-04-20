@@ -15,12 +15,14 @@ export const SiteHeader = () => {
           </span>
         </Link>
         <div className="flex items-center gap-2">
-          <Link to="/pricing" className="hidden sm:inline-flex">
-            <Button variant="ghost" className="font-display">€14</Button>
-          </Link>
           <Link to="/auth">
-            <Button className="font-display rounded-full px-5 h-11 bg-primary hover:bg-primary/90 shadow-soft">
+            <Button variant="ghost" className="font-display">
               {t("common.login")}
+            </Button>
+          </Link>
+          <Link to="/auth?mode=signup">
+            <Button className="font-display rounded-full px-5 h-11 bg-primary hover:bg-primary/90 shadow-soft">
+              {t("common.tryFree")} →
             </Button>
           </Link>
         </div>
