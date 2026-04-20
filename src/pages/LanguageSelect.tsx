@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import i18n, { type Language } from "@/i18n";
 
 const LANGS: { code: Language; flag: string; label: string; greeting: string }[] = [
-  { code: "en", flag: "🇬🇧", label: "English", greeting: "Choose your language" },
   { code: "nl", flag: "🇳🇱", label: "Nederlands", greeting: "Kies je taal" },
+  { code: "en", flag: "🇬🇧", label: "English", greeting: "Choose your language" },
   { code: "es", flag: "🇪🇸", label: "Español", greeting: "Elige tu idioma" },
 ];
 
