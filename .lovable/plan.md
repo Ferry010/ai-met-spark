@@ -1,119 +1,134 @@
 
 
-# Teacher dashboard redesign, AI Smart Classroom
+# Admin view-switcher, lesson-structuur uitbreiden, "sleep"-copy fixen
 
-Een aparte, professioneel ogende docentenomgeving onder `/teacher/*` met eigen design system (teal + amber, Fraunces + DM Sans), volledig in het Nederlands en met mock-data. De bestaande kind-ervaring blijft ongewijzigd.
+Drie samenhangende wijzigingen: jij krijgt als admin een view-switcher om alle perspectieven te bekijken, de les-structuur in de admin-backend wordt veel rijker (met alle 7 stappen), en de "sleep"-teksten worden vervangen door "tik".
 
-## Scope iteratie 1
+## 1. Admin role + view-switcher
 
-**Volledig afgebouwd**
-- `/teacher/login` (visueel)
-- `/teacher` dashboard home
-- `/teacher/world/:id` wereld-detail
+Ferry heeft al de `admin` rol in de database (gecheckt). Geen database-wijziging nodig. Wel een nieuwe UI:
 
-**Stubs met "Binnenkort"-state**
-- `/teacher/world/:worldId/lesson/:lessonId` lesdetail
-- `/teacher/class/settings` klasbeheer
-- `/teacher/demo` demo-modus
-- Student-detailpaneel werkt al wel als slide-over op het dashboard
-
-Iteratie 2 vervangt mockdata door echte Supabase queries; nu nog niet.
-
-## Design system, scoped
-
-Niet globaal, alleen onder `/teacher/*` via een wrapper-class `classroom-theme`. Dit voorkomt botsing met de bestaande kid-tokens.
+**Nieuw component `AdminViewSwitcher`** (zwevende balk onderaan, alleen zichtbaar voor admins):
 
 ```text
-fonts:    Fraunces (display), DM Sans (body), via Google Fonts
-palette:  teal #5AA6B2  amber #C9A96E
-          w1 #3B82F6    w2 #F59E0B    w3 #EF7C42
-          dark #0F1117  muted #6B7280  bg #FAFAFA
-          success #10B981   warning #EF4444
-radius:   12px cards, 8px buttons
-look:     veel witruimte, Linear-meets-Duolingo
++------------------------------------------+
+| 👁 Bekijk als:  [Leerling] [Leerkracht]  |
+|                 [Ouder]    [School]      |
++------------------------------------------+
 ```
 
-Tokens komen in `src/index.css` als CSS-variabelen onder `.classroom-theme { ... }`. Tailwind krijgt daarbij de extra kleurnamen (`classroom-teal`, `classroom-amber`, `world-1/2/3`) en font-families (`font-fraunces`, `font-dm-sans`).
+- Renders globaal in `App.tsx`, leest `isAdmin` uit `useAuth`. Niet-admins zien niets.
+- Klik op "Leerling" -> navigate `/dashboard` (bestaande kid-dashboard)
+- Klik op "Leerkracht" -> `/teacher` (bestaande classroom dashboard)
+- Klik op "Ouder" -> `/admin/preview/parent` (nieuwe pagina, ouder-rapport van een mock-kind)
+- Klik op "School" -> `/admin/preview/school` (nieuwe pagina, multi-klas overzicht)
+- Huidige route highlight in de switcher
+- "Verberg" knop om de balk weg te klikken voor 1 sessie (sessionStorage)
 
-## Componenten, nieuw onder `src/components/classroom/`
+**Nieuwe pagina `ParentPreview` (`/admin/preview/parent`)**
+Mock ouder-rapport van leerling "Mila": naam, leeftijd, school, voortgangsbalk (X/24 lessen), badges (schild/kompas/ster), tijdlijn laatste 10 lessen, "Download rapport" knop. Hergebruikt `BadgeDisplay`. Gebruikt mock-data, geen DB.
 
-```text
-ClassroomLayout.tsx      shell met topbar + content, dwingt classroom-theme af
-TopBar.tsx               logo links, naam + school + avatar-dropdown rechts
-WelcomeBlock.tsx         persoonlijke groet + voortgangszin
-ProgressJourney.tsx      3 cirkels (VEILIG, SLIM, STERKER) met verbindingslijn
-ClassOverviewCard.tsx    grid met 28 student-avatars
-StudentAvatar.tsx        cirkel met initiaal + ring (recharts of pure SVG)
-WorldCard.tsx            gekleurde kaart met stacked-bar van leerlingen-per-les
-ActivityFeed.tsx         5 items, icon + tekst + tijd, warning-stijl voor stuck
-ActionTile.tsx           tile voor klassikale les / ouder-update / off-screen / diploma
-StudentDetailPanel.tsx   side-sheet (Sheet uit shadcn) met leerling-detail
-LessonCard.tsx           voor wereld-detailpagina
-StatusPill.tsx           Niet begonnen / Bezig / Voltooid / Vastgelopen
-BadgeDisplay.tsx         schild / kompas / ster, earned of faded
+**Nieuwe pagina `SchoolPreview` (`/admin/preview/school`)**
+Mock school-overzicht "OBS De Regenboog": 3 klassen (Groep 6A, 7A, 8A), per klas: aantal leerlingen, klas-voortgang, aantal diploma's. Tabel + "Bekijk klas" knop die naar `/teacher` linkt.
+
+ProtectedRoute krijgt voor deze 2 routes `requireRole="admin"`.
+
+## 2. Lesson-structuur uitbreiden naar 7 stappen
+
+### Nieuwe data-structuur in `src/content/lessons.ts`
+
+Het type `Lesson` krijgt extra optionele velden zodat bestaande 24 lessen blijven werken, maar de admin-editor de volle structuur toont:
+
+```ts
+export interface Lesson {
+  id: string;
+  worldId: 1 | 2 | 3;
+  pillar: Pillar;
+  title: string;
+  emoji: string;
+  // STAP 1: Intro
+  sparkIntro?: string;
+  // STAP 2: Theorie deel 1 (NIEUW)
+  theoryIntro?: string;
+  // STAP 3: Wist je dat
+  fact: string;
+  // STAP 4: Theorie deel 2 (NIEUW)
+  theoryDeep?: string;
+  // STAP 5: Oefening
+  interactive: InteractiveStep;
+  // STAP 6: Samenvatting (NIEUW)
+  summary?: string[];   // bullet points
+  // STAP 7: Oefenvragen
+  quiz: QuizQuestion[];
+  reflection?: string;
+  bossTest?: boolean;
+}
 ```
 
-## Mockdata
+Bestaande lessen renderen de nieuwe stappen alleen als ze gevuld zijn. Geen migratie nodig op de 24 bestaande lessen, ze blijven gewoon werken (theoryIntro/theoryDeep/summary worden simpel overgeslagen).
 
-Nieuw bestand `src/data/classroomMock.ts` met exact wat de spec voorschrijft: docent Marieke, school OBS De Regenboog, klas 7A met 28 voornamen, voortgangsverdeling (4 klaar met wereld 1, 15 mid-wereld 1, 9 op les 1-2, klassgemiddelde 23%) en 6 recente activiteiten. Eén deterministische seed zodat avatars dezelfde kleur houden tussen renders.
+### `LessonRunner` aanpassen
 
-## Routes
+Stap-flow wordt: `intro -> theoryIntro? -> fact -> theoryDeep? -> interactive -> summary? -> quiz -> done`. Optionele stappen die leeg zijn worden overgeslagen. Bovenin een progress-balkje dat toont waar je bent (1/7, 2/7 etc).
 
-`src/App.tsx` krijgt erbij:
+Twee nieuwe stap-componenten:
+- **TheoryCard**: rustige kaart met Spark-bubble, kop "Even uitleggen" of "Nog iets erbij", lange leesbare tekst (max 250 woorden), "Begrepen, ga verder" knop.
+- **SummaryCard**: groene accent-kaart "Onthoud dit", bullet-lijst met checkmarks, "Klaar voor de quiz" knop.
 
-```text
-/teacher/login                        TeacherLogin
-/teacher                              ClassroomDashboard
-/teacher/world/:id                    WorldDetail
-/teacher/world/:wid/lesson/:lid       LessonDetail (stub)
-/teacher/class/settings               ClassSettings (stub)
-/teacher/demo                         LessonDemo (stub)
+### `AdminLessons.tsx` editor uitbreiden
+
+Per les krijg je nu een kaart met collapsible secties (accordion) voor alle 7 stappen, in volgorde:
+1. Intro (Spark-zin) , bestaand
+2. Theorie deel 1 , NIEUW textarea
+3. Wist je dat (fact) , bestaand
+4. Theorie deel 2 , NIEUW textarea
+5. Oefening (interactive JSON) , bestaand
+6. Samenvatting , NIEUW textarea, één bullet per regel
+7. Quiz , bestaand
+
+Boven elke wereld komt een **wereld-kaart-header** met titel ("Wereld 1, VEILIG") en daaronder ALLE 8 lessen als losse kaarten met eigen titel. Dit beantwoordt "elke module heeft een eigen kaart met titel en lessen, elke losse les heeft een titel".
+
+### Database
+
+`lesson_overrides` tabel uitbreiden met 3 nieuwe nullable kolommen via migratie:
+```sql
+ALTER TABLE public.lesson_overrides
+  ADD COLUMN theory_intro text,
+  ADD COLUMN theory_deep text,
+  ADD COLUMN summary text[];
 ```
 
-De bestaande `/teacher` (oude TeacherDashboard) wordt vervangen door de nieuwe pagina. De oude `TeacherDashboard.tsx` blijft op schijf staan voor referentie maar wordt niet meer geïmporteerd. Login blijft via Supabase op `/auth?teacher=1`; `/teacher/login` is de nieuwe visuele entree die direct doorlinkt naar dat formulier zodat we geen tweede auth-systeem creëren.
+`useLessonOverrides` hook leest deze velden uit en patcht ze over de defaults. Bestaande overrides blijven werken (kolommen zijn nullable).
 
-## Layout dashboard, ASCII
+## 3. "Sleep" copy fixen
 
-```text
-+----------------------------------------------------------+
-| AI Smart Classroom                Marieke ▾  OBS Regenboog|
-+----------------------------------------------------------+
-| Goedemorgen, Marieke. Je klas is 23% door wereld 1.      |
-| ( VEILIG ●━━━━ SLIM ○━━━━ STERKER ○ )                    |
-+--------------------------------------+-------------------+
-| Klas 7A, 28 leerlingen               | Vandaag          |
-| [SM][JS][MI][NO][SA][EM][LM][LU]...  | Les 11 WIE-WAT   |
-| (klik avatar -> sidepanel)            | [Open slides]    |
-|                                      +-------------------+
-| WERELDEN                              | Ouder-update     |
-| [VEILIG #3B82F6] [SLIM #F59E0B] [STERKER #EF7C42]        |
-| 4/8 done   1/8 done   0/8 done       | Off-screen        |
-+--------------------------------------+-------------------+
-| Laatste activiteit                                       |
-| Jesse, badge Schild verdiend, 2 min geleden              |
-| Mila, voltooide les 7, 14 min geleden                    |
-| Noah, 3e poging les 5, 1 uur geleden  (warning)          |
-+----------------------------------------------------------+
-```
+De `sortBuckets` interactie is in code al klikken (knoppen), maar de prompts zeggen "Sleep". Vervang in `src/content/lessons.ts`:
+- Les 1.1: "Sleep elk kaartje naar de juiste bak" -> "Tik op de juiste bak voor elk kaartje"
+- Les 1.5: "Scam of echt? Sleep elk bericht naar de juiste bak:" -> "Scam of echt? Tik op de juiste bak voor elk bericht:"
 
-## Interactiedetails
+Plus een grep door de hele `lessons.ts` om eventueel resterende "sleep/sleur/drag" te vervangen door "tik/kies".
 
-- Avatar-klik opent `<Sheet side="right">` met leerlingdetail (badges, timeline 10 lessen, "Stuur reminder" en "Download rapport" als knoppen, beide nog visueel-only).
-- "Stuur reminder" opent `<Dialog>` met voorgevuld NL-bericht, bewerkbaar, knop "Verstuur" toont toast.
-- Progress bars en journey-cirkels animeren in via een simpele CSS-transition op `width`/`stroke-dashoffset` bij mount, geen extra dependency. Subtiele goud-shimmer op verdiende badges via een bestaande keyframe in `index.css`.
-- Mobiel onder 768px: avatar-grid wordt 6 kolommen, action tiles stapelen onder activity feed, journey wordt verticaal.
+Daarnaast in `LessonRunner` zelf: de SortBuckets-knop tekst "Plaats elk item" -> "Tik elk item aan".
 
-## Tekst- en stijlregels
+## Bestanden, nieuw vs aangepast
 
-- Alles in NL, jij-vorm.
-- Geen em-dashes, ook niet in mock-activiteiten ("Jesse, badge verdiend" met komma).
-- Korte zinnen, geen jargon.
-- Decimale komma waar nodig.
+**Nieuw**
+- `src/components/AdminViewSwitcher.tsx`, zwevende balk
+- `src/pages/admin/ParentPreview.tsx`
+- `src/pages/admin/SchoolPreview.tsx`
+- Migratie: `lesson_overrides` 3 nieuwe kolommen
+
+**Aangepast**
+- `src/App.tsx`, render `AdminViewSwitcher` globaal + 2 nieuwe routes
+- `src/content/lessons.ts`, type uitbreiden + sleep-copy weg
+- `src/components/LessonRunner.tsx`, 7-stappen flow + TheoryCard + SummaryCard
+- `src/pages/AdminLessons.tsx`, editor uitbreiden met theorie/samenvatting velden + accordion
+- `src/hooks/useLessonOverrides.ts`, 3 nieuwe velden meelezen
 
 ## Wat ik bewust NIET doe
 
-- Geen nieuwe `/login`-route die concurreert met de bestaande `/auth`. De spec's `/login` wordt `/teacher/login` en linkt door.
-- Geen Supabase-werk in iteratie 1, alleen mockdata.
-- Geen aanpassingen aan kid-app design tokens, kid-pagina's of curriculum-content.
-- Geen nieuwe DB-tabellen of migrations.
+- Geen rol-toekenning in DB (Ferry is al admin).
+- Geen herschrijving van bestaande 24 lessen met nieuwe theorie/samenvatting tekst, dat doe je via de admin-editor wanneer je wil. Het systeem ondersteunt het nu wel.
+- Geen aparte "module"-laag, je koos voor 1 module per wereld, dus de wereld-kaart IS de module-kaart (alleen labelwijziging in admin: "Wereld 1, module VEILIG").
+- Geen drag-and-drop functionaliteit, alles blijft tap-based.
 
