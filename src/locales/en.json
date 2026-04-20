@@ -55,6 +55,7 @@
     "pillars": {
       "title": "Three superpowers you'll learn",
       "subtitle": "Three worlds. Twelve lessons. One smarter kid.",
+      "skillsLabel": "Kids will learn to",
       "safe": {
         "name": "SAFE",
         "icon": "🛡️",
@@ -109,6 +110,7 @@
       "eyebrow": "Simple pricing",
       "title": "One price. Forever access. Zero surprises.",
       "price": "€14",
+      "priceCaption": "one-time · forever",
       "subtitle": "Pay once. Your child keeps every lesson, every update, and their certificate forever.",
       "cta": "Unlock now",
       "features": [
