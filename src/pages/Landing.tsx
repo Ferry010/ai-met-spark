@@ -26,7 +26,6 @@ import {
 
 const Pillar = ({
   icon,
-  emoji,
   name,
   desc,
   skills,
@@ -36,7 +35,6 @@ const Pillar = ({
   skillsLabel,
 }: {
   icon: React.ReactNode;
-  emoji: string;
   name: string;
   desc: string;
   skills: string[];
@@ -47,10 +45,9 @@ const Pillar = ({
 }) => (
   <div className={`rounded-3xl p-6 sm:p-8 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1 ${bg} ${text}`}>
     <div className="flex items-center gap-3 mb-4">
-      <div className="h-14 w-14 rounded-2xl bg-white/30 flex items-center justify-center">
+      <div className="h-16 w-16 rounded-2xl bg-white/40 flex items-center justify-center shadow-soft ring-2 ring-white/50">
         {icon}
       </div>
-      <span className="text-4xl" aria-hidden>{emoji}</span>
     </div>
     <h3 className="font-display text-3xl mb-2">{name}</h3>
     <p className="font-body text-base opacity-95 leading-relaxed mb-4">{desc}</p>
@@ -214,8 +211,7 @@ export const Landing = () => {
         </p>
         <div className="grid md:grid-cols-3 gap-5">
           <Pillar
-            icon={<Shield className="h-7 w-7 text-white" />}
-            emoji="🛡️"
+            icon={<Shield className="h-9 w-9 text-white" strokeWidth={2.5} />}
             name={t("landing.pillars.safe.name")}
             desc={t("landing.pillars.safe.desc")}
             skills={t("landing.pillars.safe.skills", { returnObjects: true }) as string[]}
@@ -225,8 +221,7 @@ export const Landing = () => {
             skillsLabel={t("landing.pillars.skillsLabel")}
           />
           <Pillar
-            icon={<Brain className="h-7 w-7 text-secondary-foreground" />}
-            emoji="🧠"
+            icon={<Brain className="h-9 w-9 text-secondary-foreground" strokeWidth={2.5} />}
             name={t("landing.pillars.smart.name")}
             desc={t("landing.pillars.smart.desc")}
             skills={t("landing.pillars.smart.skills", { returnObjects: true }) as string[]}
@@ -236,8 +231,7 @@ export const Landing = () => {
             skillsLabel={t("landing.pillars.skillsLabel")}
           />
           <Pillar
-            icon={<Rocket className="h-7 w-7 text-white" />}
-            emoji="💪"
+            icon={<Rocket className="h-9 w-9 text-white" strokeWidth={2.5} />}
             name={t("landing.pillars.stronger.name")}
             desc={t("landing.pillars.stronger.desc")}
             skills={t("landing.pillars.stronger.skills", { returnObjects: true }) as string[]}
@@ -317,9 +311,8 @@ export const Landing = () => {
           </div>
           <div className="text-center">
             <div className="inline-block rounded-3xl bg-gradient-sunshine p-8 shadow-soft">
-              <div className="font-display text-7xl text-secondary-foreground">€14</div>
-              <div className="font-display text-secondary-foreground/80 mt-2">{t("landing.pricingTeaser.priceCaption")}</div>
-            </div>
+            <div className="font-display text-7xl text-secondary-foreground">€14</div>
+          </div>
           </div>
         </div>
       </section>

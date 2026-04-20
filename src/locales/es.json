@@ -94,7 +94,7 @@
       "title": "Hecho para familias que quieren que sus hijos prosperen con la IA, no que le teman",
       "items": {
         "noChat": { "title": "Sin chat con IA", "desc": "Los niños nunca escriben a una IA real. Cero riesgo de respuestas raras o contenido inseguro." },
-        "educators": { "title": "Escrito a mano por educadores", "desc": "Cada lección está escrita y revisada por profesores y padres. Sin relleno autogenerado." },
+        "educators": { "title": "Desarrollado por expertos", "desc": "Cada lección está escrita y revisada por profesores y padres. Sin relleno autogenerado." },
         "privacy": { "title": "Compatible con RGPD y COPPA", "desc": "Recogemos un nombre, edad y email del padre. Eso es todo. Nunca vendemos datos." },
         "devices": { "title": "Funciona en cualquier dispositivo", "desc": "Móvil, tablet, Chromebook o portátil. Solo abre y aprende. Sin app que instalar." },
         "time": { "title": "5 minutos al día", "desc": "Diseñado para encajar entre los deberes y la cena. Corto, enfocado y terminable." },
