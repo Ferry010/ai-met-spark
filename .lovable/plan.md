@@ -1,72 +1,112 @@
 
 
-# Spark als kick-off in elke les
+# Spark vliegt binnen met jetpack, retro arcade-stijl
 
-Spark krijgt een opvallende, geanimeerde entree bij de start van elke les. In plaats van het huidige statische "happy" Spark-icoontje op de intro-stap, vliegt Spark binnen, zwaait, en kondigt de les aan met een typewriter speech-bubble. Daarna wordt de "Kom op!" knop pas zichtbaar.
+Spark krijgt een veel dramatischer entree: hij komt diagonaal de kaart in vliegen vanuit linksonder buiten beeld, met een vlammende jetpack-staart achter zich aan, een korte sonic-boom flits bij het remmen, en stopt dan met een lichte bounce in het midden. Daarna pas zwaait hij en verschijnt de bubble, zoals nu.
 
-## Wat de leerling ziet
+Denk: Sonic, Mega Man, Rayman intro-vibes, maar met moderne soft glow en geen pixel-art (Spark blijft zijn ronde SVG-zelf).
 
-Op de intro-stap van elke les (de eerste kaart die `LessonRunner` toont):
+## Wat de leerling ziet (timing)
 
-1. **0.0s**: Lege kaart met alleen de titel zichtbaar (fade-in)
-2. **0.2s**: Spark vliegt binnen vanuit links-onder, schaalt op naar normaal formaat met een lichte bounce. Antenne pulseert.
-3. **0.7s**: Spark zwaait kort (arm wuift 2x).
-4. **1.0s**: Speech-bubble pop't naast Spark omhoog ("scale-in" + tail).
-5. **1.0s -> ~3s**: `sparkIntro`-tekst typt zich uit (bestaande `SparkBubble` typewriter), bv. "Hoi! Klaar voor les 1.3? Vandaag leer je over deepfakes."
-6. **na typewriter klaar**: "Kom op!" knop fade-in onder de bubble.
-
-Tikken op de bubble slaat het typen over (bestaand gedrag van `SparkBubble`).
+```text
+0.0s  Lege kaart, alleen titel
+0.1s  WHOOSH-trail: 3 streep-lijnen flitsen diagonaal van linksonder naar midden
+0.2s  Spark schiet binnen langs dezelfde diagonaal, lichte motion-blur via skew
+      Achter Spark: jet-flame (oranje/geel/wit kegel) die meebeweegt
+0.55s Spark "remt af", squash-and-stretch (1.15x breed, 0.9x hoog) + speed-lines verdwijnen
+0.65s Sonic-boom ring expandeert vanaf Spark (witte cirkel die opschaalt + fade-out)
+0.75s Spark settled in midden, jet-flame krimpt weg en verdwijnt
+0.9s  Spark zwaait (bestaand)
+1.2s  Bubble pop + typewriter (bestaand)
+```
 
 ## Technische uitvoering
 
-### a) Spark krijgt een nieuwe `mood: "entering"` + waving variant
-In `src/components/Spark.tsx`:
-- Extra `waving?: boolean` prop. Als true: rechterarm tekent als opgeheven (lijn van schouder omhoog naar handje rechtsboven), met een korte CSS-animatie `spark-wave` (transform-origin op de schouder, rotate -15deg <-> +15deg, 2 cycles dan stop).
+### a) Nieuw component `SparkJetEntry` in `LessonRunner.tsx`
+
+Wrapper rond de bestaande `<Spark waving={...} />` die de fly-in regisseert. Het is puur een geanimeerde container plus een paar absoluut-gepositioneerde decoratieve SVG/div-laagjes (flame, speed-lines, shockwave-ring) die op timed-delays animeren en dan unmounten/fade-outen.
+
+Structuur:
+```text
+<div class="relative" >
+  <SpeedLines />        // 3 streepjes, animate-spark-speedlines, fade out na 0.6s
+  <JetFlame />          // kegel-div met gradient, animate-spark-jet-trail
+  <ShockwaveRing />     // cirkel die opschaalt 0->2.5x + fade, na 0.6s delay
+  <div class="animate-spark-jet-fly">
+     <Spark waving={...} />
+  </div>
+</div>
+```
+
+Na ~1s zet een `useEffect` met timeout `entryDone=true` en renderen we alleen nog `<Spark waving={...} />` zonder de decoratie, zodat de flame niet blijft hangen.
 
 ### b) Nieuwe keyframes in `src/index.css`
+
 ```css
-@keyframes spark-fly-in {
-  0%   { opacity: 0; transform: translate(-40px, 30px) scale(0.6) rotate(-8deg); }
-  60%  { opacity: 1; transform: translate(0, -6px) scale(1.05) rotate(2deg); }
-  100% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
+@keyframes spark-jet-fly {
+  0%   { opacity: 0; transform: translate(-180%, 140%) scale(0.5) skew(-12deg, 4deg); }
+  55%  { opacity: 1; transform: translate(0, 0) scale(1.15, 0.9) skew(0,0); }
+  70%  { transform: scale(0.92, 1.08); }
+  85%  { transform: scale(1.04, 0.98); }
+  100% { transform: scale(1); }
 }
-@keyframes spark-wave {
-  0%, 100% { transform: rotate(-10deg); }
-  50%      { transform: rotate(20deg); }
+@keyframes spark-jet-trail {
+  0%   { opacity: 0; transform: translate(-180%, 140%) scaleX(0.4); }
+  40%  { opacity: 1; }
+  60%  { opacity: 1; transform: translate(0,0) scaleX(1); }
+  80%  { opacity: 0.4; transform: translate(20%, -10%) scaleX(0.2); }
+  100% { opacity: 0; }
 }
-@keyframes bubble-pop {
-  0%   { opacity: 0; transform: scale(0.7) translateY(8px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+@keyframes spark-speedlines {
+  0%   { opacity: 0; transform: translate(-200%, 160%) scaleX(0); }
+  30%  { opacity: 1; transform: translate(-50%, 40%) scaleX(1); }
+  60%  { opacity: 0; transform: translate(0,0) scaleX(0.6); }
+  100% { opacity: 0; }
+}
+@keyframes spark-shockwave {
+  0%   { opacity: 0; transform: scale(0.2); }
+  20%  { opacity: 0.7; }
+  100% { opacity: 0; transform: scale(2.6); }
 }
 ```
-Plus utility-classes `.animate-spark-fly-in` (0.6s ease-out, runs once), `.animate-spark-wave` (0.5s × 2), `.animate-bubble-pop` (0.35s 0.8s ease-out both).
 
-### c) Nieuwe `LessonKickoff` sub-component in `src/components/LessonRunner.tsx`
-Vervangt de huidige inline intro-`section`. Beheert de eigen mini-state machine met `setTimeout` of CSS animation-delays:
-- `phase: "fly" | "wave" | "talk" | "ready"`
-- Kaart blijft hetzelfde gekleurde pillar-kaart (`PILLAR_BG[lesson.pillar]`).
-- Spark gerenderd met `animate-spark-fly-in`; na 0.6s krijgt de arm `animate-spark-wave`.
-- Bubble verschijnt met `animate-bubble-pop` (delay 0.8s) en gebruikt bestaand `SparkBubble` met `lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!"`.
-- "Kom op!" knop heeft `opacity-0 animate-fade-in` met delay gelijk aan typewriter-duur (`text.length * 18ms + 400ms`).
-- `prefers-reduced-motion`: alle animaties uit, alles meteen zichtbaar (mediaquery in CSS).
+Plus utility-classes met passende `animation` shorthand (delays: speedlines 0.1s, jet-fly 0.15s, shockwave 0.6s).
 
-### d) Geen impact op andere stappen
-Theory, fact, summary, quiz blijven exact zoals nu. De kick-off speelt alleen op stap `intro`, dus elke les start ermee, ook bij overrides en in de admin preview.
+### c) Jet-flame visueel
+
+Pure CSS/SVG, geen asset. Een afgeronde driehoek-div met een conic of linear gradient `from white via #FFD93C to #FF6B35 to transparent`, blur-sm, mix-blend-screen voor extra glow. Geplaatst achter Spark's onderkant via `position:absolute; right:60%; bottom:30%; transform-origin: right center`.
+
+### d) Speed-lines
+
+3 dunne witte/gele `<div class="h-1 w-16 rounded-full bg-white/80">` met staggered animation-delays (0s, 0.05s, 0.1s) op verschillende y-offsets. Geven het arcade-snelheidsgevoel.
+
+### e) Shockwave-ring
+
+Eén `<div class="absolute inset-0 rounded-full border-4 border-white/70">` die met `spark-shockwave` opschaalt en fade-out, direct nadat Spark "land". Mix-blend-screen voor een filmische flits.
+
+### f) Reduced motion
+
+Alle nieuwe `animate-spark-jet-*` en `animate-spark-speedlines` / `animate-spark-shockwave` worden in het bestaande `@media (prefers-reduced-motion: reduce)` block uitgezet. Spark verschijnt dan instant op zijn plek.
+
+### g) Geen impact op andere stappen
+
+Theory, fact, summary, quiz blijven exact zoals nu. De jetpack-entry vervangt alleen de huidige `animate-spark-fly-in` op de intro-stap. De wave + bubble + "Kom op!"-knop volgen daarna ongewijzigd, met timing-delays iets opgeschoven (wave op 0.9s ipv 0.7s, bubble op 1.2s ipv 1.0s) zodat de entry kan ademen.
 
 ## Bestanden
 
 **Aangepast**
-- `src/components/Spark.tsx` — `waving` prop + arm-render
-- `src/components/LessonRunner.tsx` — intro-stap vervangen door nieuwe `LessonKickoff` sub-component
-- `src/index.css` — 3 nieuwe keyframes + utility-classes + `prefers-reduced-motion` block
+- `src/index.css` , 4 nieuwe keyframes + utility-classes + reduced-motion entries
+- `src/components/LessonRunner.tsx` , nieuwe `SparkJetEntry` sub-component, vervangt `animate-spark-fly-in` in `LessonKickoff`, timings shift
 
 **Niet aangeraakt**
-- `SparkBubble.tsx` (bestaande typewriter is precies wat we nodig hebben)
-- Lesson data, routing, admin editor
+- `Spark.tsx` (jet-flame is een externe laag, Spark zelf blijft hetzelfde)
+- `SparkBubble.tsx`
+- Lesson data, andere stappen, admin
 
 ## Wat ik bewust NIET doe
 
-- Geen geluid (kan later, vraagt user-gesture + asset).
-- Geen herhaling van de kick-off binnen een sessie als je dezelfde les opnieuw opent — speelt elke keer dat de intro-stap mount, simpel en voorspelbaar.
-- Geen kick-off op de admin-preview "jump to step" als je direct naar quiz springt; alleen op echte intro.
+- Geen geluid (kan later, vraagt user-gesture).
+- Geen permanente jetpack op Spark, alleen bij de intro-entry.
+- Geen pixel-art / 8-bit textuur, het blijft Spark's huidige ronde SVG met moderne soft glow.
+- Geen herhaling als je terug-navigeert binnen dezelfde stap; speelt 1x bij mount van intro.
 
