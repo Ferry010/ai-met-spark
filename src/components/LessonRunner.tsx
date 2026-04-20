@@ -199,6 +199,40 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 const KICKOFF_TYPING_SPEED = 22;
 const KICKOFF_BUBBLE_DELAY = 800;
 
+const TypewriterText = ({ text, speed }: { text: string; speed: number }) => {
+  const [shown, setShown] = useState("");
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    setShown("");
+    setDone(false);
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setShown(text);
+      setDone(true);
+      return;
+    }
+    let i = 0;
+    const id = window.setInterval(() => {
+      i += 1;
+      setShown(text.slice(0, i));
+      if (i >= text.length) {
+        window.clearInterval(id);
+        setDone(true);
+      }
+    }, speed);
+    return () => window.clearInterval(id);
+  }, [text, speed]);
+  return (
+    <p
+      onClick={() => { setShown(text); setDone(true); }}
+      className="mt-1 text-base leading-snug cursor-pointer"
+    >
+      {shown}
+      {!done && <span className="ml-0.5 inline-block w-1.5 h-4 align-middle bg-primary animate-pulse" />}
+    </p>
+  );
+};
+
 const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) => {
   const text = lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!";
   const [showBubble, setShowBubble] = useState(false);
