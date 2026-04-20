@@ -333,9 +333,7 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
       <h1 className="font-display text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
 
       <div className="flex justify-center mb-2 min-h-[160px] items-end">
-        <div className="animate-spark-fly-in">
-          <Spark size={140} mood="happy" waving />
-        </div>
+        <SparkJetEntry size={140} />
       </div>
 
       <div className="min-h-[120px] mt-2 flex flex-col items-center justify-start">
