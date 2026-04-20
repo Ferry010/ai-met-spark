@@ -1,5 +1,5 @@
 /**
- * AI Smart Kids — full lesson curriculum.
+ * AI Smart Kids , full lesson curriculum.
  * 3 worlds × 8 lessons = 24 lessons. Voor kids van 9–11 jaar
  * (pittige 8 en rustige 12 ook welkom).
  */
@@ -84,7 +84,7 @@ const sort = (
 ): InteractiveStep => ({ kind: "sortBuckets", prompt, buckets, items, hints });
 
 // =================================================================
-// WERELD 1 — VEILIG (Schild van Waakzaamheid)
+// WERELD 1 , VEILIG (Schild van Waakzaamheid)
 // =================================================================
 const WORLD_1: Lesson = null as any; // placeholder so the file compiles in steps below
 
@@ -196,7 +196,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "AI onthoudt het, ook als je zegt 'dit is geheim'.",
-            options: ["Waar", "Niet waar — het is GEEN dagboekvriendje"],
+            options: ["Waar", "Niet waar , het is GEEN dagboekvriendje"],
             correctIndex: 1,
             why: "Wat je tegen AI zegt kan worden opgeslagen. Beter: deel het gewoon niet.",
           },
@@ -221,7 +221,7 @@ export const WORLDS: World[] = [
             { label: "Oorbellen of oren die niet matchen", reveal: "🚩 AI vergeet vaak symmetrie." },
           ],
           [
-            "Begin altijd bij de handen — dat is AI's grootste zwakke plek.",
+            "Begin altijd bij de handen , dat is AI's grootste zwakke plek.",
             "Kijk dan naar tekst op borden of kleren.",
             "Klopt de schaduw met de kant waar het licht vandaan komt?",
           ],
@@ -241,7 +241,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Als een plaatje er perfect uitziet, is het zeker echt.",
-            options: ["Waar", "Niet waar — 'te perfect' is juist verdacht"],
+            options: ["Waar", "Niet waar , 'te perfect' is juist verdacht"],
             correctIndex: 1,
             why: "Te gladde huid en glimmend haar zonder één plekje? Argwaan.",
           },
@@ -255,7 +255,7 @@ export const WORLDS: World[] = [
         pillar: "safe",
         title: "Spot de nep: video's en stemmen",
         emoji: "🎭",
-        sparkIntro: "Vandaag wordt het pittig. We hebben het over deepfakes — video's en stemmen die nep zijn.",
+        sparkIntro: "Vandaag wordt het pittig. We hebben het over deepfakes , video's en stemmen die nep zijn.",
         fact: "Deepfakes verraden zich vaak door rare ogen, slechte lipsync en stemmen zonder echte emotie.",
         interactive: tap(
           "Tap elk teken van een mogelijke deepfake:",
@@ -266,7 +266,7 @@ export const WORLDS: World[] = [
             { label: "Rare overgang in achtergrond bij hoofd", reveal: "🚩 Rand van het gezicht 'blurt'." },
           ],
           [
-            "Let als eerste op de OGEN — knipperen ze normaal?",
+            "Let als eerste op de OGEN , knipperen ze normaal?",
             "Daarna: lopen de lippen mee met het geluid?",
             "Klinkt de stem 'gevoelig' of platter dan normaal?",
           ],
@@ -289,7 +289,7 @@ export const WORLDS: World[] = [
             why: "Slechte lipsync is een klassieker.",
           },
           {
-            question: "Beroemdheid zegt iets raars in een video — wat doe je?",
+            question: "Beroemdheid zegt iets raars in een video , wat doe je?",
             options: ["Direct delen", "Eerst checken bij betrouwbare bron"],
             correctIndex: 1,
             why: "Altijd checken bij NOS, nu.nl of een volwassene voordat je het gelooft.",
@@ -336,8 +336,8 @@ export const WORLDS: World[] = [
             why: "Haast is een van de drie scam-klassiekers.",
           },
           {
-            question: "Stem aan de telefoon klinkt als opa — dan is het zeker opa.",
-            options: ["Waar", "Niet waar — bel terug op bekend nummer"],
+            question: "Stem aan de telefoon klinkt als opa , dan is het zeker opa.",
+            options: ["Waar", "Niet waar , bel terug op bekend nummer"],
             correctIndex: 1,
             why: "AI kan stemmen nabootsen. Altijd terugbellen op het bekende nummer.",
           },
@@ -387,7 +387,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Mijn voornaam mag ik altijd veilig aan AI vertellen.",
-            options: ["Waar", "Niet waar — vraag jezelf altijd: is het nodig?"],
+            options: ["Waar", "Niet waar , vraag jezelf altijd: is het nodig?"],
             correctIndex: 1,
             why: "Voornaam alléén kan vaak wel, maar als het niet hoeft: laat 'm weg.",
           },
@@ -435,14 +435,14 @@ export const WORLDS: World[] = [
           },
           {
             question: "Hulp vragen betekent dat je dom bent.",
-            options: ["Waar", "Niet waar — het betekent juist dat je slim bent"],
+            options: ["Waar", "Niet waar , het betekent juist dat je slim bent"],
             correctIndex: 1,
             why: "Zelfs volwassenen vragen elkaar om hulp.",
           },
         ],
         reflection: "Hulp vragen is een superkracht. Niet zwak, maar slim.",
       },
-      // ---------- Les 8 — Baas-test ----------
+      // ---------- Les 8 , Baas-test ----------
       {
         id: "1.8",
         worldId: 1,
@@ -471,13 +471,13 @@ export const WORLDS: World[] = [
             why: "Adres, telefoon, wachtwoord. Altijd STOP.",
           },
           {
-            question: "Stem in een telefoontje klinkt als opa — dus is het opa.",
-            options: ["Waar", "Niet waar — terugbellen op bekend nummer"],
+            question: "Stem in een telefoontje klinkt als opa , dus is het opa.",
+            options: ["Waar", "Niet waar , terugbellen op bekend nummer"],
             correctIndex: 1,
             why: "AI kan stemmen nabootsen.",
           },
           {
-            question: "AI zegt iets gemeens — wat doe je eerst?",
+            question: "AI zegt iets gemeens , wat doe je eerst?",
             options: ["Terug gemeen doen", "Scherm dicht en volwassene halen", "Het delen"],
             correctIndex: 1,
             why: "Stop. Volwassene erbij. Jij hoeft niks terug te zeggen.",
@@ -489,7 +489,7 @@ export const WORLDS: World[] = [
   },
 
   // =================================================================
-  // WERELD 2 — SLIM (Kompas van Helderheid)
+  // WERELD 2 , SLIM (Kompas van Helderheid)
   // =================================================================
   {
     id: 2,
@@ -522,7 +522,7 @@ export const WORLDS: World[] = [
           [
             "Algemene feiten = vaak goed.",
             "Precieze cijfers en actueel nieuws = vaak gokken.",
-            "AI is getraind op oude tekst — vandaag weet ie niet.",
+            "AI is getraind op oude tekst , vandaag weet ie niet.",
           ],
         ),
         quiz: [
@@ -537,8 +537,8 @@ export const WORLDS: World[] = [
             why: "Woord voor woord voorspellen. Soms raak, soms mis.",
           },
           {
-            question: "AI klinkt heel zeker — dus klopt het zeker.",
-            options: ["Waar", "Niet waar — toon ≠ waarheid"],
+            question: "AI klinkt heel zeker , dus klopt het zeker.",
+            options: ["Waar", "Niet waar , toon ≠ waarheid"],
             correctIndex: 1,
             why: "AI klinkt ALTIJD zeker. Ook als het fout zit.",
           },
@@ -595,7 +595,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "AI geeft altijd toe als het iets niet weet.",
-            options: ["Waar", "Niet waar — AI probeert altijd een antwoord te geven"],
+            options: ["Waar", "Niet waar , AI probeert altijd een antwoord te geven"],
             correctIndex: 1,
             why: "Jij moet de check doen, AI doet het niet voor je.",
           },
@@ -645,7 +645,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Korte vage vragen geven meestal het BESTE antwoord.",
-            options: ["Waar", "Niet waar — vaag in, vaag uit"],
+            options: ["Waar", "Niet waar , vaag in, vaag uit"],
             correctIndex: 1,
             why: "Detail in, detail uit. Andersom ook.",
           },
@@ -665,7 +665,7 @@ export const WORLDS: World[] = [
           "De 3-check stap voor stap:",
           [
             { label: "Stap 1: Klinkt het logisch met wat ik al weet?", reveal: "✅ Eerste filter. Je eigen brein is altijd je eerste check." },
-            { label: "Stap 2: Andere bron — zoekmachine, boek, mens", reveal: "✅ Vergelijk met een betrouwbare bron." },
+            { label: "Stap 2: Andere bron , zoekmachine, boek, mens", reveal: "✅ Vergelijk met een betrouwbare bron." },
             { label: "Stap 3: Wat zegt mijn gevoel?", reveal: "✅ 'Te mooi om waar te zijn' = alarm." },
           ],
           [
@@ -693,7 +693,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Als AI iets zegt dat perfect klopt met wat ik wil horen, hoef ik niet te checken.",
-            options: ["Waar", "Niet waar — JUIST dan wel"],
+            options: ["Waar", "Niet waar , JUIST dan wel"],
             correctIndex: 1,
             why: "'Te mooi om waar te zijn' is één van de grootste alarmbellen.",
           },
@@ -735,7 +735,7 @@ export const WORLDS: World[] = [
             question: "Welk krachtwoord helpt als iets te moeilijk blijft?",
             options: ["'Wees deftig'", "'Kun je eenvoudiger?'", "'Maak het lang'"],
             correctIndex: 1,
-            why: "Vraag om versimpeling — een echte krachtwoord-zin.",
+            why: "Vraag om versimpeling , een echte krachtwoord-zin.",
           },
           {
             question: "Krachtwoord toevoegen maakt vraag langer maar meestal beter.",
@@ -787,7 +787,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Bij gemene of dreigende AI moet je eerst antwoorden.",
-            options: ["Waar", "Niet waar — scherm dicht, volwassene"],
+            options: ["Waar", "Niet waar , scherm dicht, volwassene"],
             correctIndex: 1,
             why: "Jij hoeft je niet te verdedigen tegen een AI.",
           },
@@ -801,7 +801,7 @@ export const WORLDS: World[] = [
         pillar: "smart",
         title: "Verschillende AI's, verschillende sterktes",
         emoji: "🌐",
-        sparkIntro: "Mensen zeggen vaak 'de AI'. Maar er zijn er heel veel — net als scholen.",
+        sparkIntro: "Mensen zeggen vaak 'de AI'. Maar er zijn er heel veel , net als scholen.",
         fact: "Bekende AI's: ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Copilot (Microsoft).",
         interactive: sort(
           "Is dit een AI of een gewone app?",
@@ -836,14 +836,14 @@ export const WORLDS: World[] = [
           },
           {
             question: "Alle AI's geven altijd exact hetzelfde antwoord.",
-            options: ["Waar", "Niet waar — ze verschillen"],
+            options: ["Waar", "Niet waar , ze verschillen"],
             correctIndex: 1,
             why: "Ze zijn verschillend getraind. Vergelijken kan slim zijn.",
           },
         ],
         reflection: "Je kent de AI-familie. Vergelijk ze voor betere antwoorden.",
       },
-      // ---------- Les 16 — Baas-test ----------
+      // ---------- Les 16 , Baas-test ----------
       {
         id: "2.8",
         worldId: 2,
@@ -872,8 +872,8 @@ export const WORLDS: World[] = [
             why: "WIE (voor wie), WAT (wat precies), HOE (in welke vorm).",
           },
           {
-            question: "AI klinkt zelfverzekerd — dus klopt het altijd.",
-            options: ["Waar", "Niet waar — toon zegt niks over waarheid"],
+            question: "AI klinkt zelfverzekerd , dus klopt het altijd.",
+            options: ["Waar", "Niet waar , toon zegt niks over waarheid"],
             correctIndex: 1,
             why: "Altijd checken, ook bij zelfverzekerde antwoorden.",
           },
@@ -890,7 +890,7 @@ export const WORLDS: World[] = [
   },
 
   // =================================================================
-  // WERELD 3 — STERKER (Ster van Meesterschap)
+  // WERELD 3 , STERKER (Ster van Meesterschap)
   // =================================================================
   {
     id: 3,
@@ -991,7 +991,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "AI-ideeën mag je altijd 1-op-1 kopiëren.",
-            options: ["Waar", "Niet waar — dan is het niet jouw idee"],
+            options: ["Waar", "Niet waar , dan is het niet jouw idee"],
             correctIndex: 1,
             why: "Kopiëren = niet jouw werk.",
           },
@@ -1037,7 +1037,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Als ik de eerste uitleg niet snap, ben ik dom.",
-            options: ["Waar", "Niet waar — vraag een andere uitleg"],
+            options: ["Waar", "Niet waar , vraag een andere uitleg"],
             correctIndex: 1,
             why: "Jouw brein is prima. AI moet anders uitleggen.",
           },
@@ -1077,7 +1077,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "Een vraag fout hebben bij AI is...",
-            options: ["Slecht", "Leren — elke fout is een les", "Eng"],
+            options: ["Slecht", "Leren , elke fout is een les", "Eng"],
             correctIndex: 1,
             why: "Fouten maken IS leren.",
           },
@@ -1128,7 +1128,7 @@ export const WORLDS: World[] = [
             why: "Kopiëren is geen maken.",
           },
           {
-            question: "AI gaf bouwstenen, ik koos en schreef zelf — is het van mij?",
+            question: "AI gaf bouwstenen, ik koos en schreef zelf , is het van mij?",
             options: ["Ja, jouw werk", "Nee"],
             correctIndex: 0,
             why: "Net als een schilder met verf van een ander. Nog steeds jouw werk.",
@@ -1143,7 +1143,7 @@ export const WORLDS: World[] = [
         pillar: "stronger",
         title: "AI bij rekenen: vraag de weg",
         emoji: "🧮",
-        sparkIntro: "Eerlijk: AI kán je sommen oplossen. Maar dan leert je brein niks — en het komt terug op de toets.",
+        sparkIntro: "Eerlijk: AI kán je sommen oplossen. Maar dan leert je brein niks , en het komt terug op de toets.",
         fact: "Rekenen-regel: NOOIT het antwoord, ALTIJD de weg. Vraag 'hoe?' in plaats van 'wat is?'.",
         interactive: sort(
           "Tutor-vraag of sluiproute-vraag bij rekenen?",
@@ -1159,7 +1159,7 @@ export const WORLDS: World[] = [
           [
             "'Hoe' en 'leg uit' = tutor.",
             "'Wat is' en 'doe' = sluiproute.",
-            "Check vragen mag — dat is geen kopiëren.",
+            "Check vragen mag , dat is geen kopiëren.",
           ],
         ),
         quiz: [
@@ -1177,7 +1177,7 @@ export const WORLDS: World[] = [
           },
           {
             question: "AI mijn antwoord laten checken = kopiëren.",
-            options: ["Waar", "Niet waar — checken is slim, dat is tutor"],
+            options: ["Waar", "Niet waar , checken is slim, dat is tutor"],
             correctIndex: 1,
             why: "Jij rekent, AI controleert. Slim.",
           },
@@ -1196,10 +1196,10 @@ export const WORLDS: World[] = [
         interactive: tap(
           "De 4 stappen van de 10x-formule:",
           [
-            { label: "1) DOEL — wat wil ik leren?", reveal: "✅ Zonder doel is AI gebruiken een gokwerkje." },
-            { label: "2) VRAAG — WIE-WAT-HOE + krachtwoord", reveal: "✅ Slimme vraag = slim antwoord." },
-            { label: "3) DOE ZELF — schrijf/los zelf op", reveal: "✅ Jouw brein moet werken." },
-            { label: "4) CHECK — klopt het wat AI zei?", reveal: "✅ 3-check erbij." },
+            { label: "1) DOEL , wat wil ik leren?", reveal: "✅ Zonder doel is AI gebruiken een gokwerkje." },
+            { label: "2) VRAAG , WIE-WAT-HOE + krachtwoord", reveal: "✅ Slimme vraag = slim antwoord." },
+            { label: "3) DOE ZELF , schrijf/los zelf op", reveal: "✅ Jouw brein moet werken." },
+            { label: "4) CHECK , klopt het wat AI zei?", reveal: "✅ 3-check erbij." },
           ],
           [
             "Stap 1 begint altijd bij JOUW doel.",
@@ -1222,14 +1222,14 @@ export const WORLDS: World[] = [
           },
           {
             question: "De 10x-formule werkt alleen bij rekenen.",
-            options: ["Waar", "Niet waar — werkt overal"],
+            options: ["Waar", "Niet waar , werkt overal"],
             correctIndex: 1,
             why: "Rekenen, schrijven, leren, maken. Universeel.",
           },
         ],
         reflection: "Als je deze formule elke keer gebruikt, word je echt 10x slimmer. Geen grapje.",
       },
-      // ---------- Les 24 — Eindbaas ----------
+      // ---------- Les 24 , Eindbaas ----------
       {
         id: "3.8",
         worldId: 3,

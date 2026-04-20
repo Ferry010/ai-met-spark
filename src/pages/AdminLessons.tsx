@@ -186,7 +186,7 @@ export const AdminLessons = () => {
           <div className="flex-1 min-w-[200px]">
             <h1 className="font-display text-3xl">Beheer lessen</h1>
             <p className="text-muted-foreground text-sm">
-              Pas tekst aan of speel zelf de lessen door — niets wordt opgeslagen in preview.
+              Pas tekst aan of speel zelf de lessen door , niets wordt opgeslagen in preview.
             </p>
           </div>
           <Button
