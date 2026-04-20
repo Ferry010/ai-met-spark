@@ -20,7 +20,12 @@ import LessonPage from "./pages/LessonPage.tsx";
 import FinalTest from "./pages/FinalTest.tsx";
 import Certificate from "./pages/Certificate.tsx";
 import Account from "./pages/Account.tsx";
-import TeacherDashboard from "./pages/TeacherDashboard.tsx";
+import TeacherLogin from "./pages/teacher/TeacherLogin.tsx";
+import ClassroomDashboard from "./pages/teacher/ClassroomDashboard.tsx";
+import WorldDetail from "./pages/teacher/WorldDetail.tsx";
+import LessonDetail from "./pages/teacher/LessonDetail.tsx";
+import ClassSettings from "./pages/teacher/ClassSettings.tsx";
+import LessonDemo from "./pages/teacher/LessonDemo.tsx";
 import AdminLessons from "./pages/AdminLessons.tsx";
 
 const queryClient = new QueryClient();
@@ -87,11 +92,44 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route path="/teacher/login" element={<TeacherLogin />} />
           <Route
             path="/teacher"
             element={
               <ProtectedRoute requireRole="teacher">
-                <TeacherDashboard />
+                <ClassroomDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/world/:id"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <WorldDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/world/:worldId/lesson/:lessonId"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <LessonDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/class/settings"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <ClassSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/demo"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <LessonDemo />
               </ProtectedRoute>
             }
           />

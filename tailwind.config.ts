@@ -14,6 +14,8 @@ export default {
       fontFamily: {
         display: ['Fredoka', 'system-ui', 'sans-serif'],
         body: ['Nunito', 'system-ui', 'sans-serif'],
+        fraunces: ['Fraunces', 'Georgia', 'serif'],
+        'dm-sans': ['DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -70,6 +72,21 @@ export default {
           DEFAULT: "hsl(var(--spark))",
           dark: "hsl(var(--spark-dark))",
         },
+        classroom: {
+          teal: "hsl(var(--classroom-teal))",
+          "teal-dark": "hsl(var(--classroom-teal-dark))",
+          amber: "hsl(var(--classroom-amber))",
+          dark: "hsl(var(--classroom-dark))",
+          muted: "hsl(var(--classroom-muted))",
+          bg: "hsl(var(--classroom-bg))",
+          surface: "hsl(var(--classroom-surface))",
+          border: "hsl(var(--classroom-border))",
+          success: "hsl(var(--classroom-success))",
+          warning: "hsl(var(--classroom-warning))",
+        },
+        "world-1": "hsl(var(--world-1))",
+        "world-2": "hsl(var(--world-2))",
+        "world-3": "hsl(var(--world-3))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
