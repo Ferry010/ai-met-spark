@@ -183,6 +183,42 @@
 }
 .spark-eye { animation: blink 4s infinite; transform-origin: center; }
 
+/* Spark kick-off animations */
+@keyframes spark-fly-in {
+  0%   { opacity: 0; transform: translate(-40px, 30px) scale(0.6) rotate(-8deg); }
+  60%  { opacity: 1; transform: translate(0, -6px) scale(1.05) rotate(2deg); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
+}
+@keyframes spark-wave {
+  0%, 100% { transform: rotate(-10deg); }
+  50%      { transform: rotate(20deg); }
+}
+@keyframes bubble-pop {
+  0%   { opacity: 0; transform: scale(0.7) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes kickoff-fade-up {
+  0%   { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-spark-fly-in { animation: spark-fly-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-spark-wave { animation: spark-wave 0.5s ease-in-out 2; transform-origin: 168px 120px; }
+.animate-bubble-pop { animation: bubble-pop 0.35s ease-out both; }
+.animate-kickoff-fade-up { animation: kickoff-fade-up 0.4s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spark-fly-in,
+  .animate-spark-wave,
+  .animate-bubble-pop,
+  .animate-kickoff-fade-up,
+  .animate-float,
+  .animate-pop-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* ============================================================
    AI Smart Classroom — scoped teacher theme (under .classroom-theme)
    ============================================================ */

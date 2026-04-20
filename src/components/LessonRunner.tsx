@@ -102,25 +102,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       )}
 
       {step === "intro" && (
-        <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
-          <div className="text-xs font-display opacity-90">
-            Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
-          </div>
-          <h1 className="font-display text-4xl mt-1 mb-6">{lesson.title}</h1>
-          <div className="flex justify-center mb-2">
-            <Spark size={140} mood="happy" />
-          </div>
-          <div className="mt-2 mx-auto max-w-md rounded-2xl bg-background/95 text-foreground p-4 text-left shadow-soft">
-            <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
-            <p className="mt-1 text-base leading-snug">{lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!"}</p>
-          </div>
-          <Button
-            onClick={() => goNext("intro")}
-            className="mt-6 h-14 px-8 rounded-full font-display text-base bg-white text-foreground hover:bg-white/90 shadow-pop"
-          >
-            Kom op! →
-          </Button>
-        </section>
+        <LessonKickoff lesson={lesson} onStart={() => goNext("intro")} />
       )}
 
       {step === "theoryIntro" && (
@@ -211,6 +193,100 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
         </section>
       )}
     </>
+  );
+};
+
+const KICKOFF_TYPING_SPEED = 22;
+const KICKOFF_BUBBLE_DELAY = 800;
+
+const TypewriterText = ({ text, speed }: { text: string; speed: number }) => {
+  const [shown, setShown] = useState("");
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    setShown("");
+    setDone(false);
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setShown(text);
+      setDone(true);
+      return;
+    }
+    let i = 0;
+    const id = window.setInterval(() => {
+      i += 1;
+      setShown(text.slice(0, i));
+      if (i >= text.length) {
+        window.clearInterval(id);
+        setDone(true);
+      }
+    }, speed);
+    return () => window.clearInterval(id);
+  }, [text, speed]);
+  return (
+    <p
+      onClick={() => { setShown(text); setDone(true); }}
+      className="mt-1 text-base leading-snug cursor-pointer"
+    >
+      {shown}
+      {!done && <span className="ml-0.5 inline-block w-1.5 h-4 align-middle bg-primary animate-pulse" />}
+    </p>
+  );
+};
+
+const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) => {
+  const text = lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!";
+  const [showBubble, setShowBubble] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setShowBubble(true);
+      setShowButton(true);
+      return;
+    }
+    const t1 = window.setTimeout(() => setShowBubble(true), KICKOFF_BUBBLE_DELAY);
+    const buttonDelay = KICKOFF_BUBBLE_DELAY + text.length * KICKOFF_TYPING_SPEED + 400;
+    const t2 = window.setTimeout(() => setShowButton(true), buttonDelay);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, [text, lesson.id]);
+
+  return (
+    <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
+      <div className="text-xs font-display opacity-90 animate-kickoff-fade-up">
+        Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
+      </div>
+      <h1 className="font-display text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
+
+      <div className="flex justify-center mb-2 min-h-[160px] items-end">
+        <div className="animate-spark-fly-in">
+          <Spark size={140} mood="happy" waving />
+        </div>
+      </div>
+
+      <div className="min-h-[120px] mt-2 flex flex-col items-center justify-start">
+        {showBubble && (
+          <div className="animate-bubble-pop mx-auto max-w-md rounded-2xl bg-background/95 text-foreground p-4 text-left shadow-soft">
+            <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+            <TypewriterText text={text} speed={KICKOFF_TYPING_SPEED} />
+          </div>
+        )}
+      </div>
+
+      <div className="min-h-[80px] flex items-center justify-center">
+        {showButton && (
+          <Button
+            onClick={onStart}
+            className="h-14 px-8 rounded-full font-display text-base bg-white text-foreground hover:bg-white/90 shadow-pop animate-kickoff-fade-up"
+          >
+            Kom op! →
+          </Button>
+        )}
+      </div>
+    </section>
   );
 };
 
