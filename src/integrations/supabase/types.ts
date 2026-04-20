@@ -94,6 +94,33 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_overrides: {
+        Row: {
+          emoji: string | null
+          fact: string | null
+          lesson_id: string
+          title: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          emoji?: string | null
+          fact?: string | null
+          lesson_id: string
+          title?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          emoji?: string | null
+          fact?: string | null
+          lesson_id?: string
+          title?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount_cents: number
