@@ -196,6 +196,65 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   );
 };
 
+const KICKOFF_TYPING_SPEED = 22;
+const KICKOFF_BUBBLE_DELAY = 800;
+
+const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => void }) => {
+  const text = lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!";
+  const [showBubble, setShowBubble] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setShowBubble(true);
+      setShowButton(true);
+      return;
+    }
+    const t1 = window.setTimeout(() => setShowBubble(true), KICKOFF_BUBBLE_DELAY);
+    const buttonDelay = KICKOFF_BUBBLE_DELAY + text.length * KICKOFF_TYPING_SPEED + 400;
+    const t2 = window.setTimeout(() => setShowButton(true), buttonDelay);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, [text, lesson.id]);
+
+  return (
+    <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
+      <div className="text-xs font-display opacity-90 animate-kickoff-fade-up">
+        Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
+      </div>
+      <h1 className="font-display text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
+
+      <div className="flex justify-center mb-2 min-h-[160px] items-end">
+        <div className="animate-spark-fly-in">
+          <Spark size={140} mood="happy" waving />
+        </div>
+      </div>
+
+      <div className="min-h-[120px] mt-2 flex flex-col items-center justify-start">
+        {showBubble && (
+          <div className="animate-bubble-pop w-full flex justify-center">
+            <SparkBubble text={text} mood="happy" size={0} side="bottom" speed={KICKOFF_TYPING_SPEED} className="!gap-0" />
+          </div>
+        )}
+      </div>
+
+      <div className="min-h-[80px] flex items-center justify-center">
+        {showButton && (
+          <Button
+            onClick={onStart}
+            className="h-14 px-8 rounded-full font-display text-base bg-white text-foreground hover:bg-white/90 shadow-pop animate-kickoff-fade-up"
+          >
+            Kom op! →
+          </Button>
+        )}
+      </div>
+    </section>
+  );
+};
+
 const TheoryCard = ({
   eyebrow,
   text,
