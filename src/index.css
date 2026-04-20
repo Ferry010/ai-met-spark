@@ -242,6 +242,10 @@
   .animate-spark-wave,
   .animate-bubble-pop,
   .animate-kickoff-fade-up,
+  .animate-spark-jet-fly,
+  .animate-spark-jet-trail,
+  .animate-spark-speedlines,
+  .animate-spark-shockwave,
   .animate-float,
   .animate-pop-in {
     animation: none !important;
