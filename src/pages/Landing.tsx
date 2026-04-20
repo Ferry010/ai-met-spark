@@ -213,6 +213,26 @@ export const Landing = () => {
           <Pillar
             icon={<Shield className="h-9 w-9 text-white" strokeWidth={2.5} />}
             name={t("landing.pillars.safe.name")}
+            desc={t("landing.pillars.safe.desc")}
+            skills={t("landing.pillars.safe.skills", { returnObjects: true }) as string[]}
+            sample={t("landing.pillars.safe.sample")}
+            bg="bg-gradient-sky"
+            text="text-primary-foreground"
+            skillsLabel={t("landing.pillars.skillsLabel")}
+          />
+          <Pillar
+            icon={<Brain className="h-9 w-9 text-secondary-foreground" strokeWidth={2.5} />}
+            name={t("landing.pillars.smart.name")}
+            desc={t("landing.pillars.smart.desc")}
+            skills={t("landing.pillars.smart.skills", { returnObjects: true }) as string[]}
+            sample={t("landing.pillars.smart.sample")}
+            bg="bg-gradient-sunshine"
+            text="text-secondary-foreground"
+            skillsLabel={t("landing.pillars.skillsLabel")}
+          />
+          <Pillar
+            icon={<Rocket className="h-9 w-9 text-white" strokeWidth={2.5} />}
+            name={t("landing.pillars.stronger.name")}
             desc={t("landing.pillars.stronger.desc")}
             skills={t("landing.pillars.stronger.skills", { returnObjects: true }) as string[]}
             sample={t("landing.pillars.stronger.sample")}
