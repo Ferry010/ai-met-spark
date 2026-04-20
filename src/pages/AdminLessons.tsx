@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { ALL_LESSONS, WORLDS } from "@/content/lessons";
+import {
+  ALL_LESSONS,
+  WORLDS,
+  type InteractiveStep,
+  type QuizQuestion,
+} from "@/content/lessons";
 import { AppHeader } from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,16 +14,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Spark } from "@/components/Spark";
-import { Save, RotateCcw, ShieldCheck } from "lucide-react";
+import { Save, RotateCcw, ShieldCheck, AlertCircle } from "lucide-react";
 
 interface OverrideRow {
   lesson_id: string;
   title: string;
   fact: string;
   emoji: string;
+  interactive: string; // JSON string
+  quiz: string; // JSON string
+  interactiveError?: string;
+  quizError?: string;
 }
 
-const emptyRow = (id: string): OverrideRow => ({ lesson_id: id, title: "", fact: "", emoji: "" });
+const emptyRow = (id: string): OverrideRow => ({
+  lesson_id: id,
+  title: "",
+  fact: "",
+  emoji: "",
+  interactive: "",
+  quiz: "",
+});
+
+const stringifyJson = (value: unknown): string =>
+  value == null ? "" : JSON.stringify(value, null, 2);
 
 export const AdminLessons = () => {
   const { user } = useAuth();
@@ -38,6 +57,8 @@ export const AdminLessons = () => {
           title: o.title ?? "",
           fact: o.fact ?? "",
           emoji: o.emoji ?? "",
+          interactive: stringifyJson(o.interactive),
+          quiz: stringifyJson(o.quiz),
         };
       });
       setRows(map);
@@ -46,18 +67,79 @@ export const AdminLessons = () => {
   }, []);
 
   const updateField = (id: string, field: keyof OverrideRow, value: string) => {
-    setRows((r) => ({ ...r, [id]: { ...r[id], [field]: value } }));
+    setRows((r) => {
+      const next = { ...r[id], [field]: value } as OverrideRow;
+      if (field === "interactive") next.interactiveError = undefined;
+      if (field === "quiz") next.quizError = undefined;
+      return { ...r, [id]: next };
+    });
+  };
+
+  const validateInteractive = (raw: string): InteractiveStep | null | string => {
+    if (!raw.trim()) return null;
+    try {
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return "Moet een JSON-object zijn.";
+      if (!["multiChoice", "tapReveal", "sortBuckets"].includes(parsed.kind)) {
+        return "kind moet 'multiChoice', 'tapReveal' of 'sortBuckets' zijn.";
+      }
+      return parsed as InteractiveStep;
+    } catch (e: any) {
+      return `Ongeldige JSON: ${e.message}`;
+    }
+  };
+
+  const validateQuiz = (raw: string): QuizQuestion[] | null | string => {
+    if (!raw.trim()) return null;
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return "Quiz moet een array zijn.";
+      for (const [i, q] of parsed.entries()) {
+        if (typeof q?.question !== "string") return `Vraag ${i + 1}: 'question' ontbreekt.`;
+        if (!Array.isArray(q?.options) || q.options.length < 2)
+          return `Vraag ${i + 1}: minstens 2 'options' nodig.`;
+        if (typeof q?.correctIndex !== "number" || q.correctIndex < 0 || q.correctIndex >= q.options.length)
+          return `Vraag ${i + 1}: 'correctIndex' ongeldig.`;
+        if (typeof q?.why !== "string") return `Vraag ${i + 1}: 'why' ontbreekt.`;
+      }
+      return parsed as QuizQuestion[];
+    } catch (e: any) {
+      return `Ongeldige JSON: ${e.message}`;
+    }
   };
 
   const save = async (id: string) => {
     if (!user) return;
-    setSavingId(id);
     const row = rows[id];
+
+    const interactiveResult = validateInteractive(row.interactive);
+    const quizResult = validateQuiz(row.quiz);
+
+    if (typeof interactiveResult === "string" || typeof quizResult === "string") {
+      setRows((r) => ({
+        ...r,
+        [id]: {
+          ...r[id],
+          interactiveError: typeof interactiveResult === "string" ? interactiveResult : undefined,
+          quizError: typeof quizResult === "string" ? quizResult : undefined,
+        },
+      }));
+      toast({
+        title: "Opslaan geblokkeerd",
+        description: "Controleer de JSON van de interactieve stap of quiz.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSavingId(id);
     const payload = {
       lesson_id: id,
       title: row.title.trim() || null,
       fact: row.fact.trim() || null,
       emoji: row.emoji.trim() || null,
+      interactive: interactiveResult,
+      quiz: quizResult,
       updated_by: user.id,
     };
     const { error } = await supabase
@@ -83,6 +165,13 @@ export const AdminLessons = () => {
     toast({ title: "Teruggezet", description: `Les ${id} gebruikt weer de standaardtekst.` });
   };
 
+  const loadDefault = (id: string, field: "interactive" | "quiz") => {
+    const lesson = ALL_LESSONS.find((l) => l.id === id);
+    if (!lesson) return;
+    const value = stringifyJson(lesson[field]);
+    updateField(id, field, value);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-hero">
@@ -100,7 +189,7 @@ export const AdminLessons = () => {
           <div>
             <h1 className="font-display text-3xl">Beheer lessen</h1>
             <p className="text-muted-foreground text-sm">
-              Pas titel, weetje of emoji aan. Leeg laten = standaardtekst gebruiken.
+              Pas titel, weetje, emoji, interactieve stap of quiz aan. Leeg laten = standaard.
             </p>
           </div>
         </div>
@@ -119,7 +208,8 @@ export const AdminLessons = () => {
                     <div key={lesson.id} className="rounded-2xl bg-muted/30 p-4 border border-border/60">
                       <div className="flex items-baseline justify-between mb-3">
                         <h3 className="font-display text-base">
-                          Les {lesson.id} · standaard: <span className="text-muted-foreground">{lesson.title}</span>
+                          Les {lesson.id} · standaard:{" "}
+                          <span className="text-muted-foreground">{lesson.title}</span>
                         </h3>
                       </div>
                       <div className="grid sm:grid-cols-[80px_1fr] gap-3">
@@ -158,6 +248,69 @@ export const AdminLessons = () => {
                           className="rounded-lg resize-none"
                         />
                       </div>
+
+                      <div className="mt-4 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor={`interactive-${lesson.id}`} className="text-xs">
+                            Interactieve stap (JSON)
+                          </Label>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 text-xs"
+                            onClick={() => loadDefault(lesson.id, "interactive")}
+                          >
+                            Laad standaard
+                          </Button>
+                        </div>
+                        <Textarea
+                          id={`interactive-${lesson.id}`}
+                          value={row.interactive}
+                          onChange={(e) => updateField(lesson.id, "interactive", e.target.value)}
+                          placeholder='Leeg = standaard. Bijv. {"kind":"multiChoice", ...}'
+                          rows={6}
+                          className="rounded-lg font-mono text-xs"
+                          spellCheck={false}
+                        />
+                        {row.interactiveError && (
+                          <p className="text-xs text-destructive flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3 w-3" /> {row.interactiveError}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="mt-4 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor={`quiz-${lesson.id}`} className="text-xs">
+                            Quizvragen (JSON-array)
+                          </Label>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 text-xs"
+                            onClick={() => loadDefault(lesson.id, "quiz")}
+                          >
+                            Laad standaard
+                          </Button>
+                        </div>
+                        <Textarea
+                          id={`quiz-${lesson.id}`}
+                          value={row.quiz}
+                          onChange={(e) => updateField(lesson.id, "quiz", e.target.value)}
+                          placeholder='Leeg = standaard. Bijv. [{"question":"...","options":["A","B"],"correctIndex":0,"why":"..."}]'
+                          rows={8}
+                          className="rounded-lg font-mono text-xs"
+                          spellCheck={false}
+                        />
+                        {row.quizError && (
+                          <p className="text-xs text-destructive flex items-center gap-1 mt-1">
+                            <AlertCircle className="h-3 w-3" /> {row.quizError}
+                          </p>
+                        )}
+                      </div>
+
                       <div className="flex gap-2 mt-3 justify-end">
                         <Button
                           onClick={() => reset(lesson.id)}
