@@ -102,25 +102,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       )}
 
       {step === "intro" && (
-        <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
-          <div className="text-xs font-display opacity-90">
-            Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
-          </div>
-          <h1 className="font-display text-4xl mt-1 mb-6">{lesson.title}</h1>
-          <div className="flex justify-center mb-2">
-            <Spark size={140} mood="happy" />
-          </div>
-          <div className="mt-2 mx-auto max-w-md rounded-2xl bg-background/95 text-foreground p-4 text-left shadow-soft">
-            <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
-            <p className="mt-1 text-base leading-snug">{lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!"}</p>
-          </div>
-          <Button
-            onClick={() => goNext("intro")}
-            className="mt-6 h-14 px-8 rounded-full font-display text-base bg-white text-foreground hover:bg-white/90 shadow-pop"
-          >
-            Kom op! →
-          </Button>
-        </section>
+        <LessonKickoff lesson={lesson} onStart={() => goNext("intro")} />
       )}
 
       {step === "theoryIntro" && (

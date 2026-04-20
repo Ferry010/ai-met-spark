@@ -16,13 +16,15 @@ interface SparkProps {
   size?: number;
   className?: string;
   animate?: boolean;
+  /** When true, raises and waves Spark's right arm. */
+  waving?: boolean;
 }
 
 /**
  * Spark — friendly round mascot and AI Smart Kids' animated teacher.
  * Pure inline SVG so it scales crisply and can be themed via design tokens.
  */
-export const Spark = ({ mood = "default", size = 160, className, animate = true }: SparkProps) => {
+export const Spark = ({ mood = "default", size = 160, className, animate = true, waving = false }: SparkProps) => {
   const isHappy = mood === "happy" || mood === "celebrating";
   const isSad = mood === "sad";
   const isThinking = mood === "thinking" || mood === "explaining";
@@ -110,7 +112,16 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true 
       )}
 
       {/* Side arms */}
-      {isPointing ? (
+      {waving ? (
+        <>
+          <circle cx="32" cy="120" r="10" fill="hsl(var(--spark))" />
+          {/* right arm waving — group rotates around the shoulder */}
+          <g style={{ transformOrigin: "168px 120px" }} className="animate-spark-wave">
+            <line x1="168" y1="120" x2="190" y2="80" stroke="hsl(var(--spark-dark))" strokeWidth="6" strokeLinecap="round" />
+            <circle cx="192" cy="76" r="12" fill="hsl(var(--spark))" />
+          </g>
+        </>
+      ) : isPointing ? (
         <>
           <circle cx="32" cy="120" r="10" fill="hsl(var(--spark))" />
           {/* right arm pointing up-right */}
