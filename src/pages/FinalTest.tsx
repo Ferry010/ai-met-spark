@@ -8,7 +8,7 @@ import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FINAL_TEST_QUESTIONS } from "@/content/lessons";
-import { Check, X, ChevronLeft, Lock } from "lucide-react";
+import { ChevronLeft, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const COOLDOWN_HOURS = 24;
@@ -78,11 +78,11 @@ export const FinalTest = () => {
         <AppHeader />
         <main className="container py-12 max-w-md text-center">
           <Spark size={120} mood="thinking" />
-          <h1 className="font-display text-3xl mt-4">Take a break first!</h1>
+          <h1 className="font-display text-3xl mt-4">Neem eerst even pauze!</h1>
           <p className="text-muted-foreground mt-2">
-            You can try again at {cooldownUntil.toLocaleString()}.
+            Je kunt het opnieuw proberen om {cooldownUntil.toLocaleString()}.
           </p>
-          <Link to="/dashboard"><Button className="mt-6 rounded-full font-display">Back to dashboard</Button></Link>
+          <Link to="/dashboard"><Button className="mt-6 rounded-full font-display">Terug naar dashboard</Button></Link>
         </main>
       </div>
     );
@@ -103,15 +103,15 @@ export const FinalTest = () => {
           <>
             <div className="text-center mb-6">
               <Spark size={100} mood="thinking" />
-              <h1 className="font-display text-3xl mt-2">Final Test</h1>
-              <p className="text-muted-foreground">10 questions · 8/10 to pass · No time limit</p>
+              <h1 className="font-display text-3xl mt-2">Eindtoets</h1>
+              <p className="text-muted-foreground">10 vragen · 8/10 om te slagen · Geen tijdslimiet</p>
             </div>
             <Progress value={(Object.keys(picks).length / questions.length) * 100} className="h-2 mb-6" />
 
             <div className="space-y-5">
               {questions.map((q, i) => (
                 <div key={i} className="rounded-3xl bg-card border border-border p-5 shadow-soft">
-                  <div className="text-xs font-display text-muted-foreground mb-1">Q{i + 1}</div>
+                  <div className="text-xs font-display text-muted-foreground mb-1">V{i + 1}</div>
                   <h3 className="font-display text-lg mb-4">{q.question}</h3>
                   <div className="space-y-2">
                     {q.options.map((opt, oi) => (
@@ -136,7 +136,7 @@ export const FinalTest = () => {
               disabled={!allAnswered}
               className="mt-6 w-full h-14 rounded-full font-display bg-primary shadow-pop"
             >
-              {allAnswered ? "🏁 Submit my answers" : `Answer all ${questions.length} (${Object.keys(picks).length}/${questions.length})`}
+              {allAnswered ? "🏁 Antwoorden inleveren" : `Beantwoord alle ${questions.length} (${Object.keys(picks).length}/${questions.length})`}
             </Button>
           </>
         ) : (
@@ -146,16 +146,16 @@ export const FinalTest = () => {
           )}>
             <Spark size={140} mood={passed ? "celebrating" : "sad"} />
             <h2 className="font-display text-3xl mt-4">
-              {passed ? "🎉 You did it!" : "So close!"}
+              {passed ? "🎉 Het is je gelukt!" : "Bijna!"}
             </h2>
             <p className="font-display text-5xl my-3">{score} / {questions.length}</p>
             <p className="text-muted-foreground mb-5">
-              {passed ? "You're a certified AI Smart Kid!" : "You need 8 to pass. Try again in 24 hours!"}
+              {passed ? "Je bent een gecertificeerd AI Smart Kid!" : "Je hebt 8 nodig. Probeer het over 24 uur opnieuw!"}
             </p>
             {passed ? (
-              <Link to="/certificate"><Button className="h-14 px-8 rounded-full font-display bg-primary shadow-pop">View certificate →</Button></Link>
+              <Link to="/certificate"><Button className="h-14 px-8 rounded-full font-display bg-primary shadow-pop">Bekijk certificaat →</Button></Link>
             ) : (
-              <Link to="/dashboard"><Button variant="outline" className="h-14 px-8 rounded-full font-display border-2"><Lock className="h-4 w-4 mr-1" /> Back to dashboard</Button></Link>
+              <Link to="/dashboard"><Button variant="outline" className="h-14 px-8 rounded-full font-display border-2"><Lock className="h-4 w-4 mr-1" /> Terug naar dashboard</Button></Link>
             )}
           </section>
         )}

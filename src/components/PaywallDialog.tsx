@@ -38,7 +38,7 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
       <DialogContent className="max-w-2xl rounded-3xl">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl flex items-center gap-2">
-            <Lock className="h-5 w-5 text-primary" /> Unlock all 12 lessons
+            <Lock className="h-5 w-5 text-primary" /> Speel alle 12 lessen vrij
           </DialogTitle>
         </DialogHeader>
 
@@ -47,10 +47,10 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
             <Spark size={120} mood="happy" />
             <div className="mt-4 mb-2 inline-block rounded-2xl bg-gradient-sunshine px-6 py-3">
               <span className="font-display text-4xl text-secondary-foreground">€14</span>
-              <span className="font-display text-secondary-foreground/80 ml-2">one-time</span>
+              <span className="font-display text-secondary-foreground/80 ml-2">eenmalig</span>
             </div>
             <p className="text-muted-foreground mb-6">
-              Forever access to all 3 worlds, the final test, and a personalized certificate emailed to a parent.
+              Voor altijd toegang tot alle 3 werelden, de eindtoets en een persoonlijk certificaat dat naar de ouder gemaild wordt.
             </p>
             <Button
               onClick={() => {
@@ -63,9 +63,9 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
               }}
               className="h-14 px-8 rounded-full font-display text-base bg-primary shadow-pop"
             >
-              🚀 Unlock now
+              🚀 Nu vrijspelen
             </Button>
-            <p className="mt-3 text-xs text-muted-foreground">14-day refund · No subscriptions</p>
+            <p className="mt-3 text-xs text-muted-foreground">14 dagen niet-goed-geld-terug · Geen abonnementen</p>
           </div>
         ) : (
           <div className="min-h-[400px]" id="checkout">

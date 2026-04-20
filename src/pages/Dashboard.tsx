@@ -36,12 +36,10 @@ export const Dashboard = () => {
       });
   }, [user]);
 
-  // Handle Stripe checkout return
   useEffect(() => {
     if (search.get("checkout") === "success") {
       confetti({ particleCount: 200, spread: 90, origin: { y: 0.5 } });
-      toast({ title: "🎉 You're unlocked!", description: "All lessons are open. Have fun!" });
-      // Webhook should have updated profile.paid; refresh after a short delay.
+      toast({ title: "🎉 Je bent vrijgespeeld!", description: "Alle lessen staan open. Veel plezier!" });
       setTimeout(refreshProfile, 1500);
       const next = new URLSearchParams(search);
       next.delete("checkout");
@@ -69,10 +67,10 @@ export const Dashboard = () => {
           <Spark size={100} mood={allDone ? "celebrating" : "happy"} />
           <div className="text-center sm:text-left flex-1">
             <h1 className="font-display text-3xl sm:text-4xl">
-              Hi {profile?.first_name ?? "friend"}! Ready to get smarter?
+              Hoi {profile?.first_name ?? "vriend"}! Klaar om slimmer te worden?
             </h1>
             <p className="text-muted-foreground mt-1">
-              {totalDone} of {totalLessons} lessons done
+              {totalDone} van {totalLessons} lessen gedaan
             </p>
           </div>
           {!isPaid && (
@@ -80,7 +78,7 @@ export const Dashboard = () => {
               onClick={() => setPaywall(true)}
               className="h-12 rounded-full font-display bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop"
             >
-              🔓 Unlock all · €14
+              🔓 Speel alles vrij · €14
             </Button>
           )}
         </div>
@@ -97,7 +95,7 @@ export const Dashboard = () => {
                 onClick={(e) => {
                   if (w.locked) {
                     e.preventDefault();
-                    toast({ title: "Locked!", description: `Finish World ${w.id - 1} first.` });
+                    toast({ title: "Op slot!", description: `Maak eerst Wereld ${w.id - 1} af.` });
                   }
                 }}
                 className={`block rounded-3xl p-6 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1 ${PILLAR_BG[w.pillar]} ${w.locked ? "opacity-60" : ""}`}
@@ -106,10 +104,10 @@ export const Dashboard = () => {
                   <span className="text-5xl" aria-hidden>{w.emoji}</span>
                   {w.locked && <Lock className="h-6 w-6" />}
                 </div>
-                <h2 className="font-display text-2xl mb-1">World {w.id}: {w.name}</h2>
+                <h2 className="font-display text-2xl mb-1">Wereld {w.id}: {w.name}</h2>
                 <p className="text-sm opacity-90 mb-4">{w.tagline}</p>
                 <div className="flex items-center justify-between text-sm font-semibold">
-                  <span>{w.done} / {w.lessons.length} done</span>
+                  <span>{w.done} / {w.lessons.length} klaar</span>
                   <span>{pct}%</span>
                 </div>
                 <div className="mt-2 h-2 rounded-full bg-white/30 overflow-hidden">
@@ -120,10 +118,9 @@ export const Dashboard = () => {
           })}
         </div>
 
-        {/* Badge shelf */}
         <section className="mb-10">
           <h2 className="font-display text-2xl mb-4 flex items-center gap-2">
-            <Award className="h-6 w-6 text-secondary-foreground" /> Your badges
+            <Award className="h-6 w-6 text-secondary-foreground" /> Je badges
           </h2>
           <div className="flex gap-4 flex-wrap">
             {WORLDS.map((w) => {
@@ -155,20 +152,20 @@ export const Dashboard = () => {
 
         <div className="rounded-3xl bg-card border border-border p-6 text-center shadow-soft">
           <Star className="h-10 w-10 mx-auto text-secondary-foreground mb-2" />
-          <h2 className="font-display text-2xl mb-1">Final Test</h2>
-          <p className="text-muted-foreground mb-4">Pass with 8/10 to earn your certificate!</p>
+          <h2 className="font-display text-2xl mb-1">Eindtoets</h2>
+          <p className="text-muted-foreground mb-4">Haal 8/10 om je certificaat te verdienen!</p>
           <Link to={allDone ? "/final-test" : "#"}>
             <Button
               disabled={!allDone}
               onClick={(e) => {
                 if (!allDone) {
                   e.preventDefault();
-                  toast({ title: "Almost there!", description: `Finish all ${totalLessons} lessons first.` });
+                  toast({ title: "Bijna zover!", description: `Maak eerst alle ${totalLessons} lessen af.` });
                 }
               }}
               className="h-14 px-8 rounded-full font-display text-base shadow-soft"
             >
-              {allDone ? "🏆 Take the test" : `🔒 Locked (${totalDone}/${totalLessons})`}
+              {allDone ? "🏆 Doe de toets" : `🔒 Op slot (${totalDone}/${totalLessons})`}
             </Button>
           </Link>
         </div>

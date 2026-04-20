@@ -72,11 +72,11 @@ export const TeacherDashboard = () => {
       .maybeSingle();
     setCreating(false);
     if (error) {
-      toast({ title: "Couldn't create class", description: error.message, variant: "destructive" });
+      toast({ title: "Kon klas niet aanmaken", description: error.message, variant: "destructive" });
       return;
     }
     setSchool(data as School);
-    toast({ title: "Class created!" });
+    toast({ title: "Klas aangemaakt!" });
   };
 
   const generateCode = async () => {
@@ -88,7 +88,7 @@ export const TeacherDashboard = () => {
       .select()
       .maybeSingle();
     if (error) {
-      toast({ title: "Failed", description: error.message, variant: "destructive" });
+      toast({ title: "Mislukt", description: error.message, variant: "destructive" });
       return;
     }
     setCodes([...(codes ?? []), data as ClassCode]);
@@ -96,7 +96,7 @@ export const TeacherDashboard = () => {
 
   const copy = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast({ title: "Copied!", description: code });
+    toast({ title: "Gekopieerd!", description: code });
   };
 
   if (loading) {
@@ -114,20 +114,20 @@ export const TeacherDashboard = () => {
         <main className="container py-10 max-w-md">
           <div className="text-center mb-6">
             <Spark size={100} mood="happy" />
-            <h1 className="font-display text-3xl mt-3">Welcome, {profile?.first_name}!</h1>
-            <p className="text-muted-foreground">Create your class to get started.</p>
+            <h1 className="font-display text-3xl mt-3">Welkom, {profile?.first_name}!</h1>
+            <p className="text-muted-foreground">Maak je klas aan om te beginnen.</p>
           </div>
           <form onSubmit={createSchool} className="rounded-3xl bg-card border border-border shadow-soft p-6 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Class / school name</Label>
+              <Label htmlFor="name">Naam van klas / school</Label>
               <Input id="name" name="name" required maxLength={150} className="h-12 rounded-xl" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="seats">Number of seats</Label>
+              <Label htmlFor="seats">Aantal plekken</Label>
               <Input id="seats" name="seats" type="number" min={1} defaultValue={20} className="h-12 rounded-xl" />
             </div>
             <Button type="submit" disabled={creating} className="w-full h-14 rounded-full font-display bg-primary shadow-soft">
-              {creating ? "…" : "Create class"}
+              {creating ? "…" : "Klas aanmaken"}
             </Button>
           </form>
         </main>
@@ -144,20 +144,20 @@ export const TeacherDashboard = () => {
           <div>
             <h1 className="font-display text-3xl">{school.name}</h1>
             <p className="text-muted-foreground text-sm">
-              {students.length} of {school.seat_count} seats used
+              {students.length} van {school.seat_count} plekken in gebruik
             </p>
           </div>
         </div>
 
         <section className="rounded-3xl bg-card border border-border p-6 shadow-soft mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-xl">Class codes</h2>
+            <h2 className="font-display text-xl">Klassencodes</h2>
             <Button onClick={generateCode} size="sm" className="rounded-full font-display gap-1">
-              <Plus className="h-4 w-4" /> New code
+              <Plus className="h-4 w-4" /> Nieuwe code
             </Button>
           </div>
           {codes.length === 0 ? (
-            <p className="text-muted-foreground text-sm">Generate a code, then share it with kids to join.</p>
+            <p className="text-muted-foreground text-sm">Genereer een code en deel die met de kinderen.</p>
           ) : (
             <ul className="space-y-2">
               {codes.map((c) => (
@@ -173,9 +173,9 @@ export const TeacherDashboard = () => {
         </section>
 
         <section className="rounded-3xl bg-card border border-border p-6 shadow-soft">
-          <h2 className="font-display text-xl mb-4">Students</h2>
+          <h2 className="font-display text-xl mb-4">Leerlingen</h2>
           {students.length === 0 ? (
-            <p className="text-muted-foreground">No students yet. Share a class code to get started.</p>
+            <p className="text-muted-foreground">Nog geen leerlingen. Deel een klassencode om te beginnen.</p>
           ) : (
             <ul className="divide-y divide-border">
               {students.map((s) => {
@@ -193,8 +193,8 @@ export const TeacherDashboard = () => {
                     </div>
                     <div className="text-sm text-muted-foreground w-16 text-right">{s.done}/12</div>
                     <div className="text-sm w-20 text-right">
-                      {s.passed === true ? <span className="text-success font-semibold">✓ Passed</span> :
-                       s.passed === false ? <span className="text-destructive">Retry</span> :
+                      {s.passed === true ? <span className="text-success font-semibold">✓ Geslaagd</span> :
+                       s.passed === false ? <span className="text-destructive">Opnieuw</span> :
                        <span className="text-muted-foreground">·</span>}
                     </div>
                   </li>

@@ -49,11 +49,11 @@ export const Auth = () => {
       class_code: form.get("class_code") ?? "",
     });
     if (!parsed.success) {
-      toast({ title: "Check the form", description: parsed.error.errors[0]?.message, variant: "destructive" });
+      toast({ title: "Check het formulier", description: parsed.error.errors[0]?.message, variant: "destructive" });
       return;
     }
     setBusy(true);
-    const lang = (localStorage.getItem("aisk_lang") as "en" | "nl" | "es") || "en";
+    const lang = (localStorage.getItem("aisk_lang") as "en" | "nl" | "es") || "nl";
     const { error } = await supabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
@@ -71,10 +71,10 @@ export const Auth = () => {
     });
     setBusy(false);
     if (error) {
-      toast({ title: "Sign-up failed", description: error.message, variant: "destructive" });
+      toast({ title: "Aanmelden mislukt", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: `Welcome, ${parsed.data.first_name}!` });
+    toast({ title: `Welkom, ${parsed.data.first_name}!` });
     navigate(isTeacher ? "/teacher" : "/dashboard");
   };
 
@@ -83,7 +83,7 @@ export const Auth = () => {
     const form = new FormData(e.currentTarget);
     const parsed = loginSchema.safeParse({ email: form.get("email"), password: form.get("password") });
     if (!parsed.success) {
-      toast({ title: "Check the form", variant: "destructive" });
+      toast({ title: "Check het formulier", variant: "destructive" });
       return;
     }
     setBusy(true);
@@ -93,7 +93,7 @@ export const Auth = () => {
     });
     setBusy(false);
     if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+      toast({ title: "Inloggen mislukt", description: error.message, variant: "destructive" });
       return;
     }
     navigate(isTeacher ? "/teacher" : "/dashboard");
@@ -113,29 +113,29 @@ export const Auth = () => {
       <div className="text-center mb-6">
         <Spark size={120} mood="happy" />
         <h1 className="font-display text-3xl mt-3">
-          {isTeacher ? "Teacher access" : "Welcome to AI Smart Kids"}
+          {isTeacher ? "Toegang voor leerkrachten" : "Welkom bij AI Smart Kids"}
         </h1>
       </div>
 
       <div className="w-full max-w-md bg-card rounded-3xl shadow-pop border border-border p-6">
         <Tabs defaultValue={initialMode} className="w-full">
           <TabsList className="grid grid-cols-2 mb-6 rounded-full p-1 h-12">
-            <TabsTrigger value="login" className="rounded-full font-display">Log in</TabsTrigger>
-            <TabsTrigger value="signup" className="rounded-full font-display">Sign up</TabsTrigger>
+            <TabsTrigger value="login" className="rounded-full font-display">Inloggen</TabsTrigger>
+            <TabsTrigger value="signup" className="rounded-full font-display">Aanmelden</TabsTrigger>
           </TabsList>
 
           <TabsContent value="login">
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">E-mail</Label>
                 <Input id="email" name="email" type="email" required className="h-12 rounded-xl" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Wachtwoord</Label>
                 <Input id="password" name="password" type="password" required className="h-12 rounded-xl" />
               </div>
               <Button type="submit" disabled={busy} className="w-full h-14 rounded-full font-display text-base shadow-soft">
-                {busy ? "…" : "Log in"}
+                {busy ? "…" : "Inloggen"}
               </Button>
             </form>
           </TabsContent>
@@ -146,42 +146,42 @@ export const Auth = () => {
                 <>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label htmlFor="first_name">Kid's first name</Label>
+                      <Label htmlFor="first_name">Voornaam van het kind</Label>
                       <Input id="first_name" name="first_name" required maxLength={40} className="h-12 rounded-xl" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="age">Age</Label>
+                      <Label htmlFor="age">Leeftijd</Label>
                       <Input id="age" name="age" type="number" min={5} max={18} required className="h-12 rounded-xl" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="parent_email">Parent email <span className="text-muted-foreground text-xs">(for certificate)</span></Label>
+                    <Label htmlFor="parent_email">E-mail van ouder <span className="text-muted-foreground text-xs">(voor het certificaat)</span></Label>
                     <Input id="parent_email" name="parent_email" type="email" required className="h-12 rounded-xl" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="class_code">Class code <span className="text-muted-foreground text-xs">(optional)</span></Label>
-                    <Input id="class_code" name="class_code" maxLength={20} placeholder="e.g. SPARK-7K" className="h-12 rounded-xl uppercase" />
+                    <Label htmlFor="class_code">Klassencode <span className="text-muted-foreground text-xs">(optioneel)</span></Label>
+                    <Input id="class_code" name="class_code" maxLength={20} placeholder="bijv. SPARK-7K" className="h-12 rounded-xl uppercase" />
                   </div>
                 </>
               )}
               {isTeacher && (
                 <div className="space-y-2">
-                  <Label htmlFor="first_name">Your name</Label>
+                  <Label htmlFor="first_name">Je naam</Label>
                   <Input id="first_name" name="first_name" required maxLength={40} className="h-12 rounded-xl" />
                   <input type="hidden" name="age" value="30" />
                   <input type="hidden" name="parent_email" value="" />
                 </div>
               )}
               <div className="space-y-2">
-                <Label htmlFor="email">{isTeacher ? "Your email" : "Login email"}</Label>
+                <Label htmlFor="email">{isTeacher ? "Je e-mail" : "Login-e-mail"}</Label>
                 <Input id="email" name="email" type="email" required className="h-12 rounded-xl" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password <span className="text-muted-foreground text-xs">(8+ chars)</span></Label>
+                <Label htmlFor="password">Wachtwoord <span className="text-muted-foreground text-xs">(8+ tekens)</span></Label>
                 <Input id="password" name="password" type="password" required minLength={8} className="h-12 rounded-xl" />
               </div>
               <Button type="submit" disabled={busy} className="w-full h-14 rounded-full font-display text-base bg-primary shadow-soft">
-                {busy ? "…" : "Create account"}
+                {busy ? "…" : "Account aanmaken"}
               </Button>
             </form>
           </TabsContent>
@@ -189,16 +189,16 @@ export const Auth = () => {
 
         <div className="my-5 flex items-center gap-3">
           <div className="h-px flex-1 bg-border" />
-          <span className="text-xs text-muted-foreground">or</span>
+          <span className="text-xs text-muted-foreground">of</span>
           <div className="h-px flex-1 bg-border" />
         </div>
         <Button variant="outline" onClick={handleGoogle} className="w-full h-12 rounded-full font-display border-2">
-          Continue with Google
+          Verder met Google
         </Button>
 
         {!isTeacher && (
           <p className="mt-5 text-center text-xs text-muted-foreground">
-            <Link to="/auth?teacher=1" className="underline hover:text-foreground">Teacher? Log in here →</Link>
+            <Link to="/auth?teacher=1" className="underline hover:text-foreground">Leerkracht? Log hier in →</Link>
           </p>
         )}
       </div>

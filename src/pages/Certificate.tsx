@@ -25,7 +25,6 @@ export const Certificate = () => {
       if (attempt) setScore(attempt.score);
       if (cert) setIssued(cert.issued_at);
       else if (attempt && user && profile) {
-        // First-time issue: record certificate row
         supabase.from("certificates").insert({ user_id: user.id, score: attempt.score }).then(({ data }) => {
           if (data) setIssued(new Date().toISOString());
         });
@@ -38,62 +37,53 @@ export const Certificate = () => {
     const w = doc.internal.pageSize.getWidth();
     const h = doc.internal.pageSize.getHeight();
 
-    // Background
-    doc.setFillColor(245, 249, 255);
+    doc.setFillColor(255, 248, 236);
     doc.rect(0, 0, w, h, "F");
 
-    // Border
-    doc.setDrawColor(79, 195, 247);
+    doc.setDrawColor(108, 92, 231);
     doc.setLineWidth(6);
     doc.roundedRect(24, 24, w - 48, h - 48, 18, 18);
     doc.setDrawColor(255, 213, 79);
     doc.setLineWidth(2);
     doc.roundedRect(40, 40, w - 80, h - 80, 14, 14);
 
-    // Title
     doc.setTextColor(34, 50, 80);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(40);
-    doc.text("Certificate of AI Smart Kid", w / 2, 130, { align: "center" });
+    doc.text("Certificaat AI Smart Kid", w / 2, 130, { align: "center" });
 
-    // Subtitle
     doc.setFont("helvetica", "normal");
     doc.setFontSize(16);
     doc.setTextColor(110, 110, 130);
-    doc.text("This certifies that", w / 2, 175, { align: "center" });
+    doc.text("Hierbij verklaren wij dat", w / 2, 175, { align: "center" });
 
-    // Name
     doc.setFont("helvetica", "bold");
     doc.setFontSize(48);
     doc.setTextColor(255, 138, 101);
     doc.text(profile?.first_name ?? "Smart Kid", w / 2, 240, { align: "center" });
 
-    // Body
     doc.setFont("helvetica", "normal");
     doc.setFontSize(16);
     doc.setTextColor(34, 50, 80);
     doc.text(
-      "has completed all 12 lessons and the final test,",
+      "alle 12 lessen en de eindtoets heeft gehaald,",
       w / 2,
       290,
       { align: "center" },
     );
-    doc.text("learning to use AI safely, smartly, and to grow stronger.", w / 2, 315, { align: "center" });
+    doc.text("en heeft geleerd AI veilig, slim en sterker te gebruiken.", w / 2, 315, { align: "center" });
 
-    // Pillar badges
     doc.setFontSize(28);
     doc.text("🛡️   🧠   💪", w / 2, 380, { align: "center" });
     doc.setFontSize(12);
     doc.setTextColor(110, 110, 130);
-    doc.text("SAFE        SMART        STRONGER", w / 2, 405, { align: "center" });
+    doc.text("VEILIG        SLIM        STERKER", w / 2, 405, { align: "center" });
 
-    // Score + date
     doc.setFontSize(14);
     doc.setTextColor(34, 50, 80);
     doc.text(`Score: ${score ?? "·"} / 10`, w / 2, 470, { align: "center" });
-    doc.text(`Issued: ${new Date(issued ?? Date.now()).toLocaleDateString()}`, w / 2, 490, { align: "center" });
+    doc.text(`Uitgegeven: ${new Date(issued ?? Date.now()).toLocaleDateString()}`, w / 2, 490, { align: "center" });
 
-    // Signature line
     doc.setDrawColor(180, 180, 200);
     doc.line(w / 2 - 100, 540, w / 2 + 100, 540);
     doc.setFontSize(12);
@@ -108,9 +98,8 @@ export const Certificate = () => {
     generatingRef.current = true;
     try {
       const doc = buildPdf();
-      doc.save(`AI-Smart-Kid-${profile?.first_name ?? "certificate"}.pdf`);
+      doc.save(`AI-Smart-Kid-${profile?.first_name ?? "certificaat"}.pdf`);
 
-      // Upload to storage (private bucket; owner-folder path)
       const blob = doc.output("blob");
       const path = `${user.id}/certificate.pdf`;
       const { error } = await supabase.storage.from("certificates").upload(path, blob, {
@@ -120,7 +109,7 @@ export const Certificate = () => {
       if (!error) {
         await supabase.from("certificates").update({ pdf_url: path }).eq("user_id", user.id);
       }
-      toast({ title: "Downloaded!", description: "Saved to your device and your account." });
+      toast({ title: "Gedownload!", description: "Opgeslagen op je apparaat en in je account." });
     } finally {
       generatingRef.current = false;
     }
@@ -136,15 +125,15 @@ export const Certificate = () => {
 
         <section className="rounded-3xl bg-gradient-hero border-2 border-primary p-8 text-center shadow-pop">
           <Spark size={140} mood="celebrating" />
-          <h1 className="font-display text-4xl mt-4">Your Certificate</h1>
+          <h1 className="font-display text-4xl mt-4">Jouw certificaat</h1>
           <p className="text-muted-foreground mt-1">
-            Personal · {new Date(issued ?? Date.now()).toLocaleDateString()}
+            Persoonlijk · {new Date(issued ?? Date.now()).toLocaleDateString()}
           </p>
 
           <div className="my-8 mx-auto max-w-md rounded-2xl bg-card p-6 shadow-soft border border-border text-left">
-            <div className="text-xs font-display text-muted-foreground uppercase tracking-wider">This certifies</div>
+            <div className="text-xs font-display text-muted-foreground uppercase tracking-wider">Hierbij verklaren wij</div>
             <div className="font-display text-3xl text-accent mt-1">{profile?.first_name}</div>
-            <div className="mt-3 text-sm">has completed all 12 lessons and passed the final test.</div>
+            <div className="mt-3 text-sm">heeft alle 12 lessen en de eindtoets gehaald.</div>
             <div className="mt-4 flex gap-3 text-2xl">🛡️ 🧠 💪</div>
             <div className="mt-3 text-sm text-muted-foreground">Score: {score ?? "·"} / 10</div>
           </div>
@@ -153,7 +142,7 @@ export const Certificate = () => {
             <Download className="h-5 w-5" /> Download PDF
           </Button>
           <p className="mt-3 text-xs text-muted-foreground">
-            Show your parent or teacher 🎉
+            Laat het aan je ouder of leerkracht zien 🎉
           </p>
         </section>
       </main>
