@@ -95,7 +95,7 @@
       "title": "Built for families who want their kids to thrive with AI, not fear it",
       "items": {
         "noChat": { "title": "No chat with AI", "desc": "Kids never type to a real AI. Zero risk of weird outputs or unsafe content." },
-        "educators": { "title": "Hand-written by educators", "desc": "Every lesson is written and reviewed by teachers and parents. No auto-generated filler." },
+        "educators": { "title": "Developed by experts", "desc": "Every lesson is written and reviewed by teachers and parents. No auto-generated filler." },
         "privacy": { "title": "GDPR and COPPA friendly", "desc": "We collect a first name, age, and parent email. That's it. We never sell data." },
         "devices": { "title": "Works on any device", "desc": "Phone, tablet, Chromebook, or laptop. Just open and learn. No app to install." },
         "time": { "title": "5 minutes a day", "desc": "Designed to fit between homework and dinner. Short, focused, and finishable." },
