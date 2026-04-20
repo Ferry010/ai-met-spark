@@ -129,7 +129,9 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 
       {step === "fact" && (
         <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center">
-          <div className="text-5xl mb-3" aria-hidden>{lesson.emoji}</div>
+          <div className="flex justify-center mb-3">
+            <Spark size={72} mood="hinting" />
+          </div>
           <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
           <p className="font-display text-2xl sm:text-3xl leading-snug">{lesson.fact}</p>
           <Button onClick={() => goNext("fact")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">

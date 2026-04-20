@@ -106,7 +106,13 @@ export const WorldPage = () => {
                     <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${
                       isDone ? "bg-success text-success-foreground" : locked ? "bg-muted" : "bg-primary/10"
                     }`}>
-                      {isDone ? <Check className="h-6 w-6" /> : locked ? <Lock className="h-5 w-5 text-muted-foreground" /> : lesson.emoji}
+                      {isDone ? (
+                        <Check className="h-6 w-6" />
+                      ) : locked ? (
+                        <Lock className="h-5 w-5 text-muted-foreground" />
+                      ) : (
+                        <Spark size={44} mood="pointing" animate={false} />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-xs font-display text-muted-foreground">Les {lesson.id}</div>
