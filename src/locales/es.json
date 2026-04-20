@@ -47,8 +47,8 @@
       "title": "Todo lo que tu hijo necesita en un curso divertido",
       "items": {
         "worlds": { "n": "3", "label": "Mundos", "desc": "Seguro, Listo y Más Fuerte. Cada mundo desbloquea un nuevo superpoder." },
-        "lessons": { "n": "12", "label": "Lecciones", "desc": "Aventuras de 5 a 7 minutos. Perfectas después del cole." },
-        "quizzes": { "n": "36", "label": "Mini-quizzes", "desc": "Toca, ordena y elige. Sin maratones aburridos de opción múltiple." },
+        "lessons": { "n": "24", "label": "Lecciones", "desc": "Aventuras de 5 a 7 minutos. Perfectas después del cole." },
+        "quizzes": { "n": "72", "label": "Mini-quizzes", "desc": "Toca, ordena y elige. Sin maratones aburridos de opción múltiple." },
         "certificate": { "n": "1", "label": "Certificado", "desc": "Un certificado PDF real con nombre que los niños pueden imprimir y mostrar." }
       }
     },

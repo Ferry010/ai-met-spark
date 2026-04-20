@@ -47,8 +47,8 @@
       "title": "Everything your kid needs in one playful course",
       "items": {
         "worlds": { "n": "3", "label": "Worlds", "desc": "Safe, Smart, and Stronger. Each world unlocks a new superpower." },
-        "lessons": { "n": "12", "label": "Lessons", "desc": "Bite-sized adventures of 5 to 7 minutes each. Perfect after school." },
-        "quizzes": { "n": "36", "label": "Mini-quizzes", "desc": "Hands-on tap, sort, and choose puzzles. No boring multiple choice marathons." },
+        "lessons": { "n": "24", "label": "Lessons", "desc": "Bite-sized adventures of 5 to 7 minutes each. Perfect after school." },
+        "quizzes": { "n": "72", "label": "Mini-quizzes", "desc": "Hands-on tap, sort, and choose puzzles. No boring multiple choice marathons." },
         "certificate": { "n": "1", "label": "Certificate", "desc": "A real, named PDF certificate kids can print and show off." }
       }
     },
