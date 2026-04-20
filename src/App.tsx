@@ -92,11 +92,44 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route path="/teacher/login" element={<TeacherLogin />} />
           <Route
             path="/teacher"
             element={
               <ProtectedRoute requireRole="teacher">
-                <TeacherDashboard />
+                <ClassroomDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/world/:id"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <WorldDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/world/:worldId/lesson/:lessonId"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <LessonDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/class/settings"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <ClassSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teacher/demo"
+            element={
+              <ProtectedRoute requireRole="teacher">
+                <LessonDemo />
               </ProtectedRoute>
             }
           />
