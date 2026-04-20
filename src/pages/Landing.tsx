@@ -222,6 +222,7 @@ export const Landing = () => {
             sample={t("landing.pillars.safe.sample")}
             bg="bg-gradient-sky"
             text="text-primary-foreground"
+            skillsLabel={t("landing.pillars.skillsLabel")}
           />
           <Pillar
             icon={<Brain className="h-7 w-7 text-secondary-foreground" />}
@@ -232,6 +233,7 @@ export const Landing = () => {
             sample={t("landing.pillars.smart.sample")}
             bg="bg-gradient-sunshine"
             text="text-secondary-foreground"
+            skillsLabel={t("landing.pillars.skillsLabel")}
           />
           <Pillar
             icon={<Rocket className="h-7 w-7 text-white" />}
@@ -242,6 +244,7 @@ export const Landing = () => {
             sample={t("landing.pillars.stronger.sample")}
             bg="bg-gradient-coral"
             text="text-accent-foreground"
+            skillsLabel={t("landing.pillars.skillsLabel")}
           />
         </div>
       </section>
