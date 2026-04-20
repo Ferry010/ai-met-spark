@@ -14,6 +14,8 @@ export default {
       fontFamily: {
         display: ['Fredoka', 'system-ui', 'sans-serif'],
         body: ['Nunito', 'system-ui', 'sans-serif'],
+        fraunces: ['Fraunces', 'Georgia', 'serif'],
+        'dm-sans': ['DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
