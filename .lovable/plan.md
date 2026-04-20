@@ -1,112 +1,93 @@
 
 
-# Spark vliegt binnen met jetpack, retro arcade-stijl
+# Wereld 1 — rijke V1.0 curriculum integreren
 
-Spark krijgt een veel dramatischer entree: hij komt diagonaal de kaart in vliegen vanuit linksonder buiten beeld, met een vlammende jetpack-staart achter zich aan, een korte sonic-boom flits bij het remmen, en stopt dan met een lichte bounce in het midden. Daarna pas zwaait hij en verschijnt de bubble, zoals nu.
+Je hebt een complete, veel rijkere V1.0 van Wereld 1 aangeleverd (8 lessen, ~600+ regels content, met Spark's persoonlijke stem, langere theorieblokken, `sparkMiddle`-tussenstuk, en meer interactieve oefeningen). Ik vervang de bestaande Wereld-1 lessen 1.1 t/m 1.8 in `src/content/lessons.ts` door deze nieuwe content, en breid de structuur licht uit zodat alles 1-op-1 past.
 
-Denk: Sonic, Mega Man, Rayman intro-vibes, maar met moderne soft glow en geen pixel-art (Spark blijft zijn ronde SVG-zelf).
+## Wat de leerling ziet
 
-## Wat de leerling ziet (timing)
+Elke les van Wereld 1 krijgt nu de volledige 8-stappen flow uit jouw bron:
+1. **Spark intro** — langere, persoonlijke haak (bv. TikTok-voorbeeld, wachtkamer-test, paus-in-pufferjas)
+2. **Theorie deel 1** — kernidee met heading + body
+3. **Wist je dat?** — verrassend weetje (Deep Blue, Samsung-leak, Trump-arrestatie, etc.)
+4. **Spark tussen** *(nieuw)* — korte overgang van Spark in een mini speech-bubble
+5. **Theorie deel 2** — verdieping (drie AI-checks, drie scam-signalen, STOP-lijst, etc.)
+6. **Oefening** — interactieve component (sort, tap-reveal of multiple-choice scenarios)
+7. **Samenvatting** — 3 bullets terugblik
+8. **Quiz** — 3 vragen met uitleg
 
-```text
-0.0s  Lege kaart, alleen titel
-0.1s  WHOOSH-trail: 3 streep-lijnen flitsen diagonaal van linksonder naar midden
-0.2s  Spark schiet binnen langs dezelfde diagonaal, lichte motion-blur via skew
-      Achter Spark: jet-flame (oranje/geel/wit kegel) die meebeweegt
-0.55s Spark "remt af", squash-and-stretch (1.15x breed, 0.9x hoog) + speed-lines verdwijnen
-0.65s Sonic-boom ring expandeert vanaf Spark (witte cirkel die opschaalt + fade-out)
-0.75s Spark settled in midden, jet-flame krimpt weg en verdwijnt
-0.9s  Spark zwaait (bestaand)
-1.2s  Bubble pop + typewriter (bestaand)
-```
+Plus voor les 1.8 (Wereld-baas-test): 8 mix-vragen uit alle lessen + badge "Schild van Waakzaamheid".
 
 ## Technische uitvoering
 
-### a) Nieuw component `SparkJetEntry` in `LessonRunner.tsx`
+### a) `src/content/lessons.ts` — datastructuur uitbreiden
 
-Wrapper rond de bestaande `<Spark waving={...} />` die de fly-in regisseert. Het is puur een geanimeerde container plus een paar absoluut-gepositioneerde decoratieve SVG/div-laagjes (flame, speed-lines, shockwave-ring) die op timed-delays animeren en dan unmounten/fade-outen.
-
-Structuur:
-```text
-<div class="relative" >
-  <SpeedLines />        // 3 streepjes, animate-spark-speedlines, fade out na 0.6s
-  <JetFlame />          // kegel-div met gradient, animate-spark-jet-trail
-  <ShockwaveRing />     // cirkel die opschaalt 0->2.5x + fade, na 0.6s delay
-  <div class="animate-spark-jet-fly">
-     <Spark waving={...} />
-  </div>
-</div>
+Eén nieuw optioneel veld op `Lesson`:
+```ts
+/** STAP 4b — korte overgang van Spark tussen wist-je-dat en theorie deel 2. */
+sparkMiddle?: string;
 ```
 
-Na ~1s zet een `useEffect` met timeout `entryDone=true` en renderen we alleen nog `<Spark waving={...} />` zonder de decoratie, zodat de flame niet blijft hangen.
+Wereld 1 (de hele `lessons: [...]` block voor world id 1) wordt 1-op-1 vervangen met de 8 nieuwe lessen uit jouw JSON. Wereld 2 en 3 blijven ongewijzigd.
 
-### b) Nieuwe keyframes in `src/index.css`
+**Mapping van JSON → bestaande types**:
+- `sparkIntro` → `sparkIntro`
+- `theoryPart1.heading + body` → samengevoegd in `theoryIntro` (heading als **bold** eerste regel, daarna body)
+- `wistJeDat.body` → `fact`
+- `sparkMiddle` → `sparkMiddle` (nieuw veld)
+- `theoryPart2.heading + body` → samengevoegd in `theoryDeep`
+- `summary` → `summary`
+- `quiz` (3 vragen) → `quiz` (mc, true_false en tap_multi → allemaal als `multiChoice` met `correctIndex` of als 2-optie waar/niet-waar)
 
-```css
-@keyframes spark-jet-fly {
-  0%   { opacity: 0; transform: translate(-180%, 140%) scale(0.5) skew(-12deg, 4deg); }
-  55%  { opacity: 1; transform: translate(0, 0) scale(1.15, 0.9) skew(0,0); }
-  70%  { transform: scale(0.92, 1.08); }
-  85%  { transform: scale(1.04, 0.98); }
-  100% { transform: scale(1); }
-}
-@keyframes spark-jet-trail {
-  0%   { opacity: 0; transform: translate(-180%, 140%) scaleX(0.4); }
-  40%  { opacity: 1; }
-  60%  { opacity: 1; transform: translate(0,0) scaleX(1); }
-  80%  { opacity: 0.4; transform: translate(20%, -10%) scaleX(0.2); }
-  100% { opacity: 0; }
-}
-@keyframes spark-speedlines {
-  0%   { opacity: 0; transform: translate(-200%, 160%) scaleX(0); }
-  30%  { opacity: 1; transform: translate(-50%, 40%) scaleX(1); }
-  60%  { opacity: 0; transform: translate(0,0) scaleX(0.6); }
-  100% { opacity: 0; }
-}
-@keyframes spark-shockwave {
-  0%   { opacity: 0; transform: scale(0.2); }
-  20%  { opacity: 0.7; }
-  100% { opacity: 0; transform: scale(2.6); }
-}
+**Mapping van `exercise.type` → `InteractiveStep` kinds**:
+| JSON type | Mapt naar |
+|---|---|
+| `drag_sort` (les 1.1) | `sortBuckets` met 2 buckets "Dit is AI" / "Dit is geen AI" |
+| `tap_yes_no` (les 1.2) | `sortBuckets` met "Kan wel" / "Geheim houden" |
+| `visual_check` (les 1.3) | `tapReveal` — elk item label = scenario, reveal = explanation |
+| `scenario_choice` (les 1.4, 1.7) | We maken hiervoor een **kleine uitbreiding** van `multiChoice`: één extra optionele `kind: "scenarioChoice"` met meerdere scenario's elk met eigen opties. Of, simpeler: we mappen elk scenario naar een tap-reveal item waar je tikt om het juiste antwoord te zien. **Voorkeur**: tap-reveal mapping, want geen schema-wijziging in DB-overrides nodig. Trade-off: minder "test"-gevoel, meer "lees-en-leer". Dit accepteer ik bewust voor scope.
+| `signal_spotter` (les 1.5) | `tapReveal` — scenario als label, signalen + uitleg in reveal |
+| `stop_sorter` (les 1.6) | `sortBuckets` 3-bucket variant — **kleine schema-uitbreiding nodig**: `sortBuckets` ondersteunt nu 2 buckets, ik maak het generiek (n buckets). Of we groeperen "depends" onder "ok" voor nu. **Voorkeur**: ik laat `sortBuckets` 3 buckets toe (string array, type allows already), de rendering in `LessonRunner` past zich aan.
+| `final_test` (les 1.8) | Mappen naar de bestaande `quiz` array — het hele "exercise" wordt onderdeel van quiz |
+
+### b) `src/components/LessonRunner.tsx` — `sparkMiddle` step toevoegen
+
+- Nieuwe step `"sparkMiddle"` toegevoegd na `"fact"` en vóór `"theoryDeep"` in `buildSteps`.
+- Render = pillar-gradient kaart met Spark mascotte links (mood `"explaining"`) + speech-bubble met de `sparkMiddle` tekst en een "Verder" knop. Visueel lichter dan de theorie-stappen.
+- Step alleen toevoegen als `lesson.sparkMiddle?.trim()` bestaat (backwards compatible voor wereld 2/3).
+
+### c) `src/pages/AdminLessons.tsx` — extra accordion-item
+
+- Nieuw veld `sparkMiddle` in `RowState` + form, met accordion-item "3b. Spark tussenstuk" tussen wist-je-dat en theorie deel 2.
+- "Laad standaard" knop hiervoor.
+- Save schrijft naar `lesson_overrides.spark_middle` (zie d).
+
+### d) Database migratie
+
+Nieuwe kolom op `lesson_overrides`:
+```sql
+ALTER TABLE public.lesson_overrides ADD COLUMN spark_middle text;
 ```
+Plus bijwerken van `useLessonOverrides.ts` om `spark_middle` te lezen en mappen naar `sparkMiddle`.
 
-Plus utility-classes met passende `animation` shorthand (delays: speedlines 0.1s, jet-fly 0.15s, shockwave 0.6s).
-
-### c) Jet-flame visueel
-
-Pure CSS/SVG, geen asset. Een afgeronde driehoek-div met een conic of linear gradient `from white via #FFD93C to #FF6B35 to transparent`, blur-sm, mix-blend-screen voor extra glow. Geplaatst achter Spark's onderkant via `position:absolute; right:60%; bottom:30%; transform-origin: right center`.
-
-### d) Speed-lines
-
-3 dunne witte/gele `<div class="h-1 w-16 rounded-full bg-white/80">` met staggered animation-delays (0s, 0.05s, 0.1s) op verschillende y-offsets. Geven het arcade-snelheidsgevoel.
-
-### e) Shockwave-ring
-
-Eén `<div class="absolute inset-0 rounded-full border-4 border-white/70">` die met `spark-shockwave` opschaalt en fade-out, direct nadat Spark "land". Mix-blend-screen voor een filmische flits.
-
-### f) Reduced motion
-
-Alle nieuwe `animate-spark-jet-*` en `animate-spark-speedlines` / `animate-spark-shockwave` worden in het bestaande `@media (prefers-reduced-motion: reduce)` block uitgezet. Spark verschijnt dan instant op zijn plek.
-
-### g) Geen impact op andere stappen
-
-Theory, fact, summary, quiz blijven exact zoals nu. De jetpack-entry vervangt alleen de huidige `animate-spark-fly-in` op de intro-stap. De wave + bubble + "Kom op!"-knop volgen daarna ongewijzigd, met timing-delays iets opgeschoven (wave op 0.9s ipv 0.7s, bubble op 1.2s ipv 1.0s) zodat de entry kan ademen.
+### e) `Spark` toonde "Wist je dat?" met `mood="hinting"` — blijft zo. Voor de nieuwe `sparkMiddle` stap gebruiken we `mood="explaining"`.
 
 ## Bestanden
 
 **Aangepast**
-- `src/index.css` , 4 nieuwe keyframes + utility-classes + reduced-motion entries
-- `src/components/LessonRunner.tsx` , nieuwe `SparkJetEntry` sub-component, vervangt `animate-spark-fly-in` in `LessonKickoff`, timings shift
+- `src/content/lessons.ts` — `Lesson.sparkMiddle?` toegevoegd, Wereld 1 lessen volledig vervangen
+- `src/components/LessonRunner.tsx` — nieuwe `"sparkMiddle"` step + render, generieke `sortBuckets` rendering voor 3 buckets
+- `src/pages/AdminLessons.tsx` — nieuw form-veld `sparkMiddle` + accordion-item + save-mapping
+- `src/hooks/useLessonOverrides.ts` — `spark_middle` ondersteuning
 
-**Niet aangeraakt**
-- `Spark.tsx` (jet-flame is een externe laag, Spark zelf blijft hetzelfde)
-- `SparkBubble.tsx`
-- Lesson data, andere stappen, admin
+**Nieuwe migratie**
+- `lesson_overrides.spark_middle` (text, nullable)
 
 ## Wat ik bewust NIET doe
 
-- Geen geluid (kan later, vraagt user-gesture).
-- Geen permanente jetpack op Spark, alleen bij de intro-entry.
-- Geen pixel-art / 8-bit textuur, het blijft Spark's huidige ronde SVG met moderne soft glow.
-- Geen herhaling als je terug-navigeert binnen dezelfde stap; speelt 1x bij mount van intro.
+- Wereld 2 en 3 blijven exact zoals ze nu zijn (jij hebt alleen Wereld 1 aangeleverd).
+- Geen separaat `scenarioChoice` interactive-kind; ik map het op `tapReveal`. Als je later échte multi-keuze scenario's wil, voeg ik dan een nieuw kind toe.
+- Geen wijziging aan badges, certificaat, of dashboard-flow.
+- Geen automatische migratie van bestaande `lesson_overrides` records — die blijven werken, het nieuwe `spark_middle` veld is optioneel.
+- Quiz-vragen van type `tap_multi` (meerdere goede antwoorden) worden voor nu gerenderd als gewone multiple-choice met de eerste juiste optie als `correctIndex`. Echte multi-select quiz vergt grotere refactor — los ik in een vervolg-iteratie op als je dat wil.
 
