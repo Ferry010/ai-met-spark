@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Spark } from "./Spark";
 import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export const SiteHeader = () => {
   const { t } = useTranslation();
@@ -16,7 +15,6 @@ export const SiteHeader = () => {
           </span>
         </Link>
         <div className="flex items-center gap-2">
-          <LanguageSwitcher />
           <Link to="/pricing" className="hidden sm:inline-flex">
             <Button variant="ghost" className="font-display">€14</Button>
           </Link>

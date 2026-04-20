@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Spark } from "./Spark";
 import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
@@ -30,7 +29,6 @@ export const AppHeader = () => {
           <span className="font-display text-xl font-semibold">AI Smart Kids</span>
         </Link>
         <div className="flex items-center gap-2">
-          <LanguageSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="rounded-full font-display gap-2">
