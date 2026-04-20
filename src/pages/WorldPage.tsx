@@ -19,9 +19,10 @@ export const WorldPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, profile } = useAuth();
-  const world = getWorld(Number(id));
+  const baseWorld = getWorld(Number(id));
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [paywall, setPaywall] = useState(false);
+  const [overrides, setOverrides] = useState<Record<string, { title?: string | null; emoji?: string | null }>>({});
 
   useEffect(() => {
     if (!user) return;
@@ -30,7 +31,26 @@ export const WorldPage = () => {
       .select("lesson_id")
       .eq("user_id", user.id)
       .then(({ data }) => setCompleted(new Set((data ?? []).map((r: any) => r.lesson_id))));
+    supabase
+      .from("lesson_overrides")
+      .select("lesson_id, title, emoji")
+      .then(({ data }) => {
+        const map: Record<string, { title?: string | null; emoji?: string | null }> = {};
+        (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title, emoji: o.emoji }));
+        setOverrides(map);
+      });
   }, [user]);
+
+  const world = baseWorld
+    ? {
+        ...baseWorld,
+        lessons: baseWorld.lessons.map((l) => ({
+          ...l,
+          title: overrides[l.id]?.title?.trim() || l.title,
+          emoji: overrides[l.id]?.emoji?.trim() || l.emoji,
+        })),
+      }
+    : undefined;
 
   if (!world) {
     return (
