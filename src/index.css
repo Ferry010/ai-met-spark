@@ -182,3 +182,53 @@
   95% { transform: scaleY(0.1); }
 }
 .spark-eye { animation: blink 4s infinite; transform-origin: center; }
+
+/* ============================================================
+   AI Smart Classroom — scoped teacher theme (under .classroom-theme)
+   ============================================================ */
+.classroom-theme {
+  /* Brand */
+  --classroom-teal: 188 33% 53%;        /* #5AA6B2 */
+  --classroom-teal-dark: 188 35% 38%;
+  --classroom-amber: 36 44% 61%;        /* #C9A96E */
+  --classroom-dark: 222 17% 8%;         /* #0F1117 */
+  --classroom-muted: 220 9% 46%;        /* #6B7280 */
+  --classroom-bg: 0 0% 98%;             /* #FAFAFA */
+  --classroom-surface: 0 0% 100%;
+  --classroom-border: 220 13% 91%;
+  --classroom-success: 158 64% 40%;     /* #10B981 */
+  --classroom-warning: 0 84% 60%;       /* #EF4444 */
+
+  /* Worlds */
+  --world-1: 217 91% 60%;               /* #3B82F6 */
+  --world-2: 38 92% 50%;                /* #F59E0B */
+  --world-3: 19 84% 60%;                /* #EF7C42 */
+
+  background-color: hsl(var(--classroom-bg));
+  color: hsl(var(--classroom-dark));
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 400;
+  min-height: 100vh;
+}
+
+.classroom-theme h1,
+.classroom-theme h2,
+.classroom-theme h3,
+.classroom-theme h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: hsl(var(--classroom-dark));
+}
+
+@keyframes shimmer-gold {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--classroom-amber) / 0.0); }
+  50% { box-shadow: 0 0 16px 2px hsl(var(--classroom-amber) / 0.55); }
+}
+.classroom-shimmer { animation: shimmer-gold 2.6s ease-in-out infinite; }
+
+@keyframes draw-ring {
+  from { stroke-dashoffset: var(--ring-circ, 100); }
+}
+.classroom-ring-anim { animation: draw-ring 0.9s ease-out both; }
+
