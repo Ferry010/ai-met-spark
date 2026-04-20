@@ -1,134 +1,72 @@
 
 
-# Admin view-switcher, lesson-structuur uitbreiden, "sleep"-copy fixen
+# Spark als kick-off in elke les
 
-Drie samenhangende wijzigingen: jij krijgt als admin een view-switcher om alle perspectieven te bekijken, de les-structuur in de admin-backend wordt veel rijker (met alle 7 stappen), en de "sleep"-teksten worden vervangen door "tik".
+Spark krijgt een opvallende, geanimeerde entree bij de start van elke les. In plaats van het huidige statische "happy" Spark-icoontje op de intro-stap, vliegt Spark binnen, zwaait, en kondigt de les aan met een typewriter speech-bubble. Daarna wordt de "Kom op!" knop pas zichtbaar.
 
-## 1. Admin role + view-switcher
+## Wat de leerling ziet
 
-Ferry heeft al de `admin` rol in de database (gecheckt). Geen database-wijziging nodig. Wel een nieuwe UI:
+Op de intro-stap van elke les (de eerste kaart die `LessonRunner` toont):
 
-**Nieuw component `AdminViewSwitcher`** (zwevende balk onderaan, alleen zichtbaar voor admins):
+1. **0.0s**: Lege kaart met alleen de titel zichtbaar (fade-in)
+2. **0.2s**: Spark vliegt binnen vanuit links-onder, schaalt op naar normaal formaat met een lichte bounce. Antenne pulseert.
+3. **0.7s**: Spark zwaait kort (arm wuift 2x).
+4. **1.0s**: Speech-bubble pop't naast Spark omhoog ("scale-in" + tail).
+5. **1.0s -> ~3s**: `sparkIntro`-tekst typt zich uit (bestaande `SparkBubble` typewriter), bv. "Hoi! Klaar voor les 1.3? Vandaag leer je over deepfakes."
+6. **na typewriter klaar**: "Kom op!" knop fade-in onder de bubble.
 
-```text
-+------------------------------------------+
-| 👁 Bekijk als:  [Leerling] [Leerkracht]  |
-|                 [Ouder]    [School]      |
-+------------------------------------------+
-```
+Tikken op de bubble slaat het typen over (bestaand gedrag van `SparkBubble`).
 
-- Renders globaal in `App.tsx`, leest `isAdmin` uit `useAuth`. Niet-admins zien niets.
-- Klik op "Leerling" -> navigate `/dashboard` (bestaande kid-dashboard)
-- Klik op "Leerkracht" -> `/teacher` (bestaande classroom dashboard)
-- Klik op "Ouder" -> `/admin/preview/parent` (nieuwe pagina, ouder-rapport van een mock-kind)
-- Klik op "School" -> `/admin/preview/school` (nieuwe pagina, multi-klas overzicht)
-- Huidige route highlight in de switcher
-- "Verberg" knop om de balk weg te klikken voor 1 sessie (sessionStorage)
+## Technische uitvoering
 
-**Nieuwe pagina `ParentPreview` (`/admin/preview/parent`)**
-Mock ouder-rapport van leerling "Mila": naam, leeftijd, school, voortgangsbalk (X/24 lessen), badges (schild/kompas/ster), tijdlijn laatste 10 lessen, "Download rapport" knop. Hergebruikt `BadgeDisplay`. Gebruikt mock-data, geen DB.
+### a) Spark krijgt een nieuwe `mood: "entering"` + waving variant
+In `src/components/Spark.tsx`:
+- Extra `waving?: boolean` prop. Als true: rechterarm tekent als opgeheven (lijn van schouder omhoog naar handje rechtsboven), met een korte CSS-animatie `spark-wave` (transform-origin op de schouder, rotate -15deg <-> +15deg, 2 cycles dan stop).
 
-**Nieuwe pagina `SchoolPreview` (`/admin/preview/school`)**
-Mock school-overzicht "OBS De Regenboog": 3 klassen (Groep 6A, 7A, 8A), per klas: aantal leerlingen, klas-voortgang, aantal diploma's. Tabel + "Bekijk klas" knop die naar `/teacher` linkt.
-
-ProtectedRoute krijgt voor deze 2 routes `requireRole="admin"`.
-
-## 2. Lesson-structuur uitbreiden naar 7 stappen
-
-### Nieuwe data-structuur in `src/content/lessons.ts`
-
-Het type `Lesson` krijgt extra optionele velden zodat bestaande 24 lessen blijven werken, maar de admin-editor de volle structuur toont:
-
-```ts
-export interface Lesson {
-  id: string;
-  worldId: 1 | 2 | 3;
-  pillar: Pillar;
-  title: string;
-  emoji: string;
-  // STAP 1: Intro
-  sparkIntro?: string;
-  // STAP 2: Theorie deel 1 (NIEUW)
-  theoryIntro?: string;
-  // STAP 3: Wist je dat
-  fact: string;
-  // STAP 4: Theorie deel 2 (NIEUW)
-  theoryDeep?: string;
-  // STAP 5: Oefening
-  interactive: InteractiveStep;
-  // STAP 6: Samenvatting (NIEUW)
-  summary?: string[];   // bullet points
-  // STAP 7: Oefenvragen
-  quiz: QuizQuestion[];
-  reflection?: string;
-  bossTest?: boolean;
+### b) Nieuwe keyframes in `src/index.css`
+```css
+@keyframes spark-fly-in {
+  0%   { opacity: 0; transform: translate(-40px, 30px) scale(0.6) rotate(-8deg); }
+  60%  { opacity: 1; transform: translate(0, -6px) scale(1.05) rotate(2deg); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0); }
+}
+@keyframes spark-wave {
+  0%, 100% { transform: rotate(-10deg); }
+  50%      { transform: rotate(20deg); }
+}
+@keyframes bubble-pop {
+  0%   { opacity: 0; transform: scale(0.7) translateY(8px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 ```
+Plus utility-classes `.animate-spark-fly-in` (0.6s ease-out, runs once), `.animate-spark-wave` (0.5s × 2), `.animate-bubble-pop` (0.35s 0.8s ease-out both).
 
-Bestaande lessen renderen de nieuwe stappen alleen als ze gevuld zijn. Geen migratie nodig op de 24 bestaande lessen, ze blijven gewoon werken (theoryIntro/theoryDeep/summary worden simpel overgeslagen).
+### c) Nieuwe `LessonKickoff` sub-component in `src/components/LessonRunner.tsx`
+Vervangt de huidige inline intro-`section`. Beheert de eigen mini-state machine met `setTimeout` of CSS animation-delays:
+- `phase: "fly" | "wave" | "talk" | "ready"`
+- Kaart blijft hetzelfde gekleurde pillar-kaart (`PILLAR_BG[lesson.pillar]`).
+- Spark gerenderd met `animate-spark-fly-in`; na 0.6s krijgt de arm `animate-spark-wave`.
+- Bubble verschijnt met `animate-bubble-pop` (delay 0.8s) en gebruikt bestaand `SparkBubble` met `lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!"`.
+- "Kom op!" knop heeft `opacity-0 animate-fade-in` met delay gelijk aan typewriter-duur (`text.length * 18ms + 400ms`).
+- `prefers-reduced-motion`: alle animaties uit, alles meteen zichtbaar (mediaquery in CSS).
 
-### `LessonRunner` aanpassen
+### d) Geen impact op andere stappen
+Theory, fact, summary, quiz blijven exact zoals nu. De kick-off speelt alleen op stap `intro`, dus elke les start ermee, ook bij overrides en in de admin preview.
 
-Stap-flow wordt: `intro -> theoryIntro? -> fact -> theoryDeep? -> interactive -> summary? -> quiz -> done`. Optionele stappen die leeg zijn worden overgeslagen. Bovenin een progress-balkje dat toont waar je bent (1/7, 2/7 etc).
-
-Twee nieuwe stap-componenten:
-- **TheoryCard**: rustige kaart met Spark-bubble, kop "Even uitleggen" of "Nog iets erbij", lange leesbare tekst (max 250 woorden), "Begrepen, ga verder" knop.
-- **SummaryCard**: groene accent-kaart "Onthoud dit", bullet-lijst met checkmarks, "Klaar voor de quiz" knop.
-
-### `AdminLessons.tsx` editor uitbreiden
-
-Per les krijg je nu een kaart met collapsible secties (accordion) voor alle 7 stappen, in volgorde:
-1. Intro (Spark-zin) , bestaand
-2. Theorie deel 1 , NIEUW textarea
-3. Wist je dat (fact) , bestaand
-4. Theorie deel 2 , NIEUW textarea
-5. Oefening (interactive JSON) , bestaand
-6. Samenvatting , NIEUW textarea, één bullet per regel
-7. Quiz , bestaand
-
-Boven elke wereld komt een **wereld-kaart-header** met titel ("Wereld 1, VEILIG") en daaronder ALLE 8 lessen als losse kaarten met eigen titel. Dit beantwoordt "elke module heeft een eigen kaart met titel en lessen, elke losse les heeft een titel".
-
-### Database
-
-`lesson_overrides` tabel uitbreiden met 3 nieuwe nullable kolommen via migratie:
-```sql
-ALTER TABLE public.lesson_overrides
-  ADD COLUMN theory_intro text,
-  ADD COLUMN theory_deep text,
-  ADD COLUMN summary text[];
-```
-
-`useLessonOverrides` hook leest deze velden uit en patcht ze over de defaults. Bestaande overrides blijven werken (kolommen zijn nullable).
-
-## 3. "Sleep" copy fixen
-
-De `sortBuckets` interactie is in code al klikken (knoppen), maar de prompts zeggen "Sleep". Vervang in `src/content/lessons.ts`:
-- Les 1.1: "Sleep elk kaartje naar de juiste bak" -> "Tik op de juiste bak voor elk kaartje"
-- Les 1.5: "Scam of echt? Sleep elk bericht naar de juiste bak:" -> "Scam of echt? Tik op de juiste bak voor elk bericht:"
-
-Plus een grep door de hele `lessons.ts` om eventueel resterende "sleep/sleur/drag" te vervangen door "tik/kies".
-
-Daarnaast in `LessonRunner` zelf: de SortBuckets-knop tekst "Plaats elk item" -> "Tik elk item aan".
-
-## Bestanden, nieuw vs aangepast
-
-**Nieuw**
-- `src/components/AdminViewSwitcher.tsx`, zwevende balk
-- `src/pages/admin/ParentPreview.tsx`
-- `src/pages/admin/SchoolPreview.tsx`
-- Migratie: `lesson_overrides` 3 nieuwe kolommen
+## Bestanden
 
 **Aangepast**
-- `src/App.tsx`, render `AdminViewSwitcher` globaal + 2 nieuwe routes
-- `src/content/lessons.ts`, type uitbreiden + sleep-copy weg
-- `src/components/LessonRunner.tsx`, 7-stappen flow + TheoryCard + SummaryCard
-- `src/pages/AdminLessons.tsx`, editor uitbreiden met theorie/samenvatting velden + accordion
-- `src/hooks/useLessonOverrides.ts`, 3 nieuwe velden meelezen
+- `src/components/Spark.tsx` — `waving` prop + arm-render
+- `src/components/LessonRunner.tsx` — intro-stap vervangen door nieuwe `LessonKickoff` sub-component
+- `src/index.css` — 3 nieuwe keyframes + utility-classes + `prefers-reduced-motion` block
+
+**Niet aangeraakt**
+- `SparkBubble.tsx` (bestaande typewriter is precies wat we nodig hebben)
+- Lesson data, routing, admin editor
 
 ## Wat ik bewust NIET doe
 
-- Geen rol-toekenning in DB (Ferry is al admin).
-- Geen herschrijving van bestaande 24 lessen met nieuwe theorie/samenvatting tekst, dat doe je via de admin-editor wanneer je wil. Het systeem ondersteunt het nu wel.
-- Geen aparte "module"-laag, je koos voor 1 module per wereld, dus de wereld-kaart IS de module-kaart (alleen labelwijziging in admin: "Wereld 1, module VEILIG").
-- Geen drag-and-drop functionaliteit, alles blijft tap-based.
+- Geen geluid (kan later, vraagt user-gesture + asset).
+- Geen herhaling van de kick-off binnen een sessie als je dezelfde les opnieuw opent — speelt elke keer dat de intro-stap mount, simpel en voorspelbaar.
+- Geen kick-off op de admin-preview "jump to step" als je direct naar quiz springt; alleen op echte intro.
 
