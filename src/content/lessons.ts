@@ -46,7 +46,9 @@ export interface Lesson {
   theoryIntro?: string;
   /** STAP 3, wist-je-dat. */
   fact: string;
-  /** STAP 4, tweede theorieblok (optioneel). */
+  /** STAP 4, korte overgang van Spark tussen wist-je-dat en theorie deel 2. */
+  sparkMiddle?: string;
+  /** STAP 5, tweede theorieblok (optioneel). */
   theoryDeep?: string;
   /** STAP 5, oefening. */
   interactive: InteractiveStep;
