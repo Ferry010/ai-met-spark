@@ -1,6 +1,15 @@
 import { cn } from "@/lib/utils";
 
-export type SparkMood = "default" | "happy" | "thinking" | "celebrating" | "sad";
+export type SparkMood =
+  | "default"
+  | "happy"
+  | "thinking"
+  | "celebrating"
+  | "sad"
+  | "explaining"
+  | "hinting"
+  | "questioning"
+  | "pointing";
 
 interface SparkProps {
   mood?: SparkMood;
@@ -10,13 +19,15 @@ interface SparkProps {
 }
 
 /**
- * Spark — friendly round mascot for AI Smart Kids.
+ * Spark — friendly round mascot and AI Smart Kids' animated teacher.
  * Pure inline SVG so it scales crisply and can be themed via design tokens.
  */
 export const Spark = ({ mood = "default", size = 160, className, animate = true }: SparkProps) => {
   const isHappy = mood === "happy" || mood === "celebrating";
   const isSad = mood === "sad";
-  const isThinking = mood === "thinking";
+  const isThinking = mood === "thinking" || mood === "explaining";
+  const isQuestioning = mood === "questioning" || mood === "hinting";
+  const isPointing = mood === "pointing";
 
   return (
     <svg
@@ -24,7 +35,7 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true 
       width={size}
       height={size}
       className={cn(animate && "animate-float", className)}
-      aria-label="Spark the AI Smart Kids mascot"
+      aria-label="Spark — je AI Smart Kids leraar"
       role="img"
     >
       <defs>
@@ -55,6 +66,14 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true 
       <circle cx="58" cy="120" r="14" fill="url(#sparkCheek)" />
       <circle cx="142" cy="120" r="14" fill="url(#sparkCheek)" />
 
+      {/* Eyebrows for hinting/questioning mood */}
+      {isQuestioning && (
+        <>
+          <path d="M 70 84 Q 80 78 92 86" stroke="hsl(var(--spark-dark))" strokeWidth="3" fill="none" strokeLinecap="round" />
+          <path d="M 108 86 Q 120 78 130 84" stroke="hsl(var(--spark-dark))" strokeWidth="3" fill="none" strokeLinecap="round" />
+        </>
+      )}
+
       {/* Eyes */}
       {isThinking ? (
         <>
@@ -80,7 +99,10 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true 
       {isHappy && (
         <path d="M 80 132 Q 100 152 120 132" stroke="hsl(var(--spark-dark))" strokeWidth="4" fill="hsl(var(--accent))" strokeLinecap="round" />
       )}
-      {!isHappy && !isSad && (
+      {mood === "explaining" && (
+        <ellipse cx="100" cy="138" rx="10" ry="6" fill="hsl(var(--spark-dark))" />
+      )}
+      {!isHappy && !isSad && mood !== "explaining" && (
         <path d="M 88 134 Q 100 142 112 134" stroke="hsl(var(--spark-dark))" strokeWidth="4" fill="none" strokeLinecap="round" />
       )}
       {isSad && (
@@ -88,8 +110,29 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true 
       )}
 
       {/* Side arms */}
-      <circle cx="32" cy="120" r="10" fill="hsl(var(--spark))" />
-      <circle cx="168" cy="120" r="10" fill="hsl(var(--spark))" />
+      {isPointing ? (
+        <>
+          <circle cx="32" cy="120" r="10" fill="hsl(var(--spark))" />
+          {/* right arm pointing up-right */}
+          <line x1="168" y1="120" x2="184" y2="92" stroke="hsl(var(--spark-dark))" strokeWidth="6" strokeLinecap="round" />
+          <circle cx="186" cy="88" r="11" fill="hsl(var(--spark))" />
+        </>
+      ) : (
+        <>
+          <circle cx="32" cy="120" r="10" fill="hsl(var(--spark))" />
+          <circle cx="168" cy="120" r="10" fill="hsl(var(--spark))" />
+        </>
+      )}
+
+      {/* Hint lightbulb */}
+      {mood === "hinting" && (
+        <g>
+          <circle cx="40" cy="48" r="10" fill="hsl(var(--secondary))">
+            {animate && <animate attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite" />}
+          </circle>
+          <text x="40" y="53" textAnchor="middle" fontSize="14" fill="hsl(var(--secondary-foreground))">!</text>
+        </g>
+      )}
 
       {/* Celebrating sparkles */}
       {mood === "celebrating" && (
