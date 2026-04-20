@@ -6,6 +6,20 @@ import { SparkBubble } from "@/components/SparkBubble";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
 import { Check, Star, X, Lightbulb, BookOpen, ListChecks } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { unlockAudio, playSparkEntry, playBubblePop } from "@/lib/sounds";
+
+// Unlock WebAudio on the first user gesture anywhere in the app.
+if (typeof window !== "undefined") {
+  const unlock = () => {
+    unlockAudio();
+    window.removeEventListener("pointerdown", unlock);
+    window.removeEventListener("keydown", unlock);
+    window.removeEventListener("touchstart", unlock);
+  };
+  window.addEventListener("pointerdown", unlock, { once: false });
+  window.addEventListener("keydown", unlock, { once: false });
+  window.addEventListener("touchstart", unlock, { once: false });
+}
 
 type Step = "intro" | "theoryIntro" | "fact" | "theoryDeep" | "interactive" | "summary" | "quiz" | "done";
 
@@ -209,8 +223,13 @@ const SparkJetEntry = ({ size = 140 }: { size?: number }) => {
       setEntryDone(true);
       return;
     }
+    // Small delay so the sound lines up with the visual whoosh start.
+    const sfx = window.setTimeout(() => playSparkEntry(), 120);
     const t = window.setTimeout(() => setEntryDone(true), KICKOFF_ENTRY_DURATION);
-    return () => window.clearTimeout(t);
+    return () => {
+      window.clearTimeout(sfx);
+      window.clearTimeout(t);
+    };
   }, []);
 
   if (entryDone) {
@@ -316,7 +335,10 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
       setShowButton(true);
       return;
     }
-    const t1 = window.setTimeout(() => setShowBubble(true), KICKOFF_BUBBLE_DELAY);
+    const t1 = window.setTimeout(() => {
+      setShowBubble(true);
+      playBubblePop();
+    }, KICKOFF_BUBBLE_DELAY);
     const buttonDelay = KICKOFF_BUBBLE_DELAY + text.length * KICKOFF_TYPING_SPEED + 400;
     const t2 = window.setTimeout(() => setShowButton(true), buttonDelay);
     return () => {
