@@ -33,6 +33,7 @@ const Pillar = ({
   sample,
   bg,
   text,
+  skillsLabel,
 }: {
   icon: React.ReactNode;
   emoji: string;
@@ -42,6 +43,7 @@ const Pillar = ({
   sample: string;
   bg: string;
   text: string;
+  skillsLabel: string;
 }) => (
   <div className={`rounded-3xl p-6 sm:p-8 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1 ${bg} ${text}`}>
     <div className="flex items-center gap-3 mb-4">
@@ -53,7 +55,7 @@ const Pillar = ({
     <h3 className="font-display text-3xl mb-2">{name}</h3>
     <p className="font-body text-base opacity-95 leading-relaxed mb-4">{desc}</p>
     <div className="rounded-2xl bg-white/20 p-4 mb-3">
-      <p className="text-xs font-bold uppercase tracking-wide opacity-90 mb-2">{useTranslation().t("landing.pillars.skillsLabel")}</p>
+      <p className="text-xs font-bold uppercase tracking-wide opacity-90 mb-2">{skillsLabel}</p>
       <ul className="space-y-1.5">
         {skills.map((s) => (
           <li key={s} className="flex items-start gap-2 text-sm leading-snug">
