@@ -1,7 +1,6 @@
 /**
  * AI Smart Kids , full lesson curriculum.
- * 3 worlds × 8 lessons = 24 lessons. Voor kids van 9–11 jaar
- * (pittige 8 en rustige 12 ook welkom).
+ * 3 worlds × 8 lessons = 24 lessons. Voor kids van 9 tot 11 jaar.
  */
 
 export type Pillar = "safe" | "smart" | "stronger";
