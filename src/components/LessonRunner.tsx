@@ -6,6 +6,20 @@ import { SparkBubble } from "@/components/SparkBubble";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
 import { Check, Star, X, Lightbulb, BookOpen, ListChecks } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { unlockAudio, playSparkEntry, playBubblePop } from "@/lib/sounds";
+
+// Unlock WebAudio on the first user gesture anywhere in the app.
+if (typeof window !== "undefined") {
+  const unlock = () => {
+    unlockAudio();
+    window.removeEventListener("pointerdown", unlock);
+    window.removeEventListener("keydown", unlock);
+    window.removeEventListener("touchstart", unlock);
+  };
+  window.addEventListener("pointerdown", unlock, { once: false });
+  window.addEventListener("keydown", unlock, { once: false });
+  window.addEventListener("touchstart", unlock, { once: false });
+}
 
 type Step = "intro" | "theoryIntro" | "fact" | "theoryDeep" | "interactive" | "summary" | "quiz" | "done";
 
