@@ -14,6 +14,9 @@ export interface LessonOverride {
   title: string | null;
   fact: string | null;
   emoji: string | null;
+  theory_intro: string | null;
+  theory_deep: string | null;
+  summary: string[] | null;
   interactive: InteractiveStep | null;
   quiz: QuizQuestion[] | null;
 }
@@ -25,6 +28,9 @@ const applyOverride = (lesson: Lesson, ov?: LessonOverride): Lesson => {
     title: ov.title?.trim() ? ov.title : lesson.title,
     fact: ov.fact?.trim() ? ov.fact : lesson.fact,
     emoji: ov.emoji?.trim() ? ov.emoji : lesson.emoji,
+    theoryIntro: ov.theory_intro?.trim() ? ov.theory_intro : lesson.theoryIntro,
+    theoryDeep: ov.theory_deep?.trim() ? ov.theory_deep : lesson.theoryDeep,
+    summary: ov.summary && ov.summary.length > 0 ? ov.summary : lesson.summary,
     interactive: ov.interactive ?? lesson.interactive,
     quiz: ov.quiz && ov.quiz.length > 0 ? ov.quiz : lesson.quiz,
   };

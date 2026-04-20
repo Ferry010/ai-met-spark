@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Spark } from "@/components/Spark";
 import { SparkBubble } from "@/components/SparkBubble";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
-import { Check, Star, X, Lightbulb } from "lucide-react";
+import { Check, Star, X, Lightbulb, BookOpen, ListChecks } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Step = "intro" | "fact" | "interactive" | "quiz" | "done";
+type Step = "intro" | "theoryIntro" | "fact" | "theoryDeep" | "interactive" | "summary" | "quiz" | "done";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "bg-gradient-sky text-primary-foreground",
@@ -29,13 +29,26 @@ interface LessonRunnerProps {
 
 const fireConfetti = () => confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
 
+const buildSteps = (lesson: Lesson): Step[] => {
+  const steps: Step[] = ["intro"];
+  if (lesson.theoryIntro?.trim()) steps.push("theoryIntro");
+  steps.push("fact");
+  if (lesson.theoryDeep?.trim()) steps.push("theoryDeep");
+  steps.push("interactive");
+  if (lesson.summary && lesson.summary.length > 0) steps.push("summary");
+  steps.push("quiz");
+  return steps;
+};
+
 export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpToStep }: LessonRunnerProps) => {
   const [step, setStep] = useState<Step>("intro");
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [pickedAnswer, setPickedAnswer] = useState<number | null>(null);
 
-  // Reset when lesson changes (e.g. "Doorloop alles")
+  const stepOrder = useMemo(() => buildSteps(lesson), [lesson]);
+
+  // Reset when lesson changes
   useEffect(() => {
     setStep("intro");
     setQuizIndex(0);
@@ -61,8 +74,33 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
     setStep(next);
   };
 
+  const goNext = (after: Step) => {
+    const idx = stepOrder.indexOf(after);
+    const next = stepOrder[idx + 1] ?? "done";
+    advance(next === undefined ? "done" : (next as Step) || "done");
+    if (idx + 1 >= stepOrder.length) advance("done");
+  };
+
+  const currentIndex = stepOrder.indexOf(step);
+  const showProgress = step !== "intro" && step !== "done";
+
   return (
     <>
+      {showProgress && currentIndex >= 0 && (
+        <div className="mb-4">
+          <div className="flex items-center justify-between text-xs font-display text-muted-foreground mb-1.5">
+            <span>Stap {currentIndex + 1} van {stepOrder.length}</span>
+            <span className="opacity-70">Les {lesson.id}</span>
+          </div>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <div
+              className="h-full bg-primary transition-all"
+              style={{ width: `${((currentIndex + 1) / stepOrder.length) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
+
       {step === "intro" && (
         <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
           <div className="text-xs font-display opacity-90">
@@ -77,7 +115,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             <p className="mt-1 text-base leading-snug">{lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!"}</p>
           </div>
           <Button
-            onClick={() => setStep("fact")}
+            onClick={() => goNext("intro")}
             className="mt-6 h-14 px-8 rounded-full font-display text-base bg-white text-foreground hover:bg-white/90 shadow-pop"
           >
             Kom op! →
@@ -85,19 +123,39 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
         </section>
       )}
 
+      {step === "theoryIntro" && (
+        <TheoryCard
+          eyebrow="Even uitleggen"
+          text={lesson.theoryIntro!}
+          onNext={() => goNext("theoryIntro")}
+        />
+      )}
+
       {step === "fact" && (
         <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center">
           <div className="text-5xl mb-3" aria-hidden>{lesson.emoji}</div>
           <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
           <p className="font-display text-2xl sm:text-3xl leading-snug">{lesson.fact}</p>
-          <Button onClick={() => setStep("interactive")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">
-            Probeer het →
+          <Button onClick={() => goNext("fact")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">
+            Verder →
           </Button>
         </section>
       )}
 
+      {step === "theoryDeep" && (
+        <TheoryCard
+          eyebrow="Nog iets erbij"
+          text={lesson.theoryDeep!}
+          onNext={() => goNext("theoryDeep")}
+        />
+      )}
+
       {step === "interactive" && (
-        <Interactive interactive={lesson.interactive} onDone={() => advance("quiz")} />
+        <Interactive interactive={lesson.interactive} onDone={() => goNext("interactive")} />
+      )}
+
+      {step === "summary" && (
+        <SummaryCard bullets={lesson.summary!} onNext={() => goNext("summary")} />
       )}
 
       {step === "quiz" && (
@@ -148,13 +206,64 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             {renderDoneCta?.(stars)}
           </div>
           {preview && (
-            <p className="mt-4 text-xs text-muted-foreground">Preview-modus · niets opgeslagen</p>
+            <p className="mt-4 text-xs text-muted-foreground">Preview-modus, niets opgeslagen</p>
           )}
         </section>
       )}
     </>
   );
 };
+
+const TheoryCard = ({
+  eyebrow,
+  text,
+  onNext,
+}: {
+  eyebrow: string;
+  text: string;
+  onNext: () => void;
+}) => (
+  <section className="rounded-3xl bg-card border border-border p-6 sm:p-8 shadow-soft animate-pop-in">
+    <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-primary mb-3">
+      <BookOpen className="h-4 w-4" /> {eyebrow}
+    </div>
+    <div className="flex gap-4 items-start">
+      <div className="hidden sm:block shrink-0">
+        <Spark size={72} mood="explaining" />
+      </div>
+      <div className="flex-1 prose prose-sm max-w-none">
+        {text.split(/\n\n+/).map((para, i) => (
+          <p key={i} className="text-base leading-relaxed text-foreground/90 mb-3 last:mb-0 whitespace-pre-line">
+            {para.trim()}
+          </p>
+        ))}
+      </div>
+    </div>
+    <Button onClick={onNext} className="mt-6 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+      Begrepen, ga verder →
+    </Button>
+  </section>
+);
+
+const SummaryCard = ({ bullets, onNext }: { bullets: string[]; onNext: () => void }) => (
+  <section className="rounded-3xl bg-success/10 border-2 border-success p-6 sm:p-8 shadow-soft animate-pop-in">
+    <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-success mb-3">
+      <ListChecks className="h-4 w-4" /> Onthoud dit
+    </div>
+    <h3 className="font-display text-xl mb-4">Samenvatting</h3>
+    <ul className="space-y-3">
+      {bullets.map((b, i) => (
+        <li key={i} className="flex items-start gap-3">
+          <Check className="h-5 w-5 text-success shrink-0 mt-0.5" />
+          <span className="text-base leading-snug">{b}</span>
+        </li>
+      ))}
+    </ul>
+    <Button onClick={onNext} className="mt-6 w-full h-14 rounded-full font-display bg-success text-success-foreground hover:bg-success/90 shadow-soft">
+      Klaar voor de quiz →
+    </Button>
+  </section>
+);
 
 const QuizCard = ({
   question,
@@ -387,7 +496,7 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
         disabled={!allPlaced}
         className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft"
       >
-        {allPlaced ? (allCorrect ? "Perfect! Verder →" : "Verder →") : "Plaats elk item"}
+        {allPlaced ? (allCorrect ? "Perfect! Verder →" : "Verder →") : "Tik elk item aan"}
       </Button>
     </section>
   );
