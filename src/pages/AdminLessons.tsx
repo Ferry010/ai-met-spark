@@ -5,6 +5,7 @@ import {
   ALL_LESSONS,
   WORLDS,
   type InteractiveStep,
+  type Lesson,
   type QuizQuestion,
 } from "@/content/lessons";
 import { AppHeader } from "@/components/AppHeader";
@@ -14,15 +15,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Spark } from "@/components/Spark";
-import { Save, RotateCcw, ShieldCheck, AlertCircle } from "lucide-react";
+import { LessonPreviewDialog } from "@/components/admin/LessonPreviewDialog";
+import { Save, RotateCcw, ShieldCheck, AlertCircle, Eye, PlayCircle } from "lucide-react";
 
 interface OverrideRow {
   lesson_id: string;
   title: string;
   fact: string;
   emoji: string;
-  interactive: string; // JSON string
-  quiz: string; // JSON string
+  interactive: string;
+  quiz: string;
   interactiveError?: string;
   quizError?: string;
 }
@@ -45,6 +47,8 @@ export const AdminLessons = () => {
   const [rows, setRows] = useState<Record<string, OverrideRow>>({});
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [previewLesson, setPreviewLesson] = useState<Lesson | null>(null);
+  const [walkthrough, setWalkthrough] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -80,9 +84,8 @@ export const AdminLessons = () => {
     try {
       const parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== "object") return "Moet een JSON-object zijn.";
-      if (!["multiChoice", "tapReveal", "sortBuckets"].includes(parsed.kind)) {
+      if (!["multiChoice", "tapReveal", "sortBuckets"].includes(parsed.kind))
         return "kind moet 'multiChoice', 'tapReveal' of 'sortBuckets' zijn.";
-      }
       return parsed as InteractiveStep;
     } catch (e: any) {
       return `Ongeldige JSON: ${e.message}`;
@@ -111,10 +114,8 @@ export const AdminLessons = () => {
   const save = async (id: string) => {
     if (!user) return;
     const row = rows[id];
-
     const interactiveResult = validateInteractive(row.interactive);
     const quizResult = validateQuiz(row.quiz);
-
     if (typeof interactiveResult === "string" || typeof quizResult === "string") {
       setRows((r) => ({
         ...r,
@@ -124,14 +125,9 @@ export const AdminLessons = () => {
           quizError: typeof quizResult === "string" ? quizResult : undefined,
         },
       }));
-      toast({
-        title: "Opslaan geblokkeerd",
-        description: "Controleer de JSON van de interactieve stap of quiz.",
-        variant: "destructive",
-      });
+      toast({ title: "Opslaan geblokkeerd", description: "Controleer JSON.", variant: "destructive" });
       return;
     }
-
     setSavingId(id);
     const payload = {
       lesson_id: id,
@@ -146,11 +142,8 @@ export const AdminLessons = () => {
       .from("lesson_overrides")
       .upsert([payload], { onConflict: "lesson_id" });
     setSavingId(null);
-    if (error) {
-      toast({ title: "Opslaan mislukt", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Opgeslagen ✨", description: `Les ${id} bijgewerkt.` });
-    }
+    if (error) toast({ title: "Opslaan mislukt", description: error.message, variant: "destructive" });
+    else toast({ title: "Opgeslagen ✨", description: `Les ${id} bijgewerkt.` });
   };
 
   const reset = async (id: string) => {
@@ -168,8 +161,12 @@ export const AdminLessons = () => {
   const loadDefault = (id: string, field: "interactive" | "quiz") => {
     const lesson = ALL_LESSONS.find((l) => l.id === id);
     if (!lesson) return;
-    const value = stringifyJson(lesson[field]);
-    updateField(id, field, value);
+    updateField(id, field, stringifyJson(lesson[field]));
+  };
+
+  const openPreview = (lesson: Lesson, walk = false) => {
+    setWalkthrough(walk);
+    setPreviewLesson(lesson);
   };
 
   if (loading) {
@@ -184,14 +181,20 @@ export const AdminLessons = () => {
     <div className="min-h-screen bg-background">
       <AppHeader />
       <main className="container py-8 max-w-4xl">
-        <div className="flex items-center gap-3 mb-6">
-          <ShieldCheck className="h-8 w-8 text-primary" />
-          <div>
+        <div className="flex items-start gap-3 mb-6 flex-wrap">
+          <ShieldCheck className="h-8 w-8 text-primary mt-1" />
+          <div className="flex-1 min-w-[200px]">
             <h1 className="font-display text-3xl">Beheer lessen</h1>
             <p className="text-muted-foreground text-sm">
-              Pas titel, weetje, emoji, interactieve stap of quiz aan. Leeg laten = standaard.
+              Pas tekst aan of speel zelf de lessen door — niets wordt opgeslagen in preview.
             </p>
           </div>
+          <Button
+            onClick={() => openPreview(ALL_LESSONS[0], true)}
+            className="rounded-full font-display gap-2 bg-primary shadow-pop"
+          >
+            <PlayCircle className="h-5 w-5" /> Doorloop alles
+          </Button>
         </div>
 
         <div className="space-y-8">
@@ -206,11 +209,23 @@ export const AdminLessons = () => {
                   const row = rows[lesson.id];
                   return (
                     <div key={lesson.id} className="rounded-2xl bg-muted/30 p-4 border border-border/60">
-                      <div className="flex items-baseline justify-between mb-3">
+                      <div className="flex items-baseline justify-between gap-2 mb-3 flex-wrap">
                         <h3 className="font-display text-base">
                           Les {lesson.id} · standaard:{" "}
                           <span className="text-muted-foreground">{lesson.title}</span>
+                          {lesson.bossTest && (
+                            <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-secondary/30 text-secondary-foreground">Baas-test</span>
+                          )}
                         </h3>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="rounded-full gap-1"
+                          onClick={() => openPreview(lesson, false)}
+                        >
+                          <Eye className="h-4 w-4" /> Preview
+                        </Button>
                       </div>
                       <div className="grid sm:grid-cols-[80px_1fr] gap-3">
                         <div className="space-y-1">
@@ -251,16 +266,8 @@ export const AdminLessons = () => {
 
                       <div className="mt-4 space-y-1">
                         <div className="flex items-center justify-between">
-                          <Label htmlFor={`interactive-${lesson.id}`} className="text-xs">
-                            Interactieve stap (JSON)
-                          </Label>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 text-xs"
-                            onClick={() => loadDefault(lesson.id, "interactive")}
-                          >
+                          <Label htmlFor={`interactive-${lesson.id}`} className="text-xs">Interactieve stap (JSON)</Label>
+                          <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={() => loadDefault(lesson.id, "interactive")}>
                             Laad standaard
                           </Button>
                         </div>
@@ -268,7 +275,7 @@ export const AdminLessons = () => {
                           id={`interactive-${lesson.id}`}
                           value={row.interactive}
                           onChange={(e) => updateField(lesson.id, "interactive", e.target.value)}
-                          placeholder='Leeg = standaard. Bijv. {"kind":"multiChoice", ...}'
+                          placeholder='Leeg = standaard.'
                           rows={6}
                           className="rounded-lg font-mono text-xs"
                           spellCheck={false}
@@ -282,16 +289,8 @@ export const AdminLessons = () => {
 
                       <div className="mt-4 space-y-1">
                         <div className="flex items-center justify-between">
-                          <Label htmlFor={`quiz-${lesson.id}`} className="text-xs">
-                            Quizvragen (JSON-array)
-                          </Label>
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-7 text-xs"
-                            onClick={() => loadDefault(lesson.id, "quiz")}
-                          >
+                          <Label htmlFor={`quiz-${lesson.id}`} className="text-xs">Quizvragen (JSON-array)</Label>
+                          <Button type="button" variant="ghost" size="sm" className="h-7 text-xs" onClick={() => loadDefault(lesson.id, "quiz")}>
                             Laad standaard
                           </Button>
                         </div>
@@ -299,7 +298,7 @@ export const AdminLessons = () => {
                           id={`quiz-${lesson.id}`}
                           value={row.quiz}
                           onChange={(e) => updateField(lesson.id, "quiz", e.target.value)}
-                          placeholder='Leeg = standaard. Bijv. [{"question":"...","options":["A","B"],"correctIndex":0,"why":"..."}]'
+                          placeholder='Leeg = standaard.'
                           rows={8}
                           className="rounded-lg font-mono text-xs"
                           spellCheck={false}
@@ -312,23 +311,11 @@ export const AdminLessons = () => {
                       </div>
 
                       <div className="flex gap-2 mt-3 justify-end">
-                        <Button
-                          onClick={() => reset(lesson.id)}
-                          variant="ghost"
-                          size="sm"
-                          disabled={savingId === lesson.id}
-                          className="rounded-full gap-1"
-                        >
+                        <Button onClick={() => reset(lesson.id)} variant="ghost" size="sm" disabled={savingId === lesson.id} className="rounded-full gap-1">
                           <RotateCcw className="h-4 w-4" /> Standaard
                         </Button>
-                        <Button
-                          onClick={() => save(lesson.id)}
-                          size="sm"
-                          disabled={savingId === lesson.id}
-                          className="rounded-full font-display gap-1"
-                        >
-                          <Save className="h-4 w-4" />
-                          {savingId === lesson.id ? "…" : "Opslaan"}
+                        <Button onClick={() => save(lesson.id)} size="sm" disabled={savingId === lesson.id} className="rounded-full font-display gap-1">
+                          <Save className="h-4 w-4" /> {savingId === lesson.id ? "…" : "Opslaan"}
                         </Button>
                       </div>
                     </div>
@@ -339,6 +326,13 @@ export const AdminLessons = () => {
           ))}
         </div>
       </main>
+
+      <LessonPreviewDialog
+        open={!!previewLesson}
+        onClose={() => setPreviewLesson(null)}
+        startLesson={previewLesson}
+        walkthrough={walkthrough}
+      />
     </div>
   );
 };
