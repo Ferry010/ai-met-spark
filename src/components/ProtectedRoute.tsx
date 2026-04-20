@@ -25,7 +25,9 @@ export const ProtectedRoute = ({ children, requireRole }: ProtectedProps) => {
     );
   }
   if (!user) return <Navigate to="/auth" replace />;
-  if (requireRole && !roles.includes(requireRole)) return <Navigate to="/dashboard" replace />;
+  if (requireRole && !roles.includes(requireRole) && !roles.includes("admin")) {
+    return <Navigate to="/dashboard" replace />;
+  }
   return <>{children}</>;
 };
 
