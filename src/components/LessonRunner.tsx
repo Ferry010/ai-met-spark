@@ -223,8 +223,13 @@ const SparkJetEntry = ({ size = 140 }: { size?: number }) => {
       setEntryDone(true);
       return;
     }
+    // Small delay so the sound lines up with the visual whoosh start.
+    const sfx = window.setTimeout(() => playSparkEntry(), 120);
     const t = window.setTimeout(() => setEntryDone(true), KICKOFF_ENTRY_DURATION);
-    return () => window.clearTimeout(t);
+    return () => {
+      window.clearTimeout(sfx);
+      window.clearTimeout(t);
+    };
   }, []);
 
   if (entryDone) {
