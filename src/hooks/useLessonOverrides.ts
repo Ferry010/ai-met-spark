@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ALL_LESSONS, WORLDS, type Lesson, type World } from "@/content/lessons";
+import {
+  ALL_LESSONS,
+  WORLDS,
+  type Lesson,
+  type World,
+  type InteractiveStep,
+  type QuizQuestion,
+} from "@/content/lessons";
 
 export interface LessonOverride {
   lesson_id: string;
   title: string | null;
   fact: string | null;
   emoji: string | null;
+  interactive: InteractiveStep | null;
+  quiz: QuizQuestion[] | null;
 }
 
 const applyOverride = (lesson: Lesson, ov?: LessonOverride): Lesson => {
@@ -16,6 +25,8 @@ const applyOverride = (lesson: Lesson, ov?: LessonOverride): Lesson => {
     title: ov.title?.trim() ? ov.title : lesson.title,
     fact: ov.fact?.trim() ? ov.fact : lesson.fact,
     emoji: ov.emoji?.trim() ? ov.emoji : lesson.emoji,
+    interactive: ov.interactive ?? lesson.interactive,
+    quiz: ov.quiz && ov.quiz.length > 0 ? ov.quiz : lesson.quiz,
   };
 };
 

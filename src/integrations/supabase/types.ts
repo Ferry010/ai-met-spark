@@ -98,7 +98,9 @@ export type Database = {
         Row: {
           emoji: string | null
           fact: string | null
+          interactive: Json | null
           lesson_id: string
+          quiz: Json | null
           title: string | null
           updated_at: string
           updated_by: string | null
@@ -106,7 +108,9 @@ export type Database = {
         Insert: {
           emoji?: string | null
           fact?: string | null
+          interactive?: Json | null
           lesson_id: string
+          quiz?: Json | null
           title?: string | null
           updated_at?: string
           updated_by?: string | null
@@ -114,7 +118,9 @@ export type Database = {
         Update: {
           emoji?: string | null
           fact?: string | null
+          interactive?: Json | null
           lesson_id?: string
+          quiz?: Json | null
           title?: string | null
           updated_at?: string
           updated_by?: string | null
