@@ -235,8 +235,9 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
 
       <div className="min-h-[120px] mt-2 flex flex-col items-center justify-start">
         {showBubble && (
-          <div className="animate-bubble-pop w-full flex justify-center">
-            <SparkBubble text={text} mood="happy" size={0} side="bottom" speed={KICKOFF_TYPING_SPEED} className="!gap-0" />
+          <div className="animate-bubble-pop mx-auto max-w-md rounded-2xl bg-background/95 text-foreground p-4 text-left shadow-soft">
+            <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+            <TypewriterText text={text} speed={KICKOFF_TYPING_SPEED} />
           </div>
         )}
       </div>
