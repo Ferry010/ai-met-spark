@@ -10,8 +10,8 @@ import { getLesson } from "@/content/lessons";
 import { ChevronLeft } from "lucide-react";
 
 export const LessonPage = () => {
-  const { id } = useParams<{ id?: string; lessonId?: string }>();
-  const lessonId = id ?? (useParams<{ lessonId?: string }>().lessonId ?? "");
+  const params = useParams<{ id?: string; lessonId?: string }>();
+  const lessonId = params.lessonId ?? params.id ?? "";
   const navigate = useNavigate();
   const { user, profile } = useAuth();
   const baseLesson = useMemo(() => getLesson(lessonId), [lessonId]);

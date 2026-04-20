@@ -24,9 +24,9 @@
     "spanish": "Español"
   },
   "landing": {
-    "heroBadge": "Voor nieuwsgierige kids van 8 tot 12",
+    "heroBadge": "Voor nieuwsgierige kids van 9 tot 11 (pittige 8 of rustige 12 ook welkom)",
     "heroTitle": "Leer veilig én leuk met AI",
-    "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 8 tot 12 jaar.",
+    "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 9 tot 11 jaar — pittige 8-jarigen en rustige 12-jarigen zijn ook welkom.",
     "heroSparkLine": "Hoi, ik ben Spark. Ik ben je AI-gids!",
     "heroMicroCopy": "Geen creditcard nodig voor les 1. In 60 seconden begonnen.",
     "ctaPrimary": "Probeer de eerste les gratis",
@@ -48,8 +48,8 @@
       "title": "Alles wat je kind nodig heeft in één speelse cursus",
       "items": {
         "worlds": { "n": "3", "label": "Werelden", "desc": "Veilig, Slim en Sterker. Elke wereld geeft een nieuwe superkracht." },
-        "lessons": { "n": "12", "label": "Lessen", "desc": "Hapklare avonturen van 5 tot 7 minuten. Perfect na school." },
-        "quizzes": { "n": "36", "label": "Mini-quizzen", "desc": "Tap, sorteer en kies puzzels. Geen saaie meerkeuze-marathons." },
+        "lessons": { "n": "24", "label": "Lessen", "desc": "Hapklare avonturen van 5 tot 7 minuten. Perfect na school." },
+        "quizzes": { "n": "72", "label": "Mini-quizzen", "desc": "Tap, sorteer en kies puzzels. Geen saaie meerkeuze-marathons." },
         "certificate": { "n": "1", "label": "Diploma", "desc": "Een echt PDF-diploma met naam dat kids kunnen printen en showen." }
       }
     },
@@ -113,7 +113,7 @@
       "subtitle": "Eén keer betalen. Je kind houdt elke les, elke update en het diploma voor altijd.",
       "cta": "Nu ontgrendelen",
       "features": [
-        "12 leuke, met de hand gemaakte lessen",
+        "24 leuke, met de hand gemaakte lessen",
         "3 superkracht-werelden om te ontdekken",
         "Geen chat. Kids typen nooit naar een AI.",
         "Persoonlijk printbaar diploma",
@@ -150,7 +150,7 @@
       "price": "€14",
       "billing": "eenmalig",
       "features": [
-        "Alle 12 lessen, voor altijd",
+        "Alle 24 lessen, voor altijd",
         "Toegang tot alle 3 superkracht-werelden",
         "1 kind-account",
         "Persoonlijk printbaar diploma",
@@ -180,7 +180,7 @@
     "included": {
       "title": "Wat zit er in elk plan",
       "items": [
-        "Alle 12 met de hand gemaakte lessen",
+        "Alle 24 met de hand gemaakte lessen",
         "3 superkracht-werelden",
         "Persoonlijke diploma's",
         "AVG- en COPPA-vriendelijk",
@@ -194,10 +194,10 @@
         { "q": "Is dit veilig voor mijn kind?", "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. We bewaren alleen een voornaam, leeftijd en oudermail." },
         { "q": "Is de data van mijn kind privé?", "a": "Ja. We zijn AVG- en COPPA-vriendelijk. We verkopen nooit data en gebruiken het nooit om AI-modellen te trainen." },
         { "q": "Kan ik geld terugkrijgen?", "a": "Ja, binnen 14 dagen, geen vragen gesteld. Mail ons en we regelen het dezelfde dag." },
-        { "q": "Voor welke leeftijd is het?", "a": "8 tot 12 jaar. Het leesniveau is afgestemd op een 9-jarige, en oudere kids vinden de activiteiten ook leuk." },
+        { "q": "Voor welke leeftijd is het?", "a": "9 tot 11 jaar is de zoete plek. Pittige 8-jarigen en rustige 12-jarigen vinden het ook leuk. Andere leeftijdsgroepen volgen later." },
         { "q": "Op welke apparaten werkt het?", "a": "Elke moderne telefoon, tablet, Chromebook of laptop met een browser. Geen app om te installeren." },
         { "q": "Ondersteunen jullie meerdere kids in één gezin?", "a": "Elk plan van €14 dekt één kind-account. Koop er één per kind, of mail ons voor een gezinsbundel vanaf 3 kids." },
-        { "q": "Wat gebeurt er na de 12 lessen?", "a": "Je kind houdt levenslange toegang. Ze kunnen elke les opnieuw spelen, quizzen herhalen en het diploma altijd downloaden. Nieuwe bonuslessen komen er gratis bij." },
+        { "q": "Wat gebeurt er na de 24 lessen?", "a": "Je kind houdt levenslange toegang. Ze kunnen elke les opnieuw spelen, quizzen herhalen en het diploma altijd downloaden. Nieuwe bonuslessen komen er gratis bij." },
         { "q": "Kan ik de taal later wisselen?", "a": "Ja. Kids kunnen op elk moment wisselen tussen Nederlands, Engels en Spaans vanuit hun account." },
         { "q": "Hoe verwijder ik de data van mijn kind?", "a": "Mail ons en we wissen het account en alle data binnen 7 dagen, geen vragen gesteld." }
       ]
