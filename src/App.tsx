@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { AdminViewSwitcher } from "@/components/AdminViewSwitcher";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import LanguageSelect from "./pages/LanguageSelect.tsx";
@@ -27,6 +28,8 @@ import LessonDetail from "./pages/teacher/LessonDetail.tsx";
 import ClassSettings from "./pages/teacher/ClassSettings.tsx";
 import LessonDemo from "./pages/teacher/LessonDemo.tsx";
 import AdminLessons from "./pages/AdminLessons.tsx";
+import ParentPreview from "./pages/admin/ParentPreview.tsx";
+import SchoolPreview from "./pages/admin/SchoolPreview.tsx";
 
 const queryClient = new QueryClient();
 
@@ -141,10 +144,27 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/preview/parent"
+            element={
+              <ProtectedRoute requireRole="admin">
+                <ParentPreview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/preview/school"
+            element={
+              <ProtectedRoute requireRole="admin">
+                <SchoolPreview />
+              </ProtectedRoute>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <CookieBanner />
+        <AdminViewSwitcher />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
