@@ -1,48 +1,57 @@
 
 
-# Soften the palette for an 8-12 kid-friendly feel
+# Make Dutch the default language and fully translate the app
 
-The current "Cosmic Playground" works but feels a bit intense for kids ages 8-12. The deep indigo + violet + coral cosmic gradient is dramatic and can read as "moody teen" rather than "playful tween". Let's keep the warm cream foundation but soften the edges so it feels friendly, bright, and inviting (think Bluey, Duolingo, Khan Academy Kids), not nightclub.
+Right now the app supports EN, NL, ES via `i18next`, but `src/locales/nl.json` is **completely empty** (`{}`), so Dutch users see English fallback everywhere. "Full Dutch first" means: ship a complete Dutch translation AND make Dutch the default experience.
 
-## What's too harsh right now
-1. **`--gradient-cosmic`**: deep indigo → violet → hot coral. Used on hero badge and final CTA. Very saturated, dark on one end, hot on the other.
-2. **Hero badge**: small dark gradient pill that fights with the cheerful cream hero.
-3. **Final CTA section**: full-width dark gradient block at the bottom, feels like a different app.
-4. **Shadows**: violet-tinted at fairly high opacity (0.38 on `--shadow-pop`), creates heavy "drop" under cards.
-5. **Foreground text**: deep indigo `#1A1B4B` at 20% lightness is quite dark. Fine for body, but feels stern in headlines.
+## What I'll do
 
-## The fix: "Soft Cosmic"
+### 1. Translate everything into Dutch
+Mirror every key from `src/locales/en.json` into `src/locales/nl.json` with natural, kid-friendly Dutch (tutoyeren, "je/jij", warm and playful tone matching the 8-12 audience). Same applies to `es.json` if it has gaps, but Dutch is the priority.
 
-Keep the cream + violet identity. Soften saturation, lighten dark stops, reduce shadow weight.
+Tone rules for the Dutch copy:
+- Address kids directly with "je" (never "u").
+- Keep it playful and energetic, like Bluey or Squla.
+- No em-dashes (per existing project rule), use periods or commas.
+- Keep brand name "AI Smart Kids" untranslated.
+- Keep prices in euros as-is (€14).
 
-### Token changes (`src/index.css`)
+### 2. Make Dutch the default language
+In `src/i18n.ts`:
+- Change `fallbackLng` from `"en"` to `"nl"`.
+- Reorder detection so the saved choice still wins, but if nothing is saved we default to NL instead of browser language. Detection order becomes `["localStorage"]` with NL fallback, so first-time visitors land in Dutch.
+- Keep EN and ES selectable via the existing `LanguageSwitcher`.
 
-| Token | Now | New | Why |
-|---|---|---|---|
-| `--gradient-cosmic` | indigo 28% → violet → coral | lavender → soft violet → peach | Same arc, no dark stop, no hot coral |
-| `--gradient-hero` | cream → light lavender → light peach | (slightly brighter, more pastel) | Even airier |
-| `--gradient-sky` | lavender → violet | soft sky lavender → light violet | Less saturated |
-| `--gradient-sunshine` | warm yellow → gold | pastel butter → warm gold | Friendlier yellow |
-| `--gradient-coral` | peach → hot coral | soft peach → warm coral | Less neon |
-| `--shadow-pop` | violet 38% opacity | violet 22% opacity | Lighter lift |
-| `--shadow-soft` | violet 18% opacity | violet 12% opacity | Subtler |
-| `--foreground` | indigo 20% L | indigo 28% L | Softer headline weight, still WCAG AA on cream |
-| `--primary` | violet 63% L | violet 66% L | A touch brighter, friendlier |
+### 3. Update the language-select splash
+`src/pages/LanguageSelect.tsx` currently shows three greetings joined with " · ". Reorder so Dutch appears first and the Dutch greeting leads. Reorder the `LANGS` array to NL, EN, ES.
 
-### Component-level swap (`src/pages/Landing.tsx`)
-- **Hero badge**: change from `bg-gradient-cosmic` (dark pill) to `bg-secondary text-secondary-foreground` (sunny gold pill). Reads as a friendly tag, not a moody banner.
-- **Final CTA section**: change from `bg-gradient-cosmic` to `bg-gradient-sky` (soft lavender→violet). Still impactful, no dark stop. Keep white text.
+### 4. Update the `<html lang>` attribute
+`index.html` has `lang="en"`. Change to `lang="nl"` so screen readers and SEO see Dutch as primary.
 
-### What stays the same
-- Cream background, vibrant violet primary, sunny gold secondary, hot coral accent, grass green success.
-- All copy, layout, fonts, components.
-- Pillar (world) colors stay distinct.
-- Dark mode untouched.
+### 5. Sweep hard-coded English strings
+Quick scan of pages that may have inline English not yet keyed through `t()`. If I find any user-facing English literals in `Landing.tsx`, `Pricing.tsx`, `Footer.tsx`, `SiteHeader.tsx`, `Auth.tsx`, `Dashboard.tsx`, `LessonPage.tsx`, `Account.tsx`, etc., I'll either:
+- Add a translation key and wire it up, or
+- Replace the literal with the Dutch equivalent if it's a one-off.
 
-## Files to change
-- `src/index.css` — gradient + shadow + 2 color tweaks
-- `src/pages/Landing.tsx` — 2 className swaps (hero badge, final CTA)
+I'll prioritize the highest-traffic surfaces (landing, pricing, header, footer, auth, dashboard) and any visible buttons or labels.
+
+## Files I'll change
+- `src/locales/nl.json` — full Dutch translation (mirror of en.json).
+- `src/locales/es.json` — fill any gaps so ES doesn't regress.
+- `src/i18n.ts` — `fallbackLng: "nl"`, detection tweak.
+- `src/pages/LanguageSelect.tsx` — NL first in the list.
+- `index.html` — `lang="nl"`.
+- Any page with inline English strings discovered during the sweep.
 
 ## What I will NOT touch
-- Tailwind config, components library, copy, layouts, dark mode tokens, Spark mascot.
+- Color tokens, layouts, components, backend, payments, lessons logic, routes.
+- The `LanguageSwitcher` itself (already supports all three).
+- Lessons content data (`src/content/lessons.ts`) unless it contains user-facing English that needs Dutch. I'll check it and translate if so, otherwise leave it for a follow-up since lesson content can be substantial.
+
+## One thing to confirm
+Lesson content in `src/content/lessons.ts` may be large and English-only. Two options:
+- **A) Translate lesson content too** as part of this pass (bigger change, fully Dutch experience end to end).
+- **B) Translate UI chrome only** now, leave lesson body copy for a dedicated follow-up.
+
+If you don't say otherwise I'll go with **A** so "full Dutch" really means full.
 
