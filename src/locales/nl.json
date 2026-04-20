@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "AI Smart Kids",
-    "tagline": "Leer AI gebruiken als een pro!",
+    "tagline": "Leer veilig én leuk met AI",
     "login": "Inloggen",
     "signup": "Aanmelden",
     "logout": "Uitloggen",
@@ -24,7 +24,7 @@
   },
   "landing": {
     "heroBadge": "Voor nieuwsgierige kids van 8 tot 12",
-    "heroTitle": "Leer AI gebruiken als een pro!",
+    "heroTitle": "Leer veilig én leuk met AI",
     "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 8 tot 12 jaar.",
     "heroSparkLine": "Hoi, ik ben Spark. Ik ben je AI-gids!",
     "heroMicroCopy": "Geen creditcard nodig voor les 1. In 60 seconden begonnen.",
