@@ -156,10 +156,17 @@ export const Landing = () => {
           </div>
           <div className="flex flex-col items-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full scale-110" aria-hidden />
-              <Spark size={280} mood="happy" />
+              <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full scale-110 animate-pulse-slow" aria-hidden />
+              <Sparkles className="absolute -top-2 -left-4 h-6 w-6 text-secondary animate-twinkle" style={{ animationDelay: "0s" }} aria-hidden />
+              <Sparkles className="absolute top-8 -right-6 h-5 w-5 text-accent animate-twinkle" style={{ animationDelay: "0.6s" }} aria-hidden />
+              <Sparkles className="absolute bottom-6 -left-8 h-4 w-4 text-primary animate-twinkle" style={{ animationDelay: "1.1s" }} aria-hidden />
+              <Sparkles className="absolute -bottom-2 right-4 h-5 w-5 text-secondary animate-twinkle" style={{ animationDelay: "1.6s" }} aria-hidden />
+              <Sparkles className="absolute top-1/3 -right-10 h-4 w-4 text-accent animate-twinkle" style={{ animationDelay: "0.3s" }} aria-hidden />
+              <div className="relative">
+                <Spark size={280} mood="happy" waving />
+              </div>
             </div>
-            <div className="mt-4 inline-block bg-white/80 rounded-2xl px-4 py-2 shadow-soft text-sm font-semibold text-foreground">
+            <div className="mt-4 inline-block bg-white/80 rounded-2xl px-4 py-2 shadow-soft text-sm font-semibold text-foreground animate-fade-in hover:-rotate-1 transition-transform">
               {t("landing.heroSparkLine")}
             </div>
           </div>
