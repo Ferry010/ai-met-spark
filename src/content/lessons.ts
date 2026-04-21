@@ -420,7 +420,7 @@ export const WORLDS: World[] = [
         sparkMiddle: "STOP zit in je hoofd. Mooi. Nu iets wat vaker voorkomt dan je denkt: de valstrik van 'onschuldig'. Want soms vraagt AI iets wat klinkt als onschuldig, maar het is opeens te veel samen.",
         theoryDeep: "**De valstrik van 'onschuldig'**\n\nEén stukje informatie is meestal prima. Je voornaam? Oké. Alleen je stad? Ook meestal oké.\n\nMaar combinaties zijn gevaarlijker. Voornaam + school + buurt = plots vindbaar. Voornaam + leeftijd + sport + club = hetzelfde.\n\nDit is waar veel mensen de mist in gaan. Ze denken 'ik zeg alleen mijn voornaam, dus het is veilig'. Maar in hetzelfde gesprek vertellen ze ook per ongeluk hun school, en dan een tip over hun buurt. Drie 'onschuldige' dingen samen = niet onschuldig meer.\n\nDus vanaf nu: niet alleen naar één stukje kijken, maar ook naar wat je al eerder hebt gezegd in hetzelfde gesprek. Stapelt het op? Trek op tijd aan de rem.",
         interactive: sort(
-          "Sleep elk item naar 'STOP (geheim)' of 'Mag' — of naar 'Ligt eraan'.",
+          "Tik elk item aan en kies 'STOP (geheim)', 'Mag' of 'Ligt eraan'.",
           ["🛑 STOP", "🤔 Twijfel", "✅ Oké"],
           [
             { label: "Je straatnaam en huisnummer", bucket: 0 },
