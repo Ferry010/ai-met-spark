@@ -1367,6 +1367,7 @@ Dat is wereld 2. Nu jij.`,
     tagline: "Gebruik AI als studiemaatje, niet als sluiproute",
     emoji: "⭐",
     badgeName: "Ster van Meesterschap",
+    lessons: [
       // ---------- Les 3.1 ----------
       {
         id: "3.1",
