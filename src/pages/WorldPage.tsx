@@ -16,10 +16,11 @@ const PILLAR_BG: Record<string, string> = {
 };
 
 export const WorldPage = () => {
-  const { id } = useParams();
+  const params = useParams<{ worldId?: string; id?: string }>();
+  const worldId = params.worldId ?? params.id;
   const navigate = useNavigate();
   const { user, profile } = useAuth();
-  const baseWorld = getWorld(Number(id));
+  const baseWorld = getWorld(Number(worldId));
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [paywall, setPaywall] = useState(false);
   const [overrides, setOverrides] = useState<Record<string, { title?: string | null; emoji?: string | null }>>({});
