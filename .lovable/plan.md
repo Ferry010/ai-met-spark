@@ -1,27 +1,42 @@
 
 
-# Fix: copy mismatch + dubbele dialog-close
+# Spark in de hero meer tot leven brengen
 
-Twee kleine fixes voor de admin lesson-preview en Wereld 1 content.
+Spark krijgt meer karakter in de hero, zonder dat het ontwerp verandert. Subtiele lagen extra leven, geen nieuwe stijl.
 
 ## Wat de gebruiker ziet
 
-1. **Les 1.1 oefening**: prompt verandert van "Sleep elk kaartje naar de juiste zone…" naar "Tik elk kaartje aan en kies de juiste zone…", zodat de tekst klopt met de tap-to-sort UI. Ik check ook de andere `sortBuckets` prompts in Wereld 1/2/3 op hetzelfde "sleep"-woord en pas die in één keer aan voor consistentie.
-2. **Lesson preview dialog**: het dubbele kruisje verdwijnt. De ingebouwde X van Radix (rechtsboven, uit `DialogContent`) blijft staan; de extra "Sluit" knop in de admin-toolbar wordt verwijderd. Eén duidelijke close knop, geen verwarring.
+- Spark **zwaait** vrolijk (rechterarm omhoog, animatie loopt al in `Spark.tsx` via `waving`).
+- Een zachte **glow-pulse** achter Spark — de bestaande blur-cirkel ademt rustig in/uit.
+- **Sparkles** (kleine sterretjes) die om Spark heen twinkelen op willekeurige posities, met staggered fade/scale.
+- De **antenne-bol** pulseert iets levendiger (al aanwezig, blijft).
+- Spark **drijft** iets uitgesprokener (bestaande `animate-float` blijft, geen nieuwe beweging).
+- Het tekstballonnetje "Hoi! Ik ben Spark…" krijgt een lichte **bounce-in** bij load en een subtiele hover-tilt.
+
+Geen kleur-, layout- of typografische wijzigingen. Alles blijft binnen de bestaande design tokens.
 
 ## Technische uitvoering
 
-**`src/content/lessons.ts`** — vervang in elke `sort(...)` prompt het werkwoord "Sleep" door "Tik" (of vergelijkbaar passend bij de bucket-keuzes). Inhoud van items/buckets blijft identiek.
+**`src/pages/Landing.tsx`** (hero-blok rond Spark):
+- Voeg `waving` toe aan `<Spark size={280} mood="happy" waving />`.
+- Wrap Spark + glow in een container met 3–5 absoluut gepositioneerde `<Sparkle />`-elementen (kleine SVG-sterretjes uit `lucide-react`, `Sparkles` of inline `<svg>`), elk met eigen `animationDelay` voor stagger.
+- Glow-div krijgt `animate-pulse-slow` (nieuwe keyframe) i.p.v. statische blur.
+- Tekstballon krijgt `animate-fade-in` + `hover:-rotate-1 transition-transform`.
 
-**`src/components/admin/LessonPreviewDialog.tsx`** — verwijder de toolbar-Button met `<X />` + "Sluit". `DialogContent` heeft al een eigen close-X rechtsboven, dus de dialog blijft sluitbaar (X, ESC, klik buiten).
+**`tailwind.config.ts`**:
+- Nieuwe keyframes `pulse-slow` (opacity/scale 1 → 1.1 → 1, 3s) en `twinkle` (opacity 0 → 1 → 0 + scale 0.6 → 1 → 0.6, 2s).
+- Animation utilities `animate-pulse-slow` en `animate-twinkle`.
+
+**`src/components/Spark.tsx`**: geen wijziging nodig — `waving` bestaat al.
 
 ## Bestanden
 
-- `src/content/lessons.ts` — prompts in `sort(...)` aanpassen
-- `src/components/admin/LessonPreviewDialog.tsx` — extra Sluit-knop verwijderen
+- `src/pages/Landing.tsx` — hero Spark-container uitbreiden met sparkles + waving prop
+- `tailwind.config.ts` — twee nieuwe keyframes + animation utilities
 
 ## Wat ik bewust NIET doe
 
-- Geen echte drag-and-drop bouwen — de huidige tap-flow werkt prima op mobiel en is toegankelijker. Alleen de copy aanpassen.
-- Geen wijziging aan `DialogContent` (gedeelde shadcn-component). De fix zit in de admin-dialog zelf.
+- Geen wijziging aan `Spark.tsx` zelf (mascotte blijft identiek, herbruikbaar overal).
+- Geen extra libraries (framer-motion o.i.d.) — pure Tailwind keyframes.
+- Geen geluid of klik-interactie toevoegen.
 
