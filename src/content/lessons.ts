@@ -693,351 +693,581 @@ export const WORLDS: World[] = [
     emoji: "🧭",
     badgeName: "Kompas van Helderheid",
     lessons: [
-      // ---------- Les 9 ----------
       {
         id: "2.1",
         worldId: 2,
         pillar: "smart",
         title: "AI is een gokker, geen wijsneus",
         emoji: "🎲",
-        sparkIntro: "Ken je die ene klasgenoot die overal een mening over heeft, ook over wat ie niet kent? Zo is AI soms.",
-        fact: "AI voorspelt woord voor woord wat WAARSCHIJNLIJK komt. Het weet niks zeker, maar klinkt altijd zelfverzekerd.",
+        sparkIntro: "Hoi! Fijn dat je er bent. Ik ga je vandaag iets leren wat veel volwassenen nog niet snappen. Echt waar. Als jij dit doorhebt, weet je meer dan je ouders over hoe AI werkt. Ready? Let's go.",
+        theoryIntro: `**AI voorspelt, het weet niet**
+
+Stel je voor, ik zeg tegen je: 'De lucht is...' En jij moet het afmaken. Wat zou je zeggen? Blauw, waarschijnlijk. Of grijs. Of bewolkt. Je vult in wat logisch voelt. Gebaseerd op alle keren dat je die zin eerder hebt gehoord.
+
+Zo werkt AI óók. Woord voor woord voorspelt het wat het beste past. Het heeft miljarden zinnen gelezen en raadt telkens: 'Na dit woord komt waarschijnlijk dit woord.' Daar gaat het zo snel in, dat het lijkt alsof AI nadenkt. Maar het gokt.
+
+Nu de clue: als AI gokt, kan het er ook naast zitten. Meestal gokt het goed. Maar soms geeft het je een antwoord dat klopt-lijkt, maar helemaal niet klopt. Daarover gaat deze hele wereld.`,
+        fact: "Er zijn AI-modellen getraind met zoveel tekst dat als je alles wilde uitprinten, de stapel papier hoger zou zijn dan de Mount Everest. Twee keer. En toch kan zo'n AI soms niet vertellen hoeveel R'en er in het woord 'aardbei' zitten. Weten en gokken zijn echt verschillende dingen.",
+        sparkMiddle: "Oké, nu komt het goede deel. Waarom AI zelfverzekerd klinkt, ook als het fout zit. Want dit moet jij wel weten, het verandert hoe je ernaar kijkt.",
+        theoryDeep: `**Zelfverzekerd is niet hetzelfde als correct**
+
+AI is getraind om vloeiend te klinken. Helder, vriendelijk, zonder twijfel. Dat maakt het fijn om te gebruiken. Maar het heeft een nadeel: AI klinkt precies even zelfverzekerd als het antwoord klopt én als het antwoord totaal fout is.
+
+Vergelijk dat met jezelf. Als iemand je een moeilijke geschiedenisvraag stelt en je weet het antwoord niet zeker, zeg je 'ik denk dat het 1815 was, maar ik twijfel'. Dat is super handig voor de luisteraar. Die weet: let op, dit is niet zeker.
+
+AI doet dat (meestal) niet. Het zegt met dezelfde zekere stem dat Napoleon in 1815 bij Waterloo verloor (klopt) én dat Napoleon in 1905 een koffiezaak had in Amsterdam (complete onzin). Zelfde toon, twee heel verschillende soorten waarheid.
+
+Dus de eerste les van SLIM: de toon van AI zegt je niks. Of een antwoord klopt, moet je zelf checken. Geen paniek, je gaat dat leren.`,
         interactive: sort(
-          "Zeker-of-Gok? Waar zou AI hier op gokken?",
-          ["📚 Vrij zeker", "🎲 AI gokt waarschijnlijk"],
+          "Bij elke AI-reactie: zou jij dit eerst nog dubbelchecken, of kan je het vertrouwen?",
+          ["✅ Vertrouw", "🔍 Check"],
           [
-            { label: "Parijs is de hoofdstad van Frankrijk", bucket: 0 },
-            { label: "Er wonen precies 2.847.333 mensen in Parijs", bucket: 1 },
-            { label: "Honden hebben 4 poten", bucket: 0 },
-            { label: "Wat er gisteren in het nieuws was", bucket: 1 },
-            { label: "Wie de wedstrijd vorige week won", bucket: 1 },
-            { label: "De zon is een ster", bucket: 0 },
-          ],
-          [
-            "Algemene feiten = vaak goed.",
-            "Precieze cijfers en actueel nieuws = vaak gokken.",
-            "AI is getraind op oude tekst , vandaag weet ie niet.",
+            { label: "Een jaar heeft 12 maanden.", bucket: 0 },
+            { label: "Mijn vriend Mark schreef in 1847 het boek 'De Zwarte Kat'.", bucket: 1 },
+            { label: "Water bevriest bij 0 graden Celsius onder normale omstandigheden.", bucket: 0 },
+            { label: "De hoofdstad van Canada is Toronto.", bucket: 1 },
+            { label: "Bij je laatste vraag over voetbal heb je het gehad over Feyenoord.", bucket: 1 },
+            { label: "Het hart pompt bloed door het lichaam.", bucket: 0 },
           ],
         ),
+        summary: [
+          "AI voorspelt woord voor woord. Het denkt niet, het gokt (heel vaak goed, soms fout).",
+          "AI klinkt altijd zelfverzekerd. Ook als het gokt. Ook als het ernaast zit.",
+          "De toon van AI is geen bewijs. Feiten moet jij checken.",
+        ],
         quiz: [
           {
-            question: "Hoe geeft AI een antwoord?",
+            question: "Hoe werkt AI eigenlijk?",
             options: [
-              "Het weet alles",
-              "Het voorspelt woord voor woord wat waarschijnlijk komt",
-              "Het zoekt in een boek",
+              "Het denkt na zoals een mens",
+              "Het voorspelt woord voor woord wat het beste past",
+              "Het zoekt alles op in een woordenboek",
+              "Het kopieert antwoorden van andere mensen",
             ],
             correctIndex: 1,
-            why: "Woord voor woord voorspellen. Soms raak, soms mis.",
+            why: "Voorspellen, woord voor woord. Dat is de kern.",
           },
           {
-            question: "AI klinkt heel zeker , dus klopt het zeker.",
-            options: ["Waar", "Niet waar , toon ≠ waarheid"],
+            question: "Als AI zelfverzekerd klinkt, klopt het antwoord zeker.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
             correctIndex: 1,
-            why: "AI klinkt ALTIJD zeker. Ook als het fout zit.",
+            why: "Nee. AI klinkt bij alle antwoorden even zelfverzekerd. Ook als het fout is.",
           },
           {
-            question: "Waar is AI het MINST betrouwbaar?",
-            options: ["Algemene verhalen", "Precieze cijfers en datums", "Spellen verzinnen"],
+            question: "Welke AI-antwoorden check je het best extra?",
+            options: [
+              "Een basis rekensom",
+              "Een specifieke naam of jaartal",
+              "Iets over wat je eerder in het gesprek zei",
+              "Een algemeen feit als 'de zon is een ster'",
+              "Een uitspraak over een kleinere minder bekende stad",
+            ],
             correctIndex: 1,
-            why: "Cijfers, actueel nieuws en precieze namen: daar struikelt AI.",
+            why: "Namen, jaartallen, verwijzingen naar eerdere berichten, en onbekende plaatsen. Daar gokt AI het makkelijkst fout. (Juist: Een specifieke naam of jaartal, Iets over wat je eerder in het gesprek zei, Een uitspraak over een kleinere minder bekende stad.)",
           },
         ],
-        reflection: "AI is een zelfverzekerde gokker. Nu je dat weet, ben je de baas.",
       },
-      // ---------- Les 10 ----------
       {
         id: "2.2",
         worldId: 2,
         pillar: "smart",
         title: "De hallucinatie-val",
         emoji: "🌫️",
-        sparkIntro: "AI vertelt soms over boeken die niet bestaan en mensen die nooit hebben geleefd. Dat heet hallucineren.",
-        fact: "Hallucineren = AI verzint iets dat klinkt als waarheid. Tip: te specifiek? Check het.",
+        sparkIntro: "Hoi! We gaan vandaag een nieuw woord leren. Niet omdat ik moeilijk wil doen, maar omdat dit woord echt handig is. 'Hallucinatie'. Ik beloof, het klinkt enger dan het is. En als je het kent, trap je er zelf veel minder in.",
+        theoryIntro: `**Wat is een AI-hallucinatie?**
+
+Als mensen hallucineren, zien ze dingen die er niet zijn. Bij AI is het anders. Als AI hallucineert, verzint het dingen die niet kloppen, maar het zegt het zo overtuigend alsof het feiten zijn.
+
+Stel je vraagt aan AI: 'Wie schreef het beroemde Nederlandse boek De Blauwe Dolfijn?' Dat boek bestaat niet. Maar AI wil heel graag je helpen. Dus wat doet het soms? Het verzint een naam. 'De Blauwe Dolfijn is geschreven door Johanna Berkhoven in 1974.' Compleet, zelfverzekerd, en helemaal fout. Die schrijver bestaat niet, dat jaar klopt niet, het boek is nep.
+
+Dat noemen we een hallucinatie. AI heeft een antwoord verzonnen omdat het antwoord niet bestaat, en het vult het gaatje met iets wat logisch klinkt.`,
+        fact: "In 2023 gebruikte een Amerikaanse advocaat AI om een rechtszaak voor te bereiden. Hij vroeg AI naar zaken uit het verleden. AI noemde vijf voorbeelden. Perfect geschreven. De advocaat gebruikte ze in de rechtbank. Toen bleek: geen van die zaken bestond. Allemaal gehallucineerd. De rechter was razend. Volwassen advocaten trappen hierin. Nu weet jij het, dus jij niet.",
+        sparkMiddle: "Oké, dus AI kan dingen verzinnen. Maar waarom doet het dat? Snapt het zelf niet dat het gokt? Dat vind ik altijd zo fascinerend. Laten we kijken.",
+        theoryDeep: `**Waarom AI hallucineert**
+
+Omdat AI is getraind om ALTIJD een antwoord te geven. Het is bijna nooit geleerd om 'ik weet het niet' te zeggen. Als jij een vraag stelt waar geen duidelijk antwoord op is, gaat AI niet stoppen en zeggen 'hmm, lastige'. Nee, het begint woord voor woord te voorspellen wat een goed antwoord zou KUNNEN zijn.
+
+Dus als je vraagt naar een boek dat niet bestaat, naar een persoon die niet bestaat, naar een stad die niet bestaat, gaat AI gewoon door. Het verzint iets wat klinkt alsof het klopt. Want dat is wat de training heeft aangeleerd: vul altijd iets in dat logisch lijkt.
+
+De oplossing is eigenlijk heel simpel: als je iets heel specifieks vraagt (een naam, een jaartal, een feit), ga er nooit zomaar vanuit dat AI het weet. Check het.
+
+En er is een trucje. Je kan zelfs aan AI zelf vragen: 'Weet je dit zeker, of verzin je het?' Soms geeft AI dan toe: 'Ik weet het niet zeker, sorry'. Raar, maar handig.`,
         interactive: sort(
-          "Echt of verzonnen door AI?",
-          ["✅ Echt", "🌫️ Hallucinatie"],
+          "Hier zijn AI-antwoorden. Welke zijn hoogstwaarschijnlijk gehallucineerd?",
+          ["🌫️ Hallucinatie", "✅ Klopt"],
           [
-            { label: "In 1969 landden mensen op de maan", bucket: 0 },
-            { label: "Konijnen kunnen 10 meter hoog springen", bucket: 1 },
-            { label: "Nederland heeft 14 provincies", bucket: 1 },
-            { label: "De Eiffeltoren staat in Parijs", bucket: 0 },
-            { label: "Boek 'De Roze Maan' van Jan de Vries (1987)", bucket: 1 },
-          ],
-          [
-            "Zoek het op als je twijfelt.",
-            "Klopt het met wat je al weet?",
-            "Te specifiek of nooit van gehoord = vaak hallucinatie.",
+            { label: "De zevende kleinste planeet van ons zonnestelsel is Zoltaria. Ontdekt in 2019.", bucket: 0 },
+            { label: "In Nederland wonen ongeveer 18 miljoen mensen.", bucket: 1 },
+            { label: "Je leraar Pieter van Dam heeft in 2017 een boek geschreven over vissen.", bucket: 0 },
+            { label: "Om te rekenen met breuken, vind je eerst een gemeenschappelijke noemer.", bucket: 1 },
+            { label: "De beroemde schilder Picasso maakte in 1952 een schilderij voor het Feyenoord-stadion.", bucket: 0 },
           ],
         ),
+        summary: [
+          "Een hallucinatie is wanneer AI iets verzint en het als feit presenteert.",
+          "AI is getraind om altijd een antwoord te geven, ook als het er geen heeft. Daarom verzint het.",
+          "Specifieke feiten (namen, jaartallen, plaatsen) zijn het risicovolst. Altijd dubbelchecken.",
+        ],
         quiz: [
           {
-            question: "Wat is een hallucinatie bij AI?",
+            question: "Wat is een AI-hallucinatie?",
             options: [
-              "Een grapje van AI",
-              "Iets verzinnen dat klinkt alsof het klopt",
-              "Een plaatje laten zien",
+              "AI dat vastloopt",
+              "AI dat dingen verzint en als feit presenteert",
+              "AI dat geen antwoord geeft",
+              "AI dat gevoelens krijgt",
             ],
             correctIndex: 1,
-            why: "Iets verzinnen dat klinkt als waarheid. Die valstrik heet hallucinatie.",
+            why: "Iets verzinnen en het zelfverzekerd presenteren. Dat is een hallucinatie.",
           },
           {
-            question: "Wat doe je bij twijfel over een AI-antwoord?",
-            options: ["Meteen geloven", "Checken via zoekmachine of boek", "Doorsturen"],
+            question: "AI zegt vaak 'ik weet het niet' als het iets niet weet.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
             correctIndex: 1,
-            why: "Check via zoekmachine, boek of een echte website.",
+            why: "Nee, helaas. AI is getraind om altijd een antwoord te geven. Daarom verzint het soms.",
           },
           {
-            question: "AI geeft altijd toe als het iets niet weet.",
-            options: ["Waar", "Niet waar , AI probeert altijd een antwoord te geven"],
-            correctIndex: 1,
-            why: "Jij moet de check doen, AI doet het niet voor je.",
+            question: "Welke soorten vragen zijn het gevoeligst voor hallucinaties?",
+            options: [
+              "Vragen naar specifieke namen",
+              "Een basis rekensom",
+              "Vragen naar jaartallen",
+              "Algemene kennis zoals 'wat is een vulkaan'",
+              "Vragen naar details over een kleine onbekende plek",
+            ],
+            correctIndex: 0,
+            why: "Namen, jaartallen, onbekende plaatsen. Daar zit het meeste hallucinatie-risico. (Juist: Vragen naar specifieke namen, Vragen naar jaartallen, Vragen naar details over een kleine onbekende plek.)",
           },
         ],
-        reflection: "Je bent nu een hallucinatie-jager. AI kan jou niet meer bedotten.",
       },
-      // ---------- Les 11 ----------
       {
         id: "2.3",
         worldId: 2,
         pillar: "smart",
         title: "Vraag slim: WIE-WAT-HOE",
         emoji: "🎯",
-        sparkIntro: "Vage vraag, vaag antwoord. Scherpe vraag, scherp antwoord. Zo simpel.",
-        fact: "WIE (voor wie is het?) + WAT (wat precies?) + HOE (in welke vorm?) = 5x beter antwoord.",
-        interactive: mc(
-          "Welke vraag is het BEST volgens WIE-WAT-HOE?",
+        sparkIntro: "Hoi! Ik ga je vandaag een soort toverformule leren. Nou ja, toverformule. Het is gewoon een slimme manier van vragen stellen. Maar het maakt een gigantisch verschil in wat je terugkrijgt van AI. Echt. Heb je 2 minuutjes? Dan zetten we dit samen in je hoofd.",
+        theoryIntro: `**De kwaliteit van je antwoord zit in je vraag**
+
+Kleine uitdaging. Welke vraag krijgt een beter antwoord, denk je?
+
+Vraag A: 'Help me met een opstel.'
+Vraag B: 'Help me een opstel schrijven voor groep 7 over waarom dieren slapen. Maak het ongeveer 200 woorden, gebruik makkelijke woorden, en sluit af met een grappig weetje.'
+
+Je voelt het al. Vraag B gaat een veel beter antwoord geven. Omdat je hebt verteld: WIE je bent (groep 7), WAT je wilt (opstel over dieren slapen) en HOE (200 woorden, makkelijke woorden, grappig weetje).
+
+Dit is de formule. WIE-WAT-HOE. Drie stukjes informatie, en AI weet precies wat het moet doen. In plaats van gokken wat jij bedoelt, geeft het gewoon het juiste antwoord.`,
+        fact: "Onderzoekers ontdekten dat als je AI vertelt wie je bent voor je een vraag stelt, de antwoorden tot wel 70% beter worden. 'Leg uit aan een kind van 10' geeft een heel ander antwoord dan 'Leg uit aan een professor'. Zelfde vraag, totaal ander antwoord. Best wel cool, toch?",
+        sparkMiddle: "Oké, laten we het concreet maken. Drie voorbeelden van slappe vragen, en hoe je ze opkrikt met WIE-WAT-HOE. Daarna mag je het zelf proberen.",
+        theoryDeep: `**Van slap naar sterk**
+
+Voorbeeld 1.
+Slap: 'Vertel over honden.'
+Sterk: 'WIE: ik ben 10. WAT: leg uit waarom honden blaffen. HOE: in 4 zinnen, in makkelijke taal, met een voorbeeld.'
+
+Voorbeeld 2.
+Slap: 'Help me met rekenen.'
+Sterk: 'WIE: ik zit in groep 7. WAT: leg uit hoe ik 36 x 24 uitreken. HOE: stap voor stap, niet alleen het antwoord.'
+
+Voorbeeld 3.
+Slap: 'Verzin een verhaal.'
+Sterk: 'WIE: voor mijn zusje van 6. WAT: een kort verhaal over een draakje dat bang is voor water. HOE: happy end, ongeveer 8 zinnen.'
+
+Zie je het patroon? Elke keer dezelfde drie stukjes. En elke keer krijg je iets dat bij JOU past. Niet een algemeen antwoord waar je nog half iets mee moet. Gewoon: boem, bruikbaar.
+
+Klein extra tipje. Als je er echt achter wilt zien: begin gewoon met 'Ik ben 10 jaar oud'. Die ene zin zorgt al dat AI zich aanpast aan wie je bent.`,
+        interactive: tap(
+          "Kies bij elke slappe vraag de beste WIE-WAT-HOE-versie.",
           [
-            { label: "Leg sterren uit", correct: false },
-            { label: "Sterren?", correct: false },
-            { label: "Leg sterren uit aan mij, kind van 10, in 3 zinnen met voorbeeld", correct: true },
-            { label: "Vertel over sterren alsjeblieft", correct: false },
-          ],
-          "Alle drie erin: WIE (kind van 10), WAT (leg sterren uit), HOE (3 zinnen + voorbeeld).",
-          [
-            "Zit er een leeftijd of doelgroep in? Dat is de WIE.",
-            "Hoe lang of in welke vorm? Dat is de HOE.",
-            "Het langste, meest specifieke antwoord wint hier.",
+            { label: "Leg atomen uit.", reveal: `✅ Beste keuze: "Ik ben 10. Leg atomen uit in 3 zinnen met een voorbeeld uit het dagelijks leven."
+
+Optie B heeft WIE (10 jaar), WAT (atomen uitleggen), HOE (3 zinnen plus voorbeeld). Precies goed.` },
+            { label: "Help me met een spreekbeurt.", reveal: `✅ Beste keuze: "Ik heb een spreekbeurt. Ik zit in groep 6 en het onderwerp is wolven. Help me een begin-zin te bedenken die de klas pakt."
+
+Optie A: WIE (groep 6), WAT (begin-zin voor spreekbeurt over wolven), HOE (eentje die de klas pakt). Perfect.` },
+            { label: "Verzin een grap.", reveal: `✅ Beste keuze: "Ik ben 11. Verzin een korte grap over school die ik aan m'n vrienden kan vertellen. Niet flauw."
+
+Optie C vertelt hoe oud, wat voor grap, en hoe (niet flauw). AI weet wat te doen.` },
           ],
         ),
+        summary: [
+          "WIE-WAT-HOE is de formule voor betere vragen aan AI.",
+          "WIE: wie ben jij (leeftijd, klas, context). WAT: wat wil je precies. HOE: hoe moet het eruitzien (lengte, stijl, voor wie).",
+          "Eén zin toevoegen maakt vaak al enorm verschil. 'Ik ben 10' is een goudmijn.",
+        ],
         quiz: [
           {
-            question: "Waar staat WIE-WAT-HOE voor?",
+            question: "Wat is de drieledige formule voor een goede AI-vraag?",
             options: [
-              "Leuk klinkende woorden",
-              "Voor wie, wat precies, en in welke vorm",
-              "Wie heeft het gemaakt",
+              "Wanneer-Waar-Waarom",
+              "WIE-WAT-HOE",
+              "Snel-Kort-Dichtbij",
+              "Vraag-Antwoord-Reactie",
             ],
             correctIndex: 1,
-            why: "Voor wie, wat precies, en in welke vorm. Drie ankers.",
+            why: "WIE-WAT-HOE. Onthoud hem als een songtekst.",
           },
           {
-            question: "Wat hoort in een slimme prompt?",
-            options: ["Gewoon raar doen", "Hoeveel stappen of zinnen", "Een emoji"],
+            question: "Hoe je een vraag stelt, maakt nauwelijks uit voor het antwoord.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
             correctIndex: 1,
-            why: "Hoeveel zinnen, welke stijl, welke vorm: hoe meer detail, hoe beter.",
+            why: "Juist wel. Betere vraag = veel beter antwoord. Soms tot 70% beter.",
           },
           {
-            question: "Korte vage vragen geven meestal het BESTE antwoord.",
-            options: ["Waar", "Niet waar , vaag in, vaag uit"],
-            correctIndex: 1,
-            why: "Detail in, detail uit. Andersom ook.",
+            question: "Welke onderdelen horen in een goede AI-vraag?",
+            options: [
+              "Wie jij bent (leeftijd, klas)",
+              "Wat je precies wil",
+              "Hoe het antwoord eruit moet zien",
+              "Een groet aan het begin",
+              "Het weer van vandaag",
+            ],
+            correctIndex: 0,
+            why: "WIE, WAT, HOE. Groeten en het weer voegen niks toe. (Juist: Wie jij bent (leeftijd, klas), Wat je precies wil, Hoe het antwoord eruit moet zien.)",
           },
         ],
-        reflection: "Je vraagt nu als een prof. Dit is je grootste AI-wapen.",
       },
-      // ---------- Les 12 ----------
       {
         id: "2.4",
         worldId: 2,
         pillar: "smart",
         title: "Dubbelcheck in 3 stappen",
         emoji: "🔍",
-        sparkIntro: "Je wil niet uren checken bij elk antwoord. Daarom heb je de 3-check. Snel en doeltreffend.",
-        fact: "De 3-check: 1) Klinkt het LOGISCH? 2) Tweede BRON? 3) Wat zegt je GEVOEL? Twijfel = verder checken.",
+        sparkIntro: "Hoi! Vandaag gaan we een superpower trainen. Ik noem het de 'dubbelcheck-reflex'. Klinkt saai, is niet saai. Want mensen die deze reflex hebben, worden bijna nooit voor de gek gehouden. Door AI niet, door nepnieuws niet, door gewoon ook gewoon door niemand niet. Klaar? Komen drie stappen aan.",
+        theoryIntro: `**Waarom je AI altijd dubbelcheckt**
+
+Kijk, AI geeft je in veruit de meeste gevallen een prima antwoord. Maar je hebt nu geleerd: het kan gokken, het kan hallucineren, het klinkt altijd zelfverzekerd. Dus er is één regel die je altijd toepast bij belangrijke dingen. Dubbelchecken.
+
+Hoe groter het ding, hoe meer check. Een huiswerk-sommetje? Zet even doorreken. Iets voor een spreekbeurt? Grondiger. Iets waar je ouders of je leraar op bouwt? Nog grondiger.
+
+Geen paniek, je hoeft geen detective te worden. Drie stappen, meer niet. Klaar? Daar gaan we.`,
+        fact: "Journalisten hebben een eigen regel voor nieuws: 'twee bronnen of geen verhaal'. Als ze iets maar uit één bron hebben, schrijven ze het niet. Dat is al 100 jaar zo. Jouw check-reflex is dezelfde als die van serieuze journalisten. Ik vind dat stiekem best cool.",
+        sparkMiddle: "Oké, de drie stappen. Makkelijk te onthouden. Ik zou zeggen, lees ze één keer aandachtig en dan kun je ze voor altijd gebruiken.",
+        theoryDeep: `**De drie dubbelcheck-stappen**
+
+Stap 1: LOGICA CHECK. Voelt het antwoord logisch? Klopt de grootte, het jaartal, de hoeveelheid? Als AI zegt dat een olifant 30 kilo weegt, hoef je dat niet op te zoeken om te weten dat het fout is. Gebruik je gezond verstand eerst.
+
+Stap 2: ANDERE BRON. Zoek op Google of Wikipedia of jij hetzelfde antwoord vindt. Als twee verschillende plekken hetzelfde zeggen, is het waarschijnlijk waar. Als Wikipedia iets heel anders zegt dan AI, trust the Wiki. Echt.
+
+Stap 3: VRAAG EEN MENS. Voor belangrijke dingen, of als je twijfelt na stap 1 en 2: vraag het aan je ouders, je leraar, of iemand die er verstand van heeft. Mensen zijn geen AI. Mensen kunnen zeggen 'joh, ik weet dit niet, laten we samen zoeken'.
+
+En nu de belangrijkste regel: hoe snel die stappen gaan hangt af van hoe belangrijk de info is. Voor een grappig weetje? Stap 1 is vaak genoeg. Voor je spreekbeurt? Doe alle drie. Voor iets waar je een boze ouder mee terugvalt? Doe alle drie én leer te zeggen 'maar AI zei...' is geen goed excuus.`,
         interactive: tap(
-          "De 3-check stap voor stap:",
+          "Bij elke situatie: welke stappen moet je doen? Tik ze aan. Klaar-knop geeft feedback.",
           [
-            { label: "Stap 1: Klinkt het logisch met wat ik al weet?", reveal: "✅ Eerste filter. Je eigen brein is altijd je eerste check." },
-            { label: "Stap 2: Andere bron , zoekmachine, boek, mens", reveal: "✅ Vergelijk met een betrouwbare bron." },
-            { label: "Stap 3: Wat zegt mijn gevoel?", reveal: "✅ 'Te mooi om waar te zijn' = alarm." },
-          ],
-          [
-            "Stap 1 is altijd: gebruik je EIGEN brein.",
-            "Stap 2 is altijd: een ANDERE bron erbij halen.",
-            "Stap 3 is altijd: wat zegt je gevoel?",
+            { label: "AI zegt dat een vlinder 20 kilo weegt.", reveal: `✅ Stappen die je nodig hebt:
+• logica
+
+Alleen stap 1 al. Je gezond verstand zegt: een vlinder is licht. Geen Google nodig.` },
+            { label: "AI vertelt je een feit voor je spreekbeurt over de Tweede Wereldoorlog.", reveal: `✅ Stappen die je nodig hebt:
+• logica
+• bron
+• mens
+
+Alle drie. Dit is belangrijk, mensen gaan ernaar luisteren. Checken tot je zeker bent.` },
+            { label: "AI beantwoordt '2+2 is 4'.", reveal: `✅ Stappen die je nodig hebt:
+• logica
+
+Alleen stap 1. Dit weet je zelf al, stop niet je tijd.` },
+            { label: "AI zegt dat je leraar meester Peter 10 kinderen heeft. Je bent er niet zeker over.", reveal: `✅ Stappen die je nodig hebt:
+• mens
+
+Meteen naar een mens. AI kan hier niks over weten. Dit is verzonnen. Vraag het aan de meester zelf, of laat het.` },
           ],
         ),
+        summary: [
+          "Dubbelcheck-reflex: niet paranoïde, gewoon slim.",
+          "Drie stappen: LOGICA (voelt het logisch), BRON (klopt het op Google of Wiki), MENS (vraag iemand die het weet).",
+          "Hoe belangrijker de info, hoe meer stappen je doet. Voor je spreekbeurt: alle drie.",
+        ],
         quiz: [
           {
-            question: "Wat is stap 1 van de 3-check?",
+            question: "Welke is de EERSTE stap van de dubbelcheck?",
             options: [
-              "Vraag aan vriendjes",
-              "Klinkt het logisch met wat ik al weet?",
-              "Delen op sociale media",
+              "Vraag een mens",
+              "Check de logica",
+              "Zoek een andere bron",
+              "Vraag het opnieuw aan AI",
             ],
             correctIndex: 1,
-            why: "Eerst je eigen logica. Kost 2 seconden, levert veel op.",
+            why: "Logica eerst. Klopt het met gezond verstand? Als nee, weet je al genoeg.",
           },
           {
-            question: "Wat is een GOEDE 'andere bron'?",
-            options: ["Een andere AI die alles bevestigt", "Een echte website over het onderwerp", "Roddelpraat"],
+            question: "Als AI iets zegt, hoef je dat niet meer te checken voor je spreekbeurt.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
             correctIndex: 1,
-            why: "Echte websites, boeken of een expert. Een AI als check telt niet.",
+            why: "Je moet juist WEL checken. AI is een hulpmiddel, geen eindbaas.",
           },
           {
-            question: "Als AI iets zegt dat perfect klopt met wat ik wil horen, hoef ik niet te checken.",
-            options: ["Waar", "Niet waar , JUIST dan wel"],
+            question: "Welke zijn de drie dubbelcheck-stappen?",
+            options: [
+              "Vraag het nog eens",
+              "Check de logica",
+              "Zoek een andere bron",
+              "Negeer het",
+              "Vraag een mens",
+            ],
             correctIndex: 1,
-            why: "'Te mooi om waar te zijn' is één van de grootste alarmbellen.",
+            why: "Logica, bron, mens. In die volgorde. (Juist: Check de logica, Zoek een andere bron, Vraag een mens.)",
           },
         ],
-        reflection: "3-check in je vingers. Je gaat niet meer in valkuilen trappen.",
       },
-      // ---------- Les 13 ----------
       {
         id: "2.5",
         worldId: 2,
         pillar: "smart",
         title: "Krachtwoorden voor betere prompts",
         emoji: "✨",
-        sparkIntro: "Vandaag een mini-cheatsheet: 5 krachtwoorden die elk antwoord beter maken.",
-        fact: "5 krachtwoorden: 'alsof ik 10 ben', 'geef 3 voorbeelden', 'maak een lijstje', 'waarom?', 'eenvoudiger?'",
-        interactive: mc(
-          "Welke zin gebruikt een krachtwoord-truc?",
+        sparkIntro: "Hoi! Vandaag ga ik je een paar geheim-woorden leren. Tover-woorden. Nee, maak er krachtwoorden van. Woorden die je in je vragen aan AI stopt, en ineens wordt het antwoord drie keer beter. Ik beloof je, dit is een van mijn favoriete lessen. Klein trucje, groot effect.",
+        theoryIntro: `**Wat zijn krachtwoorden?**
+
+Krachtwoorden zijn woorden waar AI heel goed op reageert. Omdat AI is getraind op duizenden voorbeelden met die woorden. Als jij ze gebruikt, weet AI precies welke stijl, welke vorm, welke diepte je wilt.
+
+Denk aan het als sport. Als je aan een gymleraar zegt 'ik wil een oefening', krijg je iets algemeens. Als je zegt 'ik wil een korte warming-up van 3 minuten voor mijn benen', krijg je precies wat je nodig hebt. Krachtwoorden doen bij AI hetzelfde.
+
+Vandaag leer je vijf van die krachtwoorden. Gebruik je ze één, dan merk je al verschil. Gebruik je ze in combinatie, dan wordt het echt bizar wat voor goede antwoorden je krijgt.`,
+        fact: "Mensen die AI professioneel gebruiken, noemen zichzelf vaak 'prompt engineers'. Engineers, zoals ingenieurs. Omdat goed vragen stellen aan AI bijna een vak is geworden. Met wat je nu leert, ben je al begonnen aan dat vak. Niet slecht voor iemand van 10.",
+        sparkMiddle: "Oké, de vijf krachtwoorden. Ik ga ze niet allemaal uitleggen met lange verhalen. Je leert ze door ze te gebruiken. Dus luister, onthoud, en probeer ze uit.",
+        theoryDeep: `**De 5 krachtwoorden**
+
+Krachtwoord 1: 'STAP VOOR STAP'. Voeg dit toe aan rekenvragen, uitleg-vragen, of alles waar je het proces wilt snappen. 'Leg breuken stap voor stap uit.' AI zet ineens alles netjes op een rij.
+
+Krachtwoord 2: 'IN MAKKELIJKE TAAL' (of 'voor een kind van 10'). AI schrijft vaak te ingewikkeld. Dit woord forceert simpele taal. Perfect voor vakken die moeilijk voelen.
+
+Krachtwoord 3: 'GEEF EEN VOORBEELD'. Theorie snap je pas echt door voorbeelden. Voeg dit toe en AI geeft je iets concreets bij elke uitleg.
+
+Krachtwoord 4: 'IN 3 ZINNEN' (of 5, of 100 woorden). Bepaal zelf de lengte. AI houdt er zich (meestal) aan. Veel fijner dan een halve roman terugkrijgen.
+
+Krachtwoord 5: 'WAT WEET IK HIEROVER NIET?' Dit is mijn favoriet. Je vraagt AI niet om iets uit te leggen, maar om te checken waar JIJ nog lacunes hebt. Perfect voor spreekbeurten en toetsen voorbereiden.
+
+Eén voorbeeld met alles samen. Slap: 'Leg de waterkringloop uit.' Sterk: 'Leg de waterkringloop stap voor stap uit, in makkelijke taal, met een voorbeeld, in ongeveer 5 zinnen.' Probeer het. Dit is serieus gamechanging (oeps, dat woord gebruik ik niet). Dit is serieus nuttig.`,
+        interactive: tap(
+          "Kies welk krachtwoord deze vraag zou verbeteren.",
           [
-            { label: "Wat is het?", correct: false },
-            { label: "Hm", correct: false },
-            { label: "Leg uit alsof ik 10 ben, met 3 voorbeelden", correct: true },
-            { label: "Gewoon vertellen", correct: false },
-          ],
-          "Twee krachtwoorden in één: 'alsof ik 10 ben' én '3 voorbeelden'. Scherp.",
-          [
-            "Welke zin is het LANGST en specifiekst?",
-            "Welke zegt iets over leeftijd OF over hoeveelheid?",
-            "Combinatie van twee krachtwoorden = winnaar.",
+            { label: "Leg de stelling van Pythagoras uit.", reveal: `✅ Beste keuze: "stap voor stap"
+
+Stelling van Pythagoras heeft stappen nodig. Voor een 10-jarige sowieso handig.` },
+            { label: "Vertel me over de bloedcirculatie.", reveal: `✅ Beste keuze: "in makkelijke taal"
+
+Je bent 10. Makkelijke taal maakt moeilijke biologie behapbaar.` },
+            { label: "Leg zwaartekracht uit.", reveal: `✅ Beste keuze: "met een voorbeeld"
+
+Voorbeeld is goud bij abstracte concepten. 'Zoals een appel die valt'.` },
+            { label: "Vertel me over de Romeinen.", reveal: `✅ Beste keuze: "in 5 zinnen"
+
+Begrenzing is kracht. 'In 5 zinnen' dwingt AI het belangrijkste te kiezen.` },
+            { label: "Bereid me voor op mijn toets over de Gouden Eeuw.", reveal: `✅ Beste keuze: "wat weet ik hierover niet?"
+
+Krachtwoord 5. AI checkt wat jij nog niet weet, in plaats van op te stapelen wat je al kent.` },
           ],
         ),
+        summary: [
+          "Krachtwoorden maken je vraag scherper en je antwoord beter.",
+          "De vijf: 'stap voor stap', 'in makkelijke taal', 'geef een voorbeeld', 'in X zinnen', 'wat weet ik hierover niet?'.",
+          "Gebruik ze solo of combineer ze. Eén regel voor een heel ander niveau antwoord.",
+        ],
         quiz: [
           {
-            question: "Welke is een krachtwoord?",
-            options: ["Euhh", "Geef 3 voorbeelden", "Gewoon vertel"],
+            question: "Welk krachtwoord helpt als je iets moeilijks uitgelegd wilt krijgen?",
+            options: [
+              "Saai",
+              "In makkelijke taal",
+              "Fancy",
+              "Met grappen",
+            ],
             correctIndex: 1,
-            why: "'Geef voorbeelden' maakt antwoord concreet ipv vaag.",
+            why: "In makkelijke taal. Werkt wonderen bij moeilijke onderwerpen.",
           },
           {
-            question: "Welk krachtwoord helpt als iets te moeilijk blijft?",
-            options: ["'Wees deftig'", "'Kun je eenvoudiger?'", "'Maak het lang'"],
-            correctIndex: 1,
-            why: "Vraag om versimpeling , een echte krachtwoord-zin.",
-          },
-          {
-            question: "Krachtwoord toevoegen maakt vraag langer maar meestal beter.",
-            options: ["Waar", "Niet waar"],
+            question: "Eén extra zin in je vraag kan al een veel beter antwoord opleveren.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
             correctIndex: 0,
-            why: "Slimme extra woorden = beter antwoord.",
+            why: "Klopt. Kleine moeite, grote impact.",
+          },
+          {
+            question: "Welke zijn echte krachtwoorden die AI-antwoorden verbeteren?",
+            options: [
+              "Stap voor stap",
+              "In makkelijke taal",
+              "Heel uitgebreid alsjeblieft",
+              "Geef een voorbeeld",
+              "Zeg alles",
+            ],
+            correctIndex: 0,
+            why: "Stap voor stap, in makkelijke taal, geef een voorbeeld. De andere twee zijn juist vaag. (Juist: Stap voor stap, In makkelijke taal, Geef een voorbeeld.)",
           },
         ],
-        reflection: "Je hebt nu een mini-toolkit. Gebruik 'm.",
       },
-      // ---------- Les 14 ----------
       {
         id: "2.6",
         worldId: 2,
         pillar: "smart",
         title: "AI zegt iets raars: nu wat?",
         emoji: "🤨",
-        sparkIntro: "Eerste regel: vertrouw je onderbuikgevoel. Als het raar voelt, is het vaak raar.",
-        fact: "4-stappen plan: 1) Vraag opnieuw 2) Dubbelcheck 3) Volwassene erbij 4) STOP bij enge content.",
+        sparkIntro: "Hoi! Vandaag iets praktisch. Want op een dag gebeurt het. Je stelt een normale vraag, en AI begint ineens rare dingen te doen. Verwarde antwoorden, rondjes draaien, of iets wat gewoon niet klopt. Wat doe je dan? Geen paniek, je bent niet kapot. Je hebt gewoon drie trucjes nodig.",
+        theoryIntro: `**Waarom gaat AI soms in de war?**
+
+AI is niet perfect. Soms heb je een gesprek waarin het ineens een boekie zit te schrijven. Of het herhaalt zichzelf. Of het antwoordt op een vraag die je helemaal niet stelde. Of het geeft iets overduidelijks fout.
+
+Dat komt meestal omdat het een verwarrend eerder bericht heeft gekregen. Of omdat je vraag te open was. Of gewoon omdat AI een slechte gok maakte en daarop bleef verder gokken. Net zoals jij weleens de verkeerde afslag neemt en dan nóg verder de verkeerde kant opgaat.
+
+Goed nieuws: je hebt drie simpele acties om het op te lossen.`,
+        fact: "Mensen die veel met AI werken noemen het 'vastlopen' vaak een 'lus'. Net zoals een liedje dat blijft herhalen op Spotify. AI kan in zo'n lus komen en er niet zelf uitkomen. Jij moet hem eruit halen. Beetje als een liedje stoppen en opnieuw beginnen.",
+        sparkMiddle: "Oké, jouw drie gereedschappen voor als AI raar doet. Makkelijk, ik beloof het.",
+        theoryDeep: `**De drie acties**
+
+Actie 1: RESET. Start een nieuw gesprek. Oude rommel weg, schone start. Oude vraag opnieuw stellen, maar dan in een nieuw chat-venster. Dit werkt verbazend vaak. De meeste verwarde AI-gesprekken zijn met een simpele nieuwe start opgelost.
+
+Actie 2: HERFORMULEER. Stel dezelfde vraag, maar anders. Meer context, andere woorden, meer detail. 'Wat is een atoom?' → 'Leg in makkelijke taal voor een kind van 10 uit wat een atoom is, stap voor stap.' Meestal pakt AI het dan wel.
+
+Actie 3: STOP. Soms is AI gewoon niet de juiste tool. Dan stop je. Ga naar Google. Vraag het aan je ouders. Pak een boek. Niet elke vraag hoort bij AI. Dat is ook oké.
+
+En een bonus: als AI iets gemeens zegt, of iets wat je niet leuk vindt, of iets wat ronduit fout of eng is, is STOP altijd de juiste keuze. Vertel een volwassene wat er gebeurde. Dat geldt altijd.`,
         interactive: sort(
-          "Wat-zou-jij-doen?",
-          ["🔁 Vraag opnieuw of check", "🚨 Stop & volwassene"],
+          "Bij elke situatie: welke actie past het best?",
+          ["🔁 Reset", "✏️ Herformuleer", "🛑 Stop"],
           [
-            { label: "AI zegt: 'Olifanten kunnen vliegen'", bucket: 0 },
-            { label: "AI zegt iets griezeligs of dreigend", bucket: 1 },
-            { label: "AI vraagt creditcardgegevens", bucket: 1 },
-            { label: "AI begrijpt je vraag verkeerd", bucket: 0 },
-            { label: "Antwoord klinkt onlogisch", bucket: 0 },
-            { label: "AI begint over geweld of enge dingen", bucket: 1 },
-          ],
-          [
-            "Onlogisch = vraag opnieuw of check.",
-            "Eng of dreigend = stop, volwassene.",
-            "Geld of betaling = altijd volwassene.",
+            { label: "AI begint hetzelfde antwoord steeds opnieuw te geven, ook na extra vragen.", bucket: 0 },
+            { label: "AI geeft een vaag antwoord dat niet echt ingaat op je vraag.", bucket: 1 },
+            { label: "AI zegt iets wat je een onprettig gevoel geeft of niet bij jouw leeftijd past.", bucket: 2 },
+            { label: "AI geeft een heel kort en oppervlakkig antwoord op iets wat je dieper wilt begrijpen.", bucket: 1 },
+            { label: "Je stelt een vraag en AI begint ineens over iets heel anders dan je vraag.", bucket: 0 },
           ],
         ),
+        summary: [
+          "Als AI raar doet: drie acties. RESET (nieuwe chat), HERFORMULEER (vraag anders stellen), STOP (andere tool of volwassene).",
+          "De meeste rare AI-momenten zijn opgelost met reset of een betere vraag.",
+          "Bij enge of gemene antwoorden: altijd STOP en een volwassene inlichten.",
+        ],
         quiz: [
           {
-            question: "AI zegt iets dat niet logisch voelt. Wat is stap 1?",
-            options: ["Het geloven", "Vraag nog eens, met andere woorden", "Boos worden"],
+            question: "AI geeft steeds hetzelfde antwoord, ook als je doorvraagt. Wat doe je?",
+            options: [
+              "Nog harder doorvragen",
+              "Reset: start een nieuw gesprek",
+              "Opgeven",
+              "Negeren en doorgaan",
+            ],
             correctIndex: 1,
-            why: "Soms snapt AI je vraag verkeerd. Eerst anders vragen.",
+            why: "Reset. Frisse chat is meestal de snelste oplossing voor een lus.",
           },
           {
-            question: "Welke hoort in je plan bij rare AI-antwoorden?",
-            options: ["Gewoon geloven", "Dubbelcheck in zoekmachine", "Doorsturen naar vrienden"],
-            correctIndex: 1,
-            why: "Dubbelcheck en bij iets serieus: volwassene erbij.",
+            question: "Als AI iets naars zegt, moet ik een volwassene erbij halen.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
+            correctIndex: 0,
+            why: "Ja. Altijd. Jij hoeft dat niet alleen op te lossen.",
           },
           {
-            question: "Bij gemene of dreigende AI moet je eerst antwoorden.",
-            options: ["Waar", "Niet waar , scherm dicht, volwassene"],
-            correctIndex: 1,
-            why: "Jij hoeft je niet te verdedigen tegen een AI.",
+            question: "Welke drie acties kun je doen als AI raar reageert?",
+            options: [
+              "Reset",
+              "Boos worden",
+              "Herformuleer",
+              "Stop",
+              "Het scherm stukmaken",
+            ],
+            correctIndex: 0,
+            why: "Reset, herformuleer, stop. De andere twee helpen niet. (Juist: Reset, Herformuleer, Stop.)",
           },
         ],
-        reflection: "Je hebt nu een noodplan. AI is niet de baas, jij bent.",
       },
-      // ---------- Les 15 ----------
       {
         id: "2.7",
         worldId: 2,
         pillar: "smart",
         title: "Verschillende AI's, verschillende sterktes",
         emoji: "🌐",
-        sparkIntro: "Mensen zeggen vaak 'de AI'. Maar er zijn er heel veel , net als scholen.",
-        fact: "Bekende AI's: ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Copilot (Microsoft).",
+        sparkIntro: "Hoi! Grappig feitje om mee te beginnen. Misschien denk je: 'AI, dat is toch één ding?' Nope. Er zijn er heel veel. Net zoals er verschillende sportmerken zijn, verschillende game-studio's, verschillende ijsmerken. Elke AI is goed in iets anders. Handig om te weten. Eens kijken.",
+        theoryIntro: `**AI is niet één ding**
+
+Er zijn grote AI-bedrijven die elk hun eigen AI maken. ChatGPT is van een bedrijf dat OpenAI heet. Claude is van een bedrijf dat Anthropic heet. Gemini is van Google. Copilot is van Microsoft.
+
+Elke AI is getraind op een andere manier en soms met andere dingen. Sommige zijn beter in tekst schrijven. Andere in rekenen. Weer andere in plaatjes maken. En sommige zijn voor volwassenen gemaakt, andere ook veilig voor kinderen, en weer andere voor bedrijven.
+
+En een belangrijke: niet elke AI is even veilig voor jouw leeftijd. Vandaar dat je ouders of school vaak specifiek zeggen welke je mag gebruiken. Houd je daaraan.`,
+        fact: "Veel mensen gebruiken meerdere AI's naast elkaar. Ze stellen dezelfde vraag aan twee AI's en vergelijken de antwoorden. Dat heet 'triangulatie'. Klinkt fancy, maar het is gewoon: niet op één AI vertrouwen. Je kunt ook AI1 laten checken wat AI2 zei. Die trucs leer je nog niet nu, maar leuk om te weten.",
+        sparkMiddle: "Oké, dus niet één AI. Vele. Elk anders. Hoe onthoud je dat? Laat me het klein maken.",
+        theoryDeep: `**Welke AI voor welke klus?**
+
+Stel je moet een tekst schrijven. Bijna alle grote AI's doen dat goed.
+
+Moet je een plaatje maken? Daar zijn speciale AI's voor. DALL-E, Midjourney, Stable Diffusion. Tekst-AI's kunnen meestal geen plaatjes maken (of alleen heel basic).
+
+Moet je een moeilijke rekenopgave oplossen? Sommige AI's zijn daar sterker in dan andere. Gemini en Claude bijvoorbeeld doen meestal wiskunde beter dan andere, al verandert dat snel.
+
+Moet je code schrijven voor een game? Ook daar zijn AI's in gespecialiseerd, zoals Copilot en Claude.
+
+Maar en dit is belangrijk: het verandert snel. Wat vandaag het beste is, is volgend jaar misschien tweede. Wat je moet onthouden is niet welke AI het beste is, maar dat er MEER ZIJN. Zodat als één je niet helpt, je weet dat je een andere kan proberen. Of een volwassene kan vragen welke geschikt is voor jouw vraag.
+
+Voor AI Smart Kids geldt: wij gebruiken alleen AI die veilig is voor jouw leeftijd. Buiten deze app, als je thuis met AI werkt, altijd even checken met je ouders welke AI je gebruikt.`,
         interactive: sort(
-          "Is dit een AI of een gewone app?",
-          ["🤖 Een AI", "📱 Een app (geen AI zelf)"],
+          "Welk type AI gebruik je voor welke klus?",
+          ["📝 Tekst-AI", "🎨 Plaatjes-AI", "🎵 Muziek-AI"],
           [
-            { label: "ChatGPT", bucket: 0 },
-            { label: "WhatsApp", bucket: 1 },
-            { label: "Claude", bucket: 0 },
-            { label: "Gmail", bucket: 1 },
-            { label: "Gemini", bucket: 0 },
-            { label: "Minecraft", bucket: 1 },
-            { label: "Copilot", bucket: 0 },
-          ],
-          [
-            "ChatGPT, Claude, Gemini, Copilot zijn AI's.",
-            "WhatsApp en Gmail zijn apps die soms AI gebruiken.",
-            "Een spel als Minecraft is geen AI.",
+            { label: "Je wilt een tekening maken van een draak op een skateboard.", bucket: 1 },
+            { label: "Je wilt hulp met een opstel schrijven.", bucket: 0 },
+            { label: "Je wilt een lied maken voor je moeders verjaardag.", bucket: 2 },
+            { label: "Je zit vast bij een breuken-som.", bucket: 0 },
           ],
         ),
+        summary: [
+          "Er zijn heel veel AI's, elk goed in iets anders (tekst, plaatjes, muziek, code).",
+          "Welke AI je gebruikt hangt af van je klus en van wat veilig is voor jouw leeftijd.",
+          "Niet één AI is overal het beste in. Soms helpt het om te wisselen of een andere te proberen.",
+        ],
         quiz: [
           {
-            question: "Welke is een AI?",
-            options: ["WhatsApp", "Claude", "Gmail", "Een pen"],
+            question: "Wat is waar over AI-soorten?",
+            options: [
+              "Er is maar één AI",
+              "Er zijn veel AI's en elke is goed in iets anders",
+              "Alle AI's doen precies hetzelfde",
+              "AI is alleen voor tekst",
+            ],
             correctIndex: 1,
-            why: "Claude is een AI, gemaakt door Anthropic.",
+            why: "Veel AI's, verschillende sterktes. Onthoud dat.",
           },
           {
-            question: "Welke is een bekende AI?",
-            options: ["Roblox", "Gemini", "Minecraft"],
+            question: "Een tekst-AI kan meestal ook goede plaatjes maken.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
             correctIndex: 1,
-            why: "Gemini is van Google.",
+            why: "Nee. Daar zijn aparte plaatjes-AI's voor (zoals DALL-E).",
           },
           {
-            question: "Alle AI's geven altijd exact hetzelfde antwoord.",
-            options: ["Waar", "Niet waar , ze verschillen"],
-            correctIndex: 1,
-            why: "Ze zijn verschillend getraind. Vergelijken kan slim zijn.",
+            question: "Welke typen AI bestaan er?",
+            options: [
+              "Tekst-AI",
+              "Plaatjes-AI",
+              "Slaap-AI",
+              "Muziek-AI",
+              "Gras-AI",
+            ],
+            correctIndex: 0,
+            why: "Tekst, plaatjes, muziek. Slaap-AI en gras-AI bestaan (nog) niet. (Juist: Tekst-AI, Plaatjes-AI, Muziek-AI.)",
           },
         ],
-        reflection: "Je kent de AI-familie. Vergelijk ze voor betere antwoorden.",
       },
-      // ---------- Les 16 , Baas-test ----------
       {
         id: "2.8",
         worldId: 2,
@@ -1045,41 +1275,134 @@ export const WORLDS: World[] = [
         title: "Wereld 2 Baas-test",
         emoji: "🧭",
         bossTest: true,
-        sparkIntro: "Je hebt heel wat in je gereedschapskist: WIE-WAT-HOE, 3-check, krachtwoorden, hallucinatie-radar. Tijd om het te laten zien.",
-        fact: "Geen nieuwe stof. Slaag en je verdient het Kompas van Helderheid.",
+        sparkIntro: "Hoi! Zeven lessen. Klaar met studeren, tijd om te laten zien wat je in je hoofd hebt zitten. Geen nieuwe stof. Alleen even terugblikken, en dan de baas-test. Rustig ademhalen. Ik weet zeker dat je dit kan.",
+        theoryIntro: `**Wat je deze wereld hebt geleerd**
+
+Samen terugblikken op wereld 2, als warming-up.
+
+Les 1: AI gokt. Woord voor woord. Meestal goed, soms fout. Klinkt altijd zelfverzekerd, ook als het naast zit.
+
+Les 2: AI kan hallucineren. Dingen verzinnen en als feit brengen. Vooral bij specifieke namen, jaartallen en kleinere plaatsen.
+
+Les 3: WIE-WAT-HOE. De formule voor slimme vragen. Wie ben je, wat wil je, hoe moet het eruit zien.
+
+Les 4: Dubbelcheck in drie stappen. Logica, andere bron, vraag een mens. Belangrijker info = meer stappen.`,
+        fact: "Hersenen onthouden dingen beter als ze actief worden opgehaald. Lezen is handig. Maar een test doen zorgt dat de kennis dieper in je hoofd zit. Na vandaag ben je geen beginner meer. Je bent iemand die weet hoe AI echt werkt.",
+        sparkMiddle: "Nog drie lessen snel herhaald, dan gaan we testen. Alle vragen komen uit wat we samen gedaan hebben. Niets nieuws. Beloofd.",
+        theoryDeep: `**Les 5, 6 en 7 kort herhaald**
+
+Les 5: Krachtwoorden. Vijf stuks. 'Stap voor stap', 'in makkelijke taal', 'geef een voorbeeld', 'in X zinnen', 'wat weet ik hierover niet?'. Gebruik ze solo of gecombineerd.
+
+Les 6: AI doet raar? Drie acties. RESET (nieuwe chat), HERFORMULEER (vraag anders stellen), STOP (andere tool of volwassene). Bij enge antwoorden altijd STOP.
+
+Les 7: Er zijn vele AI's. Tekst, plaatjes, muziek, code. Niet één AI is overal het beste in. Welke je gebruikt hangt af van je klus én van wat veilig is voor jouw leeftijd.
+
+Dat is wereld 2. Nu jij.`,
         interactive: mc(
-          "Wat is een hallucinatie?",
+          "Hoe werkt AI eigenlijk?",
           [
-            { label: "Een droom", correct: false },
-            { label: "AI die iets verzint dat niet klopt", correct: true },
-            { label: "Een soort plaatje", correct: false },
-            { label: "Een grappige film", correct: false },
+            { label: "Het weet alles", correct: false },
+            { label: "Het gokt woord voor woord op basis van voorbeelden", correct: true },
+            { label: "Het kopieert het internet", correct: false },
+            { label: "Het heeft gevoelens", correct: false },
           ],
-          "AI verzint iets dat klinkt alsof het klopt. Valstrik nr. 1.",
-          ["Denk terug aan les 2.2.", "Het komt door HOE AI werkt: gokken.", "Eindigt op '-natie'."],
+          "Goed zo. Nu nog een paar vragen in de quiz hieronder.",
         ),
+        summary: [
+          "Je hebt wereld 2 afgerond. 8 lessen over hoe je AI slim en kritisch gebruikt.",
+          "Je bent officieel SLIM-gecertificeerd. Het Kompas van Wijsheid is van jou.",
+          "Volgende stop: wereld 3 STERKER. Daar gaan we zien hoe je met AI dingen maakt en leert, zonder dat je zelf stopt met nadenken.",
+        ],
         quiz: [
           {
-            question: "Wat gebruik je voor een SLIMME vraag?",
-            options: ["Huilen", "WIE-WAT-HOE", "Stampvoeten"],
+            question: "Hoe werkt AI eigenlijk?",
+            options: [
+              "Het weet alles",
+              "Het gokt woord voor woord op basis van voorbeelden",
+              "Het kopieert het internet",
+              "Het heeft gevoelens",
+            ],
             correctIndex: 1,
-            why: "WIE (voor wie), WAT (wat precies), HOE (in welke vorm).",
+            why: "Bron: les Les 1.",
           },
           {
-            question: "AI klinkt zelfverzekerd , dus klopt het altijd.",
-            options: ["Waar", "Niet waar , toon zegt niks over waarheid"],
+            question: "Wat is een AI-hallucinatie?",
+            options: [
+              "AI valt uit",
+              "AI verzint dingen en brengt ze als feit",
+              "AI wordt boos",
+              "AI geeft geen antwoord",
+            ],
             correctIndex: 1,
-            why: "Altijd checken, ook bij zelfverzekerde antwoorden.",
+            why: "Bron: les Les 2.",
           },
           {
-            question: "Goede tweede bron om mee te checken?",
-            options: ["Een echte website of boek", "Een andere AI die alles bevestigt", "Roddel"],
-            correctIndex: 0,
-            why: "Echte bronnen, niet AI op AI.",
+            question: "De formule voor een slimme vraag aan AI is:",
+            options: [
+              "Ja-Nee-Misschien",
+              "WIE-WAT-HOE",
+              "Snel-Kort-Dichtbij",
+              "Help-Nu-Please",
+            ],
+            correctIndex: 1,
+            why: "Bron: les Les 3.",
+          },
+          {
+            question: "Wat is de EERSTE dubbelcheck-stap?",
+            options: [
+              "Vraag een mens",
+              "Check de logica",
+              "Googlen",
+              "Opnieuw aan AI vragen",
+            ],
+            correctIndex: 1,
+            why: "Bron: les Les 4.",
+          },
+          {
+            question: "Welk is een krachtwoord voor betere AI-antwoorden?",
+            options: [
+              "Uitgebreid alsjeblieft",
+              "Stap voor stap",
+              "Alles",
+              "Snel",
+            ],
+            correctIndex: 1,
+            why: "Bron: les Les 5.",
+          },
+          {
+            question: "AI blijft hetzelfde antwoord geven. Wat doe je?",
+            options: [
+              "Harder typen",
+              "Reset: nieuwe chat",
+              "Opgeven",
+              "Schreeuwen",
+            ],
+            correctIndex: 1,
+            why: "Bron: les Les 6.",
+          },
+          {
+            question: "Welk is waar over AI-soorten?",
+            options: [
+              "Er is maar één AI",
+              "Verschillende AI's zijn goed in verschillende dingen",
+              "Ze zijn allemaal gelijk",
+              "Alleen tekst-AI's bestaan",
+            ],
+            correctIndex: 1,
+            why: "Bron: les Les 7.",
+          },
+          {
+            question: "Als AI zelfverzekerd klinkt, klopt het antwoord zeker.",
+            options: [
+              "Waar",
+              "Niet waar",
+            ],
+            correctIndex: 1,
+            why: "Nee. AI klinkt altijd zelfverzekerd. Checken moet je zelf. (Bron: les Les 1.)",
           },
         ],
-        reflection: "Wereld 2 uit. Je verdient het Kompas van Helderheid. SLIM-baas!",
       },
+
     ],
   },
 
