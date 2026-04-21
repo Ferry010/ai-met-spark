@@ -26,7 +26,7 @@ export const AppHeader = () => {
       <div className="container h-16 flex items-center justify-between gap-4">
         <Link to={isTeacher ? "/teacher" : "/dashboard"} className="flex items-center gap-2">
           <Spark size={40} animate={false} />
-          <span className="font-display text-xl font-semibold">AI Smart Kids</span>
+          <span className="font-display text-xl font-semibold">AI met Spark</span>
         </Link>
         <div className="flex items-center gap-2">
           <DropdownMenu>

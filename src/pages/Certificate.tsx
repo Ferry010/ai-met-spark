@@ -142,7 +142,7 @@ export const Certificate = () => {
     doc.setFont("times", "italic");
     doc.setFontSize(13);
     doc.setTextColor(...GOLD_RGB);
-    doc.text("AI Smart Kids", w / 2, h - 50, { align: "center" });
+    doc.text("AI met Spark", w / 2, h - 50, { align: "center" });
 
     return doc;
   };

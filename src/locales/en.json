@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "AI Smart Kids",
+    "appName": "AI met Spark",
     "tagline": "Learn how to use AI like a pro!",
     "login": "Log In",
     "signup": "Sign Up",
@@ -40,7 +40,7 @@
       "title": "Your kid is already using AI. Are they using it well?",
       "p1": "AI is everywhere. In homework apps, in games, in their friends' phones. Most kids are figuring it out alone, and they're picking up bad habits fast.",
       "p2": "Schools are still catching up. Most classrooms won't teach AI literacy for years. By then, the wrong reflexes are already locked in.",
-      "p3": "AI Smart Kids gives your child the right foundation now: how to spot AI mistakes, protect their secrets, and use AI as a brain booster instead of a shortcut."
+      "p3": "AI met Spark gives your child the right foundation now: how to spot AI mistakes, protect their secrets, and use AI as a brain booster instead of a shortcut."
     },
     "inside": {
       "eyebrow": "What's inside",
@@ -91,7 +91,7 @@
       }
     },
     "whyParents": {
-      "eyebrow": "Why parents pick AI Smart Kids",
+      "eyebrow": "Why parents pick AI met Spark",
       "title": "Built for families who want their kids to thrive with AI, not fear it",
       "items": {
         "noChat": { "title": "No chat with AI", "desc": "Kids never type to a real AI. Zero risk of weird outputs or unsafe content." },
@@ -205,7 +205,7 @@
     }
   },
   "schoolForm": {
-    "title": "Bring AI Smart Kids to your school",
+    "title": "Bring AI met Spark to your school",
     "subtitle": "Tell us a bit about your school and we'll get back within 1 working day.",
     "fields": {
       "name": "Your name",

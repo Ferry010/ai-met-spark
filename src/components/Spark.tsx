@@ -21,7 +21,7 @@ interface SparkProps {
 }
 
 /**
- * Spark — friendly round mascot and AI Smart Kids' animated teacher.
+ * Spark — friendly round mascot and AI met Spark' animated teacher.
  * Pure inline SVG so it scales crisply and can be themed via design tokens.
  */
 export const Spark = ({ mood = "default", size = 160, className, animate = true, waving = false }: SparkProps) => {
@@ -37,7 +37,7 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true,
       width={size}
       height={size}
       className={cn(animate && "animate-float", className)}
-      aria-label="Spark — je AI Smart Kids leraar"
+      aria-label="Spark — je AI met Spark leraar"
       role="img"
     >
       <defs>

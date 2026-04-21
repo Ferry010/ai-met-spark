@@ -7,7 +7,7 @@ export const Privacy = () => (
     <article className="container py-12 max-w-3xl prose prose-slate">
       <h1 className="font-display text-4xl mb-6">Privacy Policy</h1>
       <p className="text-muted-foreground mb-4">Last updated: {new Date().toLocaleDateString()}</p>
-      <p>AI Smart Kids is built for children. We collect the absolute minimum data needed to run the service: a child's first name, age, parent email, and lesson progress.</p>
+      <p>AI met Spark is built for children. We collect the absolute minimum data needed to run the service: a child's first name, age, parent email, and lesson progress.</p>
       <h2 className="font-display text-2xl mt-8 mb-3">What we collect</h2>
       <ul className="list-disc pl-6 space-y-1">
         <li>First name (no last name)</li>
