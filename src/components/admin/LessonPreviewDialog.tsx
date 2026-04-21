@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { LessonRunner } from "@/components/LessonRunner";
 import { ALL_LESSONS, type Lesson, getNextLesson } from "@/content/lessons";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface LessonPreviewDialogProps {
   open: boolean;
