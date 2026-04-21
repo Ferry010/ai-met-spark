@@ -1,28 +1,18 @@
 
 
-# Wereld 2 — SLIM curriculum integreren
+# Wereld 1 — V1.1 content vervangen
 
-Je hebt de volledige V1.0 van Wereld 2 (SLIM, "Kompas van Wijsheid") aangeleverd: 8 lessen met dezelfde 8-stappen flow als Wereld 1 (intro → theorie 1 → wist je dat → Spark tussen → theorie 2 → oefening → samenvatting → quiz). Ik vervang de bestaande Wereld-2 lessen 2.1 t/m 2.8 in `src/content/lessons.ts` 1-op-1 door deze nieuwe content. Wereld 1 en 3 blijven ongemoeid.
+Je hebt een nieuwe versie (V1.1) van Wereld 1 aangeleverd. De **structuur is identiek** aan de V1.0 die ik vorige iteratie heb geïntegreerd: zelfde 8-stappen flow, zelfde JSON-velden, zelfde `exercise.type`-namen. Dit is puur een content-refresh met aangescherpte tekst van Spark.
 
 ## Wat de leerling ziet
 
-Acht nieuwe lessen in de SLIM-wereld met Spark's persoonlijke stem en concrete voorbeelden uit hun leefwereld:
-1. **2.1** AI is een gokker, geen wijsneus
-2. **2.2** De hallucinatie-val (Amerikaanse advocaat-rechtszaak weetje)
-3. **2.3** Vraag slim: WIE-WAT-HOE (de promptformule)
-4. **2.4** Dubbelcheck in 3 stappen
-5. **2.5** Krachtwoorden voor betere prompts (5 stuks)
-6. **2.6** AI zegt iets raars: nu wat? (RESET / HERFORMULEER / STOP)
-7. **2.7** Verschillende AI's, verschillende sterktes
-8. **2.8** Wereld 2 Baas-test → badge **Kompas van Wijsheid**
-
-Elke les heeft de `sparkMiddle`-overgang, en visueel komt de SLIM-accentkleur (#F59E0B / pillar `smart`) overal terug, net als nu.
+Dezelfde 8 lessen (1.1 t/m 1.8), maar met de bijgewerkte V1.1 teksten: warmere intro's, scherpere voorbeelden (TikTok-wachtkamer, Paus-pufferjas, Trump-arrestatie, Samsung-leak, Deep Blue), nieuwe `sparkMiddle`-overgangen en bijgestelde quiz-uitleg. Wereld 2 en 3 blijven ongemoeid.
 
 ## Technische uitvoering
 
-### a) `src/content/lessons.ts` — Wereld 2 lessen vervangen
+### `src/content/lessons.ts` — Wereld 1 lessen vervangen
 
-Het hele `lessons: [...]` block voor `worldId: 2` (regels rond 697–~1090) wordt vervangen door 8 lessen die de JSON 1-op-1 mappen, met dezelfde mapping-logica als Wereld 1:
+Het hele `lessons: [...]` block voor `worldId: 1` wordt 1-op-1 vervangen door 8 lessen die de V1.1 JSON mappen. Ik gebruik exact dezelfde mapping-logica als bij V1.0:
 
 - `sparkIntro` → `sparkIntro`
 - `theoryPart1.heading + body` → `theoryIntro` (heading als **bold** eerste regel)
@@ -30,38 +20,31 @@ Het hele `lessons: [...]` block voor `worldId: 2` (regels rond 697–~1090) word
 - `sparkMiddle` → `sparkMiddle`
 - `theoryPart2.heading + body` → `theoryDeep`
 - `summary` → `summary`
-- `quiz` → `quiz` (mc/true_false/tap_multi → `multiChoice` zoals bij Wereld 1)
+- `quiz` → `quiz` (mc / true_false / tap_multi → `multiChoice` met `correctIndex` = eerste juiste optie)
+- `exercise` → bestaande `InteractiveStep` kinds:
+  - 1.1 `drag_sort` → `sortBuckets` (Dit is AI / Dit is geen AI)
+  - 1.2 `tap_yes_no` → `sortBuckets` (Kan wel / Geheim houden)
+  - 1.3 `visual_check` → `tapReveal`
+  - 1.4 `scenario_choice` → `tapReveal`
+  - 1.5 `signal_spotter` → `tapReveal`
+  - 1.6 `stop_sorter` → `sortBuckets` 3-bucket
+  - 1.7 `scenario_choice` → `tapReveal`
+  - 1.8 `final_test` → mappen op `quiz` met `bossTest: true`
 
-### b) Mapping van Wereld-2 `exercise.type` → bestaande `InteractiveStep` kinds
+### Geen wijzigingen elders nodig
 
-Geen schema-uitbreiding nodig, alles past op de drie bestaande kinds die `LessonRunner` al rendert:
-
-| Les | JSON type | Mapt naar |
-|---|---|---|
-| 2.1 | `guess_or_know` (vertrouw/check) | `sortBuckets` met 2 buckets "Vertrouw" / "Check" |
-| 2.2 | `spot_hallucination` (true/false per item) | `sortBuckets` met 2 buckets "Hallucinatie" / "Klopt" |
-| 2.3 | `prompt_upgrade` (3 opties per slappe vraag) | `tapReveal` — slappe vraag als label, juiste opties + uitleg in reveal. *Trade-off: minder testgevoel, meer lees-en-leer; bewust gekozen om scope te houden, net als bij Wereld 1.* |
-| 2.4 | `verify_steps` (juiste stap kiezen) | `tapReveal` — scenario als label, juiste stap + uitleg in reveal |
-| 2.5 | `add_power_word` (3 opties per vraag) | `tapReveal` — originele prompt als label, beste krachtwoord + uitleg in reveal |
-| 2.6 | `troubleshoot` (reset/herformuleer/stop) | `sortBuckets` met 3 buckets "Reset" / "Herformuleer" / "Stop" |
-| 2.7 | `match_task_ai` | `sortBuckets` met buckets "Tekst-AI" / "Plaatjes-AI" / "Muziek-AI" (taken die geen muziek-AI vragen vallen in tekst-AI bucket) |
-| 2.8 | `final_test` (8 mix-vragen) | Mappen op de bestaande `quiz` array; `bossTest: true` zoals 1.8 |
-
-### c) Geen wijzigingen aan andere bestanden
-
-- Geen runtime-wijzigingen in `LessonRunner.tsx`: `sparkMiddle`, generieke 3-bucket `sortBuckets` en `tapReveal` zijn er al.
-- Geen DB-migratie: `lesson_overrides.spark_middle` is al toegevoegd in vorige iteratie.
-- Geen wijzigingen aan admin, badges, dashboard, certificaat.
+- `LessonRunner.tsx`, `AdminLessons.tsx`, `useLessonOverrides.ts`, DB schema: alles is in vorige iteratie al klaar voor deze structuur.
+- Wereld 2 en 3: niet aangeraakt.
+- Bestaande `lesson_overrides` records (per `lesson_id`) blijven werken; de V1.1 content is de nieuwe fallback.
 
 ## Bestanden
 
 **Aangepast**
-- `src/content/lessons.ts` — Wereld 2 `lessons` array volledig vervangen (8 lessen)
+- `src/content/lessons.ts` — Wereld 1 `lessons` array volledig vervangen (8 lessen, V1.1)
 
 ## Wat ik bewust NIET doe
 
-- Wereld 1 en 3 blijven exact zoals ze nu zijn.
-- Geen nieuwe interactive kinds (`scenarioChoice`, `multiSelect`). `tap_multi` quizvragen worden net als in Wereld 1 als gewone multiple-choice met de eerste juiste optie als `correctIndex` getoond — echte multi-select is een aparte iteratie.
-- Geen badge-systeem-wijzigingen; "Kompas van Wijsheid" toon ik via de bestaande boss-test flow.
-- Geen herrangschikking van bestaande Wereld-2 records in `lesson_overrides` — die zijn lesson_id-gebonden en blijven werken; nieuwe content is de fallback.
+- Geen schema- of runtime-wijzigingen — V1.1 past binnen de bestaande types.
+- `tap_multi` quizvragen blijven als gewone multiple-choice met de eerste juiste optie als `correctIndex`, net als bij V1.0 en Wereld 2. Echte multi-select is een aparte iteratie als je dat wilt.
+- Geen herschrijven van bestaande overrides in de database — die blijven leesvolgorde-gewijs voorrang houden voor lessen waar admin handmatig heeft aangepast.
 
