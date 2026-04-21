@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "AI Smart Kids",
+    "appName": "AI met Spark",
     "tagline": "Leer veilig én leuk met AI",
     "login": "Inloggen",
     "signup": "Aanmelden",
@@ -41,7 +41,7 @@
       "title": "Je kind gebruikt AI al. Doen ze dat ook goed?",
       "p1": "AI is overal. In huiswerk-apps, in games, op de telefoons van vrienden. De meeste kids zoeken het zelf uit en pikken snel verkeerde gewoontes op.",
       "p2": "Scholen lopen achter. De meeste klassen geven nog jarenlang geen AI-lessen. Tegen die tijd zitten de verkeerde reflexen er al diep in.",
-      "p3": "AI Smart Kids geeft je kind nu de juiste basis. Hoe je AI-fouten herkent, je geheimen beschermt en AI gebruikt als brein-booster in plaats van een snelle uitweg."
+      "p3": "AI met Spark geeft je kind nu de juiste basis. Hoe je AI-fouten herkent, je geheimen beschermt en AI gebruikt als brein-booster in plaats van een snelle uitweg."
     },
     "inside": {
       "eyebrow": "Wat zit erin",
@@ -91,7 +91,7 @@
       }
     },
     "whyParents": {
-      "eyebrow": "Waarom ouders kiezen voor AI Smart Kids",
+      "eyebrow": "Waarom ouders kiezen voor AI met Spark",
       "title": "Gemaakt voor families die willen dat hun kids opbloeien met AI, niet bang ervoor zijn",
       "items": {
         "noChat": { "title": "Geen chat met AI", "desc": "Kids typen nooit naar een echte AI. Geen risico op rare antwoorden of onveilige content." },
@@ -204,7 +204,7 @@
     }
   },
   "schoolForm": {
-    "title": "Breng AI Smart Kids naar je school",
+    "title": "Breng AI met Spark naar je school",
     "subtitle": "Vertel ons kort over je school en we reageren binnen 1 werkdag.",
     "fields": {
       "name": "Je naam",

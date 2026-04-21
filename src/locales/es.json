@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "AI Smart Kids",
+    "appName": "AI met Spark",
     "tagline": "¡Aprende a usar la IA como un pro!",
     "login": "Iniciar sesión",
     "signup": "Registrarse",
@@ -40,7 +40,7 @@
       "title": "Tu hijo ya está usando IA. ¿La está usando bien?",
       "p1": "La IA está en todas partes. En apps de tareas, en juegos, en los móviles de sus amigos. La mayoría de los niños lo descubren solos y adoptan malos hábitos rápido.",
       "p2": "Las escuelas van por detrás. La mayoría de las aulas no enseñarán alfabetización en IA en años. Para entonces, los reflejos equivocados ya están fijados.",
-      "p3": "AI Smart Kids le da a tu hijo la base correcta ahora: cómo detectar errores de la IA, proteger sus secretos y usar la IA como un potenciador del cerebro en vez de un atajo."
+      "p3": "AI met Spark le da a tu hijo la base correcta ahora: cómo detectar errores de la IA, proteger sus secretos y usar la IA como un potenciador del cerebro en vez de un atajo."
     },
     "inside": {
       "eyebrow": "Qué incluye",
@@ -90,7 +90,7 @@
       }
     },
     "whyParents": {
-      "eyebrow": "Por qué los padres eligen AI Smart Kids",
+      "eyebrow": "Por qué los padres eligen AI met Spark",
       "title": "Hecho para familias que quieren que sus hijos prosperen con la IA, no que le teman",
       "items": {
         "noChat": { "title": "Sin chat con IA", "desc": "Los niños nunca escriben a una IA real. Cero riesgo de respuestas raras o contenido inseguro." },
@@ -203,7 +203,7 @@
     }
   },
   "schoolForm": {
-    "title": "Lleva AI Smart Kids a tu escuela",
+    "title": "Lleva AI met Spark a tu escuela",
     "subtitle": "Cuéntanos un poco sobre tu escuela y respondemos en 1 día laborable.",
     "fields": {
       "name": "Tu nombre",

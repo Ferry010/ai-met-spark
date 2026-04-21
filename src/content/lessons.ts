@@ -1,5 +1,5 @@
 /**
- * AI Smart Kids , full lesson curriculum.
+ * AI met Spark , full lesson curriculum.
  * 3 worlds × 8 lessons = 24 lessons. Voor kids van 9 tot 11 jaar.
  */
 
@@ -1168,7 +1168,7 @@ Moet je code schrijven voor een game? Ook daar zijn AI's in gespecialiseerd, zoa
 
 Maar en dit is belangrijk: het verandert snel. Wat vandaag het beste is, is volgend jaar misschien tweede. Wat je moet onthouden is niet welke AI het beste is, maar dat er MEER ZIJN. Zodat als één je niet helpt, je weet dat je een andere kan proberen. Of een volwassene kan vragen welke geschikt is voor jouw vraag.
 
-Voor AI Smart Kids geldt: wij gebruiken alleen AI die veilig is voor jouw leeftijd. Buiten deze app, als je thuis met AI werkt, altijd even checken met je ouders welke AI je gebruikt.`,
+Voor AI met Spark geldt: wij gebruiken alleen AI die veilig is voor jouw leeftijd. Buiten deze app, als je thuis met AI werkt, altijd even checken met je ouders welke AI je gebruikt.`,
         interactive: sort(
           "Welk type AI gebruik je voor welke klus?",
           ["📝 Tekst-AI", "🎨 Plaatjes-AI", "🎵 Muziek-AI"],
@@ -1719,7 +1719,7 @@ Dat is wereld 2. Nu jij.`,
         sparkMiddle: "Oké. Genoeg gefeliciteerd, dat komt straks. Nu eerst even terug naar de stof. Twee lessen uit wereld 3 die we nog niet hebben herhaald. Dan gaan we naar de test.",
         theoryDeep: "**Laatste terugblik wereld 3**\n\nLes 3.6: AI bij rekenen. Rekenen is een skill, je moet het zelf kunnen. Vraag niet naar antwoorden, vraag naar de WEG. 'Stap voor stap uitleg', 'waar zit mijn fout', 'geef me een oefensom van dit type.' Die drie.\n\nLes 3.7: De 10x slimmer-formule. JIJ denkt + AI helpt + JIJ controleert. Het 3-minuten-plan: denk vooraf, gebruik AI slim, controleer. Mensen die dit doen, gaan ver.\n\nEn dat is hij. Alles wat we samen hebben gedaan. Nu jij. Succes, al heb je het niet nodig.",
         interactive: tap(
-          "De grote eindbaas-test. 24 vragen, één uit elke les. Slaag je, dan is het officiële AI Smart Kids-diploma van jou. Tijd: ongeveer 4 minuten. Ademhalen. Denken. Rustig aan.",
+          "De grote eindbaas-test. 24 vragen, één uit elke les. Slaag je, dan is het officiële AI met Spark-diploma van jou. Tijd: ongeveer 4 minuten. Ademhalen. Denken. Rustig aan.",
           [
             { label: "AI is vooral:", reveal: "Antwoord: Een patroon-herkenner die voorspelt  (Les 1.1)" },
             { label: "Welke test helpt je beslissen of je iets aan AI mag typen?", reveal: "Antwoord: Wachtkamer-test  (Les 1.2)" },
@@ -1749,7 +1749,7 @@ Dat is wereld 2. Nu jij.`,
         ),
         summary: [
           "Je hebt de eindtoets gemaakt. Drie werelden doorlopen. 24 lessen geleerd. Dat is écht wat.",
-          "Je bent nu AI Smart Kids-gecertificeerd. Het diploma is van jou. Het Schild, het Kompas, en de Kroon ook.",
+          "Je bent nu AI met Spark-gecertificeerd. Het diploma is van jou. Het Schild, het Kompas, en de Kroon ook.",
           "Vergeet dit niet: de meeste mensen om je heen weten veel minder over AI dan jij nu. Gebruik wat je weet. Help er anderen mee.",
         ],
         quiz: [
@@ -1763,7 +1763,7 @@ Dat is wereld 2. Nu jij.`,
             question: "Wat heb je nu allemaal in je hoofd zitten? Tik wat allemaal klopt en druk op Klaar.",
             options: ["Hoe AI werkt (gokken, patronen)", "Hoe je slim vraagt met WIE-WAT-HOE", "De wachtkamer-test", "Alles over draken", "De 10x slimmer-formule"],
             correctIndex: 0,
-            why: "Alles behalve de draken. Draken zijn cool maar geen onderdeel van AI Smart Kids.",
+            why: "Alles behalve de draken. Draken zijn cool maar geen onderdeel van AI met Spark.",
           },
           {
             question: "Ik weet nu meer over AI dan de meeste mensen om me heen.",

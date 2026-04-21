@@ -113,7 +113,7 @@ export const Auth = () => {
       <div className="text-center mb-6">
         <Spark size={120} mood="happy" />
         <h1 className="font-display text-3xl mt-3">
-          {isTeacher ? "Toegang voor leerkrachten" : "Welkom bij AI Smart Kids"}
+          {isTeacher ? "Toegang voor leerkrachten" : "Welkom bij AI met Spark"}
         </h1>
       </div>
 
