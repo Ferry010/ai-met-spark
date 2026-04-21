@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { LessonRunner } from "@/components/LessonRunner";
 import { ALL_LESSONS, type Lesson, getNextLesson } from "@/content/lessons";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface LessonPreviewDialogProps {
   open: boolean;
@@ -51,9 +51,6 @@ export const LessonPreviewDialog = ({ open, onClose, startLesson, walkthrough }:
                 {s}
               </Button>
             ))}
-            <Button size="sm" variant="ghost" className="h-7 text-xs rounded-full gap-1" onClick={onClose}>
-              <X className="h-3 w-3" /> Sluit
-            </Button>
           </div>
         </div>
 

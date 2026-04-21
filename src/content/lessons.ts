@@ -120,7 +120,7 @@ export const WORLDS: World[] = [
         sparkMiddle: "Oké, de basis snap je. Nu komt het leuke deel: als AI zo simpel werkt, waarom lijkt het dan zo slim? Want als je ChatGPT een vraag stelt, komen er best goede antwoorden uit. Hoe kan dat? Laten we kijken.",
         theoryDeep: "**Waarom AI zo slim LIJKT**\n\nOmdat AI niet is getraind met 10 miljoen kattenfoto's, maar met bijna alle teksten op internet. Miljarden zinnen. Alle Wikipedia-artikelen, alle boeken, alle blogs, alle forums. Alles.\n\nAls jij een vraag stelt, gokt AI heel goed wat het beste antwoord is. Gebaseerd op alle zinnen die het ooit heeft gezien. Het KENT de antwoorden niet, het gokt ze op basis van patronen.\n\nSoms klopt het heel goed. Soms zit het ernaast. En dit is belangrijk, onthoud dit even: AI klinkt altijd zelfverzekerd. Ook als het gokt. Ook als het fout zit. Dus jij moet zelf blijven nadenken.\n\nEén ding om even te weten, gewoon zodat je het begrijpt: alle grote AI-bedrijven maken verschillende AI's. ChatGPT is van OpenAI. Claude van Anthropic. Gemini van Google. Allemaal anders getraind. Daarover later meer.",
         interactive: sort(
-          "Sleep elk kaartje naar de juiste zone: 'Dit is AI' of 'Dit is geen AI'.",
+          "Tik elk kaartje aan en kies de juiste zone: 'Dit is AI' of 'Dit is geen AI'.",
           ["🤖 Dit is AI", "📦 Dit is geen AI"],
           [
             { label: "TikTok die jouw lievelingsfilmpjes kiest", bucket: 0 },
@@ -420,7 +420,7 @@ export const WORLDS: World[] = [
         sparkMiddle: "STOP zit in je hoofd. Mooi. Nu iets wat vaker voorkomt dan je denkt: de valstrik van 'onschuldig'. Want soms vraagt AI iets wat klinkt als onschuldig, maar het is opeens te veel samen.",
         theoryDeep: "**De valstrik van 'onschuldig'**\n\nEén stukje informatie is meestal prima. Je voornaam? Oké. Alleen je stad? Ook meestal oké.\n\nMaar combinaties zijn gevaarlijker. Voornaam + school + buurt = plots vindbaar. Voornaam + leeftijd + sport + club = hetzelfde.\n\nDit is waar veel mensen de mist in gaan. Ze denken 'ik zeg alleen mijn voornaam, dus het is veilig'. Maar in hetzelfde gesprek vertellen ze ook per ongeluk hun school, en dan een tip over hun buurt. Drie 'onschuldige' dingen samen = niet onschuldig meer.\n\nDus vanaf nu: niet alleen naar één stukje kijken, maar ook naar wat je al eerder hebt gezegd in hetzelfde gesprek. Stapelt het op? Trek op tijd aan de rem.",
         interactive: sort(
-          "Sleep elk item naar 'STOP (geheim)' of 'Mag' — of naar 'Ligt eraan'.",
+          "Tik elk item aan en kies 'STOP (geheim)', 'Mag' of 'Ligt eraan'.",
           ["🛑 STOP", "🤔 Twijfel", "✅ Oké"],
           [
             { label: "Je straatnaam en huisnummer", bucket: 0 },
