@@ -1,42 +1,33 @@
 
 
-# Spark in de hero meer tot leven brengen
+# Fix: "Wereld niet gevonden" na inloggen
 
-Spark krijgt meer karakter in de hero, zonder dat het ontwerp verandert. Subtiele lagen extra leven, geen nieuwe stijl.
+## Oorzaak
 
-## Wat de gebruiker ziet
+De route is `/world/:worldId` (zie `App.tsx`), maar `WorldPage.tsx` leest `const { id } = useParams()` en doet `getWorld(Number(id))`. Omdat de param `worldId` heet, is `id` altijd `undefined` → `Number(undefined) = NaN` → `getWorld` vindt niets → fallback "Wereld niet gevonden". Daarom werkt geen enkele wereld na inloggen.
 
-- Spark **zwaait** vrolijk (rechterarm omhoog, animatie loopt al in `Spark.tsx` via `waving`).
-- Een zachte **glow-pulse** achter Spark — de bestaande blur-cirkel ademt rustig in/uit.
-- **Sparkles** (kleine sterretjes) die om Spark heen twinkelen op willekeurige posities, met staggered fade/scale.
-- De **antenne-bol** pulseert iets levendiger (al aanwezig, blijft).
-- Spark **drijft** iets uitgesprokener (bestaande `animate-float` blijft, geen nieuwe beweging).
-- Het tekstballonnetje "Hoi! Ik ben Spark…" krijgt een lichte **bounce-in** bij load en een subtiele hover-tilt.
+`LessonPage.tsx` heeft dit al correct opgelost met `params.lessonId ?? params.id`.
 
-Geen kleur-, layout- of typografische wijzigingen. Alles blijft binnen de bestaande design tokens.
+## Wat ik aanpas
 
-## Technische uitvoering
+**`src/pages/WorldPage.tsx`** — vervang:
+```ts
+const { id } = useParams();
+...
+const baseWorld = getWorld(Number(id));
+```
+door:
+```ts
+const params = useParams<{ worldId?: string; id?: string }>();
+const worldId = params.worldId ?? params.id;
+...
+const baseWorld = getWorld(Number(worldId));
+```
 
-**`src/pages/Landing.tsx`** (hero-blok rond Spark):
-- Voeg `waving` toe aan `<Spark size={280} mood="happy" waving />`.
-- Wrap Spark + glow in een container met 3–5 absoluut gepositioneerde `<Sparkle />`-elementen (kleine SVG-sterretjes uit `lucide-react`, `Sparkles` of inline `<svg>`), elk met eigen `animationDelay` voor stagger.
-- Glow-div krijgt `animate-pulse-slow` (nieuwe keyframe) i.p.v. statische blur.
-- Tekstballon krijgt `animate-fade-in` + `hover:-rotate-1 transition-transform`.
-
-**`tailwind.config.ts`**:
-- Nieuwe keyframes `pulse-slow` (opacity/scale 1 → 1.1 → 1, 3s) en `twinkle` (opacity 0 → 1 → 0 + scale 0.6 → 1 → 0.6, 2s).
-- Animation utilities `animate-pulse-slow` en `animate-twinkle`.
-
-**`src/components/Spark.tsx`**: geen wijziging nodig — `waving` bestaat al.
-
-## Bestanden
-
-- `src/pages/Landing.tsx` — hero Spark-container uitbreiden met sparkles + waving prop
-- `tailwind.config.ts` — twee nieuwe keyframes + animation utilities
+Dat is alles. Eén bestand, twee regels. Alle bestaande links (`/world/1`, `/world/2`, `/world/3`) blijven werken en lessen worden weer geladen.
 
 ## Wat ik bewust NIET doe
 
-- Geen wijziging aan `Spark.tsx` zelf (mascotte blijft identiek, herbruikbaar overal).
-- Geen extra libraries (framer-motion o.i.d.) — pure Tailwind keyframes.
-- Geen geluid of klik-interactie toevoegen.
+- Geen wijziging aan de route in `App.tsx` (zou breken in andere paginas die `worldId` verwachten).
+- Geen refactor van auth/loading state — de race-condition uit de stack-overflow tip speelt hier niet; profile/user worden correct geladen (zie network logs: profiles + user_roles 200 OK). De bug is puur de mismatched param naam.
 
