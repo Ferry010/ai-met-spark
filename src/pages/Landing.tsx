@@ -134,9 +134,6 @@ export const Landing = () => {
       <section className="relative overflow-hidden bg-gradient-hero">
         <div className="container py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
           <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-secondary rounded-full px-4 py-1.5 mb-6 text-sm font-semibold text-secondary-foreground shadow-soft">
-              <Sparkles className="h-4 w-4" /> {t("landing.heroBadge")}
-            </div>
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mb-5">
               {t("landing.heroTitle")}
             </h1>
@@ -147,11 +144,6 @@ export const Landing = () => {
               <Link to="/auth?mode=signup">
                 <Button className="h-14 px-8 rounded-full text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
                   🚀 {t("landing.ctaPrimary")}
-                </Button>
-              </Link>
-              <Link to="/auth">
-                <Button variant="outline" className="h-14 px-8 rounded-full text-base font-display border-2">
-                  {t("landing.ctaSecondary")}
                 </Button>
               </Link>
             </div>
