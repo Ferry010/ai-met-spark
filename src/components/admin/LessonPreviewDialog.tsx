@@ -51,9 +51,6 @@ export const LessonPreviewDialog = ({ open, onClose, startLesson, walkthrough }:
                 {s}
               </Button>
             ))}
-            <Button size="sm" variant="ghost" className="h-7 text-xs rounded-full gap-1" onClick={onClose}>
-              <X className="h-3 w-3" /> Sluit
-            </Button>
           </div>
         </div>
 
