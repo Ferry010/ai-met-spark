@@ -1401,7 +1401,7 @@ Dat is wereld 2. Nu jij.`,
             why: "Nee. AI klinkt altijd zelfverzekerd. Checken moet je zelf. (Bron: les Les 1.)",
           },
         ],
-      }
+      },
 
     ],
   },
