@@ -1,93 +1,67 @@
 
 
-# Wereld 1 — rijke V1.0 curriculum integreren
+# Wereld 2 — SLIM curriculum integreren
 
-Je hebt een complete, veel rijkere V1.0 van Wereld 1 aangeleverd (8 lessen, ~600+ regels content, met Spark's persoonlijke stem, langere theorieblokken, `sparkMiddle`-tussenstuk, en meer interactieve oefeningen). Ik vervang de bestaande Wereld-1 lessen 1.1 t/m 1.8 in `src/content/lessons.ts` door deze nieuwe content, en breid de structuur licht uit zodat alles 1-op-1 past.
+Je hebt de volledige V1.0 van Wereld 2 (SLIM, "Kompas van Wijsheid") aangeleverd: 8 lessen met dezelfde 8-stappen flow als Wereld 1 (intro → theorie 1 → wist je dat → Spark tussen → theorie 2 → oefening → samenvatting → quiz). Ik vervang de bestaande Wereld-2 lessen 2.1 t/m 2.8 in `src/content/lessons.ts` 1-op-1 door deze nieuwe content. Wereld 1 en 3 blijven ongemoeid.
 
 ## Wat de leerling ziet
 
-Elke les van Wereld 1 krijgt nu de volledige 8-stappen flow uit jouw bron:
-1. **Spark intro** — langere, persoonlijke haak (bv. TikTok-voorbeeld, wachtkamer-test, paus-in-pufferjas)
-2. **Theorie deel 1** — kernidee met heading + body
-3. **Wist je dat?** — verrassend weetje (Deep Blue, Samsung-leak, Trump-arrestatie, etc.)
-4. **Spark tussen** *(nieuw)* — korte overgang van Spark in een mini speech-bubble
-5. **Theorie deel 2** — verdieping (drie AI-checks, drie scam-signalen, STOP-lijst, etc.)
-6. **Oefening** — interactieve component (sort, tap-reveal of multiple-choice scenarios)
-7. **Samenvatting** — 3 bullets terugblik
-8. **Quiz** — 3 vragen met uitleg
+Acht nieuwe lessen in de SLIM-wereld met Spark's persoonlijke stem en concrete voorbeelden uit hun leefwereld:
+1. **2.1** AI is een gokker, geen wijsneus
+2. **2.2** De hallucinatie-val (Amerikaanse advocaat-rechtszaak weetje)
+3. **2.3** Vraag slim: WIE-WAT-HOE (de promptformule)
+4. **2.4** Dubbelcheck in 3 stappen
+5. **2.5** Krachtwoorden voor betere prompts (5 stuks)
+6. **2.6** AI zegt iets raars: nu wat? (RESET / HERFORMULEER / STOP)
+7. **2.7** Verschillende AI's, verschillende sterktes
+8. **2.8** Wereld 2 Baas-test → badge **Kompas van Wijsheid**
 
-Plus voor les 1.8 (Wereld-baas-test): 8 mix-vragen uit alle lessen + badge "Schild van Waakzaamheid".
+Elke les heeft de `sparkMiddle`-overgang, en visueel komt de SLIM-accentkleur (#F59E0B / pillar `smart`) overal terug, net als nu.
 
 ## Technische uitvoering
 
-### a) `src/content/lessons.ts` — datastructuur uitbreiden
+### a) `src/content/lessons.ts` — Wereld 2 lessen vervangen
 
-Eén nieuw optioneel veld op `Lesson`:
-```ts
-/** STAP 4b — korte overgang van Spark tussen wist-je-dat en theorie deel 2. */
-sparkMiddle?: string;
-```
+Het hele `lessons: [...]` block voor `worldId: 2` (regels rond 697–~1090) wordt vervangen door 8 lessen die de JSON 1-op-1 mappen, met dezelfde mapping-logica als Wereld 1:
 
-Wereld 1 (de hele `lessons: [...]` block voor world id 1) wordt 1-op-1 vervangen met de 8 nieuwe lessen uit jouw JSON. Wereld 2 en 3 blijven ongewijzigd.
-
-**Mapping van JSON → bestaande types**:
 - `sparkIntro` → `sparkIntro`
-- `theoryPart1.heading + body` → samengevoegd in `theoryIntro` (heading als **bold** eerste regel, daarna body)
+- `theoryPart1.heading + body` → `theoryIntro` (heading als **bold** eerste regel)
 - `wistJeDat.body` → `fact`
-- `sparkMiddle` → `sparkMiddle` (nieuw veld)
-- `theoryPart2.heading + body` → samengevoegd in `theoryDeep`
+- `sparkMiddle` → `sparkMiddle`
+- `theoryPart2.heading + body` → `theoryDeep`
 - `summary` → `summary`
-- `quiz` (3 vragen) → `quiz` (mc, true_false en tap_multi → allemaal als `multiChoice` met `correctIndex` of als 2-optie waar/niet-waar)
+- `quiz` → `quiz` (mc/true_false/tap_multi → `multiChoice` zoals bij Wereld 1)
 
-**Mapping van `exercise.type` → `InteractiveStep` kinds**:
-| JSON type | Mapt naar |
-|---|---|
-| `drag_sort` (les 1.1) | `sortBuckets` met 2 buckets "Dit is AI" / "Dit is geen AI" |
-| `tap_yes_no` (les 1.2) | `sortBuckets` met "Kan wel" / "Geheim houden" |
-| `visual_check` (les 1.3) | `tapReveal` — elk item label = scenario, reveal = explanation |
-| `scenario_choice` (les 1.4, 1.7) | We maken hiervoor een **kleine uitbreiding** van `multiChoice`: één extra optionele `kind: "scenarioChoice"` met meerdere scenario's elk met eigen opties. Of, simpeler: we mappen elk scenario naar een tap-reveal item waar je tikt om het juiste antwoord te zien. **Voorkeur**: tap-reveal mapping, want geen schema-wijziging in DB-overrides nodig. Trade-off: minder "test"-gevoel, meer "lees-en-leer". Dit accepteer ik bewust voor scope.
-| `signal_spotter` (les 1.5) | `tapReveal` — scenario als label, signalen + uitleg in reveal |
-| `stop_sorter` (les 1.6) | `sortBuckets` 3-bucket variant — **kleine schema-uitbreiding nodig**: `sortBuckets` ondersteunt nu 2 buckets, ik maak het generiek (n buckets). Of we groeperen "depends" onder "ok" voor nu. **Voorkeur**: ik laat `sortBuckets` 3 buckets toe (string array, type allows already), de rendering in `LessonRunner` past zich aan.
-| `final_test` (les 1.8) | Mappen naar de bestaande `quiz` array — het hele "exercise" wordt onderdeel van quiz |
+### b) Mapping van Wereld-2 `exercise.type` → bestaande `InteractiveStep` kinds
 
-### b) `src/components/LessonRunner.tsx` — `sparkMiddle` step toevoegen
+Geen schema-uitbreiding nodig, alles past op de drie bestaande kinds die `LessonRunner` al rendert:
 
-- Nieuwe step `"sparkMiddle"` toegevoegd na `"fact"` en vóór `"theoryDeep"` in `buildSteps`.
-- Render = pillar-gradient kaart met Spark mascotte links (mood `"explaining"`) + speech-bubble met de `sparkMiddle` tekst en een "Verder" knop. Visueel lichter dan de theorie-stappen.
-- Step alleen toevoegen als `lesson.sparkMiddle?.trim()` bestaat (backwards compatible voor wereld 2/3).
+| Les | JSON type | Mapt naar |
+|---|---|---|
+| 2.1 | `guess_or_know` (vertrouw/check) | `sortBuckets` met 2 buckets "Vertrouw" / "Check" |
+| 2.2 | `spot_hallucination` (true/false per item) | `sortBuckets` met 2 buckets "Hallucinatie" / "Klopt" |
+| 2.3 | `prompt_upgrade` (3 opties per slappe vraag) | `tapReveal` — slappe vraag als label, juiste opties + uitleg in reveal. *Trade-off: minder testgevoel, meer lees-en-leer; bewust gekozen om scope te houden, net als bij Wereld 1.* |
+| 2.4 | `verify_steps` (juiste stap kiezen) | `tapReveal` — scenario als label, juiste stap + uitleg in reveal |
+| 2.5 | `add_power_word` (3 opties per vraag) | `tapReveal` — originele prompt als label, beste krachtwoord + uitleg in reveal |
+| 2.6 | `troubleshoot` (reset/herformuleer/stop) | `sortBuckets` met 3 buckets "Reset" / "Herformuleer" / "Stop" |
+| 2.7 | `match_task_ai` | `sortBuckets` met buckets "Tekst-AI" / "Plaatjes-AI" / "Muziek-AI" (taken die geen muziek-AI vragen vallen in tekst-AI bucket) |
+| 2.8 | `final_test` (8 mix-vragen) | Mappen op de bestaande `quiz` array; `bossTest: true` zoals 1.8 |
 
-### c) `src/pages/AdminLessons.tsx` — extra accordion-item
+### c) Geen wijzigingen aan andere bestanden
 
-- Nieuw veld `sparkMiddle` in `RowState` + form, met accordion-item "3b. Spark tussenstuk" tussen wist-je-dat en theorie deel 2.
-- "Laad standaard" knop hiervoor.
-- Save schrijft naar `lesson_overrides.spark_middle` (zie d).
-
-### d) Database migratie
-
-Nieuwe kolom op `lesson_overrides`:
-```sql
-ALTER TABLE public.lesson_overrides ADD COLUMN spark_middle text;
-```
-Plus bijwerken van `useLessonOverrides.ts` om `spark_middle` te lezen en mappen naar `sparkMiddle`.
-
-### e) `Spark` toonde "Wist je dat?" met `mood="hinting"` — blijft zo. Voor de nieuwe `sparkMiddle` stap gebruiken we `mood="explaining"`.
+- Geen runtime-wijzigingen in `LessonRunner.tsx`: `sparkMiddle`, generieke 3-bucket `sortBuckets` en `tapReveal` zijn er al.
+- Geen DB-migratie: `lesson_overrides.spark_middle` is al toegevoegd in vorige iteratie.
+- Geen wijzigingen aan admin, badges, dashboard, certificaat.
 
 ## Bestanden
 
 **Aangepast**
-- `src/content/lessons.ts` — `Lesson.sparkMiddle?` toegevoegd, Wereld 1 lessen volledig vervangen
-- `src/components/LessonRunner.tsx` — nieuwe `"sparkMiddle"` step + render, generieke `sortBuckets` rendering voor 3 buckets
-- `src/pages/AdminLessons.tsx` — nieuw form-veld `sparkMiddle` + accordion-item + save-mapping
-- `src/hooks/useLessonOverrides.ts` — `spark_middle` ondersteuning
-
-**Nieuwe migratie**
-- `lesson_overrides.spark_middle` (text, nullable)
+- `src/content/lessons.ts` — Wereld 2 `lessons` array volledig vervangen (8 lessen)
 
 ## Wat ik bewust NIET doe
 
-- Wereld 2 en 3 blijven exact zoals ze nu zijn (jij hebt alleen Wereld 1 aangeleverd).
-- Geen separaat `scenarioChoice` interactive-kind; ik map het op `tapReveal`. Als je later échte multi-keuze scenario's wil, voeg ik dan een nieuw kind toe.
-- Geen wijziging aan badges, certificaat, of dashboard-flow.
-- Geen automatische migratie van bestaande `lesson_overrides` records — die blijven werken, het nieuwe `spark_middle` veld is optioneel.
-- Quiz-vragen van type `tap_multi` (meerdere goede antwoorden) worden voor nu gerenderd als gewone multiple-choice met de eerste juiste optie als `correctIndex`. Echte multi-select quiz vergt grotere refactor — los ik in een vervolg-iteratie op als je dat wil.
+- Wereld 1 en 3 blijven exact zoals ze nu zijn.
+- Geen nieuwe interactive kinds (`scenarioChoice`, `multiSelect`). `tap_multi` quizvragen worden net als in Wereld 1 als gewone multiple-choice met de eerste juiste optie als `correctIndex` getoond — echte multi-select is een aparte iteratie.
+- Geen badge-systeem-wijzigingen; "Kompas van Wijsheid" toon ik via de bestaande boss-test flow.
+- Geen herrangschikking van bestaande Wereld-2 records in `lesson_overrides` — die zijn lesson_id-gebonden en blijven werken; nieuwe content is de fallback.
 
