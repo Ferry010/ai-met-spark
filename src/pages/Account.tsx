@@ -28,7 +28,6 @@ export const Account = () => {
     const language = String(form.get("language") || "nl") as "en" | "nl" | "es";
     const { error } = await supabase.from("profiles").update({
       first_name: String(form.get("first_name") || profile.first_name),
-      parent_email: String(form.get("parent_email") || ""),
       language,
     }).eq("id", user.id);
     setBusy(false);
