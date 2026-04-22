@@ -8,6 +8,7 @@ import {
   type InteractiveStep,
   type QuizQuestion,
 } from "@/content/lessons";
+import { applyLessonOverride } from "@/lib/lessonOverrides";
 
 export interface LessonOverride {
   lesson_id: string;
@@ -23,24 +24,6 @@ export interface LessonOverride {
   quiz: QuizQuestion[] | null;
   reflection: string | null;
 }
-
-const applyOverride = (lesson: Lesson, ov?: LessonOverride): Lesson => {
-  if (!ov) return lesson;
-  return {
-    ...lesson,
-    title: ov.title?.trim() ? ov.title : lesson.title,
-    fact: ov.fact?.trim() ? ov.fact : lesson.fact,
-    emoji: ov.emoji?.trim() ? ov.emoji : lesson.emoji,
-    sparkIntro: ov.spark_intro?.trim() ? ov.spark_intro : lesson.sparkIntro,
-    theoryIntro: ov.theory_intro?.trim() ? ov.theory_intro : lesson.theoryIntro,
-    sparkMiddle: ov.spark_middle?.trim() ? ov.spark_middle : lesson.sparkMiddle,
-    theoryDeep: ov.theory_deep?.trim() ? ov.theory_deep : lesson.theoryDeep,
-    summary: ov.summary && ov.summary.length > 0 ? ov.summary : lesson.summary,
-    interactive: ov.interactive ?? lesson.interactive,
-    quiz: ov.quiz && ov.quiz.length > 0 ? ov.quiz : lesson.quiz,
-    reflection: ov.reflection?.trim() ? ov.reflection : lesson.reflection,
-  };
-};
 
 export const useLessonOverrides = () => {
   const [overrides, setOverrides] = useState<Record<string, LessonOverride>>({});
@@ -60,10 +43,10 @@ export const useLessonOverrides = () => {
     refresh();
   }, []);
 
-  const lessons: Lesson[] = ALL_LESSONS.map((l) => applyOverride(l, overrides[l.id]));
+  const lessons: Lesson[] = ALL_LESSONS.map((l) => applyLessonOverride(l, overrides[l.id]));
   const worlds: World[] = WORLDS.map((w) => ({
     ...w,
-    lessons: w.lessons.map((l) => applyOverride(l, overrides[l.id])),
+    lessons: w.lessons.map((l) => applyLessonOverride(l, overrides[l.id])),
   }));
 
   return { overrides, lessons, worlds, loading, refresh };
