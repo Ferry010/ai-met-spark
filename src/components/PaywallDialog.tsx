@@ -24,8 +24,6 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
       body: {
         priceId: SMART_KIDS_PRICE_ID,
         customerEmail: profile?.parent_email || user?.email,
-        userId: user?.id,
-        environment: stripeEnvironment,
         returnUrl: `${window.location.origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       },
     });
