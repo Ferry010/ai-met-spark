@@ -1,103 +1,139 @@
 
-# Audiobeheer uitbreiden: verwijderen + regenereren + Rocco als vaste stem
+# TTS copy optimaliseren voor lesaudio
 
 ## Doel
-De admin-audiopagina uitbreiden zodat je per lesstap:
-1. een bestaand audiobestand kunt verwijderen
-2. daarna of direct opnieuw kunt genereren
-3. standaard de ElevenLabs-stem “Rocco - Mechanical and Robotic” gebruikt voor gegenereerde audio
+Alle tekst die wordt voorgelezen in lessen herschrijven en normaliseren zodat de stem natuurlijker klinkt, met minder struikelwoorden, minder rare afkortingen en duidelijkere uitspraak van lastige termen zoals “AI”.
 
 ## Wat er gebouwd wordt
 
-### 1) Verwijderen van voice files
-**Nieuwe backendfunctie**
-- Een aparte backendfunctie toevoegen voor het verwijderen van lesson-audio.
-- Die functie:
-  - valideert dat de gebruiker is ingelogd
-  - controleert admin-rechten via de bestaande `has_role`-functie
-  - zoekt het juiste `lesson_audio` record op via `lessonId + step`
-  - verwijdert het mp3-bestand uit de `lesson-audio` bucket
-  - verwijdert daarna het bijbehorende record uit de `lesson_audio` tabel
-  - geeft een nette JSON-response terug
+### 1) Eén duidelijke TTS-schrijfstijl voor alle lesaudio
+Er komt een vaste schrijf- en normalisatielaag voor lesaudio, zodat teksten AI-voice vriendelijk blijven.
 
-**Waarom apart**
-- Verwijderen hoort expliciet en veilig te zijn, niet verstopt in de upload/generate-functies.
-- Er zijn geen schemawijzigingen nodig; de bestaande tabel en bucket zijn voldoende.
+Die laag volgt regels zoals:
+- schrijf afkortingen zoveel mogelijk uit
+- vermijd losse letters zoals “AI” of “A I” waar een stem over kan struikelen
+- vervang onnatuurlijke caps lock of losse quotes waar nodig
+- schrijf cijfers, symbolen en productnamen op een manier die prettiger wordt uitgesproken
+- vermijd te lange zinnen en onhandige ritmes
+- gebruik duidelijke leestekens voor natuurlijke pauzes
 
-### 2) Regenereren van bestaande audio
-**Admin UI**
-- In `src/pages/admin/LessonAudio.tsx` per stap een expliciete actie toevoegen:
-  - Afspelen
-  - Uploaden
-  - Verwijderen
-  - Regenereren
-- “Regenereren” blijft dezelfde tekst opnieuw naar de generate-functie sturen, ook als er al audio bestaat.
-- Door de bestaande bestandsnaam (`lessonId/step.mp3`) en `upsert: true` blijft dit technisch een nette overwrite.
+Voorbeeldrichting:
+- “AI” → een consistente, uitgesproken vorm
+- “ChatGPT” → alleen behouden waar nodig, anders beschrijvend herschrijven
+- “1.8” in lopende tekst vermijden als spreektekst
+- opsommingen en korte punchlines herschrijven naar spreektaal
 
-**UX-gedrag**
-- Na verwijderen of regenereren:
-  - lijst opnieuw ophalen
-  - Spark-audio-cache invalidaten
-  - duidelijke success/error toast tonen
-- Knoppen disable’en terwijl een actie loopt, zodat dubbele clicks geen race conditions veroorzaken.
+### 2) Audit van alle lesaudio-bronnen
+Alle tekst die nu als audio kan worden gegenereerd wordt gecontroleerd en herschreven waar nodig:
+- `sparkIntro`
+- `theoryIntro`
+- `fact`
+- `sparkMiddle`
+- `theoryDeep`
+- `summary`
 
-### 3) Rocco als vaste generatie-stem
-**Generate function**
-- In `supabase/functions/generate-lesson-audio/index.ts` de huidige `DEFAULT_VOICE` vervangen door de voice ID van “Rocco - Mechanical and Robotic”.
-- De generate-flow blijft verder hetzelfde: tekst -> ElevenLabs -> mp3 -> storage -> `lesson_audio`.
+De audit richt zich op:
+- uitspraakvriendelijkheid
+- ritme en verstaanbaarheid
+- grammatica en spelling
+- consistente benaming van AI-termen
+- minder dubbelzinnigheid of visuele schrijfvormen die slecht klinken in audio
 
-**Admin UI**
-- Op de audiobeheerpagina expliciet tonen dat gegenereerde audio nu met Rocco wordt gemaakt.
-- Geen extra keuzeveld nodig als deze stem voortaan de standaard moet zijn.
+### 3) Centrale helper voor audio-tekst
+Er komt een gedeelde helper die de voorleesbare tekst voorbereidt voordat:
+- hashes worden berekend
+- audio wordt gegenereerd
+- bestaande audio als “verouderd” of “actueel” wordt vergeleken
+
+Dat voorkomt dat:
+- dezelfde les visueel één tekst heeft, maar auditief een andere
+- oude hashes blijven matchen terwijl de TTS-uitspraaklogica is veranderd
+- de admin-pagina een andere tekst genereert dan de les zelf afspeelt
+
+## Belangrijke ontwerpkeuze
+De optimalisatie gebeurt alleen voor **lesson audio**, niet voor alle zichtbare UI-copy. Zo blijft marketing- en interfacecopy onaangetast, terwijl de stem wel natuurlijker wordt.
+
+## Technische aanpak
+
+### A. Nieuwe normalisatie-helper
+Een nieuwe utilityfunctie maakt van ruwe lesinhoud een TTS-veilige versie.
+
+Taken van die helper:
+- markdown/visuele opmaak strippen waar nodig
+- afkortingen en problematische termen normaliseren
+- meerdere spaties, rare interpunctie en visuele notatie opschonen
+- summary-bullets samenvoegen tot goed uitspreekbare zinnen
+- optioneel vaste vervangregels toepassen voor bekende probleemwoorden
+
+Voorbeeldstructuur:
+```text
+raw lesson text
+→ normalize for TTS
+→ hash normalized text
+→ send normalized text to audio generation
+→ store audio with matching hash
+```
+
+### B. Audiobeheer laten werken op genormaliseerde tekst
+`src/components/admin/lesson-audio-shared.ts` wordt aangepast zodat `LESSON_AUDIO_STEPS` niet alleen brontekst ophaalt, maar de definitieve TTS-tekst gebruikt.
+
+`src/pages/admin/LessonAudio.tsx` blijft genereren, uploaden en vergelijken, maar dan op basis van de genormaliseerde tekst.
+
+Gevolg:
+- “Generate missing” werkt correct
+- “stale” detectie wordt betrouwbaarder
+- nieuwe uitspraakregels forceren netjes een regeneratie waar nodig
+
+### C. Volledige content-pass in `src/content/lessons.ts`
+Alle lesson-audio teksten worden taaltechnisch opgeschoond met focus op spreekbaarheid.
+
+Werk per les:
+- lastige termen herschrijven
+- productnamen alleen gebruiken als dat nodig is
+- “AI” consequent op één manier laten terugkomen
+- te visuele zinnen herschrijven naar gesproken taal
+- komma’s, punten en ritme verbeteren voor natuurlijke TTS-pauzes
+
+### D. Overrides correct meenemen
+Bij controle viel op dat override-data nu niet volledig alle voorleesvelden meeneemt.
+
+`src/hooks/useLessonOverrides.ts` en `src/pages/LessonPage.tsx` moeten worden nagekeken en aangevuld zodat ook TTS-relevante overridevelden correct worden gebruikt, met name:
+- `spark_intro`
+- eventueel `reflection` als die later ook audio krijgt
+
+Dat voorkomt dat de admin een aangepaste tekst ziet, maar de generator of lesweergave alsnog de basiscontent gebruikt.
 
 ## Bestanden die aangepast worden
 
-### Backend
-- `supabase/functions/generate-lesson-audio/index.ts`
-  - default voice wijzigen naar Rocco
-- `supabase/functions/delete-lesson-audio/index.ts`
-  - nieuwe delete-functie met admin-check, storage delete en DB delete
+### Content
+- `src/content/lessons.ts`
+  - lesaudio herschrijven naar TTS-vriendelijke spreektaal
 
-### Frontend
+### Shared audio logic
+- `src/components/admin/lesson-audio-shared.ts`
+  - audio-step tekst via centrale TTS-helper laten lopen
+
+### Admin audio page
 - `src/pages/admin/LessonAudio.tsx`
-  - remove-actie toevoegen
-  - expliciete regenerate-actie toevoegen
-  - UI-copy updaten naar “Rocco” als standaardstem
-  - loading/busy states uitbreiden per actie
+  - hash/generatie blijven koppelen aan genormaliseerde tekst
 
-## Technische details
+### Overrides
+- `src/hooks/useLessonOverrides.ts`
+  - ontbrekende overridevelden meenemen waar relevant
+- `src/pages/LessonPage.tsx`
+  - dezelfde override-logica gelijk trekken met de uiteindelijke lesinhoud
 
-### Verwijderflow
-```text
-Admin klikt "Verwijderen"
-→ frontend invoke("delete-lesson-audio", { lessonId, step })
-→ functie valideert admin
-→ record ophalen uit lesson_audio
-→ bestand verwijderen uit bucket lesson-audio
-→ record verwijderen uit lesson_audio
-→ frontend refresh + cache invalidation
-```
+### Nieuwe utility
+- bijvoorbeeld `src/lib/tts.ts`
+  - centrale normalisatie- en vervangregels voor lesson audio
 
-### Regenerate-flow
-```text
-Admin klikt "Regenereren"
-→ frontend invoke("generate-lesson-audio", { lessonId, step, text, textHash })
-→ functie gebruikt Rocco voice ID
-→ mp3 upload met upsert
-→ lesson_audio upsert
-→ frontend refresh + cache invalidation
-```
-
-## Veiligheid en dataregels
-- Geen wijzigingen aan RLS nodig.
-- Alleen admins mogen beheren; dat past al bij de bestaande backendpatronen en `lesson_audio`-toegang.
-- Publieke leesbaarheid van audio blijft intact voor afspelen in lessen.
-
-## Aandachtspunt vóór uitvoering
-- ElevenLabs verwacht een **voice ID**, niet alleen een naam. De implementatie gebruikt dus de exacte voice ID van “Rocco - Mechanical and Robotic” in de generate-functie.
+## Acceptatiecriteria
+Na implementatie:
+- klinken lesaudio-teksten natuurlijker en duidelijker
+- zijn termen zoals “AI” consistent en spreekbaar gemaakt
+- worden lastige symbolen, afkortingen en visuele schrijfvormen vermeden
+- gebruikt audiogeneratie overal dezelfde definitieve tekstbron
+- markeert de admin-audiopagina bestaande audio correct als verouderd wanneer uitspraakregels of content zijn aangepast
 
 ## Verwacht resultaat
-Na implementatie kun je op `/admin/audio` per stap:
-- een bestaand audiobestand verwijderen
-- een verwijderd of bestaand fragment opnieuw genereren
-- alle nieuwe gegenereerde audio automatisch laten maken met Rocco als vaste stem
+Je kunt daarna lesaudio opnieuw genereren met tekst die speciaal is voorbereid voor voorlezen: minder struikelen op termen, rustiger ritme, duidelijkere uitspraak en een veel consistenter “Spark”-geluid over alle lessen heen.
