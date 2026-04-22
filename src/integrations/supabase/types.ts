@@ -94,6 +94,30 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_audio: {
+        Row: {
+          created_at: string
+          lesson_id: string
+          step: string
+          storage_path: string
+          text_hash: string
+        }
+        Insert: {
+          created_at?: string
+          lesson_id: string
+          step: string
+          storage_path: string
+          text_hash: string
+        }
+        Update: {
+          created_at?: string
+          lesson_id?: string
+          step?: string
+          storage_path?: string
+          text_hash?: string
+        }
+        Relationships: []
+      }
       lesson_overrides: {
         Row: {
           emoji: string | null
