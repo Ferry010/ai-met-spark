@@ -362,6 +362,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      attach_certificate_pdf: {
+        Args: { _path: string }
+        Returns: {
+          id: string
+          issued_at: string
+          pdf_url: string | null
+          score: number | null
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      create_or_refresh_certificate: {
+        Args: never
+        Returns: {
+          id: string
+          issued_at: string
+          pdf_url: string | null
+          score: number | null
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -372,6 +404,22 @@ export type Database = {
       is_student_in_my_school: {
         Args: { _student_id: string }
         Returns: boolean
+      }
+      list_students_in_my_school: {
+        Args: never
+        Returns: {
+          first_name: string
+          id: string
+          school_id: string
+        }[]
+      }
+      validate_class_code: {
+        Args: { _code: string }
+        Returns: {
+          school_id: string
+          school_name: string
+          valid: boolean
+        }[]
       }
       validate_school_inquiry: {
         Args: {

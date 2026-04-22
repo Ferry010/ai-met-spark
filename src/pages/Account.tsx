@@ -28,7 +28,6 @@ export const Account = () => {
     const language = String(form.get("language") || "nl") as "en" | "nl" | "es";
     const { error } = await supabase.from("profiles").update({
       first_name: String(form.get("first_name") || profile.first_name),
-      parent_email: String(form.get("parent_email") || ""),
       language,
     }).eq("id", user.id);
     setBusy(false);
@@ -69,10 +68,6 @@ export const Account = () => {
           <div className="space-y-2">
             <Label htmlFor="first_name">Voornaam</Label>
             <Input id="first_name" name="first_name" defaultValue={profile.first_name} maxLength={40} className="h-12 rounded-xl" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="parent_email">E-mail van ouder</Label>
-            <Input id="parent_email" name="parent_email" type="email" defaultValue={profile.parent_email ?? ""} className="h-12 rounded-xl" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="language">Taal</Label>

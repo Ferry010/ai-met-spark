@@ -30,6 +30,16 @@ export const Auth = () => {
   const { toast } = useToast();
   const [busy, setBusy] = useState(false);
 
+  const validateClassCode = async (classCode?: string) => {
+    const normalizedCode = classCode?.trim().toUpperCase();
+    if (!normalizedCode) return true;
+
+    const { data, error } = await supabase.rpc("validate_class_code", { _code: normalizedCode });
+    if (error) throw error;
+
+    return Array.isArray(data) && data.length > 0;
+  };
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) navigate("/dashboard", { replace: true });
@@ -53,7 +63,18 @@ export const Auth = () => {
     }
     setBusy(true);
     const lang = (localStorage.getItem("aisk_lang") as "en" | "nl" | "es") || "nl";
-    const { error } = await supabase.auth.signUp({
+    try {
+      const classCodeIsValid = await validateClassCode(parsed.data.class_code);
+      if (!classCodeIsValid) {
+        toast({
+          title: "Ongeldige klassencode",
+          description: "Controleer de code of laat je leerkracht een nieuwe delen.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
@@ -66,14 +87,18 @@ export const Auth = () => {
           class_code: parsed.data.class_code?.toUpperCase() || null,
         },
       },
-    });
-    setBusy(false);
-    if (error) {
-      toast({ title: "Aanmelden mislukt", description: error.message, variant: "destructive" });
-      return;
+      });
+
+      if (error) {
+        toast({ title: "Aanmelden mislukt", description: error.message, variant: "destructive" });
+        return;
+      }
+
+      toast({ title: `Welkom, ${parsed.data.first_name}!` });
+      navigate("/dashboard");
+    } finally {
+      setBusy(false);
     }
-    toast({ title: `Welkom, ${parsed.data.first_name}!` });
-    navigate("/dashboard");
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {

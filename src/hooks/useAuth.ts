@@ -6,7 +6,6 @@ export interface Profile {
   id: string;
   first_name: string;
   age: number | null;
-  parent_email: string | null;
   language: "en" | "nl" | "es";
   paid: boolean;
   school_id: string | null;
@@ -47,7 +46,11 @@ export const useAuth = () => {
 
   const loadProfile = async (uid: string) => {
     const [{ data: p }, { data: r }] = await Promise.all([
-      supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
+      supabase
+        .from("profiles")
+        .select("id, first_name, age, language, paid, school_id")
+        .eq("id", uid)
+        .maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", uid),
     ]);
     setProfile(p as Profile | null);
