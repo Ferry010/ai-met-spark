@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Spark } from "./Spark";
 import { supabase } from "@/integrations/supabase/client";
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js";
-import { getStripe, stripeEnvironment, SMART_KIDS_PRICE_ID } from "@/lib/stripe";
+import { getStripe, SMART_KIDS_PRICE_ID } from "@/lib/stripe";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 
 interface PaywallProps {
   open: boolean;
