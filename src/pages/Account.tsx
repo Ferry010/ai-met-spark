@@ -6,17 +6,27 @@ import { AppHeader } from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import i18n from "@/i18n";
+import {
+  getBackgroundAudioEnabled,
+  getBackgroundAudioVolume,
+  setBackgroundAudioEnabled,
+  setBackgroundAudioVolume,
+} from "@/lib/backgroundAudio";
 
 export const Account = () => {
   const { user, profile, refreshProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+  const [backgroundAudioEnabled, setBackgroundAudioEnabledState] = useState(() => getBackgroundAudioEnabled());
+  const [backgroundAudioVolume, setBackgroundAudioVolumeState] = useState(() => getBackgroundAudioVolume());
 
   if (!profile) return null;
 
@@ -84,6 +94,48 @@ export const Account = () => {
             {busy ? "…" : "Opslaan"}
           </Button>
         </form>
+
+        <section className="rounded-3xl bg-card border border-border p-6 shadow-soft space-y-5 mb-6">
+          <div>
+            <h2 className="font-display text-xl">Audio-instellingen</h2>
+            <p className="text-sm text-muted-foreground mt-1">Beheer de achtergrondmuziek voor student-schermen en menu&apos;s.</p>
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-1">
+              <Label htmlFor="background-audio-enabled">Achtergrondmuziek</Label>
+              <p className="text-sm text-muted-foreground">Speelt door op dashboard, werelden en account.</p>
+            </div>
+            <Switch
+              id="background-audio-enabled"
+              checked={backgroundAudioEnabled}
+              onCheckedChange={(checked) => {
+                setBackgroundAudioEnabledState(checked);
+                setBackgroundAudioEnabled(checked);
+              }}
+            />
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-4">
+              <Label htmlFor="background-audio-volume">Volume</Label>
+              <span className="text-sm text-muted-foreground">{Math.round(backgroundAudioVolume * 100)}%</span>
+            </div>
+            <Slider
+              id="background-audio-volume"
+              min={0}
+              max={100}
+              step={1}
+              value={[Math.round(backgroundAudioVolume * 100)]}
+              disabled={!backgroundAudioEnabled}
+              onValueChange={([value]) => {
+                const nextVolume = (value ?? 0) / 100;
+                setBackgroundAudioVolumeState(nextVolume);
+                setBackgroundAudioVolume(nextVolume);
+              }}
+            />
+          </div>
+        </section>
 
         <div className="rounded-3xl bg-card border border-border p-6 shadow-soft space-y-3">
           <h2 className="font-display text-xl">Gevarenzone</h2>

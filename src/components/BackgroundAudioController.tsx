@@ -1,11 +1,15 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import orbitClassroomAudio from "@/assets/Orbit_Classroom.mp3";
+import {
+  BACKGROUND_AUDIO_SETTINGS_EVENT,
+  getBackgroundAudioEnabled,
+  getBackgroundAudioVolume,
+} from "@/lib/backgroundAudio";
 
 const PLAYABLE_PATHS = ["/dashboard", "/world/", "/account"];
 const LEARNING_PATHS = ["/lesson/", "/final-test", "/certificate"];
-const DEFAULT_VOLUME = 0.24;
 
 const matchesPath = (pathname: string, prefixes: string[]) =>
   prefixes.some((prefix) => pathname === prefix || pathname.startsWith(prefix));
@@ -15,6 +19,10 @@ export const BackgroundAudioController = () => {
   const { user, roles, loading } = useAuth();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const resumeOnInteractionRef = useRef(false);
+  const [settings, setSettings] = useState({
+    enabled: getBackgroundAudioEnabled(),
+    volume: getBackgroundAudioVolume(),
+  });
 
   const isStudentOnlySession = useMemo(
     () => !!user && !roles.includes("teacher") && !roles.includes("admin"),
@@ -31,7 +39,7 @@ export const BackgroundAudioController = () => {
     const audio = new Audio(orbitClassroomAudio);
     audio.loop = true;
     audio.preload = "auto";
-    audio.volume = DEFAULT_VOLUME;
+    audio.volume = settings.volume;
     audioRef.current = audio;
 
     return () => {
@@ -40,6 +48,30 @@ export const BackgroundAudioController = () => {
       audioRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const syncSettings = () => {
+      setSettings({
+        enabled: getBackgroundAudioEnabled(),
+        volume: getBackgroundAudioVolume(),
+      });
+    };
+
+    window.addEventListener(BACKGROUND_AUDIO_SETTINGS_EVENT, syncSettings);
+
+    return () => {
+      window.removeEventListener(BACKGROUND_AUDIO_SETTINGS_EVENT, syncSettings);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    audioRef.current.volume = settings.volume;
+    if (!settings.enabled) {
+      resumeOnInteractionRef.current = false;
+      audioRef.current.pause();
+    }
+  }, [settings]);
 
   useEffect(() => {
     if (loading) return;
@@ -56,17 +88,17 @@ export const BackgroundAudioController = () => {
       }
     };
 
-    if (shouldPlay) {
+    if (shouldPlay && settings.enabled) {
       void attemptPlay();
       return;
     }
 
     resumeOnInteractionRef.current = false;
     audio.pause();
-  }, [loading, shouldPlay]);
+  }, [loading, settings.enabled, shouldPlay]);
 
   useEffect(() => {
-    if (!shouldPlay) return;
+    if (!shouldPlay || !settings.enabled) return;
 
     const resumeOnFirstInteraction = () => {
       if (!resumeOnInteractionRef.current) return;
@@ -88,7 +120,7 @@ export const BackgroundAudioController = () => {
       window.removeEventListener("pointerdown", resumeOnFirstInteraction);
       window.removeEventListener("keydown", resumeOnFirstInteraction);
     };
-  }, [shouldPlay]);
+  }, [settings.enabled, shouldPlay]);
 
   return null;
 };
