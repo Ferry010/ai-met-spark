@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Button } from "@/components/ui/button";
-import { PaywallDialog } from "@/components/PaywallDialog";
 import { LessonRunner } from "@/components/LessonRunner";
 import { getLesson } from "@/content/lessons";
 import { applyLessonOverride } from "@/lib/lessonOverrides";
@@ -13,11 +12,9 @@ import { ChevronLeft } from "lucide-react";
 export const LessonPage = () => {
   const params = useParams<{ id?: string; lessonId?: string }>();
   const lessonId = params.lessonId ?? params.id ?? "";
-  const navigate = useNavigate();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const baseLesson = useMemo(() => getLesson(lessonId), [lessonId]);
   const [override, setOverride] = useState<any>(null);
-  const [paywall, setPaywall] = useState(false);
 
   useEffect(() => {
     if (!lessonId) return;
@@ -33,12 +30,6 @@ export const LessonPage = () => {
     if (!baseLesson) return undefined;
     return applyLessonOverride(baseLesson, override);
   }, [baseLesson, override]);
-
-  useEffect(() => {
-    if (!lesson || !profile) return;
-    if (lesson.id === "1.1") return;
-    if (!profile.paid) setPaywall(true);
-  }, [lesson, profile]);
 
   if (!lesson) {
     return (
@@ -63,8 +54,8 @@ export const LessonPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <main className="container py-6 max-w-2xl">
-        <Link to={`/world/${lesson.worldId}`} className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground mb-4 font-display">
+      <main className="container max-w-2xl px-4 py-4 sm:px-6 sm:py-6">
+        <Link to={`/world/${lesson.worldId}`} className="mb-4 inline-flex max-w-full items-center gap-1 text-sm text-muted-foreground hover:text-foreground font-display sm:text-base">
           <ChevronLeft className="h-4 w-4" /> Terug naar Wereld {lesson.worldId}
         </Link>
 
@@ -80,7 +71,6 @@ export const LessonPage = () => {
           )}
         />
       </main>
-      <PaywallDialog open={paywall} onClose={() => { setPaywall(false); navigate(-1); }} />
     </div>
   );
 };
