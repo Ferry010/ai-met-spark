@@ -30,8 +30,11 @@ export const Certificate = () => {
       if (attempt) setScore(attempt.score);
       if (cert) setIssued(cert.issued_at);
       else if (attempt && user && profile) {
-        supabase.from("certificates").insert({ user_id: user.id, score: attempt.score }).then(() => {
-          setIssued(new Date().toISOString());
+        supabase.rpc("create_or_refresh_certificate").then(({ data, error }) => {
+          if (!error && data) {
+            setIssued(data.issued_at);
+            setScore(data.score);
+          }
         });
       }
     });
@@ -160,7 +163,11 @@ export const Certificate = () => {
         contentType: "application/pdf",
       });
       if (!error) {
-        await supabase.from("certificates").update({ pdf_url: path }).eq("user_id", user.id);
+        const { data } = await supabase.rpc("attach_certificate_pdf", { _path: path });
+        if (data) {
+          setIssued(data.issued_at);
+          setScore(data.score);
+        }
       }
       toast({ title: "Gedownload!", description: "Opgeslagen op je apparaat en in je account." });
     } finally {
