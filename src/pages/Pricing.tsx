@@ -9,13 +9,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Check, Star } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface FAQItem { q: string; a: string }
 
 export const Pricing = () => {
   const { t } = useTranslation();
-  const indFeatures = t("pricing.individual.features", { returnObjects: true }) as string[];
+  const studentFeatures = t("pricing.student.features", { returnObjects: true }) as string[];
   const schoolFeatures = t("pricing.schools.features", { returnObjects: true }) as string[];
   const includedItems = t("pricing.included.items", { returnObjects: true }) as string[];
   const faq = t("pricing.faq.items", { returnObjects: true }) as FAQItem[];
@@ -31,19 +31,15 @@ export const Pricing = () => {
       </section>
 
       <section className="container py-10 grid md:grid-cols-2 gap-6 max-w-5xl">
-        {/* Individual */}
-        <div className="relative rounded-3xl bg-card border-2 border-primary shadow-pop p-6 sm:p-8 flex flex-col">
-          <div className="absolute -top-3 left-6 bg-primary text-primary-foreground text-[11px] sm:text-xs font-bold uppercase tracking-wide rounded-full px-3 py-1 flex items-center gap-1">
-            <Star className="h-3 w-3" /> {t("pricing.individual.badge")}
-          </div>
-          <h2 className="font-display text-2xl mb-1">{t("pricing.individual.name")}</h2>
-          <p className="text-sm text-muted-foreground mb-5">{t("pricing.individual.tagline")}</p>
-          <div className="flex items-baseline gap-2 mb-6">
-            <span className="font-display text-4xl sm:text-5xl">{t("pricing.individual.price")}</span>
-            <span className="text-muted-foreground">{t("pricing.individual.billing")}</span>
+        <div className="rounded-3xl bg-card border-2 border-primary shadow-pop p-6 sm:p-8 flex flex-col">
+          <h2 className="font-display text-2xl mb-1">{t("pricing.student.name")}</h2>
+          <p className="text-sm text-muted-foreground mb-5">{t("pricing.student.tagline")}</p>
+          <div className="mb-6 rounded-2xl bg-primary/10 px-4 py-4 text-center">
+            <span className="font-display text-4xl sm:text-5xl text-primary">{t("pricing.student.price")}</span>
+            <p className="mt-2 text-sm text-muted-foreground">{t("pricing.student.billing")}</p>
           </div>
           <ul className="space-y-3 mb-8 flex-1">
-            {indFeatures.map((f) => (
+            {studentFeatures.map((f) => (
               <li key={f} className="flex items-start gap-2">
                 <span className="h-6 w-6 rounded-full bg-success/20 flex items-center justify-center shrink-0 mt-0.5">
                   <Check className="h-4 w-4 text-success" />
@@ -54,7 +50,7 @@ export const Pricing = () => {
           </ul>
           <Link to="/auth?mode=signup">
             <Button className="w-full h-14 rounded-full font-display text-base bg-primary hover:bg-primary/90 shadow-soft">
-              {t("pricing.individual.cta")}
+              {t("pricing.student.cta")}
             </Button>
           </Link>
         </div>
