@@ -62,10 +62,12 @@ export const SchoolContact = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
-      <section className="container py-12 max-w-2xl">
+      <section className="container py-8 sm:py-12 max-w-2xl">
         <div className="text-center mb-8">
-          <Spark size={120} mood="happy" />
-          <h1 className="font-display text-3xl sm:text-4xl mt-4">{t("schoolForm.title")}</h1>
+          <div className="scale-75 sm:scale-100 inline-block">
+            <Spark size={120} mood="happy" />
+          </div>
+          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl mt-4">{t("schoolForm.title")}</h1>
           <p className="text-muted-foreground mt-2">{t("schoolForm.subtitle")}</p>
         </div>
 

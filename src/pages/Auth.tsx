@@ -107,17 +107,19 @@ export const Auth = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-hero flex flex-col items-center justify-center px-4 py-10">
+    <main className="min-h-screen bg-gradient-hero flex flex-col items-center justify-center px-4 py-6 sm:py-10">
       <Link to="/" className="absolute top-4 left-4 text-sm font-display text-foreground/70 hover:text-foreground">← Home</Link>
 
-      <div className="text-center mb-6">
-        <Spark size={120} mood="happy" />
-        <h1 className="font-display text-3xl mt-3">
+      <div className="text-center mb-6 mt-8 sm:mt-0">
+        <div className="scale-75 sm:scale-100 inline-block">
+          <Spark size={120} mood="happy" />
+        </div>
+        <h1 className="font-display text-2xl sm:text-3xl mt-3">
           {isTeacher ? "Toegang voor leerkrachten" : "Welkom bij AI met Spark"}
         </h1>
       </div>
 
-      <div className="w-full max-w-md bg-card rounded-3xl shadow-pop border border-border p-6">
+      <div className="w-full max-w-md bg-card rounded-3xl shadow-pop border border-border p-5 sm:p-6">
         <Tabs defaultValue={initialMode} className="w-full">
           <TabsList className="grid grid-cols-2 mb-6 rounded-full p-1 h-12">
             <TabsTrigger value="login" className="rounded-full font-display">Inloggen</TabsTrigger>

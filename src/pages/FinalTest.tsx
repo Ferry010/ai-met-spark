@@ -134,7 +134,7 @@ export const FinalTest = () => {
             <Button
               onClick={submit}
               disabled={!allAnswered}
-              className="mt-6 w-full h-14 rounded-full font-display bg-primary shadow-pop"
+              className="mt-6 w-full h-14 rounded-full font-display text-sm sm:text-base bg-primary shadow-pop"
             >
               {allAnswered ? "🏁 Antwoorden inleveren" : `Beantwoord alle ${questions.length} (${Object.keys(picks).length}/${questions.length})`}
             </Button>

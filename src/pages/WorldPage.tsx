@@ -70,14 +70,14 @@ export const WorldPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <main className="container py-8 max-w-3xl">
+      <main className="container py-6 md:py-8 max-w-3xl">
         <Link to="/dashboard" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground mb-6 font-display">
           <ChevronLeft className="h-4 w-4" /> Dashboard
         </Link>
 
-        <div className={`rounded-3xl bg-gradient-to-br ${PILLAR_BG[world.pillar]} p-8 text-center mb-8 shadow-pop`}>
-          <span className="text-6xl block mb-2" aria-hidden>{world.emoji}</span>
-          <h1 className="font-display text-4xl text-white drop-shadow">Wereld {world.id}: {world.name}</h1>
+        <div className={`rounded-3xl bg-gradient-to-br ${PILLAR_BG[world.pillar]} p-6 sm:p-8 text-center mb-8 shadow-pop`}>
+          <span className="text-5xl sm:text-6xl block mb-2" aria-hidden>{world.emoji}</span>
+          <h1 className="font-display text-3xl sm:text-4xl text-white drop-shadow">Wereld {world.id}: {world.name}</h1>
           <p className="text-white/90 mt-1">{world.tagline}</p>
         </div>
 
@@ -117,7 +117,7 @@ export const WorldPage = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-xs font-display text-muted-foreground">Les {lesson.id}</div>
-                      <div className="font-display text-lg truncate">{lesson.title}</div>
+                      <div className="font-display text-base sm:text-lg line-clamp-2 leading-tight">{lesson.title}</div>
                     </div>
                   </div>
                 </button>

@@ -62,8 +62,8 @@ export const Account = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <main className="container py-8 max-w-xl">
-        <h1 className="font-display text-3xl mb-6">Accountinstellingen</h1>
+      <main className="container py-6 md:py-8 max-w-xl">
+        <h1 className="font-display text-2xl sm:text-3xl mb-6">Accountinstellingen</h1>
 
         <form onSubmit={save} className="rounded-3xl bg-card border border-border p-6 shadow-soft space-y-4 mb-6">
           <div className="space-y-2">
