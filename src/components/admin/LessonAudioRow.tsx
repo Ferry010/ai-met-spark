@@ -2,11 +2,11 @@ import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
 import { textHash } from "@/lib/markdown";
 import { AlertCircle, CheckCircle2, Circle, Loader2, RefreshCw, Trash2, Upload } from "lucide-react";
 import type { Lesson } from "@/content/lessons";
 import { AudioRow, getLessonAudioKey, LESSON_AUDIO_STEPS, Step } from "./lesson-audio-shared";
+import { useSignedLessonAudioUrl } from "@/hooks/useSignedLessonAudioUrl";
 
 interface LessonAudioRowProps {
   audio: Record<string, AudioRow>;
@@ -20,6 +20,71 @@ interface LessonAudioRowProps {
 
 const getActionKey = (lessonId: string, step: Step, action: "delete" | "generate" | "upload") =>
   `${getLessonAudioKey(lessonId, step)}:${action}`;
+
+const AudioStepRow = ({
+  lesson,
+  stepConfig,
+  recording,
+  busyAction,
+  onGenerate,
+  onUpload,
+  onDelete,
+}: {
+  lesson: Lesson;
+  stepConfig: (typeof LESSON_AUDIO_STEPS)[number];
+  recording?: AudioRow;
+  busyAction: string | null;
+  onDelete: (lesson: Lesson, step: Step) => void;
+  onGenerate: (lesson: Lesson, step: Step, text: string) => void;
+  onUpload: (lesson: Lesson, step: Step, text: string, file: File) => void;
+}) => {
+  const text = stepConfig.getText(lesson);
+  if (!text) return null;
+
+  const isStale = !!recording && recording.text_hash !== textHash(text);
+  const isGenerating = busyAction === getActionKey(lesson.id, stepConfig.key, "generate");
+  const isUploading = busyAction === getActionKey(lesson.id, stepConfig.key, "upload");
+  const isDeleting = busyAction === getActionKey(lesson.id, stepConfig.key, "delete");
+  const isBusy = isGenerating || isUploading || isDeleting;
+  const signedUrl = useSignedLessonAudioUrl(recording?.storage_path, recording?.text_hash);
+
+  return (
+    <div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted/30 p-3">
+      <div className="w-32 text-sm font-display">{stepConfig.label}</div>
+      <div className="min-w-0 flex-1 text-xs text-muted-foreground truncate">{text.slice(0, 80)}…</div>
+      {signedUrl && <audio src={signedUrl} controls className="h-8 max-w-full" />}
+      {isStale && <Badge variant="outline" className="text-xs text-warning">verouderd</Badge>}
+      <Button size="sm" variant="outline" disabled={isBusy} onClick={() => onGenerate(lesson, stepConfig.key, text)}>
+        {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+        {recording ? "Regenereren" : "Genereren"}
+      </Button>
+      <label className="cursor-pointer">
+        <input
+          type="file"
+          accept="audio/mpeg,audio/mp3"
+          className="hidden"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            if (file) onUpload(lesson, stepConfig.key, text, file);
+            event.target.value = "";
+          }}
+        />
+        <Button asChild size="sm" variant="outline" disabled={isBusy}>
+          <span>
+            {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+            Upload
+          </span>
+        </Button>
+      </label>
+      {recording && (
+        <Button size="sm" variant="outline" disabled={isBusy} onClick={() => onDelete(lesson, stepConfig.key)}>
+          {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+          Verwijderen
+        </Button>
+      )}
+    </div>
+  );
+};
 
 export const LessonAudioRow = ({
   lesson,
@@ -83,55 +148,20 @@ export const LessonAudioRow = ({
       {open && (
         <div className="mt-4 space-y-2 border-t pt-4">
           {LESSON_AUDIO_STEPS.map((stepConfig) => {
-            const text = stepConfig.getText(lesson);
-            if (!text) return null;
-
             const key = getLessonAudioKey(lesson.id, stepConfig.key);
             const recording = audio[key];
-            const isStale = recording && recording.text_hash !== textHash(text);
-            const isGenerating = busyAction === getActionKey(lesson.id, stepConfig.key, "generate");
-            const isUploading = busyAction === getActionKey(lesson.id, stepConfig.key, "upload");
-            const isDeleting = busyAction === getActionKey(lesson.id, stepConfig.key, "delete");
-            const isBusy = isGenerating || isUploading || isDeleting;
-            const publicUrl = recording
-              ? `${supabase.storage.from("lesson-audio").getPublicUrl(recording.storage_path).data.publicUrl}?v=${encodeURIComponent(recording.text_hash)}`
-              : null;
 
             return (
-              <div key={stepConfig.key} className="flex flex-wrap items-center gap-2 rounded-lg bg-muted/30 p-3">
-                <div className="w-32 text-sm font-display">{stepConfig.label}</div>
-                <div className="min-w-0 flex-1 text-xs text-muted-foreground truncate">{text.slice(0, 80)}…</div>
-                {publicUrl && <audio src={publicUrl} controls className="h-8 max-w-full" />}
-                {isStale && <Badge variant="outline" className="text-xs text-warning">verouderd</Badge>}
-                <Button size="sm" variant="outline" disabled={isBusy} onClick={() => onGenerate(lesson, stepConfig.key, text)}>
-                  {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-                  {recording ? "Regenereren" : "Genereren"}
-                </Button>
-                <label className="cursor-pointer">
-                  <input
-                    type="file"
-                    accept="audio/mpeg,audio/mp3"
-                    className="hidden"
-                    onChange={(event) => {
-                      const file = event.target.files?.[0];
-                      if (file) onUpload(lesson, stepConfig.key, text, file);
-                      event.target.value = "";
-                    }}
-                  />
-                  <Button asChild size="sm" variant="outline" disabled={isBusy}>
-                    <span>
-                      {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                      Upload
-                    </span>
-                  </Button>
-                </label>
-                {recording && (
-                  <Button size="sm" variant="outline" disabled={isBusy} onClick={() => onDelete(lesson, stepConfig.key)}>
-                    {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                    Verwijderen
-                  </Button>
-                )}
-              </div>
+              <AudioStepRow
+                key={stepConfig.key}
+                lesson={lesson}
+                stepConfig={stepConfig}
+                recording={recording}
+                busyAction={busyAction}
+                onGenerate={onGenerate}
+                onUpload={onUpload}
+                onDelete={onDelete}
+              />
             );
           })}
         </div>
