@@ -6,7 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const DEFAULT_VOICE_ID = "h6uBOiAjLKklte8hdYio";
+const DEFAULT_VOICE_ID = "D4KxF8zWsOsr889FssID";
 
 const resolveVoiceId = async (_elevenKey: string, requestedVoiceId?: string) => {
   if (requestedVoiceId) return requestedVoiceId;
