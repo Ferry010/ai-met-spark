@@ -30,6 +30,17 @@ export const LessonAudio = () => {
     return accessToken;
   };
 
+  const invokeAdminAudioFunction = async (name: string, body: Record<string, unknown>) => {
+    const accessToken = await requireAccessToken();
+
+    return supabase.functions.invoke(name, {
+      body,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  };
+
   const refreshAudio = async () => {
     const { data } = await supabase.from("lesson_audio").select("*");
     const map: Record<string, AudioRow> = {};
@@ -48,9 +59,11 @@ export const LessonAudio = () => {
   const generate = async (lesson: Lesson, step: Step, text: string) => {
     setBusyAction(getActionKey(lesson.id, step, "generate"));
     try {
-      await requireAccessToken();
-      const { data, error } = await supabase.functions.invoke("generate-lesson-audio", {
-        body: { lessonId: lesson.id, step, text, textHash: textHash(text) },
+      const { data, error } = await invokeAdminAudioFunction("generate-lesson-audio", {
+        lessonId: lesson.id,
+        step,
+        text,
+        textHash: textHash(text),
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
       toast({ title: "Audio gegenereerd", description: `${lesson.id} • ${step} met Spark` });
@@ -65,14 +78,16 @@ export const LessonAudio = () => {
   const upload = async (lesson: Lesson, step: Step, text: string, file: File) => {
     setBusyAction(getActionKey(lesson.id, step, "upload"));
     try {
-      await requireAccessToken();
       const buf = await file.arrayBuffer();
       const bytes = new Uint8Array(buf);
       let binary = "";
       for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
       const base64 = btoa(binary);
-      const { data, error } = await supabase.functions.invoke("upload-lesson-audio", {
-        body: { lessonId: lesson.id, step, textHash: textHash(text), mp3Base64: base64 },
+      const { data, error } = await invokeAdminAudioFunction("upload-lesson-audio", {
+        lessonId: lesson.id,
+        step,
+        textHash: textHash(text),
+        mp3Base64: base64,
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
       toast({ title: "Upload geslaagd", description: `${lesson.id} • ${step}` });
@@ -87,9 +102,9 @@ export const LessonAudio = () => {
   const removeAudio = async (lesson: Lesson, step: Step) => {
     setBusyAction(getActionKey(lesson.id, step, "delete"));
     try {
-      await requireAccessToken();
-      const { data, error } = await supabase.functions.invoke("delete-lesson-audio", {
-        body: { lessonId: lesson.id, step },
+      const { data, error } = await invokeAdminAudioFunction("delete-lesson-audio", {
+        lessonId: lesson.id,
+        step,
       });
       if (error || (data as any)?.error) throw new Error((data as any)?.error || error?.message);
       toast({ title: "Audio verwijderd", description: `${lesson.id} • ${step}` });
