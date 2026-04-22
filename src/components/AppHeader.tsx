@@ -22,11 +22,11 @@ export const AppHeader = () => {
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-md border-b border-border/60">
-      <div className="container h-14 md:h-16 flex items-center justify-between gap-2">
+    <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
+      <div className="container flex min-h-14 items-center justify-between gap-2 py-2 md:min-h-16 md:py-0">
         <Link to={isTeacher ? "/teacher" : "/dashboard"} className="flex items-center gap-2 min-w-0">
           <Spark size={36} animate={false} />
-          <span className="font-display text-base sm:text-xl font-semibold truncate">AI met Spark</span>
+          <span className="max-w-[150px] truncate font-display text-base font-semibold sm:max-w-none sm:text-xl">AI met Spark</span>
         </Link>
         <div className="flex items-center gap-2 shrink-0">
           <DropdownMenu>
