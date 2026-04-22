@@ -187,10 +187,10 @@ export const Landing = () => {
       </section>
 
       {/* What's inside */}
-      <section className="container pb-20">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
         <div className="text-center mb-10">
           <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.inside.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl">{t("landing.inside.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl">{t("landing.inside.title")}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <InsideStat n={t("landing.inside.items.worlds.n")} label={t("landing.inside.items.worlds.label")} desc={t("landing.inside.items.worlds.desc")} />
