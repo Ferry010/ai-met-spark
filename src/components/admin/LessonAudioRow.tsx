@@ -94,7 +94,7 @@ export const LessonAudioRow = ({
             const isDeleting = busyAction === getActionKey(lesson.id, stepConfig.key, "delete");
             const isBusy = isGenerating || isUploading || isDeleting;
             const publicUrl = recording
-              ? supabase.storage.from("lesson-audio").getPublicUrl(recording.storage_path).data.publicUrl
+              ? `${supabase.storage.from("lesson-audio").getPublicUrl(recording.storage_path).data.publicUrl}?v=${encodeURIComponent(recording.text_hash)}`
               : null;
 
             return (
