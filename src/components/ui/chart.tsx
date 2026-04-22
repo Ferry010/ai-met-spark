@@ -88,11 +88,7 @@ ${colorConfig
 };
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
-type RechartsTooltipContentProps = React.ComponentProps<typeof RechartsPrimitive.Tooltip>["content"] extends
-  | React.ReactElement<infer P>
-  | ((props: infer P) => React.ReactNode)
-  ? P
-  : never;
+type RechartsTooltipContentProps = RechartsPrimitive.TooltipProps<number, string>;
 
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
