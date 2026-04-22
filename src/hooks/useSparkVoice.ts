@@ -76,7 +76,7 @@ export const useSparkVoice = (lessonId: string, step: string, options?: { autoPl
     }
     setIsLoading(true);
     const { data } = supabase.storage.from("lesson-audio").getPublicUrl(rec.storage_path);
-    const audio = new Audio(data.publicUrl);
+    const audio = new Audio(`${data.publicUrl}?t=${Date.now()}`);
     audio.onended = () => {
       setIsPlaying(false);
       audioRef.current = null;
