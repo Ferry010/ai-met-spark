@@ -26,16 +26,15 @@ const loginSchema = z.object({
 export const Auth = () => {
   const [search] = useSearchParams();
   const initialMode = search.get("mode") === "signup" ? "signup" : "login";
-  const isTeacher = search.get("teacher") === "1";
   const navigate = useNavigate();
   const { toast } = useToast();
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate(isTeacher ? "/teacher" : "/dashboard", { replace: true });
+      if (session) navigate("/dashboard", { replace: true });
     });
-  }, [navigate, isTeacher]);
+  }, [navigate]);
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,7 +64,6 @@ export const Auth = () => {
           parent_email: parsed.data.parent_email,
           language: lang,
           class_code: parsed.data.class_code?.toUpperCase() || null,
-          is_teacher: isTeacher,
         },
       },
     });
@@ -75,7 +73,7 @@ export const Auth = () => {
       return;
     }
     toast({ title: `Welkom, ${parsed.data.first_name}!` });
-    navigate(isTeacher ? "/teacher" : "/dashboard");
+    navigate("/dashboard");
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -96,7 +94,7 @@ export const Auth = () => {
       toast({ title: "Inloggen mislukt", description: error.message, variant: "destructive" });
       return;
     }
-    navigate(isTeacher ? "/teacher" : "/dashboard");
+    navigate("/dashboard");
   };
 
   const handleGoogle = async () => {
@@ -115,7 +113,7 @@ export const Auth = () => {
           <Spark size={120} mood="happy" />
         </div>
         <h1 className="font-display text-2xl sm:text-3xl mt-3">
-          {isTeacher ? "Toegang voor leerkrachten" : "Welkom bij AI met Spark"}
+          Welkom bij AI met Spark
         </h1>
       </div>
 
@@ -144,38 +142,26 @@ export const Auth = () => {
 
           <TabsContent value="signup">
             <form onSubmit={handleSignup} className="space-y-4">
-              {!isTeacher && (
-                <>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-2">
-                      <Label htmlFor="first_name">Voornaam van het kind</Label>
-                      <Input id="first_name" name="first_name" required maxLength={40} className="h-12 rounded-xl" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="age">Leeftijd</Label>
-                      <Input id="age" name="age" type="number" min={5} max={18} required className="h-12 rounded-xl" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="parent_email">E-mail van ouder <span className="text-muted-foreground text-xs">(voor het diploma)</span></Label>
-                    <Input id="parent_email" name="parent_email" type="email" required className="h-12 rounded-xl" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="class_code">Klassencode <span className="text-muted-foreground text-xs">(optioneel)</span></Label>
-                    <Input id="class_code" name="class_code" maxLength={20} placeholder="bijv. SPARK-7K" className="h-12 rounded-xl uppercase" />
-                  </div>
-                </>
-              )}
-              {isTeacher && (
+              <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label htmlFor="first_name">Je naam</Label>
+                  <Label htmlFor="first_name">Voornaam van het kind</Label>
                   <Input id="first_name" name="first_name" required maxLength={40} className="h-12 rounded-xl" />
-                  <input type="hidden" name="age" value="30" />
-                  <input type="hidden" name="parent_email" value="" />
                 </div>
-              )}
+                <div className="space-y-2">
+                  <Label htmlFor="age">Leeftijd</Label>
+                  <Input id="age" name="age" type="number" min={5} max={18} required className="h-12 rounded-xl" />
+                </div>
+              </div>
               <div className="space-y-2">
-                <Label htmlFor="email">{isTeacher ? "Je e-mail" : "Login-e-mail"}</Label>
+                <Label htmlFor="parent_email">E-mail van ouder <span className="text-muted-foreground text-xs">(voor het diploma)</span></Label>
+                <Input id="parent_email" name="parent_email" type="email" required className="h-12 rounded-xl" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="class_code">Klassencode <span className="text-muted-foreground text-xs">(optioneel)</span></Label>
+                <Input id="class_code" name="class_code" maxLength={20} placeholder="bijv. SPARK-7K" className="h-12 rounded-xl uppercase" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Login-e-mail</Label>
                 <Input id="email" name="email" type="email" required className="h-12 rounded-xl" />
               </div>
               <div className="space-y-2">
@@ -198,11 +184,9 @@ export const Auth = () => {
           Verder met Google
         </Button>
 
-        {!isTeacher && (
-          <p className="mt-5 text-center text-xs text-muted-foreground">
-            <Link to="/auth?teacher=1" className="underline hover:text-foreground">Leerkracht? Log hier in →</Link>
-          </p>
-        )}
+        <p className="mt-5 text-center text-xs text-muted-foreground">
+          <Link to="/teacher/login" className="underline hover:text-foreground">Leerkracht? Log hier in →</Link>
+        </p>
       </div>
     </main>
   );

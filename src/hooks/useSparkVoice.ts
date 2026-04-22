@@ -6,9 +6,12 @@ interface AudioRecord {
 }
 
 const cache: Record<string, AudioRecord | null> = {};
+const signedUrlCache: Record<string, string | null> = {};
+
+const getCacheKey = (lessonId: string, step: string) => `${lessonId}/${step}`;
 
 const fetchAudio = async (lessonId: string, step: string): Promise<AudioRecord | null> => {
-  const key = `${lessonId}/${step}`;
+  const key = getCacheKey(lessonId, step);
   if (key in cache) return cache[key];
   const { data } = await supabase
     .from("lesson_audio")
@@ -20,8 +23,23 @@ const fetchAudio = async (lessonId: string, step: string): Promise<AudioRecord |
   return cache[key];
 };
 
+const fetchSignedAudioUrl = async (lessonId: string, step: string, storagePath: string) => {
+  const key = `${getCacheKey(lessonId, step)}:${storagePath}`;
+  if (key in signedUrlCache && signedUrlCache[key]) return signedUrlCache[key];
+
+  const { data, error } = await supabase.storage.from("lesson-audio").createSignedUrl(storagePath, 60 * 60);
+  if (error || !data?.signedUrl) {
+    signedUrlCache[key] = null;
+    return null;
+  }
+
+  signedUrlCache[key] = data.signedUrl;
+  return data.signedUrl;
+};
+
 export const invalidateSparkVoiceCache = () => {
   Object.keys(cache).forEach((k) => delete cache[k]);
+  Object.keys(signedUrlCache).forEach((k) => delete signedUrlCache[k]);
 };
 
 export const useHasSparkVoice = (lessonId: string, step: string) => {
@@ -52,7 +70,6 @@ export const useSparkVoice = (lessonId: string, step: string, options?: { autoPl
     });
     return () => {
       alive = false;
-      // stop playback on unmount/step change
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
@@ -75,8 +92,13 @@ export const useSparkVoice = (lessonId: string, step: string, options?: { autoPl
       return;
     }
     setIsLoading(true);
-    const { data } = supabase.storage.from("lesson-audio").getPublicUrl(rec.storage_path);
-    const audio = new Audio(`${data.publicUrl}?t=${Date.now()}`);
+    const signedUrl = await fetchSignedAudioUrl(lessonId, step, rec.storage_path);
+    if (!signedUrl) {
+      setIsLoading(false);
+      setIsPlaying(false);
+      return;
+    }
+    const audio = new Audio(`${signedUrl}${signedUrl.includes("?") ? "&" : "?"}t=${Date.now()}`);
     audio.onended = () => {
       setIsPlaying(false);
       audioRef.current = null;

@@ -34,7 +34,7 @@ const TeacherLogin = () => {
                 asChild
                 className="w-full h-11 bg-classroom-teal hover:bg-classroom-teal-dark text-white rounded-lg"
               >
-                <Link to="/auth?teacher=1">Inloggen met e-mail</Link>
+                <Link to="/auth">Inloggen met e-mail</Link>
               </Button>
               <Button
                 asChild

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { PaywallDialog } from "@/components/PaywallDialog";
 import { LessonRunner } from "@/components/LessonRunner";
 import { getLesson } from "@/content/lessons";
+import { applyLessonOverride } from "@/lib/lessonOverrides";
 import { ChevronLeft } from "lucide-react";
 
 export const LessonPage = () => {
@@ -30,20 +31,7 @@ export const LessonPage = () => {
 
   const lesson = useMemo(() => {
     if (!baseLesson) return undefined;
-    return {
-      ...baseLesson,
-      title: override?.title?.trim() || baseLesson.title,
-      fact: override?.fact?.trim() || baseLesson.fact,
-      emoji: override?.emoji?.trim() || baseLesson.emoji,
-      sparkIntro: override?.spark_intro?.trim() || baseLesson.sparkIntro,
-      theoryIntro: override?.theory_intro?.trim() || baseLesson.theoryIntro,
-      sparkMiddle: override?.spark_middle?.trim() || baseLesson.sparkMiddle,
-      theoryDeep: override?.theory_deep?.trim() || baseLesson.theoryDeep,
-      summary: override?.summary && Array.isArray(override.summary) && override.summary.length > 0 ? override.summary : baseLesson.summary,
-      interactive: override?.interactive ?? baseLesson.interactive,
-      quiz: override?.quiz && Array.isArray(override.quiz) && override.quiz.length > 0 ? override.quiz : baseLesson.quiz,
-      reflection: override?.reflection?.trim() || baseLesson.reflection,
-    };
+    return applyLessonOverride(baseLesson, override);
   }, [baseLesson, override]);
 
   useEffect(() => {
