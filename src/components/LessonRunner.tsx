@@ -105,8 +105,8 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   return (
     <>
       {showProgress && currentIndex >= 0 && (
-        <div className="mb-4">
-          <div className="flex items-center justify-between text-xs font-display text-muted-foreground mb-1.5">
+        <div className="mb-4 sm:mb-5">
+          <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] font-display text-muted-foreground sm:text-xs">
             <span>Stap {currentIndex + 1} van {stepOrder.length}</span>
             <span className="opacity-70">Les {lesson.id}</span>
           </div>
@@ -134,7 +134,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       )}
 
       {step === "fact" && (
-        <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center relative">
+        <section className="relative rounded-3xl bg-card border-2 border-primary p-5 text-center shadow-pop animate-pop-in sm:p-8">
           <div className="absolute top-4 right-4">
             <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
           </div>
@@ -142,8 +142,8 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             <Spark size={72} mood="hinting" />
           </div>
           <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
-          <p className="font-display text-xl sm:text-2xl md:text-3xl leading-snug">{lesson.fact}</p>
-          <Button onClick={() => goNext("fact")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">
+          <p className="font-display text-lg leading-snug sm:text-2xl md:text-3xl">{lesson.fact}</p>
+          <Button onClick={() => goNext("fact")} className="mt-8 h-14 w-full rounded-full font-display bg-primary shadow-soft sm:w-auto sm:px-8">
             Verder →
           </Button>
         </section>
