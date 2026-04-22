@@ -6,33 +6,11 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const DEFAULT_VOICE_NAME = "Rocco - Mechanical and Robotic";
-let cachedDefaultVoiceId: string | null = null;
+const DEFAULT_VOICE_ID = "h6uBOiAjLKklte8hdYio";
 
-const resolveVoiceId = async (elevenKey: string, requestedVoiceId?: string) => {
+const resolveVoiceId = async (_elevenKey: string, requestedVoiceId?: string) => {
   if (requestedVoiceId) return requestedVoiceId;
-  if (cachedDefaultVoiceId) return cachedDefaultVoiceId;
-
-  const voicesRes = await fetch("https://api.elevenlabs.io/v1/voices", {
-    headers: { "xi-api-key": elevenKey },
-  });
-
-  if (!voicesRes.ok) {
-    const err = await voicesRes.text();
-    throw new Error(`Failed to load ElevenLabs voices: ${err}`);
-  }
-
-  const voicesData = await voicesRes.json() as {
-    voices?: Array<{ voice_id: string; name?: string }>;
-  };
-
-  const match = voicesData.voices?.find((voice) => voice.name === DEFAULT_VOICE_NAME);
-  if (!match?.voice_id) {
-    throw new Error(`Voice \"${DEFAULT_VOICE_NAME}\" was not found in your ElevenLabs account`);
-  }
-
-  cachedDefaultVoiceId = match.voice_id;
-  return match.voice_id;
+  return DEFAULT_VOICE_ID;
 };
 
 Deno.serve(async (req) => {
