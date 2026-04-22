@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.upload-lesson-audio]
 verify_jwt = false
+
+[functions.delete-lesson-audio]
+verify_jwt = false
