@@ -6,7 +6,6 @@ export interface Profile {
   id: string;
   first_name: string;
   age: number | null;
-  parent_email: string | null;
   language: "en" | "nl" | "es";
   paid: boolean;
   school_id: string | null;
