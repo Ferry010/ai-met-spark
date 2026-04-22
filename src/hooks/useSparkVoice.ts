@@ -38,8 +38,9 @@ export const useHasSparkVoice = (lessonId: string, step: string) => {
   return available;
 };
 
-export const useSparkVoice = (lessonId: string, step: string) => {
+export const useSparkVoice = (lessonId: string, step: string, options?: { autoPlay?: boolean }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const attemptedAutoPlayRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [available, setAvailable] = useState(false);
@@ -94,6 +95,16 @@ export const useSparkVoice = (lessonId: string, step: string) => {
     } finally {
       setIsLoading(false);
     }
+  }, [lessonId, step]);
+
+  useEffect(() => {
+    if (!options?.autoPlay || !available || attemptedAutoPlayRef.current) return;
+    attemptedAutoPlayRef.current = true;
+    void play();
+  }, [available, play, options?.autoPlay]);
+
+  useEffect(() => {
+    attemptedAutoPlayRef.current = false;
   }, [lessonId, step]);
 
   const stop = useCallback(() => {

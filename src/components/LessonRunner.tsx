@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { unlockAudio, playSparkEntry, playBubblePop } from "@/lib/sounds";
 import { renderRichText, estimateReadSeconds } from "@/lib/markdown";
 import { SparkVoiceButton } from "@/components/SparkVoiceButton";
+import { useSparkVoice } from "@/hooks/useSparkVoice";
 
 // Unlock WebAudio on the first user gesture anywhere in the app.
 if (typeof window !== "undefined") {
@@ -362,6 +363,7 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
   const text = lesson.sparkIntro ?? "Klaar voor de volgende stap? Tik op Kom op!";
   const [showBubble, setShowBubble] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  useSparkVoice(lesson.id, "intro", { autoPlay: true });
 
   useEffect(() => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
