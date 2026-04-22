@@ -132,17 +132,17 @@ export const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-hero">
-        <div className="container py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+        <div className="container py-10 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="text-center md:text-left">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mb-5">
+            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl leading-tight mb-5">
               {t("landing.heroTitle")}
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-6">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-6">
               {t("landing.heroSubtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-4">
               <Link to="/auth?mode=signup">
-                <Button className="h-14 px-8 rounded-full text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
+                <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full text-sm sm:text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
                   🚀 {t("landing.ctaPrimary")}
                 </Button>
               </Link>
@@ -155,7 +155,7 @@ export const Landing = () => {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="relative">
+            <div className="relative scale-75 sm:scale-90 md:scale-100">
               <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full scale-110 animate-pulse-slow" aria-hidden />
               <Sparkles className="absolute -top-2 -left-4 h-6 w-6 text-secondary animate-twinkle" style={{ animationDelay: "0s" }} aria-hidden />
               <Sparkles className="absolute top-8 -right-6 h-5 w-5 text-accent animate-twinkle" style={{ animationDelay: "0.6s" }} aria-hidden />
