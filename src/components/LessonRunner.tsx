@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Spark } from "@/components/Spark";
 import { SparkBubble } from "@/components/SparkBubble";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
-import { Check, Star, X, Lightbulb, BookOpen, ListChecks } from "lucide-react";
+import { Check, Star, X, Lightbulb, BookOpen, ListChecks, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { unlockAudio, playSparkEntry, playBubblePop } from "@/lib/sounds";
+import { renderRichText, estimateReadSeconds } from "@/lib/markdown";
+import { SparkVoiceButton } from "@/components/SparkVoiceButton";
 
 // Unlock WebAudio on the first user gesture anywhere in the app.
 if (typeof window !== "undefined") {
