@@ -5,12 +5,11 @@
     "login": "Inloggen",
     "signup": "Aanmelden",
     "logout": "Uitloggen",
-    "tryFree": "Probeer gratis",
+    "tryFree": "Start gratis",
     "continue": "Verder",
     "next": "Volgende",
     "back": "Terug",
-    "tryFree": "Probeer de eerste les gratis",
-    "unlockNow": "Nu ontgrendelen",
+    "unlockNow": "Start nu",
     "comingSoon": "Binnenkort",
     "loading": "Laden…",
     "yes": "Ja",
@@ -28,8 +27,8 @@
     "heroTitle": "Leer veilig én leuk met AI",
     "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 9 tot 11 jaar.",
     "heroSparkLine": "Hoi, ik ben Spark. Ik ben je AI-gids!",
-    "heroMicroCopy": "Geen creditcard nodig voor les 1. In 60 seconden begonnen.",
-    "ctaPrimary": "Probeer de eerste les gratis",
+    "heroMicroCopy": "Gratis toegang tot alle lessen. In 60 seconden begonnen.",
+    "ctaPrimary": "Start gratis",
     "ctaSecondary": "Inloggen",
     "trustChips": {
       "gdpr": "AVG-veilig",
@@ -47,10 +46,26 @@
       "eyebrow": "Wat zit erin",
       "title": "Alles wat je kind nodig heeft in één speelse cursus",
       "items": {
-        "worlds": { "n": "3", "label": "Werelden", "desc": "Veilig, Slim en Sterker. Elke wereld geeft een nieuwe superkracht." },
-        "lessons": { "n": "24", "label": "Lessen", "desc": "Hapklare avonturen van 5 tot 7 minuten. Perfect na school." },
-        "quizzes": { "n": "72", "label": "Mini-quizzen", "desc": "Tap, sorteer en kies puzzels. Geen saaie meerkeuze-marathons." },
-        "certificate": { "n": "1", "label": "Diploma", "desc": "Een echt PDF-diploma met naam dat kids kunnen printen en showen." }
+        "worlds": {
+          "n": "3",
+          "label": "Werelden",
+          "desc": "Veilig, Slim en Sterker. Elke wereld geeft een nieuwe superkracht."
+        },
+        "lessons": {
+          "n": "24",
+          "label": "Lessen",
+          "desc": "Hapklare avonturen van 5 tot 7 minuten. Perfect na school."
+        },
+        "quizzes": {
+          "n": "72",
+          "label": "Mini-quizzen",
+          "desc": "Tap, sorteer en kies puzzels. Geen saaie meerkeuze-marathons."
+        },
+        "certificate": {
+          "n": "1",
+          "label": "Diploma",
+          "desc": "Een echt PDF-diploma met naam dat kids kunnen printen en showen."
+        }
       }
     },
     "pillars": {
@@ -60,21 +75,33 @@
         "name": "VEILIG",
         "icon": "🛡️",
         "desc": "Blijf veilig online en bescherm je geheimen tegen AI. Kids leren wat ze wel en niet delen, en hoe ze nep herkennen.",
-        "skills": ["Herken door AI gemaakte beelden en video's", "Houd persoonlijke info privé", "Spot scams en deepfakes"],
+        "skills": [
+          "Herken door AI gemaakte beelden en video's",
+          "Houd persoonlijke info privé",
+          "Spot scams en deepfakes"
+        ],
         "sample": "Voorbeeldles: Spot de Nep"
       },
       "smart": {
         "name": "SLIM",
         "icon": "🧠",
         "desc": "Stel betere vragen en check wat AI je vertelt. Kids leren dat AI een zelfverzekerde gokker is, geen alleswetende meneer.",
-        "skills": ["Schrijf duidelijke, specifieke prompts", "Check AI-antwoorden dubbel", "Merk op wanneer AI hallucineert"],
+        "skills": [
+          "Schrijf duidelijke, specifieke prompts",
+          "Check AI-antwoorden dubbel",
+          "Merk op wanneer AI hallucineert"
+        ],
         "sample": "Voorbeeldles: De Hallucinatie-Val"
       },
       "stronger": {
         "name": "STERKER",
         "icon": "💪",
         "desc": "Gebruik AI als studiemaatje om sneller te leren, niet als sluiproute om denken over te slaan. Kids bouwen echte skills, sneller.",
-        "skills": ["Maak van AI je tutor", "Brainstorm zonder te kopiëren", "Leer 10x sneller bij lastige onderwerpen"],
+        "skills": [
+          "Maak van AI je tutor",
+          "Brainstorm zonder te kopiëren",
+          "Leer 10x sneller bij lastige onderwerpen"
+        ],
         "sample": "Voorbeeldles: Je Persoonlijke Studiemaatje"
       }
     },
@@ -83,23 +110,56 @@
       "title": "5 minuten. 5 stappen. Echt leren.",
       "subtitle": "Elke les volgt hetzelfde vriendelijke ritme, zodat kids altijd weten wat er komt.",
       "steps": {
-        "meet": { "title": "Ontmoet Spark", "desc": "Onze vriendelijke mascotte zet de toon met een korte, leuke intro." },
-        "discover": { "title": "Ontdek", "desc": "Een kort verhaal of voorbeeld laat het idee in actie zien." },
-        "play": { "title": "Speel", "desc": "Tap, sorteer, sleep en ontdek. Kids leren door te doen, niet door te kijken." },
-        "quiz": { "title": "Quiz", "desc": "Drie snelle vragen zetten vast wat ze net leerden." },
-        "star": { "title": "Verdien je ster", "desc": "Sterren ontgrendelen de volgende les en bouwen een streak om trots op te zijn." }
+        "meet": {
+          "title": "Ontmoet Spark",
+          "desc": "Onze vriendelijke mascotte zet de toon met een korte, leuke intro."
+        },
+        "discover": {
+          "title": "Ontdek",
+          "desc": "Een kort verhaal of voorbeeld laat het idee in actie zien."
+        },
+        "play": {
+          "title": "Speel",
+          "desc": "Tap, sorteer, sleep en ontdek. Kids leren door te doen, niet door te kijken."
+        },
+        "quiz": {
+          "title": "Quiz",
+          "desc": "Drie snelle vragen zetten vast wat ze net leerden."
+        },
+        "star": {
+          "title": "Verdien je ster",
+          "desc": "Sterren ontgrendelen de volgende les en bouwen een streak om trots op te zijn."
+        }
       }
     },
     "whyParents": {
       "eyebrow": "Waarom ouders kiezen voor AI met Spark",
       "title": "Gemaakt voor families die willen dat hun kids opbloeien met AI, niet bang ervoor zijn",
       "items": {
-        "noChat": { "title": "Geen chat met AI", "desc": "Kids typen nooit naar een echte AI. Geen risico op rare antwoorden of onveilige content." },
-        "educators": { "title": "Ontwikkeld door experts", "desc": "Elke les is geschreven en gecheckt door professionele AI-trainers en ouders. Geen automatische opvulling door AI." },
-        "privacy": { "title": "AVG- en COPPA-vriendelijk", "desc": "We bewaren een voornaam, leeftijd en oudermail. Meer niet. We verkopen nooit data." },
-        "devices": { "title": "Werkt op elk apparaat", "desc": "Telefoon, tablet, Chromebook of laptop. Open en leer. Geen app om te installeren." },
-        "time": { "title": "5 minuten per dag", "desc": "Past tussen huiswerk en avondeten. Kort, gericht en afmaakbaar." },
-        "refund": { "title": "Niet-goed-geld-terug", "desc": "Niets voor je kind? Mail ons binnen 14 dagen voor volledige terugbetaling. Geen gedoe." }
+        "noChat": {
+          "title": "Geen chat met AI",
+          "desc": "Kids typen nooit naar een echte AI. Geen risico op rare antwoorden of onveilige content."
+        },
+        "educators": {
+          "title": "Ontwikkeld door experts",
+          "desc": "Elke les is geschreven en gecheckt door professionele AI-trainers en ouders. Geen automatische opvulling door AI."
+        },
+        "privacy": {
+          "title": "AVG- en COPPA-vriendelijk",
+          "desc": "We bewaren een voornaam, leeftijd en oudermail. Meer niet. We verkopen nooit data."
+        },
+        "devices": {
+          "title": "Werkt op elk apparaat",
+          "desc": "Telefoon, tablet, Chromebook of laptop. Open en leer. Geen app om te installeren."
+        },
+        "time": {
+          "title": "5 minuten per dag",
+          "desc": "Past tussen huiswerk en avondeten. Kort, gericht en afmaakbaar."
+        },
+        "refund": {
+          "title": "Vrij toegankelijk",
+          "desc": "Alle studentlessen zijn nu gratis beschikbaar. Gewoon aanmelden en beginnen."
+        }
       }
     },
     "quote": {
@@ -107,65 +167,78 @@
       "byline": "Gemaakt met leerkrachten en ouders in Nederland."
     },
     "pricingTeaser": {
-      "eyebrow": "Eenvoudige prijs",
-      "title": "Eén prijs. Voor altijd toegang. Geen verrassingen.",
-      "price": "€14",
-      "subtitle": "Eén keer betalen. Je kind houdt elke les, elke update en het diploma voor altijd.",
-      "cta": "Nu ontgrendelen",
+      "eyebrow": "Volledig gratis",
+      "title": "Alles staat open voor elke leerling.",
+      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
+      "cta": "Maak gratis account",
+      "badge": "Gratis",
+      "badgeCaption": "alle lessen · altijd",
       "features": [
-        "24 leuke, met de hand gemaakte lessen",
-        "3 superkracht-werelden om te ontdekken",
-        "Geen chat. Kids typen nooit naar een AI.",
-        "Persoonlijk printbaar diploma",
+        "Alle lessen en werelden direct beschikbaar",
+        "Geen betaalmuur of verborgen upgrades",
+        "Persoonlijk diploma na afronding",
         "Werkt op telefoon, tablet en laptop",
         "Gratis updates wanneer er nieuwe lessen komen"
       ],
-      "noPay": "Wat je niet betaalt: geen abonnement, geen upsells, geen advertenties, ooit."
+      "noPay": "Je hoeft niets te ontgrendelen: alles in de student-app is meteen beschikbaar."
     },
     "schools": {
       "eyebrow": "Voor scholen en leerkrachten",
       "title": "Breng AI-vaardigheid naar je klas",
-      "desc": "Geef je leerlingen de AI-skills die ze dit decennium nodig hebben. Vanaf €4 per leerling, met dashboard voor de leerkracht, klassencodes en bulk-diploma's.",
-      "cta": "Bekijk schoolprijzen"
+      "desc": "Geef je leerlingen de AI-skills die ze dit decennium nodig hebben, met dashboard voor de leerkracht, klassencodes en bulk-diploma's.",
+      "cta": "Praat met scholen"
     },
     "finalCta": {
       "title": "Klaar om een AI Smart Kid op te voeden?",
-      "subtitle": "Les 1 is voor altijd gratis. Geen creditcard, geen addertje.",
+      "subtitle": "Alle lessen zijn gratis beschikbaar. Maak een account en begin meteen.",
       "cta": "Start het avontuur",
-      "secondary": "Bekijk prijzen"
+      "secondary": "Voor scholen"
     },
     "parents": {
       "title": "Gemaakt voor ouders die willen dat hun kids opbloeien met AI, niet bang ervoor zijn",
       "desc": "Geen chat. Geen data-graaien. Niets engs. Gewoon door kids geteste lessen die zelfvertrouwen en kritisch denken bouwen."
+    },
+    "freeAccess": {
+      "eyebrow": "Volledig gratis",
+      "title": "Alles staat open voor elke leerling.",
+      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
+      "cta": "Maak gratis account",
+      "badge": "Gratis",
+      "badgeCaption": "alle lessen · altijd",
+      "features": [
+        "Alle lessen en werelden direct beschikbaar",
+        "Geen betaalmuur of verborgen upgrades",
+        "Persoonlijk diploma na afronding",
+        "Werkt op telefoon, tablet en laptop",
+        "Gratis updates wanneer er nieuwe lessen komen"
+      ],
+      "noPay": "Je hoeft niets te ontgrendelen: alles in de student-app is meteen beschikbaar."
     }
   },
   "pricing": {
-    "title": "Eenvoudige, eerlijke prijs",
-    "subtitle": "Kies het plan dat past.",
-    "intro": "Eén eerlijke prijs. Geen abonnementen. Geen trucs. Gewoon de AI-skills die je kind nodig heeft, voor het leven.",
+    "title": "Gratis voor leerlingen, helder voor scholen",
+    "subtitle": "Alles wat je nodig hebt om te starten.",
+    "intro": "Leerlingen krijgen gratis toegang tot de volledige cursus. Scholen kunnen contact opnemen voor begeleiding, uitrol en klasbeheer.",
     "individual": {
-      "name": "Individueel",
-      "badge": "Populairst",
-      "tagline": "Perfect voor één nieuwsgierig kind thuis. Eén keer betalen en klaar.",
-      "price": "€14",
-      "billing": "eenmalig",
+      "name": "Studenten-app",
+      "tagline": "Elke leerling kan gratis door alle werelden, lessen, quizzen en het diploma gaan.",
+      "price": "Gratis",
+      "billing": "geen betaalmuur · geen proefperiode",
       "features": [
-        "Alle 24 lessen, voor altijd",
-        "Toegang tot alle 3 superkracht-werelden",
-        "1 kind-account",
-        "Persoonlijk printbaar diploma",
-        "E-mail naar ouder bij voltooiing",
-        "Gratis toekomstige lesupdates",
-        "14 dagen niet-goed-geld-terug"
+        "Alle lessen en werelden direct open",
+        "Quizzen, badges en diploma inbegrepen",
+        "Werkt op mobiel, tablet en laptop",
+        "Taal wisselen in je account",
+        "Nieuwe lesupdates automatisch beschikbaar"
       ],
-      "cta": "Aan de slag"
+      "cta": "Start gratis"
     },
     "schools": {
       "name": "Scholen",
       "tagline": "Gemaakt voor klaslokalen, naschoolse clubs en onderwijsnetwerken.",
       "bestFor": "Beste voor: scholen, bibliotheken en naschoolse programma's.",
-      "price": "Vanaf €4",
-      "billing": "per plek, minimaal 20 plekken",
+      "price": "Op aanvraag",
+      "billing": "voor uitrol, ondersteuning en klasbeheer",
       "features": [
         "Dashboard voor leerkracht met live voortgang",
         "Makkelijke klassencode-aanmelding (geen e-mail nodig)",
@@ -178,7 +251,7 @@
       "cta": "Neem contact op"
     },
     "included": {
-      "title": "Wat zit er in elk plan",
+      "title": "Wat elke leerling krijgt",
       "items": [
         "Alle 24 met de hand gemaakte lessen",
         "3 superkracht-werelden",
@@ -191,16 +264,49 @@
     "faq": {
       "title": "Veelgestelde vragen",
       "items": [
-        { "q": "Is dit veilig voor mijn kind?", "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. We bewaren alleen een voornaam, leeftijd en oudermail." },
-        { "q": "Is de data van mijn kind privé?", "a": "Ja. We zijn AVG- en COPPA-vriendelijk. We verkopen nooit data en gebruiken het nooit om AI-modellen te trainen." },
-        { "q": "Kan ik geld terugkrijgen?", "a": "Ja, binnen 14 dagen, geen vragen gesteld. Mail ons en we regelen het dezelfde dag." },
-        { "q": "Voor welke leeftijd is het?", "a": "9 tot 11 jaar is de zoete plek. Andere leeftijdsgroepen volgen later." },
-        { "q": "Op welke apparaten werkt het?", "a": "Elke moderne telefoon, tablet, Chromebook of laptop met een browser. Geen app om te installeren." },
-        { "q": "Ondersteunen jullie meerdere kids in één gezin?", "a": "Elk plan van €14 dekt één kind-account. Koop er één per kind, of mail ons voor een gezinsbundel vanaf 3 kids." },
-        { "q": "Wat gebeurt er na de 24 lessen?", "a": "Je kind houdt levenslange toegang. Ze kunnen elke les opnieuw spelen, quizzen herhalen en het diploma altijd downloaden. Nieuwe bonuslessen komen er gratis bij." },
-        { "q": "Kan ik de taal later wisselen?", "a": "Ja. Kids kunnen op elk moment wisselen tussen Nederlands, Engels en Spaans vanuit hun account." },
-        { "q": "Hoe verwijder ik de data van mijn kind?", "a": "Mail ons en we wissen het account en alle data binnen 7 dagen, geen vragen gesteld." }
+        {
+          "q": "Is dit gratis voor leerlingen?",
+          "a": "Ja. De volledige student-ervaring is gratis beschikbaar, inclusief alle lessen, quizzen en het diploma."
+        },
+        {
+          "q": "Is dit veilig voor mijn kind?",
+          "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. We bewaren alleen een voornaam, leeftijd en oudermail."
+        },
+        {
+          "q": "Is de data van mijn kind privé?",
+          "a": "Ja. We zijn AVG- en COPPA-vriendelijk. We verkopen nooit data en gebruiken het nooit om AI-modellen te trainen."
+        },
+        {
+          "q": "Voor welke leeftijd is het?",
+          "a": "9 tot 11 jaar is de zoete plek. Andere leeftijdsgroepen volgen later."
+        },
+        {
+          "q": "Op welke apparaten werkt het?",
+          "a": "Elke moderne telefoon, tablet, Chromebook of laptop met een browser. Geen app om te installeren."
+        },
+        {
+          "q": "Kan ik de taal later wisselen?",
+          "a": "Ja. Kids kunnen op elk moment wisselen tussen Nederlands, Engels en Spaans vanuit hun account."
+        },
+        {
+          "q": "Hoe verwijder ik de data van mijn kind?",
+          "a": "Mail ons en we wissen het account en alle data binnen 7 dagen, geen vragen gesteld."
+        }
       ]
+    },
+    "student": {
+      "name": "Studenten-app",
+      "tagline": "Elke leerling kan gratis door alle werelden, lessen, quizzen en het diploma gaan.",
+      "price": "Gratis",
+      "billing": "geen betaalmuur · geen proefperiode",
+      "features": [
+        "Alle lessen en werelden direct open",
+        "Quizzen, badges en diploma inbegrepen",
+        "Werkt op mobiel, tablet en laptop",
+        "Taal wisselen in je account",
+        "Nieuwe lesupdates automatisch beschikbaar"
+      ],
+      "cta": "Start gratis"
     }
   },
   "schoolForm": {

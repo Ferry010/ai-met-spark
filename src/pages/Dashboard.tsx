@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { PaywallDialog } from "@/components/PaywallDialog";
 import { WORLDS, ALL_LESSONS } from "@/content/lessons";
 import { Lock, Star, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import confetti from "canvas-confetti";
 import { BADGES, TONE_BG } from "@/lib/badges";
 
 const PILLAR_BG: Record<string, string> = {
@@ -20,11 +18,9 @@ const PILLAR_BG: Record<string, string> = {
 };
 
 export const Dashboard = () => {
-  const { profile, user, refreshProfile } = useAuth();
+  const { profile, user } = useAuth();
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [finalPassed, setFinalPassed] = useState(false);
-  const [paywall, setPaywall] = useState(false);
-  const [search, setSearch] = useSearchParams();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -45,22 +41,9 @@ export const Dashboard = () => {
       .then(({ data }) => setFinalPassed((data ?? []).length > 0));
   }, [user]);
 
-  useEffect(() => {
-    if (search.get("checkout") === "success") {
-      confetti({ particleCount: 200, spread: 90, origin: { y: 0.5 } });
-      toast({ title: "🎉 Je bent vrijgespeeld!", description: "Alle lessen staan open. Veel plezier!" });
-      setTimeout(refreshProfile, 1500);
-      const next = new URLSearchParams(search);
-      next.delete("checkout");
-      next.delete("session_id");
-      setSearch(next, { replace: true });
-    }
-  }, [search, setSearch, refreshProfile, toast]);
-
   const totalDone = completed.size;
   const totalLessons = ALL_LESSONS.length;
   const allDone = totalDone === totalLessons;
-  const isPaid = !!profile?.paid;
 
   const worldProgress = WORLDS.map((w) => ({
     ...w,
@@ -82,14 +65,6 @@ export const Dashboard = () => {
               {totalDone} van {totalLessons} lessen gedaan
             </p>
           </div>
-          {!isPaid && (
-            <Button
-              onClick={() => setPaywall(true)}
-              className="w-full sm:w-auto h-12 rounded-full font-display bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop"
-            >
-              🔓 Speel alles vrij · €14
-            </Button>
-          )}
         </div>
 
         <Progress value={(totalDone / totalLessons) * 100} className="h-3 mb-10" />
@@ -189,8 +164,6 @@ export const Dashboard = () => {
           </Link>
         </div>
       </main>
-
-      <PaywallDialog open={paywall} onClose={() => setPaywall(false)} />
     </div>
   );
 };

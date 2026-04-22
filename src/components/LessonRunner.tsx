@@ -105,8 +105,8 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   return (
     <>
       {showProgress && currentIndex >= 0 && (
-        <div className="mb-4">
-          <div className="flex items-center justify-between text-xs font-display text-muted-foreground mb-1.5">
+        <div className="mb-4 sm:mb-5">
+          <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] font-display text-muted-foreground sm:text-xs">
             <span>Stap {currentIndex + 1} van {stepOrder.length}</span>
             <span className="opacity-70">Les {lesson.id}</span>
           </div>
@@ -134,7 +134,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       )}
 
       {step === "fact" && (
-        <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center relative">
+        <section className="relative rounded-3xl bg-card border-2 border-primary p-5 text-center shadow-pop animate-pop-in sm:p-8">
           <div className="absolute top-4 right-4">
             <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
           </div>
@@ -142,8 +142,8 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             <Spark size={72} mood="hinting" />
           </div>
           <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
-          <p className="font-display text-xl sm:text-2xl md:text-3xl leading-snug">{lesson.fact}</p>
-          <Button onClick={() => goNext("fact")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">
+          <p className="font-display text-lg leading-snug sm:text-2xl md:text-3xl">{lesson.fact}</p>
+          <Button onClick={() => goNext("fact")} className="mt-8 h-14 w-full rounded-full font-display bg-primary shadow-soft sm:w-auto sm:px-8">
             Verder →
           </Button>
         </section>
@@ -592,8 +592,8 @@ const MultiChoice = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
   const [picked, setPicked] = useState<number | null>(null);
   const wrong = picked !== null && !step.options[picked].correct;
   return (
-    <section className={cn("rounded-3xl bg-card border border-border p-6 shadow-soft", wrong && "animate-shake")}>
-      <h3 className="font-display text-xl mb-5">{step.question}</h3>
+    <section className={cn("rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6", wrong && "animate-shake")}>
+      <h3 className="mb-4 text-lg leading-snug font-display sm:mb-5 sm:text-xl">{step.question}</h3>
       <div className="space-y-3">
         {step.options.map((opt, i) => {
           const isPicked = picked === i;
@@ -634,8 +634,8 @@ const TapReveal = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "t
   const [opened, setOpened] = useState<Set<number>>(new Set());
   const allOpen = opened.size === step.reveals.length;
   return (
-    <section className="rounded-3xl bg-card border border-border p-6 shadow-soft">
-      <h3 className="font-display text-xl mb-5">{step.prompt}</h3>
+    <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
+      <h3 className="mb-4 text-lg leading-snug font-display sm:mb-5 sm:text-xl">{step.prompt}</h3>
       <div className="space-y-3">
         {step.reveals.map((r, i) => (
           <button
@@ -674,9 +674,9 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
   const allPlaced = Object.keys(placed).length === step.items.length;
   const allCorrect = step.items.every((it, i) => placed[i] === it.bucket);
   return (
-    <section className="rounded-3xl bg-card border border-border p-6 shadow-soft">
-      <h3 className="font-display text-xl mb-5">{step.prompt}</h3>
-      <div className="space-y-2 mb-4">
+    <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
+      <h3 className="mb-4 text-lg leading-snug font-display sm:mb-5 sm:text-xl">{step.prompt}</h3>
+      <div className="mb-4 space-y-3">
         {step.items.map((it, i) => {
           const chosen = placed[i];
           const correct = chosen !== undefined && chosen === it.bucket;
@@ -685,14 +685,14 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
             <div
               key={i}
               className={cn(
-                "rounded-2xl border-2 p-3 flex items-center gap-3 flex-wrap",
+                "rounded-2xl border-2 p-4 flex flex-col gap-3 sm:flex-row sm:items-center",
                 correct && "bg-success/10 border-success",
                 wrong && "bg-destructive/10 border-destructive animate-shake",
                 chosen === undefined && "border-border",
               )}
             >
-              <span className="flex-1 min-w-0 font-body text-sm">{it.label}</span>
-              <div className="flex flex-wrap gap-2">
+              <span className="min-w-0 flex-1 font-body text-base leading-snug sm:text-sm">{it.label}</span>
+              <div className="grid w-full grid-cols-1 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:justify-end">
                 {step.buckets.map((b, bi) => (
                   <Button
                     key={bi}
@@ -700,7 +700,7 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
                     variant={chosen === bi ? "default" : "outline"}
                     onClick={() => place(i, bi)}
                     disabled={chosen !== undefined}
-                    className="rounded-full font-display text-xs"
+                    className="h-11 w-full rounded-full px-4 font-display text-sm sm:h-9 sm:w-auto sm:text-xs"
                   >
                     {b}
                   </Button>

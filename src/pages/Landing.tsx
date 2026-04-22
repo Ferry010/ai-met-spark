@@ -124,7 +124,7 @@ const ParentCard = ({
 
 export const Landing = () => {
   const { t } = useTranslation();
-  const teaserFeatures = t("landing.pricingTeaser.features", { returnObjects: true }) as string[];
+  const teaserFeatures = t("landing.freeAccess.features", { returnObjects: true }) as string[];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -284,13 +284,13 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* Pricing teaser */}
+      {/* Free access */}
       <section className="container">
         <div className="rounded-3xl bg-card border border-border shadow-pop p-6 sm:p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.pricingTeaser.eyebrow")}</p>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.pricingTeaser.title")}</h2>
-            <p className="text-muted-foreground mb-6">{t("landing.pricingTeaser.subtitle")}</p>
+            <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.freeAccess.eyebrow")}</p>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.freeAccess.title")}</h2>
+            <p className="text-muted-foreground mb-6">{t("landing.freeAccess.subtitle")}</p>
             <ul className="space-y-2 mb-6">
               {teaserFeatures.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-foreground">
@@ -301,16 +301,17 @@ export const Landing = () => {
                 </li>
               ))}
             </ul>
-            <p className="text-sm text-muted-foreground italic mb-6">{t("landing.pricingTeaser.noPay")}</p>
-            <Link to="/pricing">
+            <p className="text-sm text-muted-foreground italic mb-6">{t("landing.freeAccess.noPay")}</p>
+            <Link to="/auth?mode=signup">
               <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display text-sm sm:text-base bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop">
-                {t("landing.pricingTeaser.cta")} · {t("landing.pricingTeaser.price")}
+                {t("landing.freeAccess.cta")}
               </Button>
             </Link>
           </div>
           <div className="text-center">
             <div className="inline-block rounded-3xl bg-gradient-sunshine p-6 sm:p-8 shadow-soft">
-            <div className="font-display text-6xl sm:text-7xl text-secondary-foreground">€14</div>
+              <div className="font-display text-5xl sm:text-6xl text-secondary-foreground">{t("landing.freeAccess.badge")}</div>
+              <p className="mt-2 text-sm font-semibold text-secondary-foreground/80">{t("landing.freeAccess.badgeCaption")}</p>
           </div>
           </div>
         </div>
@@ -343,7 +344,7 @@ export const Landing = () => {
                 🚀 {t("landing.finalCta.cta")}
               </Button>
             </Link>
-            <Link to="/pricing">
+            <Link to="/schools/contact">
               <Button variant="outline" className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display border-2 border-white text-white hover:bg-white/10 bg-transparent text-sm sm:text-base">
                 {t("landing.finalCta.secondary")}
               </Button>

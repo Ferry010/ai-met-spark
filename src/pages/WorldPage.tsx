@@ -5,9 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
-import { PaywallDialog } from "@/components/PaywallDialog";
 import { getWorld } from "@/content/lessons";
-import { ChevronLeft, Lock, Check } from "lucide-react";
+import { ChevronLeft, Check } from "lucide-react";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "from-primary-glow to-primary",
@@ -19,10 +18,9 @@ export const WorldPage = () => {
   const params = useParams<{ worldId?: string; id?: string }>();
   const worldId = params.worldId ?? params.id;
   const navigate = useNavigate();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const baseWorld = getWorld(Number(worldId));
   const [completed, setCompleted] = useState<Set<string>>(new Set());
-  const [paywall, setPaywall] = useState(false);
   const [overrides, setOverrides] = useState<Record<string, { title?: string | null; emoji?: string | null }>>({});
 
   useEffect(() => {
@@ -65,8 +63,6 @@ export const WorldPage = () => {
     );
   }
 
-  const isPaid = !!profile?.paid;
-
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
@@ -83,34 +79,25 @@ export const WorldPage = () => {
 
         <ol className="relative space-y-5">
           {world.lessons.map((lesson, idx) => {
-            const isFirstFreeLesson = world.id === 1 && lesson.id === "1.1";
-            const locked = !isFirstFreeLesson && !isPaid;
             const isDone = completed.has(lesson.id);
             const offset = idx % 2 === 0 ? "sm:ml-0 sm:mr-auto" : "sm:ml-auto sm:mr-0";
 
             return (
               <li key={lesson.id} className={`max-w-md ${offset}`}>
                 <button
-                  onClick={() => {
-                    if (locked) setPaywall(true);
-                    else navigate(`/lesson/${lesson.id}`);
-                  }}
+                  onClick={() => navigate(`/lesson/${lesson.id}`)}
                   className={`w-full text-left rounded-3xl p-5 border-2 transition-bounce hover:-translate-y-1 ${
                     isDone
                       ? "bg-success/10 border-success shadow-soft"
-                      : locked
-                      ? "bg-muted/50 border-border"
                       : "bg-card border-primary shadow-soft hover:shadow-pop"
                   }`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${
-                      isDone ? "bg-success text-success-foreground" : locked ? "bg-muted" : "bg-primary/10"
+                      isDone ? "bg-success text-success-foreground" : "bg-primary/10"
                     }`}>
                       {isDone ? (
                         <Check className="h-6 w-6" />
-                      ) : locked ? (
-                        <Lock className="h-5 w-5 text-muted-foreground" />
                       ) : (
                         <Spark size={44} mood="pointing" animate={false} />
                       )}
@@ -130,7 +117,6 @@ export const WorldPage = () => {
           <Spark size={80} mood={world.lessons.every((l) => completed.has(l.id)) ? "celebrating" : "happy"} />
         </div>
       </main>
-      <PaywallDialog open={paywall} onClose={() => setPaywall(false)} />
     </div>
   );
 };
