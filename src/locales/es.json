@@ -167,20 +167,20 @@
       "byline": "Hecho con profesores y padres en los Países Bajos."
     },
     "pricingTeaser": {
-      "eyebrow": "Precio simple",
-      "title": "Un precio. Acceso para siempre. Cero sorpresas.",
-      "price": "€14",
-      "subtitle": "Paga una vez. Tu hijo conserva cada lección, cada actualización y su certificado para siempre.",
-      "cta": "Desbloquear ahora",
+      "eyebrow": "Totalmente gratis",
+      "title": "Todo está abierto para cada alumno.",
+      "subtitle": "Sin muro de pago, sin prueba limitada y sin sorpresas. Regístrate y recorre todos los mundos y lecciones desde el primer momento.",
+      "cta": "Crear cuenta gratis",
+      "badge": "Gratis",
+      "badgeCaption": "todas las lecciones · siempre",
       "features": [
-        "12 lecciones divertidas hechas a mano",
-        "3 mundos de superpoderes para explorar",
-        "Sin chat. Los niños nunca escriben a una IA.",
-        "Certificado personal imprimible",
+        "Todos los mundos y lecciones desbloqueados al instante",
+        "Sin muro de pago ni mejoras ocultas",
+        "Certificado personal al terminar",
         "Funciona en móvil, tablet y portátil",
-        "Actualizaciones gratis con nuevas lecciones"
+        "Actualizaciones gratis cuando lleguen nuevas lecciones"
       ],
-      "noPay": "Lo que no pagas: sin suscripción, sin ventas adicionales, sin anuncios, nunca."
+      "noPay": "No hay nada que desbloquear: todo en la app del alumno está disponible desde el principio."
     },
     "schools": {
       "eyebrow": "Para escuelas y profesores",
@@ -220,21 +220,18 @@
     "subtitle": "Todo lo necesario para empezar.",
     "intro": "Los alumnos tienen acceso gratis al curso completo. Las escuelas pueden contactarnos para despliegue, acompañamiento y gestión del aula.",
     "individual": {
-      "name": "Individual",
-      "badge": "Más popular",
-      "tagline": "Perfecto para un niño curioso en casa. Paga una vez y listo.",
-      "price": "€14",
-      "billing": "pago único",
+      "name": "App para alumnos",
+      "tagline": "Cada alumno puede recorrer gratis todos los mundos, lecciones, quizzes y el certificado.",
+      "price": "Gratis",
+      "billing": "sin muro de pago · sin periodo de prueba",
       "features": [
-        "Las 12 lecciones, para siempre",
-        "Acceso a los 3 mundos de superpoderes",
-        "1 cuenta de niño",
-        "Certificado personal imprimible",
-        "Email al padre al completar",
-        "Actualizaciones futuras gratis",
-        "Garantía de devolución de 14 días"
+        "Todos los mundos y lecciones abiertos desde el inicio",
+        "Quizzes, insignias y certificado incluidos",
+        "Funciona en móvil, tablet y portátil",
+        "Cambio de idioma desde la cuenta",
+        "Nuevas lecciones añadidas automáticamente"
       ],
-      "cta": "Empezar"
+      "cta": "Empieza gratis"
     },
     "schools": {
       "name": "Escuelas",

@@ -168,21 +168,20 @@
       "byline": "Built with teachers and parents in the Netherlands."
     },
     "pricingTeaser": {
-      "eyebrow": "Simple pricing",
-      "title": "One price. Forever access. Zero surprises.",
-      "price": "€14",
-      "priceCaption": "one-time · forever",
-      "subtitle": "Pay once. Your child keeps every lesson, every update, and their certificate forever.",
-      "cta": "Unlock now",
+      "eyebrow": "Fully free",
+      "title": "Everything is open for every learner.",
+      "subtitle": "No paywall, no trial timer, and no surprises. Sign up and move through every world and lesson right away.",
+      "cta": "Create free account",
+      "badge": "Free",
+      "badgeCaption": "all lessons · always",
       "features": [
-        "12 fun, hand-crafted lessons",
-        "3 superpower worlds to explore",
-        "No chat. Kids never type to an AI.",
-        "Personal printable certificate",
+        "Every lesson and world unlocked immediately",
+        "No paywall or hidden upgrade prompts",
+        "Personal certificate after completion",
         "Works on phone, tablet, and laptop",
-        "Free updates as new lessons drop"
+        "Free updates when new lessons arrive"
       ],
-      "noPay": "What you don't pay: no subscription, no upsells, no ads, ever."
+      "noPay": "There is nothing to unlock: everything in the student app is available from the start."
     },
     "schools": {
       "eyebrow": "For schools and teachers",
@@ -222,21 +221,18 @@
     "subtitle": "Everything you need to get started.",
     "intro": "Students get free access to the full course. Schools can contact us for rollout support, onboarding, and classroom management.",
     "individual": {
-      "name": "Individual",
-      "badge": "Most popular",
-      "tagline": "Perfect for one curious kid at home. Pay once and they're set.",
-      "price": "€14",
-      "billing": "one-time",
+      "name": "Student app",
+      "tagline": "Every learner can explore all worlds, lessons, quizzes, and the certificate for free.",
+      "price": "Free",
+      "billing": "no paywall · no trial period",
       "features": [
-        "All 12 lessons, forever",
-        "Access to all 3 superpower worlds",
-        "1 child account",
-        "Personal printable certificate",
-        "Email to parent on completion",
-        "Free future lesson updates",
-        "14-day money-back guarantee"
+        "All lessons and worlds open immediately",
+        "Quizzes, badges, and certificate included",
+        "Works on mobile, tablet, and laptop",
+        "Switch languages in your account",
+        "New lesson updates added automatically"
       ],
-      "cta": "Get started"
+      "cta": "Start free"
     },
     "schools": {
       "name": "Schools",

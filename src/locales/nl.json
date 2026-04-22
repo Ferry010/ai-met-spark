@@ -167,20 +167,20 @@
       "byline": "Gemaakt met leerkrachten en ouders in Nederland."
     },
     "pricingTeaser": {
-      "eyebrow": "Eenvoudige prijs",
-      "title": "Eén prijs. Voor altijd toegang. Geen verrassingen.",
-      "price": "€14",
-      "subtitle": "Eén keer betalen. Je kind houdt elke les, elke update en het diploma voor altijd.",
-      "cta": "Nu ontgrendelen",
+      "eyebrow": "Volledig gratis",
+      "title": "Alles staat open voor elke leerling.",
+      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
+      "cta": "Maak gratis account",
+      "badge": "Gratis",
+      "badgeCaption": "alle lessen · altijd",
       "features": [
-        "24 leuke, met de hand gemaakte lessen",
-        "3 superkracht-werelden om te ontdekken",
-        "Geen chat. Kids typen nooit naar een AI.",
-        "Persoonlijk printbaar diploma",
+        "Alle lessen en werelden direct beschikbaar",
+        "Geen betaalmuur of verborgen upgrades",
+        "Persoonlijk diploma na afronding",
         "Werkt op telefoon, tablet en laptop",
         "Gratis updates wanneer er nieuwe lessen komen"
       ],
-      "noPay": "Wat je niet betaalt: geen abonnement, geen upsells, geen advertenties, ooit."
+      "noPay": "Je hoeft niets te ontgrendelen: alles in de student-app is meteen beschikbaar."
     },
     "schools": {
       "eyebrow": "Voor scholen en leerkrachten",
@@ -220,21 +220,18 @@
     "subtitle": "Alles wat je nodig hebt om te starten.",
     "intro": "Leerlingen krijgen gratis toegang tot de volledige cursus. Scholen kunnen contact opnemen voor begeleiding, uitrol en klasbeheer.",
     "individual": {
-      "name": "Individueel",
-      "badge": "Populairst",
-      "tagline": "Perfect voor één nieuwsgierig kind thuis. Eén keer betalen en klaar.",
-      "price": "€14",
-      "billing": "eenmalig",
+      "name": "Studenten-app",
+      "tagline": "Elke leerling kan gratis door alle werelden, lessen, quizzen en het diploma gaan.",
+      "price": "Gratis",
+      "billing": "geen betaalmuur · geen proefperiode",
       "features": [
-        "Alle 24 lessen, voor altijd",
-        "Toegang tot alle 3 superkracht-werelden",
-        "1 kind-account",
-        "Persoonlijk printbaar diploma",
-        "E-mail naar ouder bij voltooiing",
-        "Gratis toekomstige lesupdates",
-        "14 dagen niet-goed-geld-terug"
+        "Alle lessen en werelden direct open",
+        "Quizzen, badges en diploma inbegrepen",
+        "Werkt op mobiel, tablet en laptop",
+        "Taal wisselen in je account",
+        "Nieuwe lesupdates automatisch beschikbaar"
       ],
-      "cta": "Aan de slag"
+      "cta": "Start gratis"
     },
     "schools": {
       "name": "Scholen",
