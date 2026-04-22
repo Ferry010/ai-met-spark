@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { createClient } from "npm:@supabase/supabase-js@2.49.8";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -35,15 +35,16 @@ Deno.serve(async (req) => {
       global: { headers: { Authorization: authHeader } },
     });
     const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(token);
-    if (claimsErr || !claimsData?.claims?.sub) {
+    const { data: userData, error: userErr } = await userClient.auth.getUser(token);
+    const userId = userData?.user?.id;
+    if (userErr || !userId) {
       return new Response(JSON.stringify({ error: "Not authenticated" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     const admin = createClient(supabaseUrl, serviceKey);
-    const { data: roleCheck } = await admin.rpc("has_role", { _user_id: claimsData.claims.sub, _role: "admin" });
+    const { data: roleCheck } = await admin.rpc("has_role", { _user_id: userId, _role: "admin" });
     if (!roleCheck) {
       return new Response(JSON.stringify({ error: "Forbidden" }), {
         status: 403,
