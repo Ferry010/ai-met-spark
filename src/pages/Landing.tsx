@@ -74,8 +74,8 @@ const TrustChip = ({ icon, label }: { icon: React.ReactNode; label: string }) =>
 );
 
 const InsideStat = ({ n, label, desc }: { n: string; label: string; desc: string }) => (
-  <div className="rounded-3xl bg-card border border-border p-6 shadow-soft hover:shadow-pop transition-bounce">
-    <div className="font-display text-5xl text-primary mb-1">{n}</div>
+  <div className="rounded-3xl bg-card border border-border p-5 sm:p-6 shadow-soft hover:shadow-pop transition-bounce">
+    <div className="font-display text-4xl sm:text-5xl text-primary mb-1">{n}</div>
     <div className="font-display text-lg mb-2">{label}</div>
     <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
   </div>
