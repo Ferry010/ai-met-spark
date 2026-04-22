@@ -243,13 +243,13 @@ export const Landing = () => {
       </section>
 
       {/* How a lesson works */}
-      <section className="container pb-20">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
         <div className="text-center mb-10">
           <p className="text-sm font-bold uppercase tracking-wider text-accent mb-3">{t("landing.how.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl mb-3">{t("landing.how.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.how.title")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">{t("landing.how.subtitle")}</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           <HowStep n={1} icon={<Sparkles className="h-6 w-6" />} title={t("landing.how.steps.meet.title")} desc={t("landing.how.steps.meet.desc")} />
           <HowStep n={2} icon={<Compass className="h-6 w-6" />} title={t("landing.how.steps.discover.title")} desc={t("landing.how.steps.discover.desc")} />
           <HowStep n={3} icon={<PlayCircle className="h-6 w-6" />} title={t("landing.how.steps.play.title")} desc={t("landing.how.steps.play.desc")} />
