@@ -362,6 +362,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      attach_certificate_pdf: {
+        Args: { _path: string }
+        Returns: {
+          id: string
+          issued_at: string
+          pdf_url: string | null
+          score: number | null
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      create_or_refresh_certificate: {
+        Args: never
+        Returns: {
+          id: string
+          issued_at: string
+          pdf_url: string | null
+          score: number | null
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
