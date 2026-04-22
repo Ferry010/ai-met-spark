@@ -1,4 +1,5 @@
 import type { Lesson } from "@/content/lessons";
+import { normalizeTtsSummary, normalizeTtsText } from "@/lib/tts";
 
 export type Step = "intro" | "theoryIntro" | "fact" | "sparkMiddle" | "theoryDeep" | "summary";
 
@@ -9,16 +10,18 @@ export interface AudioRow {
   text_hash: string;
 }
 
+const getNormalizedLessonText = (value: string | undefined) => normalizeTtsText(value);
+
 export const LESSON_AUDIO_STEPS: { key: Step; label: string; getText: (lesson: Lesson) => string | undefined }[] = [
-  { key: "intro", label: "Intro", getText: (lesson) => lesson.sparkIntro },
-  { key: "theoryIntro", label: "Theorie 1", getText: (lesson) => lesson.theoryIntro },
-  { key: "fact", label: "Wist je dat", getText: (lesson) => lesson.fact },
-  { key: "sparkMiddle", label: "Spark midden", getText: (lesson) => lesson.sparkMiddle },
-  { key: "theoryDeep", label: "Theorie 2", getText: (lesson) => lesson.theoryDeep },
+  { key: "intro", label: "Intro", getText: (lesson) => getNormalizedLessonText(lesson.sparkIntro) },
+  { key: "theoryIntro", label: "Theorie 1", getText: (lesson) => getNormalizedLessonText(lesson.theoryIntro) },
+  { key: "fact", label: "Wist je dat", getText: (lesson) => getNormalizedLessonText(lesson.fact) },
+  { key: "sparkMiddle", label: "Spark midden", getText: (lesson) => getNormalizedLessonText(lesson.sparkMiddle) },
+  { key: "theoryDeep", label: "Theorie 2", getText: (lesson) => getNormalizedLessonText(lesson.theoryDeep) },
   {
     key: "summary",
     label: "Samenvatting",
-    getText: (lesson) => (lesson.summary && lesson.summary.length ? lesson.summary.join(". ") : undefined),
+    getText: (lesson) => normalizeTtsSummary(lesson.summary),
   },
 ];
 
