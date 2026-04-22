@@ -8,7 +8,7 @@
     "continue": "Continue",
     "next": "Next",
     "back": "Back",
-    "tryFree": "Start free",
+    "tryFree": "Create account",
     "unlockNow": "Start now",
     "comingSoon": "Coming soon",
     "loading": "Loading…",
@@ -28,7 +28,7 @@
     "heroSubtitle": "A fun adventure that teaches kids to use AI safely, ask smarter questions, and become unstoppable learners. Built for ages 8 to 12.",
     "heroSparkLine": "Hi, I'm Spark. I'll be your AI guide!",
     "heroMicroCopy": "Free access to every lesson. Start in 60 seconds.",
-    "ctaPrimary": "Start free",
+    "ctaPrimary": "Create account",
     "ctaSecondary": "Log In",
     "trustChips": {
       "gdpr": "GDPR safe",
@@ -171,7 +171,7 @@
       "eyebrow": "Fully free",
       "title": "Everything is open for every learner.",
       "subtitle": "No paywall, no trial timer, and no surprises. Sign up and move through every world and lesson right away.",
-      "cta": "Create free account",
+      "cta": "Create account",
       "badge": "Free",
       "badgeCaption": "all lessons · always",
       "features": [
@@ -203,7 +203,7 @@
       "eyebrow": "Fully free",
       "title": "Everything is open for every learner.",
       "subtitle": "No paywall, no trial timer, and no surprises. Sign up and move through every world and lesson right away.",
-      "cta": "Create free account",
+      "cta": "Create account",
       "badge": "Free",
       "badgeCaption": "all lessons · always",
       "features": [
@@ -232,7 +232,7 @@
         "Switch languages in your account",
         "New lesson updates added automatically"
       ],
-      "cta": "Start free"
+      "cta": "Create account"
     },
     "schools": {
       "name": "Schools",
@@ -307,7 +307,7 @@
         "Switch languages in your account",
         "New lesson updates added automatically"
       ],
-      "cta": "Start free"
+      "cta": "Create account"
     }
   },
   "schoolForm": {

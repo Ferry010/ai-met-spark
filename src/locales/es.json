@@ -8,7 +8,7 @@
     "continue": "Continuar",
     "next": "Siguiente",
     "back": "Atrás",
-    "tryFree": "Empieza gratis",
+    "tryFree": "Crea una cuenta",
     "unlockNow": "Empieza ahora",
     "comingSoon": "Próximamente",
     "loading": "Cargando…",
@@ -28,7 +28,7 @@
     "heroSubtitle": "Una aventura divertida que enseña a los niños a usar la IA con seguridad, hacer preguntas más inteligentes y convertirse en aprendices imparables. Hecho para 8 a 12 años.",
     "heroSparkLine": "¡Hola, soy Spark. Seré tu guía de IA!",
     "heroMicroCopy": "Acceso gratis a todas las lecciones. Empieza en 60 segundos.",
-    "ctaPrimary": "Empieza gratis",
+    "ctaPrimary": "Crea una cuenta",
     "ctaSecondary": "Iniciar sesión",
     "trustChips": {
       "gdpr": "Seguro con RGPD",
@@ -170,7 +170,7 @@
       "eyebrow": "Totalmente gratis",
       "title": "Todo está abierto para cada alumno.",
       "subtitle": "Sin muro de pago, sin prueba limitada y sin sorpresas. Regístrate y recorre todos los mundos y lecciones desde el primer momento.",
-      "cta": "Crear cuenta gratis",
+      "cta": "Crea una cuenta",
       "badge": "Gratis",
       "badgeCaption": "todas las lecciones · siempre",
       "features": [
@@ -202,7 +202,7 @@
       "eyebrow": "Totalmente gratis",
       "title": "Todo está abierto para cada alumno.",
       "subtitle": "Sin muro de pago, sin prueba limitada y sin sorpresas. Regístrate y recorre todos los mundos y lecciones desde el primer momento.",
-      "cta": "Crear cuenta gratis",
+      "cta": "Crea una cuenta",
       "badge": "Gratis",
       "badgeCaption": "todas las lecciones · siempre",
       "features": [
@@ -231,7 +231,7 @@
         "Cambio de idioma desde la cuenta",
         "Nuevas lecciones añadidas automáticamente"
       ],
-      "cta": "Empieza gratis"
+      "cta": "Crea una cuenta"
     },
     "schools": {
       "name": "Escuelas",
@@ -306,7 +306,7 @@
         "Cambio de idioma desde la cuenta",
         "Nuevas lecciones añadidas automáticamente"
       ],
-      "cta": "Empieza gratis"
+      "cta": "Crea una cuenta"
     }
   },
   "schoolForm": {
