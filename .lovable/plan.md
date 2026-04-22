@@ -1,78 +1,75 @@
 
 
-# Spark leest de lessen voor + tekst beter ontworpen
+# Spark voorlezen — als vooraf opgenomen audio (geen ElevenLabs-calls)
 
-Twee verbeteringen die los van elkaar werken, maar samen de lessen veel levendiger maken.
+Geen live API. In plaats daarvan: één keer audio genereren per lestekst, opslaan als MP3 in storage, en de app speelt gewoon dat bestand af. Geen credits per gebruiker, geen secret nodig in productie.
 
-## Deel 1 — Spark leest hardop voor (text-to-speech)
+## Hoe het werkt voor de gebruiker
 
-**Wat de gebruiker ziet**
-- Op elke tekststap (intro, theorieIntro, fact, sparkMiddle, theoryDeep, summary) verschijnt een ▶︎ **"Laat Spark voorlezen"**-knop naast Spark.
-- Klik = Spark's mond/animatie schakelt naar `mood="explaining"`, een kleine geluidsgolf-indicator pulseert, en de stem speelt af.
-- Knop wordt ⏸ tijdens afspelen; nogmaals tikken pauzeert. Automatisch terug naar ▶︎ als klaar.
-- Werkt op mobiel én desktop. Eén Spark-stem voor consistentie (warme, jeugdige stem — voorstel: **"Lily" `pFZP5JQG7iQjIQuC4Bku`** of **"Charlie" `IKne3meq5aSn9XLyUdCD`**).
-- Knop blijft ook werken als je doorklikt: bij stap-wissel stopt de vorige audio netjes.
+- Op elke tekststap (intro, theoryIntro, fact, sparkMiddle, theoryDeep, summary) staat een ▶︎ **"Laat Spark voorlezen"**-knop.
+- Klik = MP3 uit de `lesson-audio` storage-bucket wordt afgespeeld. Geen wachttijd door API, gewoon een statisch bestand.
+- ⏸ pauzeert, opnieuw klikken hervat. Bij volgende stap stopt vorige audio.
+- Als er (nog) geen opname bestaat voor een stap, valt de knop netjes weg — geen broken state.
 
-**Technisch**
-- Nieuwe edge function `supabase/functions/tts-spark/index.ts`:
-  - Input: `{ text, voiceId? }`
-  - Roept ElevenLabs `text-to-speech/{voiceId}?output_format=mp3_44100_128` aan met `eleven_multilingual_v2` (NL-stem werkt goed) en `voice_settings.stability 0.5`, `similarity_boost 0.75`, `speed 0.95`.
-  - Geeft binaire MP3 terug met `Content-Type: audio/mpeg`.
-  - `verify_jwt = false` zodat ingelogde én free-lesson gebruikers het kunnen aanroepen.
-  - Vereist nieuwe secret: **`ELEVENLABS_API_KEY`** (ik vraag deze via `add_secret`).
-- Nieuwe hook `src/hooks/useSparkVoice.ts`:
-  - `playText(text)` / `stop()` / `isPlaying` / `isLoading`.
-  - Cachet de laatst-gespeelde audio per text-hash in een ref zodat herhaaldelijk afspelen geen API-call doet.
-  - Stopt automatisch op unmount of als `playText` met andere tekst wordt aangeroepen.
-- Nieuwe component `src/components/SparkVoiceButton.tsx`: kleine ronde knop (`Volume2` / `Pause` icon van lucide-react) met loading-spinner state. Hergebruikt in `LessonRunner` op alle tekststappen.
-- In `LessonRunner.tsx` per stap-render één `<SparkVoiceButton text={...} />` toevoegen naast Spark of onder de eyebrow.
+## Hoe de opnames erin komen (admin-only, eenmalig)
 
-**Kosten/limiet-disclaimer**
-ElevenLabs heeft een gratis tier (~10k chars/maand). Bij intensief gebruik moet je opwaarderen. Ik zet later eventueel caching in een storage-bucket toe als dat nodig blijkt — niet in deze ronde.
+Een verborgen admin-tool genereert per les alle audiofragmenten **één keer** en uploadt ze naar storage. Gebruikers triggeren ElevenLabs nooit zelf.
 
-## Deel 2 — Theorie tekst beter ontworpen
+- Nieuwe pagina `/admin/audio` (alleen voor `admin`-rol):
+  - Lijst van alle lessen met per stap een status: ✅ opgenomen / ⚪ ontbreekt / ⟳ verouderd (tekst is gewijzigd na laatste opname).
+  - Knoppen: **"Genereer ontbrekende"** en **"Hergenereer alles voor deze les"**.
+  - Audio-preview per fragment.
+- Generatie roept een edge function aan die ElevenLabs aanspreekt → MP3 → uploadt naar `lesson-audio/{lessonId}/{step}.mp3` → schrijft een record in `lesson_audio` tabel.
+- Voor deze admin-flow is **wel** een ElevenLabs key nodig, maar alleen tijdelijk tijdens generatie. Je kunt 'm daarna verwijderen — afspelen blijft werken want de bestanden staan in storage.
 
-**Wat de gebruiker ziet (TheoryCard rebuild)**
-- **Hero-zin** (eerste regel of `**vetgedrukte**` openingsregel) wordt groot uitgelicht als "lead": display-font, 1.5–1.75rem, gekleurd kader links.
-- **Paragrafen**: ruimere line-height (1.7), max-width 60ch, generiek beter leesbaar.
-- **Markdown-mini**: `**bold**` rendert als `<strong>` met primary-kleur; losse regels die met `- ` beginnen worden een gestylede lijst met emoji-bullet (•/✦).
-- **Pull-quotes**: regels die met `> ` beginnen worden een aparte tinted callout-card (`bg-primary/5 border-l-4 border-primary`).
-- **"Even ademen"-pauzes**: tussen paragrafen extra spacing + zachte divider.
-- **Spark-illustratie** verhuist naar de zijkant op desktop (sticky) zodat je ziet dat hij meeleest; op mobiel een kleine Spark-chip bovenaan.
-- **Voortgangshint** onderaan: "📖 ~30 sec lezen" berekend uit woorden/220 wpm.
-- **Voorleesknop** prominent rechtsboven in de card.
+Alternatief als je écht geen ElevenLabs wilt aanraken: je kunt zelf MP3's opnemen (bv. met Mac Voice Memo) en uploaden via dezelfde admin-pagina. Dan slaan we de generatie-stap helemaal over.
 
-**SparkMiddle-card** krijgt dezelfde markdown-render zodat `**bold**` en lijsten ook daar werken.
+## Wat de gebruiker (jij) moet kiezen
 
-**Summary-card** wordt iets luchtiger: bullets met genummerde gradient-chips i.p.v. allemaal Check-icons, en een korte intro-zin "Dit is wat je moet onthouden:".
+Twee dingen nog open — laat me weten welke:
 
-**Technisch**
-- Nieuwe util `src/lib/markdown.tsx` met een tiny renderer (`renderRichText(text)`) die alleen `**bold**`, `> quote`, `- list` en paragraph-splitting ondersteunt. Geen externe lib (geen `react-markdown`) — houdt bundle klein en consistent met de huiscijfer-stijl.
-- `TheoryCard` in `LessonRunner.tsx` herschrijven om `renderRichText` te gebruiken + lead-detectie (eerste paragraaf met `**` wordt lead).
-- `sparkMiddle`-render dezelfde `renderRichText` gebruiken.
-- `SummaryCard` cosmetische herziening (genummerde chips).
-- Geen wijziging aan `lessons.ts` content nodig — bestaande `**` syntax wordt nu echt gerenderd i.p.v. letterlijk getoond.
+1. **Hoe wil je de opnames maken?**
+   - **a) ElevenLabs eenmalig** — ik vraag dan tijdens implementatie om de `ELEVENLABS_API_KEY`. Je genereert in de admin-pagina alle audio in een paar klikken, daarna kan de key weg. Klinkt professioneel, consistent, snel klaar.
+   - **b) Zelf inspreken / handmatig uploaden** — ik bouw alleen de upload-UI. Jij neemt zelf in en uploadt MP3's. Geen externe service nodig, maar veel handwerk.
+   - **c) Allebei mogelijk** — admin-pagina ondersteunt zowel "genereer met ElevenLabs" als "upload eigen MP3" per fragment.
 
-## Bestanden
+2. **Welke stem als je voor (a) of (c) gaat?** Voorstel: warme NL-vriendelijke stem **"Lily" `pFZP5JQG7iQjIQuC4Bku`** of **"Charlie" `IKne3meq5aSn9XLyUdCD`**.
 
-**Nieuw**
-- `supabase/functions/tts-spark/index.ts` — ElevenLabs proxy (binary MP3)
-- `supabase/config.toml` — block voor `tts-spark` met `verify_jwt = false`
-- `src/hooks/useSparkVoice.ts` — playback hook met cache + cleanup
-- `src/components/SparkVoiceButton.tsx` — ▶︎/⏸ knop
-- `src/lib/markdown.tsx` — mini renderer (bold/quote/list/paragraphs + lead)
+## Technisch (ongeacht keuze)
 
-**Aangepast**
-- `src/components/LessonRunner.tsx` — voorleesknop op tekststappen, TheoryCard/SparkMiddle/SummaryCard herontworpen via `renderRichText`
+**Storage**
+- Nieuwe public bucket `lesson-audio` (publiek leesbaar zodat de browser direct streamt zonder signed URLs — scheelt latency).
+- Pad-conventie: `{lessonId}/{step}.mp3` waarbij `step ∈ intro | theoryIntro | fact | sparkMiddle | theoryDeep | summary`.
 
-**Secret toevoegen**
-- `ELEVENLABS_API_KEY` (ik vraag deze met `add_secret` voordat ik de edge function deploy)
+**Database**
+- Nieuwe tabel `lesson_audio`:
+  - `lesson_id text`, `step text`, `storage_path text`, `text_hash text`, `created_at timestamptz`
+  - PK `(lesson_id, step)`
+  - `text_hash` zodat de admin-pagina kan zien welke fragmenten verouderd zijn (tekst gewijzigd in `lessons.ts` of `lesson_overrides`).
+- RLS: iedereen mag selecteren (publieke leesrechten); alleen `admin` mag insert/update/delete.
+
+**Frontend**
+- `src/hooks/useSparkVoice.ts` — laadt MP3-url via Supabase storage public URL, beheert `<audio>`-element, exposeert `play(text, lessonId, step)` / `stop()` / `isPlaying`. Geen API-call, alleen statisch bestand.
+- `src/components/SparkVoiceButton.tsx` — ▶︎/⏸ knop; rendert `null` als er geen audio-record bestaat.
+- `src/components/LessonRunner.tsx` — voorleesknop op alle tekststappen.
+
+**Backend (alleen voor admin generatie, optie a/c)**
+- Edge function `supabase/functions/generate-lesson-audio/index.ts` — alleen aanroepbaar door admins (JWT check + `has_role`); roept ElevenLabs, upload naar storage, upsert in `lesson_audio`. `verify_jwt = true`.
+- Edge function `supabase/functions/upload-lesson-audio/index.ts` — admin upload eigen MP3 (optie b/c). `verify_jwt = true`.
+
+**Admin-pagina**
+- `src/pages/admin/LessonAudio.tsx` — overzicht + acties.
+- Route in `App.tsx` onder admin-guard.
+
+**Tekst-redesign (parallel, blijft uit vorig plan)**
+- `src/lib/markdown.tsx` — mini renderer voor `**bold**`, `> quote`, `- list`, paragrafen + lead-detectie.
+- `LessonRunner.tsx` — TheoryCard, SparkMiddle, SummaryCard herontworpen via `renderRichText`. Lead-zin uitgelicht, ruimere line-height, max-width 60ch, callouts, leestijd-hint, genummerde gradient-chips in summary.
+- Zelfde plan als vorige ronde — geen wijziging aan `lessons.ts`.
 
 ## Wat ik bewust NIET doe
 
-- Geen automatische auto-play — gebruiker moet zelf op ▶︎ tikken (browser autoplay-policy + minder opdringerig).
-- Geen woord-voor-woord karaoke-highlighting (vergt ElevenLabs `with-timestamps`-endpoint, complexere sync — kunnen we later).
-- Geen voorlees-knop op de quiz of interactive (zou de oefen-flow verstoren).
-- Geen vervanging van `react-markdown` import — minimal eigen renderer is genoeg voor onze syntax.
-- Geen wijziging aan `lessons.ts` — alleen hoe het gerenderd wordt.
+- Geen runtime ElevenLabs-calls vanuit de gebruiker-app. Ooit. Audio wordt vooraf gegenereerd of geüpload.
+- Geen auto-play.
+- Geen woord-voor-woord highlight.
+- Geen voorlees-knop op quiz/interactive.
 
