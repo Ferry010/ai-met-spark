@@ -201,8 +201,8 @@ export const Landing = () => {
       </section>
 
       {/* Pillars */}
-      <section className="container pb-20">
-        <h2 className="font-display text-3xl sm:text-4xl text-center mb-3">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-center mb-3">
           {t("landing.pillars.title")}
         </h2>
         <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
