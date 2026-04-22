@@ -144,8 +144,8 @@ export const LessonAudio = () => {
       <main className="container py-8 max-w-5xl">
         <h1 className="font-display text-3xl mb-2">Lesaudio beheer</h1>
         <p className="text-muted-foreground mb-6">
-          Genereer voorleesfragmenten met Spark, upload zelf MP3&apos;s of verwijder en regenereer per stap. Audio wordt eenmalig opgeslagen en
-          gestreamd vanuit storage — geen API-credits per gebruiker.
+          Genereer voorleesfragmenten met Spark in spraakvriendelijke taal, upload zelf MP3&apos;s of verwijder en regenereer per stap. Audio wordt
+          eenmalig opgeslagen en gestreamd vanuit storage — geen API-credits per gebruiker.
         </p>
 
         <div className="space-y-4">

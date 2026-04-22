@@ -14,12 +14,14 @@ export interface LessonOverride {
   title: string | null;
   fact: string | null;
   emoji: string | null;
+  spark_intro: string | null;
   theory_intro: string | null;
   spark_middle: string | null;
   theory_deep: string | null;
   summary: string[] | null;
   interactive: InteractiveStep | null;
   quiz: QuizQuestion[] | null;
+  reflection: string | null;
 }
 
 const applyOverride = (lesson: Lesson, ov?: LessonOverride): Lesson => {
@@ -29,12 +31,14 @@ const applyOverride = (lesson: Lesson, ov?: LessonOverride): Lesson => {
     title: ov.title?.trim() ? ov.title : lesson.title,
     fact: ov.fact?.trim() ? ov.fact : lesson.fact,
     emoji: ov.emoji?.trim() ? ov.emoji : lesson.emoji,
+    sparkIntro: ov.spark_intro?.trim() ? ov.spark_intro : lesson.sparkIntro,
     theoryIntro: ov.theory_intro?.trim() ? ov.theory_intro : lesson.theoryIntro,
     sparkMiddle: ov.spark_middle?.trim() ? ov.spark_middle : lesson.sparkMiddle,
     theoryDeep: ov.theory_deep?.trim() ? ov.theory_deep : lesson.theoryDeep,
     summary: ov.summary && ov.summary.length > 0 ? ov.summary : lesson.summary,
     interactive: ov.interactive ?? lesson.interactive,
     quiz: ov.quiz && ov.quiz.length > 0 ? ov.quiz : lesson.quiz,
+    reflection: ov.reflection?.trim() ? ov.reflection : lesson.reflection,
   };
 };
 
