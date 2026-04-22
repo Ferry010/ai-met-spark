@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminViewSwitcher } from "@/components/AdminViewSwitcher";
+import { BackgroundAudioController } from "@/components/BackgroundAudioController";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import LanguageSelect from "./pages/LanguageSelect.tsx";
@@ -40,6 +41,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <BackgroundAudioController />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/welcome" element={<LanguageSelect />} />
