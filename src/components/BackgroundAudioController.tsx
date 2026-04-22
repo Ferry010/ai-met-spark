@@ -16,7 +16,7 @@ const matchesPath = (pathname: string, prefixes: string[]) =>
 
 export const BackgroundAudioController = () => {
   const location = useLocation();
-  const { user, roles, loading } = useAuth();
+  const { user, loading } = useAuth();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const resumeOnInteractionRef = useRef(false);
   const [settings, setSettings] = useState({
@@ -24,16 +24,11 @@ export const BackgroundAudioController = () => {
     volume: getBackgroundAudioVolume(),
   });
 
-  const isStudentOnlySession = useMemo(
-    () => !!user && !roles.includes("teacher") && !roles.includes("admin"),
-    [roles, user],
-  );
-
   const shouldPlay = useMemo(() => {
-    if (!isStudentOnlySession) return false;
+    if (!user) return false;
     if (matchesPath(location.pathname, LEARNING_PATHS)) return false;
     return matchesPath(location.pathname, PLAYABLE_PATHS);
-  }, [isStudentOnlySession, location.pathname]);
+  }, [location.pathname, user]);
 
   useEffect(() => {
     const audio = new Audio(orbitClassroomAudio);
