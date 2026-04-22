@@ -23,15 +23,15 @@ export const AppHeader = () => {
 
   return (
     <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-md border-b border-border/60">
-      <div className="container h-16 flex items-center justify-between gap-4">
-        <Link to={isTeacher ? "/teacher" : "/dashboard"} className="flex items-center gap-2">
-          <Spark size={40} animate={false} />
-          <span className="font-display text-xl font-semibold">AI met Spark</span>
+      <div className="container h-14 md:h-16 flex items-center justify-between gap-2">
+        <Link to={isTeacher ? "/teacher" : "/dashboard"} className="flex items-center gap-2 min-w-0">
+          <Spark size={36} animate={false} />
+          <span className="font-display text-base sm:text-xl font-semibold truncate">AI met Spark</span>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="rounded-full font-display gap-2">
+              <Button variant="ghost" className="rounded-full font-display gap-2 h-10 sm:h-11 px-2 sm:px-3">
                 <span className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
                   {profile?.first_name?.charAt(0).toUpperCase() ?? "?"}
                 </span>
