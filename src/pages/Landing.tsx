@@ -174,10 +174,10 @@ export const Landing = () => {
       </section>
 
       {/* Problem */}
-      <section className="container py-20">
+      <section className="container py-12 sm:py-16 md:py-20">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-accent mb-3">{t("landing.problem.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl mb-8">{t("landing.problem.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-8">{t("landing.problem.title")}</h2>
           <div className="grid md:grid-cols-3 gap-6 text-left">
             <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p1")}</p>
             <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p2")}</p>
