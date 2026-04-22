@@ -115,7 +115,7 @@ export const WORLDS: World[] = [
         title: "Wat is AI eigenlijk?",
         emoji: "🤖",
         sparkIntro: "Hoi! Leuk dat je er bent. Ik ga je iets vets laten zien. Denk eens aan de laatste keer dat TikTok precies dat ene filmpje liet zien dat je eigenlijk wilde zien. Bijna alsof TikTok kon raden wat je leuk vond. Dat is AI aan het werk. En ik ga het je vandaag helemaal uitleggen. Geen moeilijke woorden. Gewoon samen uitzoeken wat dat ding nou doet.",
-        theoryIntro: "**AI is geen magie. Ook geen robot met gevoelens.**\n\nAI betekent Artificial Intelligence. In het Nederlands: kunstmatige intelligentie. Maar pas op met dat woord 'intelligentie', want het is een beetje misleidend. AI denkt niet zoals jij nadenkt.\n\nWat AI WEL doet: patronen zoeken in hele, hele, hele veel voorbeelden. Stel je voor, je laat een computer 10 miljoen foto's van katten zien. Na een tijdje zegt de computer 'hé, ik zie iets. Als er spitse oren en snorharen en vachtstreepjes op zitten, is het waarschijnlijk een kat.'\n\nHeeft die computer ooit een kat geaaid? Nee. Heeft ie een lievelingskat? Nee. Weet ie eigenlijk wat 'een kat' is? Ook nee.\n\nHij heeft alleen puntjes verbonden. Net zoals jij patronen ziet in een Minecraft-kaart. Jij weet: oranje blokje plus groene knop betekent redstone-circuit. Niet omdat die blokken 'denken', maar omdat jij het patroon kent.",
+        theoryIntro: "**AI is geen magie. Ook geen robot met gevoelens.**\n\nAI betekent Artificial Intelligence. In het Nederlands: kunstmatige intelligentie. Maar pas op met dat woord 'intelligentie', want het is een beetje misleidend. AI denkt niet zoals jij nadenkt.\n\nWat AI WEL doet: patronen zoeken in heel, heel, heel veel voorbeelden. Stel je voor, je laat een computer 10 miljoen foto's van katten zien. Na een tijdje zegt de computer 'hé, ik zie iets. Als er spitse oren en snorharen en vachtstreepjes op zitten, is het waarschijnlijk een kat.'\n\nHeeft die computer ooit een kat geaaid? Nee. Heeft hij een lievelingskat? Nee. Weet hij eigenlijk wat 'een kat' is? Ook nee.\n\nHij heeft alleen puntjes verbonden. Net zoals jij patronen ziet in een Minecraft-kaart. Jij weet: oranje blokje plus groene knop betekent redstone-circuit. Niet omdat die blokken 'denken', maar omdat jij het patroon kent.",
         fact: "De eerste keer dat een computer een mens versloeg met schaken was in 1997. De computer heette Deep Blue. Hij kon niet echt spelen zoals een mens. Hij kon alleen miljarden zetten vooruit rekenen en de beste kiezen. Dat is AI in één zin: ongelofelijk goed rekenen, nul begrip.",
         sparkMiddle: "Oké, de basis snap je. Nu komt het leuke deel: als AI zo simpel werkt, waarom lijkt het dan zo slim? Want als je ChatGPT een vraag stelt, komen er best goede antwoorden uit. Hoe kan dat? Laten we kijken.",
         theoryDeep: "**Waarom AI zo slim LIJKT**\n\nOmdat AI niet is getraind met 10 miljoen kattenfoto's, maar met bijna alle teksten op internet. Miljarden zinnen. Alle Wikipedia-artikelen, alle boeken, alle blogs, alle forums. Alles.\n\nAls jij een vraag stelt, gokt AI heel goed wat het beste antwoord is. Gebaseerd op alle zinnen die het ooit heeft gezien. Het KENT de antwoorden niet, het gokt ze op basis van patronen.\n\nSoms klopt het heel goed. Soms zit het ernaast. En dit is belangrijk, onthoud dit even: AI klinkt altijd zelfverzekerd. Ook als het gokt. Ook als het fout zit. Dus jij moet zelf blijven nadenken.\n\nEén ding om even te weten, gewoon zodat je het begrijpt: alle grote AI-bedrijven maken verschillende AI's. ChatGPT is van OpenAI. Claude van Anthropic. Gemini van Google. Allemaal anders getraind. Daarover later meer.",
@@ -130,13 +130,13 @@ export const WORLDS: World[] = [
             { label: "YouTube die 'wat je hierna moet kijken' voorstelt", bucket: 0 },
             { label: "De kookwekker in de keuken", bucket: 1 },
             { label: "ChatGPT die je huiswerk uitlegt", bucket: 0 },
-            { label: "Spellingscontrole in Word (die rode streepje-ding)", bucket: 0 },
+            { label: "Spellingscontrole in Word (die rode onderstreping)", bucket: 0 },
           ],
         ),
         summary: [
-          "AI is een patroon-herkenner. Het denkt niet. Het voorspelt op basis van heel veel voorbeelden.",
+          "AI is een patroonherkenner. Het denkt niet. Het voorspelt op basis van heel veel voorbeelden.",
           "AI klinkt altijd zelfverzekerd. Ook als het gokt. Jij blijft zelf nadenken.",
-          "AI zit overal: TikTok, YouTube, games, snapchat-filters. Niet op magische plekken, maar in apps die jij al gebruikt.",
+          "AI zit overal: TikTok, YouTube, games, Snapchat-filters. Niet op magische plekken, maar in apps die jij al gebruikt.",
         ],
         quiz: [
           {
@@ -182,7 +182,7 @@ export const WORLDS: World[] = [
         theoryIntro: "**Wat gebeurt er eigenlijk met wat je intypt?**\n\nAls jij iets typt naar AI, gaat die tekst niet zomaar 'weg'. Het gaat naar een groot bedrijf. Soms wordt het bewaard. Soms wordt het gebruikt om de AI beter te maken. Soms kunnen mensen die bij dat bedrijf werken het inkijken.\n\nDat is geen samenzwering. Dat is gewoon hoe het werkt. Bedrijven moeten checken of hun AI goed werkt en geen rare dingen zegt. Dus ze lezen stukjes gesprekken mee.\n\nDat is fijn als je vraagt 'leg breuken uit'. Minder fijn als je intypt 'ik woon op Kerkstraat 12 in Dordrecht'. Want dan staat jouw adres ergens, en jij hebt er geen controle meer over.",
         fact: "In 2023 ontdekten werknemers van Samsung dat geheime bedrijfsinformatie die zij in ChatGPT hadden geplakt, terechtkwam in de training van de AI. Dat mocht helemaal niet. Het gebeurde toch. Nu is het verboden om ChatGPT bij Samsung te gebruiken voor werk. Volwassenen met goede banen, die ook gewoon fouten maken met AI. Jij bent niet de enige die hier over moet nadenken.",
         sparkMiddle: "Oké, genoeg doemdenken. Laten we praktisch worden. Wat mag wel, wat mag niet? Ik geef je een simpel trucje. Geen regels om uit je hoofd te leren, gewoon één vraag die je jezelf stelt.",
-        theoryDeep: "**De wachtkamer-test**\n\nVanaf nu, als je iets aan AI wilt typen, stel jezelf één vraag: zou ik dit ook hardop zeggen in een wachtkamer vol vreemden?\n\nJe voornaam? Ja, dat zou je wel doen. Oké dus.\n\nJe lievelingskleur? Natuurlijk. Prima.\n\nJe thuisadres? Nee, hè. Die roep je niet zomaar door een wachtkamer. Dus ook niet aan AI.\n\nJe wachtwoord? Sowieso niet. Ook niet als je ouders dat nooit expliciet hebben verteld, je weet zelf al dat dat geheim is.\n\nEen foto van jezelf? Dat ligt eraan. Een foto waarop je in je schooluniform staat bij de ingang van je school? Nee. Te veel info bij elkaar.\n\nHet is niet ingewikkeld. Gewoon: 'zou een vreemde dit mogen weten?' Als het antwoord nee is, typ het niet.",
+        theoryDeep: "**De wachtkamer-test**\n\nVanaf nu, als je iets aan AI wilt typen, stel jezelf één vraag: zou ik dit ook hardop zeggen in een wachtkamer vol vreemden?\n\nJe voornaam? Ja, dat zou je wel doen. Oké dus.\n\nJe lievelingskleur? Natuurlijk. Prima.\n\nJe thuisadres? Nee, hè. Die roep je niet zomaar door een wachtkamer. Dus ook niet aan AI.\n\nJe wachtwoord? Sowieso niet. Ook niet als je ouders dat nooit expliciet hebben verteld; je weet zelf al dat dat geheim is.\n\nEen foto van jezelf? Dat ligt eraan. Een foto waarop je in je schooluniform staat bij de ingang van je school? Nee. Te veel info bij elkaar.\n\nHet is niet ingewikkeld. Gewoon: 'zou een vreemde dit mogen weten?' Als het antwoord nee is, typ het niet.",
         interactive: sort(
           "Tik voor elk item aan: 'Dit kan wel' of 'Geheim houden'.",
           ["✅ Kan wel", "🔒 Geheim houden"],
@@ -194,13 +194,13 @@ export const WORLDS: World[] = [
             { label: "Een vraag over hoe ruimteschepen werken", bucket: 0 },
             { label: "Je schoolnaam én je klas én je volledige naam", bucket: 1 },
             { label: "Dat je een tekening voor oma wil maken", bucket: 0 },
-            { label: "Een foto van jezelf in je uniform bij de schoolingang", bucket: 1 },
+            { label: "Een foto van jezelf in je uniform bij de ingang van je school", bucket: 1 },
           ],
         ),
         summary: [
           "Wat je aan AI typt, wordt vaak bewaard. Behandel het als iets wat een vreemde kan lezen.",
           "De wachtkamer-test: zou je dit hardop zeggen tegen 20 vreemden? Zo niet, typ het niet.",
-          "Je voornaam, hobby's en onderwerpen zijn meestal prima. Adres, telefoon, wachtwoorden, foto's-met-locatie zijn nooit oké.",
+          "Je voornaam, hobby's en onderwerpen zijn meestal prima. Adres, telefoon, wachtwoorden en foto's met locatie zijn nooit oké.",
         ],
         quiz: [
           {
@@ -224,7 +224,7 @@ export const WORLDS: World[] = [
               "Je telefoonnummer",
             ],
             correctIndex: 1,
-            why: "Naam plus school, adres en telefoonnummer zijn samen te herleidbaar. Kleur en kattennaam zijn prima. (Juist: Je volledige naam plus school, Je thuisadres, Je telefoonnummer.)",
+            why: "Naam plus school, adres en telefoonnummer zijn samen te herleiden. Kleur en kattennaam zijn prima. (Juist: Je volledige naam plus school, Je thuisadres, Je telefoonnummer.)",
           },
           {
             question: "Als ik aan AI zeg 'dit blijft tussen ons', dan houdt AI het ook echt geheim.",
@@ -245,21 +245,21 @@ export const WORLDS: World[] = [
         sparkIntro: "Hoi! Ik ga je iets raars vertellen. Een poosje geleden ging er een foto viral van de Paus in een enorme witte pufferjas. Zag er echt badass uit. Maar die foto was nep. Helemaal gemaakt door AI. Miljoenen mensen deelden het zonder te checken. Inclusief volwassenen die het beter hadden moeten weten. Vandaag leer jij iets wat de meeste volwassenen nog niet kunnen. Best wel cool toch?",
         theoryIntro: "**AI-plaatjes zijn overal. En ze worden steeds beter.**\n\nIedereen met een telefoon kan nu een AI-plaatje maken. In 30 seconden. Zonder tekenen te kunnen. Typ 'hond op skateboard in ruimtepak', en bam, plaatje.\n\nDat is leuk, maar ook een probleem. Want niet iedereen zegt erbij 'dit is door AI gemaakt'. Soms doen mensen alsof het echt is. Om aandacht te trekken. Om je belachelijk te maken. Om je iets te laten geloven.\n\nDus de vraag 'is dit echt?' is een vaardigheid geworden. Net zoals lezen en rekenen. En jij gaat het nu leren.",
         fact: "In 2023 dacht iemand op TikTok dat een AI-plaatje van Donald Trump die werd gearresteerd echt was. Het was gemaakt door een journalist als experiment. Hij had er netjes bij gezet 'dit is AI'. Mensen lazen het bijschrift niet. Binnen een dag hadden miljoenen mensen het gedeeld als 'nieuws'. Fake news is niet alleen tekst. Het is ook beeld. En het groeit.",
-        sparkMiddle: "Ga je 100% van de AI-plaatjes spotten? Nee. Ik zelf ook niet, eerlijk gezegd. Maar ik ga je samen drie checks geven waarmee je 80% van de nep kunt oppakken. Dat is veel beter dan niks.",
-        theoryDeep: "**De drie AI-checks**\n\nCheck 1: Handen en vingers. Dit is nog steeds het grootste zwakke punt van AI. Te veel vingers. Te weinig vingers. Vingers die kronkelen. Een hand die lijkt op een klauw. Altijd even naar de handen kijken.\n\nCheck 2: Tekst. Staat er een bord op de foto? Een letter op een T-shirt? Een naam op een winkel? AI kan niet goed schrijven in plaatjes. Het lijkt vaak op echte tekst, maar als je beter kijkt zijn het krabbels die letters imiteren.\n\nCheck 3: Té perfect. Dit is de lastige. Echte foto's hebben rommel. Een krasje. Haar dat niet helemaal zit. Een schaduw die onlogisch is. AI-plaatjes zijn vaak té glad. Te mooi. Alsof een filter erover is gegaan die alles heeft opgepoetst.\n\nEn een bonuscheck, gratis: als het beeld iets onwaarschijnlijks laat zien (de Paus in pufferjas, een kat die auto rijdt, de meester met twee hoofden), wees voorzichtig. Te gek om waar te zijn? Vaak AI.",
+        sparkMiddle: "Ga je 100% van de AI-plaatjes spotten? Nee. Ikzelf ook niet, eerlijk gezegd. Maar ik ga je samen drie checks geven waarmee je 80% van de nep kunt oppakken. Dat is veel beter dan niks.",
+        theoryDeep: "**De drie AI-checks**\n\nCheck 1: Handen en vingers. Dit is nog steeds het grootste zwakke punt van AI. Te veel vingers. Te weinig vingers. Vingers die kronkelen. Een hand die lijkt op een klauw. Altijd even naar de handen kijken.\n\nCheck 2: Tekst. Staat er een bord op de foto? Een letter op een T-shirt? Een naam op een winkel? AI kan niet goed schrijven in plaatjes. Het lijkt vaak op echte tekst, maar als je beter kijkt zijn het krabbels die letters imiteren.\n\nCheck 3: Té perfect. Dit is de lastige. Echte foto's hebben rommel. Een krasje. Haar dat niet helemaal zit. Een schaduw die onlogisch is. AI-plaatjes zijn vaak té glad. Te mooi. Alsof een filter erover is gegaan dat alles heeft opgepoetst.\n\nEn een bonuscheck, gratis: als het beeld iets onwaarschijnlijks laat zien (de Paus in pufferjas, een kat die auto rijdt, de meester met twee hoofden), wees voorzichtig. Te mooi om waar te zijn? Vaak AI.",
         interactive: tap(
           "Bij elk plaatje: spot de AI-tell. Welke check gebruikte je?",
           [
             { label: "Plaatje: een meisje dat een ijsje eet. Ze heeft 7 vingers aan haar rechterhand.", reveal: "Klassieke AI-fout. Altijd als eerste naar handen kijken." },
-            { label: "Plaatje: een hotel met een naambord waarop staat 'GRRND HOTEL AVIENR'.", reveal: "Nep tekst. AI kan vaak woorden nabootsen maar niet spellen." },
+            { label: "Plaatje: een hotel met een naambord waarop staat 'GRRND HOTEL AVIENR'.", reveal: "Neppe tekst. AI kan vaak woorden nabootsen, maar niet goed spellen." },
             { label: "Plaatje: een gezicht dat ongelofelijk glad is, geen enkele porie, haar dat perfect ligt.", reveal: "Te perfect. Echte huid heeft textuur. Echt haar zit nooit perfect." },
-            { label: "Plaatje: een vlekkeloze foto van je eigen hond die slaapt.", reveal: "Waarschijnlijk echt. Niks onwaarschijnlijks, handen/tekst niet in beeld, normale foto." },
-            { label: "Plaatje: een koe die skiet op een besneeuwde berg.", reveal: "Bonuscheck. Te gek om waar te zijn. Vrijwel zeker AI." },
+            { label: "Plaatje: een vlekkeloze foto van je eigen hond die slaapt.", reveal: "Waarschijnlijk echt. Niks onwaarschijnlijks, handen en tekst zijn niet in beeld, normale foto." },
+            { label: "Plaatje: een koe die skiet op een besneeuwde berg.", reveal: "Bonuscheck. Te mooi om waar te zijn. Vrijwel zeker AI." },
           ],
         ),
         summary: [
           "AI-plaatjes zijn overal. Spotten wordt een vaardigheid, net als lezen.",
-          "Drie checks: handen (klassieke fout), tekst (letters die geen echte woorden vormen), té perfect (geen natuurlijke rommel).",
+          "Drie checks: handen (klassieke fout), tekst (letters die geen echte woorden vormen) en té perfect (geen natuurlijke rommel).",
           "Bonuscheck: als het onwaarschijnlijk is (te gek, te mooi, te raar), wees voorzichtig.",
         ],
         quiz: [
