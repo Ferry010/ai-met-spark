@@ -1,104 +1,103 @@
 
+# Audiobeheer uitbreiden: verwijderen + regenereren + Rocco als vaste stem
 
-# Mobile & tablet optimalisatie van de hele site
+## Doel
+De admin-audiopagina uitbreiden zodat je per lesstap:
+1. een bestaand audiobestand kunt verwijderen
+2. daarna of direct opnieuw kunt genereren
+3. standaard de ElevenLabs-stem “Rocco - Mechanical and Robotic” gebruikt voor gegenereerde audio
 
-Een gerichte responsive sweep. Geen redesign, wel een laag systematische tweaks per pagina/component zodat alles ademt op 320–768px en netjes overgaat naar tablet (≥768px) en desktop (≥1024px). Geen wijziging aan logica, data of routing.
+## Wat er gebouwd wordt
 
-## Globale fundering
+### 1) Verwijderen van voice files
+**Nieuwe backendfunctie**
+- Een aparte backendfunctie toevoegen voor het verwijderen van lesson-audio.
+- Die functie:
+  - valideert dat de gebruiker is ingelogd
+  - controleert admin-rechten via de bestaande `has_role`-functie
+  - zoekt het juiste `lesson_audio` record op via `lessonId + step`
+  - verwijdert het mp3-bestand uit de `lesson-audio` bucket
+  - verwijdert daarna het bijbehorende record uit de `lesson_audio` tabel
+  - geeft een nette JSON-response terug
 
-**`tailwind.config.ts`**
-- Container padding fluid maken: `padding: { DEFAULT: "1rem", sm: "1.5rem", lg: "2rem" }` (was vast `1.5rem`). Geeft 16px lucht op smal mobiel i.p.v. 24px gevulde rand.
+**Waarom apart**
+- Verwijderen hoort expliciet en veilig te zijn, niet verstopt in de upload/generate-functies.
+- Er zijn geen schemawijzigingen nodig; de bestaande tabel en bucket zijn voldoende.
 
-**`src/index.css`**
-- Body krijgt `text-[15px] md:text-base` als comfortgrootte.
-- Defensief: `h1,h2,h3 { word-break: break-word; }` voor lange Nederlandse koppen.
+### 2) Regenereren van bestaande audio
+**Admin UI**
+- In `src/pages/admin/LessonAudio.tsx` per stap een expliciete actie toevoegen:
+  - Afspelen
+  - Uploaden
+  - Verwijderen
+  - Regenereren
+- “Regenereren” blijft dezelfde tekst opnieuw naar de generate-functie sturen, ook als er al audio bestaat.
+- Door de bestaande bestandsnaam (`lessonId/step.mp3`) en `upsert: true` blijft dit technisch een nette overwrite.
 
-## Per pagina / component
+**UX-gedrag**
+- Na verwijderen of regenereren:
+  - lijst opnieuw ophalen
+  - Spark-audio-cache invalidaten
+  - duidelijke success/error toast tonen
+- Knoppen disable’en terwijl een actie loopt, zodat dubbele clicks geen race conditions veroorzaken.
 
-### 1. Headers — `SiteHeader.tsx` & `AppHeader.tsx`
-- Header wordt op mobiel krap (logo + tekst + 2 knoppen). 
-- `SiteHeader`: op `<sm` knop "Inloggen" verbergen of als icon-only, "Probeer gratis" blijft als compactere `h-10 px-4`. Gap tussen items `gap-1 sm:gap-2`. Logo-tekst `hidden xs:inline` als nodig (we houden 'm; alleen padding krimpen).
-- `AppHeader`: dropdown trigger blijft, naam op mobiel verborgen (al `hidden sm:inline`). Verklein avatar/initial-knop op mobiel (`h-9`). 
-- Beide: `h-16` → `h-14 md:h-16` om verticale ruimte terug te winnen.
+### 3) Rocco als vaste generatie-stem
+**Generate function**
+- In `supabase/functions/generate-lesson-audio/index.ts` de huidige `DEFAULT_VOICE` vervangen door de voice ID van “Rocco - Mechanical and Robotic”.
+- De generate-flow blijft verder hetzelfde: tekst -> ElevenLabs -> mp3 -> storage -> `lesson_audio`.
 
-### 2. Landing — `Landing.tsx`
-- Hero grid: tekst eerst, mascotte daaronder op mobiel (al `md:grid-cols-2`, al goed). Padding `py-16` → `py-10 sm:py-16 md:py-24`.
-- CTA-knop: `h-14 px-8` → `h-12 px-6 sm:h-14 sm:px-8 text-sm sm:text-base` om niet over rand te lopen.
-- Spark mascotte: `size={280}` is groot op 402px wide → schaal naar `size={200}` op mobiel via state hook of conditioneel via `useIsMobile`. Eenvoudiger: wrap in `scale-75 sm:scale-100` div.
-- Sectie-padding overal `py-20` → `py-12 sm:py-16 md:py-20` (consistent kleinere verticale ritme).
-- "What's inside" grid `sm:grid-cols-2 lg:grid-cols-4` blijft, maar `InsideStat` getal `text-5xl` → `text-4xl sm:text-5xl`.
-- "How it works" grid `lg:grid-cols-5` op tablet `md:grid-cols-3` toevoegen i.p.v. direct naar 2 cols.
-- "Pricing teaser" prijs-tegel: huge `€14` `text-7xl` → `text-6xl sm:text-7xl`, gradient-tegel padding `p-8` → `p-6 sm:p-8`.
-- Schools/Final CTA cards: `p-10 md:p-16` → `p-6 sm:p-10 md:p-16`. Buttons stacken al op mobiel — goed.
+**Admin UI**
+- Op de audiobeheerpagina expliciet tonen dat gegenereerde audio nu met Rocco wordt gemaakt.
+- Geen extra keuzeveld nodig als deze stem voortaan de standaard moet zijn.
 
-### 3. Pricing — `Pricing.tsx`
-- Twee-kolomsplan blijft, maar plan-cards `p-8` → `p-6 sm:p-8`.
-- "Best for"-badge en "Populair"-pill op mobiel niet over de rand laten steken: `left-6` blijft, eventueel `text-[11px]`.
-- FAQ accordion: `px-6` → `px-4 sm:px-6`, trigger-tekst `text-lg` → `text-base sm:text-lg` zodat lange vragen niet wrappen in 3 regels op mobiel.
+## Bestanden die aangepast worden
 
-### 4. Auth — `Auth.tsx`
-- Card max-width al `max-w-md`; padding `p-6` blijft. Op mobiel `py-10` → `py-6`. Spark `size={120}` → `size={96} sm:size={120}`. Naam/leeftijd grid blijft `grid-cols-2`. 
+### Backend
+- `supabase/functions/generate-lesson-audio/index.ts`
+  - default voice wijzigen naar Rocco
+- `supabase/functions/delete-lesson-audio/index.ts`
+  - nieuwe delete-functie met admin-check, storage delete en DB delete
 
-### 5. Dashboard — `Dashboard.tsx`
-- Header-rij (Spark + greeting + paywall-knop): paywall-knop op mobiel onder de greeting (al `flex-col sm:flex-row`). Knop `h-12` → `w-full sm:w-auto` op mobiel zodat hij niet smal naast de Spark gepropt wordt.
-- Welkomst H1 `text-3xl sm:text-4xl` → `text-2xl sm:text-3xl md:text-4xl` (anders breekt "Hoi {naam}!" rommelig).
-- Worlds grid `md:grid-cols-3` blijft; cards `p-6` → `p-5 sm:p-6`.
-- Badges grid `grid-cols-2 sm:grid-cols-3 md:grid-cols-5` blijft; cellen op kleinste viewport iets compacter (`p-4` → `p-3 sm:p-4`, emoji `text-3xl` → `text-2xl sm:text-3xl`, beschrijving `text-[11px]` blijft, betere `leading-tight`).
-- Eindtoets-card knop: tekst op mobiel verkort niet nodig — knop is al inline.
+### Frontend
+- `src/pages/admin/LessonAudio.tsx`
+  - remove-actie toevoegen
+  - expliciete regenerate-actie toevoegen
+  - UI-copy updaten naar “Rocco” als standaardstem
+  - loading/busy states uitbreiden per actie
 
-### 6. WorldPage — `WorldPage.tsx`
-- Hero-banner: titel `text-4xl` → `text-3xl sm:text-4xl`, padding `p-8` → `p-6 sm:p-8`, emoji `text-6xl` → `text-5xl sm:text-6xl`.
-- Lesson-tegels: huidige zigzag (`sm:ml-0/sm:ml-auto`) is leuk op desktop maar maakt mobiel rommelig — op mobiel volle breedte (`max-w-md` blijft, offset alleen `sm:`-prefix, al zo). Card-tekst `text-lg truncate` → `text-base sm:text-lg`, en titel naar `line-clamp-2` zodat lange lessennamen niet afgekapt worden.
+## Technische details
 
-### 7. LessonPage / LessonRunner — `LessonRunner.tsx`
-- Container `max-w-2xl` is goed; `py-6` blijft.
-- Theory-card: sticky Spark links is `hidden sm:block` — goed. Op mobiel verschijnt Spark niet → ruimte vrij voor tekst, perfect.
-- TheoryCard padding `p-6 sm:p-8` blijft; `Begrepen, ga verder →` knop is al `w-full`. 
-- Fact-card: `text-2xl sm:text-3xl` → `text-xl sm:text-2xl md:text-3xl` (3xl is fors op smal).
-- SparkMiddle: huidige `flex-col sm:flex-row` stack is goed; knop al full-width op mobiel.
-- Quiz/Interactive: opties al `min-h-[56px]` (goede tap-targets); rij in `SortBuckets` met buckets-buttons kan op mobiel uit beeld lopen — bucket-knoppen wrappen al (`flex-wrap` op container) maar buckets-rij niet; voeg `flex-wrap` toe aan de buckets `<div className="flex gap-2">`.
-- Done-screen Spark `size={140}` → `size={110} sm:size={140}`.
+### Verwijderflow
+```text
+Admin klikt "Verwijderen"
+→ frontend invoke("delete-lesson-audio", { lessonId, step })
+→ functie valideert admin
+→ record ophalen uit lesson_audio
+→ bestand verwijderen uit bucket lesson-audio
+→ record verwijderen uit lesson_audio
+→ frontend refresh + cache invalidation
+```
 
-### 8. FinalTest — `FinalTest.tsx`
-- Vraag-cards `p-5` blijft; opties al `min-h-[52px]`.
-- Submit-button-tekst lang ("Beantwoord alle 10 (3/10)") past niet altijd; gebruik `text-sm sm:text-base` op die knop.
-- Result-screen prijs `text-5xl` blijft.
+### Regenerate-flow
+```text
+Admin klikt "Regenereren"
+→ frontend invoke("generate-lesson-audio", { lessonId, step, text, textHash })
+→ functie gebruikt Rocco voice ID
+→ mp3 upload met upsert
+→ lesson_audio upsert
+→ frontend refresh + cache invalidation
+```
 
-### 9. Certificate — `Certificate.tsx`
-- Diploma-card op mobiel: naam `fontSize: 5rem` is veel te groot in `<sm` → maak responsive via `clamp(2.5rem, 12vw, 5rem)` op de naam-div. 
-- Padding `p-8 sm:p-12` → `p-5 sm:p-8 md:p-12`.
-- "DIPLOMA" titel `text-5xl sm:text-6xl` → `text-4xl sm:text-5xl md:text-6xl`.
-- 3 wereld-badges grid `grid-cols-3` blijft; cell padding `px-3 py-4` → `px-2 py-3 sm:px-3 sm:py-4`, emoji `text-3xl` → `text-2xl sm:text-3xl`.
-- 3D hover-tilt op touch uitschakelen: `hover:[transform:...]` werkt niet op touch, wel mediaquery `@media (hover: hover) and (pointer: fine)` → wrap in een conditional class.
+## Veiligheid en dataregels
+- Geen wijzigingen aan RLS nodig.
+- Alleen admins mogen beheren; dat past al bij de bestaande backendpatronen en `lesson_audio`-toegang.
+- Publieke leesbaarheid van audio blijft intact voor afspelen in lessen.
 
-### 10. Account / SchoolContact
-- Beide al `max-w-xl`/`max-w-2xl` met `space-y-*` — vrijwel ok. Alleen Spark op SchoolContact `size={120}` → `size={96} sm:size={120}` en H1 `text-3xl sm:text-4xl` → `text-2xl sm:text-3xl md:text-4xl`.
+## Aandachtspunt vóór uitvoering
+- ElevenLabs verwacht een **voice ID**, niet alleen een naam. De implementatie gebruikt dus de exacte voice ID van “Rocco - Mechanical and Robotic” in de generate-functie.
 
-### 11. Footer — `Footer.tsx`
-- Reeds `flex-col md:flex-row`. Op mobiel meer ademruimte: `gap-6` → `gap-4` en items `text-center md:text-left` zodat alles netjes gecentreerd staat.
-
-### 12. Teacher klassikaal — `ClassroomLayout.tsx`, `TopBar.tsx`, `WelcomeBlock.tsx`, `ProgressJourney.tsx`, `ClassOverviewCard.tsx`, `ClassroomDashboard.tsx`
-- Container al `max-w-7xl py-8 px-4 md:px-8`; verklein `py-8` → `py-6 md:py-8`.
-- TopBar: school-naam in dropdown-trigger al `hidden sm:block` — goed.
-- WelcomeBlock H1 `text-3xl md:text-4xl` → `text-2xl sm:text-3xl md:text-4xl`.
-- ProgressJourney: huidige `flex-col md:flex-row` met grote `h-16 w-16` cirkels werkt; alleen connector-lijn `hidden md:block` blijft. OK.
-- ClassOverviewCard: `grid-cols-6` op heel smal mobiel = piepkleine avatars; verlaag naar `grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12`. Titel-rij `flex items-baseline justify-between` op mobiel blijft.
-- ClassroomDashboard hoofdgrid `lg:grid-cols-3` blijft. Action-tiles kolommen `sm:grid-cols-2 lg:grid-cols-1` is goed.
-
-### 13. AdminViewSwitcher / CookieBanner / PaywallDialog / PaymentTestModeBanner
-- Snelle check: zorgen dat ze op mobiel `bottom-2 left-2 right-2` (vaste posities) niet over de Cookie-banner heen gaan; Cookie-banner krijgt `flex-col sm:flex-row` met `w-full` op de actie-knop.
-- PaywallDialog gebruikt `<Dialog>` — radix is al responsive, alleen padding/typografie van titel verkleinen op mobiel.
-
-## Wat ik bewust NIET doe
-
-- Geen hamburger-menu introduceren — site heeft te weinig nav-items om dat te rechtvaardigen; we knijpen header-knoppen in.
-- Geen wijziging aan diploma-PDF (jsPDF blijft landscape A4 — alleen het scherm-component wordt responsive).
-- Geen redesign van het classroom-thema (kleuren, fonts, hiërarchie blijven).
-- Geen nieuwe componenten of dependencies.
-- Geen wijziging aan i18n-strings of inhoud.
-- Geen aanpassing van LessonRunner-spelmechaniek; alleen typografie/sizing.
-
-## Bestanden die gewijzigd worden
-
-`tailwind.config.ts`, `src/index.css`, `src/components/SiteHeader.tsx`, `src/components/AppHeader.tsx`, `src/components/Footer.tsx`, `src/components/CookieBanner.tsx`, `src/components/PaywallDialog.tsx`, `src/components/LessonRunner.tsx`, `src/components/classroom/ClassroomLayout.tsx`, `src/components/classroom/WelcomeBlock.tsx`, `src/components/classroom/ClassOverviewCard.tsx`, `src/pages/Landing.tsx`, `src/pages/Pricing.tsx`, `src/pages/Auth.tsx`, `src/pages/Dashboard.tsx`, `src/pages/WorldPage.tsx`, `src/pages/FinalTest.tsx`, `src/pages/Certificate.tsx`, `src/pages/Account.tsx`, `src/pages/SchoolContact.tsx`.
-
+## Verwacht resultaat
+Na implementatie kun je op `/admin/audio` per stap:
+- een bestaand audiobestand verwijderen
+- een verwijderd of bestaand fragment opnieuw genereren
+- alle nieuwe gegenereerde audio automatisch laten maken met Rocco als vaste stem
