@@ -30,6 +30,7 @@ import LessonDemo from "./pages/teacher/LessonDemo.tsx";
 import AdminLessons from "./pages/AdminLessons.tsx";
 import ParentPreview from "./pages/admin/ParentPreview.tsx";
 import SchoolPreview from "./pages/admin/SchoolPreview.tsx";
+import LessonAudio from "./pages/admin/LessonAudio.tsx";
 
 const queryClient = new QueryClient();
 
@@ -157,6 +158,14 @@ const App = () => (
             element={
               <ProtectedRoute requireRole="admin">
                 <SchoolPreview />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/audio"
+            element={
+              <ProtectedRoute requireRole="admin">
+                <LessonAudio />
               </ProtectedRoute>
             }
           />

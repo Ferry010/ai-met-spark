@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Spark } from "@/components/Spark";
 import { SparkBubble } from "@/components/SparkBubble";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
-import { Check, Star, X, Lightbulb, BookOpen, ListChecks } from "lucide-react";
+import { Check, Star, X, Lightbulb, BookOpen, ListChecks, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { unlockAudio, playSparkEntry, playBubblePop } from "@/lib/sounds";
+import { renderRichText, estimateReadSeconds } from "@/lib/markdown";
+import { SparkVoiceButton } from "@/components/SparkVoiceButton";
 
 // Unlock WebAudio on the first user gesture anywhere in the app.
 if (typeof window !== "undefined") {
@@ -124,12 +126,17 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
         <TheoryCard
           eyebrow="Even uitleggen"
           text={lesson.theoryIntro!}
+          lessonId={lesson.id}
+          step="theoryIntro"
           onNext={() => goNext("theoryIntro")}
         />
       )}
 
       {step === "fact" && (
-        <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center">
+        <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center relative">
+          <div className="absolute top-4 right-4">
+            <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
+          </div>
           <div className="flex justify-center mb-3">
             <Spark size={72} mood="hinting" />
           </div>
@@ -147,9 +154,12 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             <div className="shrink-0">
               <Spark size={96} mood="explaining" />
             </div>
-            <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-4 shadow-soft">
-              <div className="text-xs uppercase tracking-wider text-primary font-display mb-1">Spark zegt</div>
-              <p className="font-body text-base leading-relaxed whitespace-pre-line">{lesson.sparkMiddle}</p>
+            <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-5 shadow-soft">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+                <SparkVoiceButton lessonId={lesson.id} step="sparkMiddle" variant="compact" />
+              </div>
+              <div className="font-body">{renderRichText(lesson.sparkMiddle!)}</div>
             </div>
           </div>
           <Button
@@ -165,6 +175,8 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
         <TheoryCard
           eyebrow="Nog iets erbij"
           text={lesson.theoryDeep!}
+          lessonId={lesson.id}
+          step="theoryDeep"
           onNext={() => goNext("theoryDeep")}
         />
       )}
@@ -174,7 +186,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       )}
 
       {step === "summary" && (
-        <SummaryCard bullets={lesson.summary!} onNext={() => goNext("summary")} />
+        <SummaryCard bullets={lesson.summary!} lessonId={lesson.id} onNext={() => goNext("summary")} />
       )}
 
       {step === "quiz" && (
@@ -407,45 +419,61 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
 const TheoryCard = ({
   eyebrow,
   text,
+  lessonId,
+  step,
   onNext,
 }: {
   eyebrow: string;
   text: string;
+  lessonId: string;
+  step: string;
   onNext: () => void;
-}) => (
-  <section className="rounded-3xl bg-card border border-border p-6 sm:p-8 shadow-soft animate-pop-in">
-    <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-primary mb-3">
-      <BookOpen className="h-4 w-4" /> {eyebrow}
-    </div>
-    <div className="flex gap-4 items-start">
-      <div className="hidden sm:block shrink-0">
-        <Spark size={72} mood="explaining" />
+}) => {
+  const seconds = estimateReadSeconds(text);
+  return (
+    <section className="rounded-3xl bg-card border border-border p-6 sm:p-8 shadow-soft animate-pop-in">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-primary">
+          <BookOpen className="h-4 w-4" /> {eyebrow}
+        </div>
+        <SparkVoiceButton lessonId={lessonId} step={step} variant="compact" />
       </div>
-      <div className="flex-1 prose prose-sm max-w-none">
-        {text.split(/\n\n+/).map((para, i) => (
-          <p key={i} className="text-base leading-relaxed text-foreground/90 mb-3 last:mb-0 whitespace-pre-line">
-            {para.trim()}
-          </p>
-        ))}
+      <div className="flex gap-5 items-start">
+        <div className="hidden sm:block shrink-0 sticky top-4">
+          <Spark size={80} mood="explaining" />
+        </div>
+        <div className="flex-1 min-w-0">
+          {renderRichText(text, { detectLead: true })}
+          <div className="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground font-display">
+            <Clock className="h-3.5 w-3.5" />
+            <span>~{seconds < 60 ? `${seconds} sec` : `${Math.round(seconds / 60)} min`} lezen</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <Button onClick={onNext} className="mt-6 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-      Begrepen, ga verder →
-    </Button>
-  </section>
-);
+      <Button onClick={onNext} className="mt-6 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+        Begrepen, ga verder →
+      </Button>
+    </section>
+  );
+};
 
-const SummaryCard = ({ bullets, onNext }: { bullets: string[]; onNext: () => void }) => (
+const SummaryCard = ({ bullets, lessonId, onNext }: { bullets: string[]; lessonId: string; onNext: () => void }) => (
   <section className="rounded-3xl bg-success/10 border-2 border-success p-6 sm:p-8 shadow-soft animate-pop-in">
-    <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-success mb-3">
-      <ListChecks className="h-4 w-4" /> Onthoud dit
+    <div className="flex items-center justify-between gap-3 mb-3">
+      <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-success">
+        <ListChecks className="h-4 w-4" /> Onthoud dit
+      </div>
+      <SparkVoiceButton lessonId={lessonId} step="summary" variant="compact" />
     </div>
-    <h3 className="font-display text-xl mb-4">Samenvatting</h3>
+    <h3 className="font-display text-xl mb-2">Samenvatting</h3>
+    <p className="text-sm text-muted-foreground mb-5">Dit is wat je moet onthouden:</p>
     <ul className="space-y-3">
       {bullets.map((b, i) => (
         <li key={i} className="flex items-start gap-3">
-          <Check className="h-5 w-5 text-success shrink-0 mt-0.5" />
-          <span className="text-base leading-snug">{b}</span>
+          <span className="shrink-0 h-7 w-7 rounded-full bg-gradient-to-br from-success to-primary text-success-foreground font-display text-sm flex items-center justify-center shadow-soft">
+            {i + 1}
+          </span>
+          <span className="text-base leading-snug pt-0.5">{b}</span>
         </li>
       ))}
     </ul>
