@@ -373,6 +373,22 @@ export type Database = {
         Args: { _student_id: string }
         Returns: boolean
       }
+      list_students_in_my_school: {
+        Args: never
+        Returns: {
+          first_name: string
+          id: string
+          school_id: string
+        }[]
+      }
+      validate_class_code: {
+        Args: { _code: string }
+        Returns: {
+          school_id: string
+          school_name: string
+          valid: boolean
+        }[]
+      }
       validate_school_inquiry: {
         Args: {
           _country: string
