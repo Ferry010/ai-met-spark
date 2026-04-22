@@ -1,139 +1,140 @@
 
-# TTS copy optimaliseren voor lesaudio
+# Achtergrondmuziek toevoegen voor student-schermen en menu’s
 
 ## Doel
-Alle tekst die wordt voorgelezen in lessen herschrijven en normaliseren zodat de stem natuurlijker klinkt, met minder struikelwoorden, minder rare afkortingen en duidelijkere uitspraak van lastige termen zoals “AI”.
+De geüploade audio `Orbit_Classroom.mp3` als doorlopende achtergrondmuziek laten afspelen in de student-app, inclusief menu’s en normale schermen, en de muziek automatisch pauzeren zodra een leerflow start.
+
+## Gewenst gedrag
+Volgens je keuzes wordt het gedrag zo:
+
+- afspelen in de **student app**
+  - dashboard
+  - wereldpagina’s
+  - account
+  - overige studentmenu’s / gewone studentschermen
+- **niet** afspelen tijdens leerflows:
+  - lespagina’s
+  - eindtoets
+  - diploma/certificate flow
+- **autoplay als de browser het toelaat**
+- als autoplay wordt geblokkeerd, start de muziek na de **eerste klik/tap**
+- bij verlaten van een leerflow mag de muziek weer hervatten
 
 ## Wat er gebouwd wordt
 
-### 1) Eén duidelijke TTS-schrijfstijl voor alle lesaudio
-Er komt een vaste schrijf- en normalisatielaag voor lesaudio, zodat teksten AI-voice vriendelijk blijven.
+### 1) Audiobestand toevoegen aan het project
+De upload `Orbit_Classroom.mp3` wordt opgenomen als app-asset, zodat de app het lokaal kan afspelen zonder externe URL.
 
-Die laag volgt regels zoals:
-- schrijf afkortingen zoveel mogelijk uit
-- vermijd losse letters zoals “AI” of “A I” waar een stem over kan struikelen
-- vervang onnatuurlijke caps lock of losse quotes waar nodig
-- schrijf cijfers, symbolen en productnamen op een manier die prettiger wordt uitgesproken
-- vermijd te lange zinnen en onhandige ritmes
-- gebruik duidelijke leestekens voor natuurlijke pauzes
+Voorkeursplek:
+- `src/assets/Orbit_Classroom.mp3`
 
-Voorbeeldrichting:
-- “AI” → een consistente, uitgesproken vorm
-- “ChatGPT” → alleen behouden waar nodig, anders beschrijvend herschrijven
-- “1.8” in lopende tekst vermijden als spreektekst
-- opsommingen en korte punchlines herschrijven naar spreektaal
+## 2) Centrale background-audio controller
+Er komt één gedeelde audio-laag voor de hele student-app, zodat de muziek niet opnieuw start bij elke pagina-wissel.
 
-### 2) Audit van alle lesaudio-bronnen
-Alle tekst die nu als audio kan worden gegenereerd wordt gecontroleerd en herschreven waar nodig:
-- `sparkIntro`
-- `theoryIntro`
-- `fact`
-- `sparkMiddle`
-- `theoryDeep`
-- `summary`
+Waarschijnlijk als:
+- een provider of managercomponent in `App.tsx`
+- of een losse component zoals `BackgroundAudioController.tsx`
 
-De audit richt zich op:
-- uitspraakvriendelijkheid
-- ritme en verstaanbaarheid
-- grammatica en spelling
-- consistente benaming van AI-termen
-- minder dubbelzinnigheid of visuele schrijfvormen die slecht klinken in audio
+Deze laag:
+- maakt één `HTMLAudioElement`
+- zet `loop = true`
+- gebruikt een rustig standaardvolume
+- bewaart playback-state over routewissels heen
+- probeert autoplay
+- luistert op eerste user interaction als autoplay faalt
 
-### 3) Centrale helper voor audio-tekst
-Er komt een gedeelde helper die de voorleesbare tekst voorbereidt voordat:
-- hashes worden berekend
-- audio wordt gegenereerd
-- bestaande audio als “verouderd” of “actueel” wordt vergeleken
+## 3) Route-gebaseerde play/pause logica
+De achtergrondmuziek wordt gekoppeld aan routes.
 
-Dat voorkomt dat:
-- dezelfde les visueel één tekst heeft, maar auditief een andere
-- oude hashes blijven matchen terwijl de TTS-uitspraaklogica is veranderd
-- de admin-pagina een andere tekst genereert dan de les zelf afspeelt
+### Afspelen op
+- `/dashboard`
+- `/world/:worldId`
+- `/account`
+- eventuele andere student “shell” pagina’s die geen leerflow zijn
 
-## Belangrijke ontwerpkeuze
-De optimalisatie gebeurt alleen voor **lesson audio**, niet voor alle zichtbare UI-copy. Zo blijft marketing- en interfacecopy onaangetast, terwijl de stem wel natuurlijker wordt.
+### Pauzeren op
+- `/lesson/:lessonId`
+- `/final-test`
+- `/certificate`
+
+Zo blijft de audio aanwezig in schermen en menu’s, maar stopt die zodra een les of andere leerervaring opent.
+
+## 4) Veilige autoplay fallback
+Browsers blokkeren vaak audio zonder gebruikersinteractie. Daarom komt er een nette fallback:
+
+- eerst proberen automatisch te starten
+- lukt dat niet:
+  - een globale listener op eerste `pointerdown` / `keydown`
+  - dan alsnog starten als de huidige route muziek mag afspelen
+
+Dit sluit aan op je wens: “autoplay if allowed”.
+
+## 5) Niet laten botsen met bestaande lesaudio
+De app heeft al:
+- sound effects via `src/lib/sounds.ts`
+- Spark-voice audio via `src/hooks/useSparkVoice.ts`
+
+De achtergrondmuziek wordt zo opgezet dat die:
+- buiten lessen actief is
+- in leerflows pauzeert
+- dus niet interfereert met lesaudio, stemknoppen of toetsflow
 
 ## Technische aanpak
 
-### A. Nieuwe normalisatie-helper
-Een nieuwe utilityfunctie maakt van ruwe lesinhoud een TTS-veilige versie.
+### Nieuwe onderdelen
+Waarschijnlijk:
+- `src/components/BackgroundAudioController.tsx`
+- eventueel `src/hooks/useBackgroundAudio.ts`
 
-Taken van die helper:
-- markdown/visuele opmaak strippen waar nodig
-- afkortingen en problematische termen normaliseren
-- meerdere spaties, rare interpunctie en visuele notatie opschonen
-- summary-bullets samenvoegen tot goed uitspreekbare zinnen
-- optioneel vaste vervangregels toepassen voor bekende probleemwoorden
+Verantwoordelijkheden:
+- audio initialiseren
+- play/pause beheren
+- autoplay-fallback uitvoeren
+- op routeverandering reageren
 
-Voorbeeldstructuur:
+## Integratie in app-shell
+`src/App.tsx` wordt aangepast zodat de achtergrond-audio controller één keer boven de routes hangt en dus niet remount bij elke pagina.
+
+Conceptueel:
+
 ```text
-raw lesson text
-→ normalize for TTS
-→ hash normalized text
-→ send normalized text to audio generation
-→ store audio with matching hash
+App
+├─ BackgroundAudioController
+├─ Routes
+│  ├─ dashboard / world / account => muziek aan
+│  └─ lesson / final-test / certificate => muziek uit
 ```
-
-### B. Audiobeheer laten werken op genormaliseerde tekst
-`src/components/admin/lesson-audio-shared.ts` wordt aangepast zodat `LESSON_AUDIO_STEPS` niet alleen brontekst ophaalt, maar de definitieve TTS-tekst gebruikt.
-
-`src/pages/admin/LessonAudio.tsx` blijft genereren, uploaden en vergelijken, maar dan op basis van de genormaliseerde tekst.
-
-Gevolg:
-- “Generate missing” werkt correct
-- “stale” detectie wordt betrouwbaarder
-- nieuwe uitspraakregels forceren netjes een regeneratie waar nodig
-
-### C. Volledige content-pass in `src/content/lessons.ts`
-Alle lesson-audio teksten worden taaltechnisch opgeschoond met focus op spreekbaarheid.
-
-Werk per les:
-- lastige termen herschrijven
-- productnamen alleen gebruiken als dat nodig is
-- “AI” consequent op één manier laten terugkomen
-- te visuele zinnen herschrijven naar gesproken taal
-- komma’s, punten en ritme verbeteren voor natuurlijke TTS-pauzes
-
-### D. Overrides correct meenemen
-Bij controle viel op dat override-data nu niet volledig alle voorleesvelden meeneemt.
-
-`src/hooks/useLessonOverrides.ts` en `src/pages/LessonPage.tsx` moeten worden nagekeken en aangevuld zodat ook TTS-relevante overridevelden correct worden gebruikt, met name:
-- `spark_intro`
-- eventueel `reflection` als die later ook audio krijgt
-
-Dat voorkomt dat de admin een aangepaste tekst ziet, maar de generator of lesweergave alsnog de basiscontent gebruikt.
 
 ## Bestanden die aangepast worden
 
-### Content
-- `src/content/lessons.ts`
-  - lesaudio herschrijven naar TTS-vriendelijke spreektaal
+### Nieuwe asset
+- `src/assets/Orbit_Classroom.mp3`
 
-### Shared audio logic
-- `src/components/admin/lesson-audio-shared.ts`
-  - audio-step tekst via centrale TTS-helper laten lopen
+### Nieuwe logica
+- `src/components/BackgroundAudioController.tsx`
+  - centrale route-aware achtergrondmuziek
 
-### Admin audio page
-- `src/pages/admin/LessonAudio.tsx`
-  - hash/generatie blijven koppelen aan genormaliseerde tekst
+### App integratie
+- `src/App.tsx`
+  - controller globaal mounten
 
-### Overrides
-- `src/hooks/useLessonOverrides.ts`
-  - ontbrekende overridevelden meenemen waar relevant
-- `src/pages/LessonPage.tsx`
-  - dezelfde override-logica gelijk trekken met de uiteindelijke lesinhoud
-
-### Nieuwe utility
-- bijvoorbeeld `src/lib/tts.ts`
-  - centrale normalisatie- en vervangregels voor lesson audio
+## Belangrijke details
+- muziek loopt in een lus (`loop`)
+- volume wordt conservatief ingesteld zodat het niet overheerst
+- pauze gebeurt route-based, niet per pagina-component handmatig
+- geen muziek op lesson-, final-test- of certificate-routes
+- hervat automatisch wanneer de gebruiker teruggaat naar dashboard/wereld/account
 
 ## Acceptatiecriteria
 Na implementatie:
-- klinken lesaudio-teksten natuurlijker en duidelijker
-- zijn termen zoals “AI” consistent en spreekbaar gemaakt
-- worden lastige symbolen, afkortingen en visuele schrijfvormen vermeden
-- gebruikt audiogeneratie overal dezelfde definitieve tekstbron
-- markeert de admin-audiopagina bestaande audio correct als verouderd wanneer uitspraakregels of content zijn aangepast
 
-## Verwacht resultaat
-Je kunt daarna lesaudio opnieuw genereren met tekst die speciaal is voorbereid voor voorlezen: minder struikelen op termen, rustiger ritme, duidelijkere uitspraak en een veel consistenter “Spark”-geluid over alle lessen heen.
+- `Orbit_Classroom.mp3` speelt doorlopend op student-schermen en menu’s
+- muziek probeert automatisch te starten
+- als autoplay niet mag, start die na eerste klik/tap
+- muziek stopt zodra een les wordt gestart
+- muziek stopt ook op eindtoets en diploma
+- muziek hervat weer op toegestane studentpagina’s
+- de audio herstart niet onnodig bij normale navigatie tussen studentschermen
+
+## Opmerking
+Ik ga dit implementeren zonder teacher/admin-schermen te beïnvloeden, omdat je expliciet voor de student-app koos.
