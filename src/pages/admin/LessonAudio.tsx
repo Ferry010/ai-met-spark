@@ -19,6 +19,17 @@ export const LessonAudio = () => {
   const [busyAction, setBusyAction] = useState<string | null>(null);
   const [audioLoading, setAudioLoading] = useState(true);
 
+  const requireAccessToken = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    const accessToken = data.session?.access_token;
+
+    if (error || !accessToken) {
+      throw new Error("Je sessie is verlopen. Log opnieuw in om audio te beheren.");
+    }
+
+    return accessToken;
+  };
+
   const refreshAudio = async () => {
     const { data } = await supabase.from("lesson_audio").select("*");
     const map: Record<string, AudioRow> = {};
@@ -37,6 +48,7 @@ export const LessonAudio = () => {
   const generate = async (lesson: Lesson, step: Step, text: string) => {
     setBusyAction(getActionKey(lesson.id, step, "generate"));
     try {
+      await requireAccessToken();
       const { data, error } = await supabase.functions.invoke("generate-lesson-audio", {
         body: { lessonId: lesson.id, step, text, textHash: textHash(text) },
       });
@@ -53,6 +65,7 @@ export const LessonAudio = () => {
   const upload = async (lesson: Lesson, step: Step, text: string, file: File) => {
     setBusyAction(getActionKey(lesson.id, step, "upload"));
     try {
+      await requireAccessToken();
       const buf = await file.arrayBuffer();
       const bytes = new Uint8Array(buf);
       let binary = "";
@@ -74,6 +87,7 @@ export const LessonAudio = () => {
   const removeAudio = async (lesson: Lesson, step: Step) => {
     setBusyAction(getActionKey(lesson.id, step, "delete"));
     try {
+      await requireAccessToken();
       const { data, error } = await supabase.functions.invoke("delete-lesson-audio", {
         body: { lessonId: lesson.id, step },
       });
