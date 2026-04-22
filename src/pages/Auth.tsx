@@ -113,7 +113,7 @@ export const Auth = () => {
           <Spark size={120} mood="happy" />
         </div>
         <h1 className="font-display text-2xl sm:text-3xl mt-3">
-          {isTeacher ? "Toegang voor leerkrachten" : "Welkom bij AI met Spark"}
+          Welkom bij AI met Spark
         </h1>
       </div>
 
@@ -184,6 +184,9 @@ export const Auth = () => {
           Verder met Google
         </Button>
 
+        <p className="mt-5 text-center text-xs text-muted-foreground">
+          <Link to="/teacher/login" className="underline hover:text-foreground">Leerkracht? Log hier in →</Link>
+        </p>
       </div>
     </main>
   );
