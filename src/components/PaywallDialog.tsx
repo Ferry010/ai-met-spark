@@ -23,7 +23,7 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
     const { data, error } = await supabase.functions.invoke("create-checkout", {
       body: {
         priceId: SMART_KIDS_PRICE_ID,
-        customerEmail: profile?.parent_email || user?.email,
+        customerEmail: user?.email,
         returnUrl: `${window.location.origin}/dashboard?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       },
     });

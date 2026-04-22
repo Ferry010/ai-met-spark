@@ -71,10 +71,6 @@ export const Account = () => {
             <Input id="first_name" name="first_name" defaultValue={profile.first_name} maxLength={40} className="h-12 rounded-xl" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="parent_email">E-mail van ouder</Label>
-            <Input id="parent_email" name="parent_email" type="email" defaultValue={profile.parent_email ?? ""} className="h-12 rounded-xl" />
-          </div>
-          <div className="space-y-2">
             <Label htmlFor="language">Taal</Label>
             <Select name="language" defaultValue={profile.language}>
               <SelectTrigger id="language" className="h-12 rounded-xl"><SelectValue /></SelectTrigger>
