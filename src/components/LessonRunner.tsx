@@ -126,12 +126,17 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
         <TheoryCard
           eyebrow="Even uitleggen"
           text={lesson.theoryIntro!}
+          lessonId={lesson.id}
+          step="theoryIntro"
           onNext={() => goNext("theoryIntro")}
         />
       )}
 
       {step === "fact" && (
-        <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center">
+        <section className="rounded-3xl bg-card border-2 border-primary p-8 shadow-pop animate-pop-in text-center relative">
+          <div className="absolute top-4 right-4">
+            <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
+          </div>
           <div className="flex justify-center mb-3">
             <Spark size={72} mood="hinting" />
           </div>
@@ -149,9 +154,12 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             <div className="shrink-0">
               <Spark size={96} mood="explaining" />
             </div>
-            <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-4 shadow-soft">
-              <div className="text-xs uppercase tracking-wider text-primary font-display mb-1">Spark zegt</div>
-              <p className="font-body text-base leading-relaxed whitespace-pre-line">{lesson.sparkMiddle}</p>
+            <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-5 shadow-soft">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+                <SparkVoiceButton lessonId={lesson.id} step="sparkMiddle" variant="compact" />
+              </div>
+              <div className="font-body">{renderRichText(lesson.sparkMiddle!)}</div>
             </div>
           </div>
           <Button
@@ -167,6 +175,8 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
         <TheoryCard
           eyebrow="Nog iets erbij"
           text={lesson.theoryDeep!}
+          lessonId={lesson.id}
+          step="theoryDeep"
           onNext={() => goNext("theoryDeep")}
         />
       )}
