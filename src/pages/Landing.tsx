@@ -74,8 +74,8 @@ const TrustChip = ({ icon, label }: { icon: React.ReactNode; label: string }) =>
 );
 
 const InsideStat = ({ n, label, desc }: { n: string; label: string; desc: string }) => (
-  <div className="rounded-3xl bg-card border border-border p-6 shadow-soft hover:shadow-pop transition-bounce">
-    <div className="font-display text-5xl text-primary mb-1">{n}</div>
+  <div className="rounded-3xl bg-card border border-border p-5 sm:p-6 shadow-soft hover:shadow-pop transition-bounce">
+    <div className="font-display text-4xl sm:text-5xl text-primary mb-1">{n}</div>
     <div className="font-display text-lg mb-2">{label}</div>
     <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
   </div>
@@ -132,17 +132,17 @@ export const Landing = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-hero">
-        <div className="container py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+        <div className="container py-10 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div className="text-center md:text-left">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl leading-tight mb-5">
+            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl leading-tight mb-5">
               {t("landing.heroTitle")}
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-6">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-6">
               {t("landing.heroSubtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-4">
               <Link to="/auth?mode=signup">
-                <Button className="h-14 px-8 rounded-full text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
+                <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full text-sm sm:text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
                   🚀 {t("landing.ctaPrimary")}
                 </Button>
               </Link>
@@ -155,7 +155,7 @@ export const Landing = () => {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="relative">
+            <div className="relative scale-75 sm:scale-90 md:scale-100">
               <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full scale-110 animate-pulse-slow" aria-hidden />
               <Sparkles className="absolute -top-2 -left-4 h-6 w-6 text-secondary animate-twinkle" style={{ animationDelay: "0s" }} aria-hidden />
               <Sparkles className="absolute top-8 -right-6 h-5 w-5 text-accent animate-twinkle" style={{ animationDelay: "0.6s" }} aria-hidden />
@@ -174,10 +174,10 @@ export const Landing = () => {
       </section>
 
       {/* Problem */}
-      <section className="container py-20">
+      <section className="container py-12 sm:py-16 md:py-20">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-sm font-bold uppercase tracking-wider text-accent mb-3">{t("landing.problem.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl mb-8">{t("landing.problem.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-8">{t("landing.problem.title")}</h2>
           <div className="grid md:grid-cols-3 gap-6 text-left">
             <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p1")}</p>
             <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p2")}</p>
@@ -187,10 +187,10 @@ export const Landing = () => {
       </section>
 
       {/* What's inside */}
-      <section className="container pb-20">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
         <div className="text-center mb-10">
           <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.inside.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl">{t("landing.inside.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl">{t("landing.inside.title")}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <InsideStat n={t("landing.inside.items.worlds.n")} label={t("landing.inside.items.worlds.label")} desc={t("landing.inside.items.worlds.desc")} />
@@ -201,8 +201,8 @@ export const Landing = () => {
       </section>
 
       {/* Pillars */}
-      <section className="container pb-20">
-        <h2 className="font-display text-3xl sm:text-4xl text-center mb-3">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-center mb-3">
           {t("landing.pillars.title")}
         </h2>
         <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
@@ -243,13 +243,13 @@ export const Landing = () => {
       </section>
 
       {/* How a lesson works */}
-      <section className="container pb-20">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
         <div className="text-center mb-10">
           <p className="text-sm font-bold uppercase tracking-wider text-accent mb-3">{t("landing.how.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl mb-3">{t("landing.how.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.how.title")}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">{t("landing.how.subtitle")}</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           <HowStep n={1} icon={<Sparkles className="h-6 w-6" />} title={t("landing.how.steps.meet.title")} desc={t("landing.how.steps.meet.desc")} />
           <HowStep n={2} icon={<Compass className="h-6 w-6" />} title={t("landing.how.steps.discover.title")} desc={t("landing.how.steps.discover.desc")} />
           <HowStep n={3} icon={<PlayCircle className="h-6 w-6" />} title={t("landing.how.steps.play.title")} desc={t("landing.how.steps.play.desc")} />
@@ -259,10 +259,10 @@ export const Landing = () => {
       </section>
 
       {/* Why parents */}
-      <section className="container pb-20">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
         <div className="text-center mb-10">
           <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.whyParents.eyebrow")}</p>
-          <h2 className="font-display text-3xl sm:text-4xl max-w-3xl mx-auto">{t("landing.whyParents.title")}</h2>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl max-w-3xl mx-auto">{t("landing.whyParents.title")}</h2>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <ParentCard icon={<MessageSquareOff className="h-5 w-5" />} title={t("landing.whyParents.items.noChat.title")} desc={t("landing.whyParents.items.noChat.desc")} />
@@ -275,9 +275,9 @@ export const Landing = () => {
       </section>
 
       {/* Quote */}
-      <section className="container pb-20">
-        <div className="max-w-3xl mx-auto rounded-3xl bg-gradient-sunshine p-10 md:p-14 shadow-pop text-center">
-          <div className="font-display text-2xl sm:text-3xl md:text-4xl text-secondary-foreground leading-tight mb-4">
+      <section className="container pb-12 sm:pb-16 md:pb-20">
+        <div className="max-w-3xl mx-auto rounded-3xl bg-gradient-sunshine p-6 sm:p-10 md:p-14 shadow-pop text-center">
+          <div className="font-display text-xl sm:text-3xl md:text-4xl text-secondary-foreground leading-tight mb-4">
             "{t("landing.quote.text")}"
           </div>
           <p className="text-secondary-foreground/80 font-semibold">{t("landing.quote.byline")}</p>
@@ -286,10 +286,10 @@ export const Landing = () => {
 
       {/* Pricing teaser */}
       <section className="container">
-        <div className="rounded-3xl bg-card border border-border shadow-pop p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
+        <div className="rounded-3xl bg-card border border-border shadow-pop p-6 sm:p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
           <div>
             <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.pricingTeaser.eyebrow")}</p>
-            <h2 className="font-display text-3xl sm:text-4xl mb-3">{t("landing.pricingTeaser.title")}</h2>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.pricingTeaser.title")}</h2>
             <p className="text-muted-foreground mb-6">{t("landing.pricingTeaser.subtitle")}</p>
             <ul className="space-y-2 mb-6">
               {teaserFeatures.map((f) => (
@@ -303,29 +303,29 @@ export const Landing = () => {
             </ul>
             <p className="text-sm text-muted-foreground italic mb-6">{t("landing.pricingTeaser.noPay")}</p>
             <Link to="/pricing">
-              <Button className="h-14 px-8 rounded-full font-display bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop">
+              <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display text-sm sm:text-base bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop">
                 {t("landing.pricingTeaser.cta")} · {t("landing.pricingTeaser.price")}
               </Button>
             </Link>
           </div>
           <div className="text-center">
-            <div className="inline-block rounded-3xl bg-gradient-sunshine p-8 shadow-soft">
-            <div className="font-display text-7xl text-secondary-foreground">€14</div>
+            <div className="inline-block rounded-3xl bg-gradient-sunshine p-6 sm:p-8 shadow-soft">
+            <div className="font-display text-6xl sm:text-7xl text-secondary-foreground">€14</div>
           </div>
           </div>
         </div>
       </section>
 
       {/* Schools */}
-      <section className="container py-20">
-        <div className="rounded-3xl bg-gradient-sky text-primary-foreground p-8 md:p-12 shadow-pop flex flex-col md:flex-row items-center gap-6 justify-between">
-          <div>
+      <section className="container py-12 sm:py-16 md:py-20">
+        <div className="rounded-3xl bg-gradient-sky text-primary-foreground p-6 sm:p-10 md:p-12 shadow-pop flex flex-col md:flex-row items-center gap-6 justify-between">
+          <div className="text-center md:text-left">
             <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/80 mb-2">{t("landing.schools.eyebrow")}</p>
-            <h2 className="font-display text-3xl sm:text-4xl mb-2">{t("landing.schools.title")}</h2>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-2">{t("landing.schools.title")}</h2>
             <p className="text-primary-foreground/90 max-w-xl">{t("landing.schools.desc")}</p>
           </div>
-          <Link to="/schools/contact">
-            <Button className="h-14 px-8 rounded-full font-display bg-white text-primary hover:bg-white/90 shadow-pop">
+          <Link to="/schools/contact" className="shrink-0">
+            <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display text-sm sm:text-base bg-white text-primary hover:bg-white/90 shadow-pop">
               {t("landing.schools.cta")} →
             </Button>
           </Link>
@@ -333,18 +333,18 @@ export const Landing = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="container pb-20">
-        <div className="rounded-3xl bg-gradient-sky text-white p-10 md:p-16 shadow-pop text-center">
-          <h2 className="font-display text-3xl sm:text-5xl mb-4">{t("landing.finalCta.title")}</h2>
-          <p className="text-white/90 text-lg mb-8">{t("landing.finalCta.subtitle")}</p>
+      <section className="container pb-12 sm:pb-16 md:pb-20">
+        <div className="rounded-3xl bg-gradient-sky text-white p-6 sm:p-10 md:p-16 shadow-pop text-center">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mb-4">{t("landing.finalCta.title")}</h2>
+          <p className="text-white/90 text-base sm:text-lg mb-8">{t("landing.finalCta.subtitle")}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/auth?mode=signup">
-              <Button className="h-14 px-8 rounded-full font-display bg-white text-primary hover:bg-white/90 shadow-pop text-base">
+              <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display bg-white text-primary hover:bg-white/90 shadow-pop text-sm sm:text-base">
                 🚀 {t("landing.finalCta.cta")}
               </Button>
             </Link>
             <Link to="/pricing">
-              <Button variant="outline" className="h-14 px-8 rounded-full font-display border-2 border-white text-white hover:bg-white/10 bg-transparent text-base">
+              <Button variant="outline" className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display border-2 border-white text-white hover:bg-white/10 bg-transparent text-sm sm:text-base">
                 {t("landing.finalCta.secondary")}
               </Button>
             </Link>

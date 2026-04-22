@@ -181,7 +181,7 @@ export const Certificate = () => {
         {/* Diploma — screen version with 3D tilt + gold border */}
         <div className="diploma-tilt-wrap mx-auto" style={{ perspective: "1500px" }}>
           <div
-            className="relative rounded-3xl p-8 sm:p-12 text-center shadow-pop overflow-hidden transition-transform duration-500 hover:[transform:rotateY(-2deg)_rotateX(2deg)]"
+            className="diploma-card relative rounded-3xl p-5 sm:p-8 md:p-12 text-center shadow-pop overflow-hidden transition-transform duration-500"
             style={{
               background:
                 "linear-gradient(135deg, hsl(248 60% 14%) 0%, hsl(260 55% 22%) 50%, hsl(248 60% 12%) 100%)",
@@ -195,24 +195,24 @@ export const Certificate = () => {
 
             {/* Top mark */}
             <div className="flex items-center justify-center gap-3 mb-3 text-[var(--diploma-gold)]" style={{ color: GOLD }}>
-              <span className="h-px w-16 bg-[currentColor] opacity-60" />
+              <span className="h-px w-10 sm:w-16 bg-[currentColor] opacity-60" />
               <Star className="h-5 w-5 fill-current" />
-              <span className="h-px w-16 bg-[currentColor] opacity-60" />
+              <span className="h-px w-10 sm:w-16 bg-[currentColor] opacity-60" />
             </div>
 
-            <h1 className="font-display text-5xl sm:text-6xl tracking-wide" style={{ color: GOLD, fontFamily: "'Times New Roman', serif", letterSpacing: "0.1em" }}>
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-wide" style={{ color: GOLD, fontFamily: "'Times New Roman', serif", letterSpacing: "0.1em" }}>
               DIPLOMA
             </h1>
-            <p className="mt-1 text-xs sm:text-sm tracking-[0.4em] opacity-80">AI · SMART · KID</p>
+            <p className="mt-1 text-[10px] sm:text-xs md:text-sm tracking-[0.4em] opacity-80">AI · SMART · KID</p>
 
-            <p className="mt-8 text-sm opacity-80">Hierbij verklaren wij dat</p>
+            <p className="mt-6 sm:mt-8 text-sm opacity-80">Hierbij verklaren wij dat</p>
 
             <div
-              className="mt-3 mx-auto w-fit px-6 py-2"
+              className="mt-3 mx-auto w-fit px-4 sm:px-6 py-2 max-w-full"
               style={{
                 fontFamily: "'Caveat', 'Brush Script MT', cursive",
                 fontWeight: 700,
-                fontSize: "5rem",
+                fontSize: "clamp(2.5rem, 12vw, 5rem)",
                 lineHeight: 1,
                 color: GOLD,
                 borderBottom: `1px solid ${GOLD}66`,
@@ -221,13 +221,13 @@ export const Certificate = () => {
               {profile?.first_name ?? "Smart Kid"}
             </div>
 
-            <p className="mt-6 max-w-md mx-auto leading-snug">
+            <p className="mt-5 sm:mt-6 max-w-md mx-auto leading-snug text-sm sm:text-base">
               heeft alle <strong>24 lessen</strong> en de <strong>eindbaas-test</strong> gehaald
               en is officieel een <em>AI Smart Kid</em>.
             </p>
 
             {/* 3 world badges */}
-            <div className="mt-8 grid grid-cols-3 gap-3 max-w-xl mx-auto">
+            <div className="mt-6 sm:mt-8 grid grid-cols-3 gap-2 sm:gap-3 max-w-xl mx-auto">
               {[
                 { emoji: "🛡️", name: "Schild van Waakzaamheid" },
                 { emoji: "🧭", name: "Kompas van Helderheid" },
@@ -235,16 +235,16 @@ export const Certificate = () => {
               ].map((b) => (
                 <div
                   key={b.name}
-                  className="rounded-2xl px-3 py-4 text-center"
+                  className="rounded-2xl px-2 py-3 sm:px-3 sm:py-4 text-center"
                   style={{ border: `1px solid ${GOLD}55`, background: "rgba(255,255,255,0.04)" }}
                 >
-                  <div className="text-3xl">{b.emoji}</div>
-                  <div className="text-[11px] mt-1 leading-tight" style={{ color: GOLD }}>{b.name}</div>
+                  <div className="text-2xl sm:text-3xl">{b.emoji}</div>
+                  <div className="text-[10px] sm:text-[11px] mt-1 leading-tight" style={{ color: GOLD }}>{b.name}</div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-8 grid grid-cols-2 gap-4 text-sm opacity-80 max-w-md mx-auto">
+            <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-4 text-xs sm:text-sm opacity-80 max-w-md mx-auto">
               <div>Score: <strong>{score ?? "·"} / 12</strong></div>
               <div>Uitgegeven: <strong>{date}</strong></div>
             </div>
@@ -267,6 +267,9 @@ export const Certificate = () => {
         .diploma-glint {
           background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
           animation: diploma-glint 4s ease-in-out infinite;
+        }
+        @media (hover: hover) and (pointer: fine) {
+          .diploma-card:hover { transform: rotateY(-2deg) rotateX(2deg); }
         }
       `}</style>
     </div>

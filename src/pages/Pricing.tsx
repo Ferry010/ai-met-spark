@@ -24,22 +24,22 @@ export const Pricing = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
 
-      <section className="container pt-12 pb-6 text-center">
-        <h1 className="font-display text-4xl sm:text-5xl mb-3">{t("pricing.title")}</h1>
-        <p className="text-muted-foreground text-lg mb-3">{t("pricing.subtitle")}</p>
-        <p className="text-base text-foreground/80 max-w-2xl mx-auto">{t("pricing.intro")}</p>
+      <section className="container pt-8 sm:pt-12 pb-6 text-center">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl mb-3">{t("pricing.title")}</h1>
+        <p className="text-muted-foreground text-base sm:text-lg mb-3">{t("pricing.subtitle")}</p>
+        <p className="text-sm sm:text-base text-foreground/80 max-w-2xl mx-auto">{t("pricing.intro")}</p>
       </section>
 
       <section className="container py-10 grid md:grid-cols-2 gap-6 max-w-5xl">
         {/* Individual */}
-        <div className="relative rounded-3xl bg-card border-2 border-primary shadow-pop p-8 flex flex-col">
-          <div className="absolute -top-3 left-6 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wide rounded-full px-3 py-1 flex items-center gap-1">
+        <div className="relative rounded-3xl bg-card border-2 border-primary shadow-pop p-6 sm:p-8 flex flex-col">
+          <div className="absolute -top-3 left-6 bg-primary text-primary-foreground text-[11px] sm:text-xs font-bold uppercase tracking-wide rounded-full px-3 py-1 flex items-center gap-1">
             <Star className="h-3 w-3" /> {t("pricing.individual.badge")}
           </div>
           <h2 className="font-display text-2xl mb-1">{t("pricing.individual.name")}</h2>
           <p className="text-sm text-muted-foreground mb-5">{t("pricing.individual.tagline")}</p>
           <div className="flex items-baseline gap-2 mb-6">
-            <span className="font-display text-5xl">{t("pricing.individual.price")}</span>
+            <span className="font-display text-4xl sm:text-5xl">{t("pricing.individual.price")}</span>
             <span className="text-muted-foreground">{t("pricing.individual.billing")}</span>
           </div>
           <ul className="space-y-3 mb-8 flex-1">
@@ -60,12 +60,12 @@ export const Pricing = () => {
         </div>
 
         {/* Schools */}
-        <div className="rounded-3xl bg-card border border-border shadow-soft p-8 flex flex-col">
+        <div className="rounded-3xl bg-card border border-border shadow-soft p-6 sm:p-8 flex flex-col">
           <h2 className="font-display text-2xl mb-1">{t("pricing.schools.name")}</h2>
           <p className="text-sm text-muted-foreground mb-1">{t("pricing.schools.tagline")}</p>
-          <p className="text-xs font-semibold text-primary mb-5">{t("pricing.schools.bestFor")}</p>
+          <p className="text-[11px] sm:text-xs font-semibold text-primary mb-5">{t("pricing.schools.bestFor")}</p>
           <div className="flex items-baseline gap-2 mb-6">
-            <span className="font-display text-5xl">{t("pricing.schools.price")}</span>
+            <span className="font-display text-4xl sm:text-5xl">{t("pricing.schools.price")}</span>
             <span className="text-muted-foreground">{t("pricing.schools.billing")}</span>
           </div>
           <ul className="space-y-3 mb-8 flex-1">
@@ -106,13 +106,13 @@ export const Pricing = () => {
       </section>
 
       {/* FAQ */}
-      <section className="container py-16 max-w-3xl">
-        <h2 className="font-display text-3xl text-center mb-8">{t("pricing.faq.title")}</h2>
-        <Accordion type="single" collapsible className="rounded-2xl bg-card border border-border shadow-soft px-6">
+      <section className="container py-12 sm:py-16 max-w-3xl">
+        <h2 className="font-display text-2xl sm:text-3xl text-center mb-8">{t("pricing.faq.title")}</h2>
+        <Accordion type="single" collapsible className="rounded-2xl bg-card border border-border shadow-soft px-4 sm:px-6">
           {faq.map((item, i) => (
             <AccordionItem key={i} value={`q${i}`} className="border-b last:border-b-0 border-border/60">
-              <AccordionTrigger className="font-display text-lg text-left">{item.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-base leading-relaxed">
+              <AccordionTrigger className="font-display text-base sm:text-lg text-left">{item.q}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                 {item.a}
               </AccordionContent>
             </AccordionItem>

@@ -71,11 +71,11 @@ export const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <main className="container py-8 max-w-5xl">
+      <main className="container py-6 md:py-8 max-w-5xl">
         <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 mb-8">
-          <Spark size={100} mood={allDone ? "celebrating" : "happy"} />
+          <Spark size={88} mood={allDone ? "celebrating" : "happy"} />
           <div className="text-center sm:text-left flex-1">
-            <h1 className="font-display text-3xl sm:text-4xl">
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl">
               Hoi {profile?.first_name ?? "vriend"}! Klaar om slimmer te worden?
             </h1>
             <p className="text-muted-foreground mt-1">
@@ -85,7 +85,7 @@ export const Dashboard = () => {
           {!isPaid && (
             <Button
               onClick={() => setPaywall(true)}
-              className="h-12 rounded-full font-display bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop"
+              className="w-full sm:w-auto h-12 rounded-full font-display bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop"
             >
               🔓 Speel alles vrij · €14
             </Button>
@@ -107,13 +107,13 @@ export const Dashboard = () => {
                     toast({ title: "Op slot!", description: `Maak eerst Wereld ${w.id - 1} af.` });
                   }
                 }}
-                className={`block rounded-3xl p-6 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1 ${PILLAR_BG[w.pillar]} ${w.locked ? "opacity-60" : ""}`}
+                className={`block rounded-3xl p-5 sm:p-6 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1 ${PILLAR_BG[w.pillar]} ${w.locked ? "opacity-60" : ""}`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <span className="text-5xl" aria-hidden>{w.emoji}</span>
+                  <span className="text-4xl sm:text-5xl" aria-hidden>{w.emoji}</span>
                   {w.locked && <Lock className="h-6 w-6" />}
                 </div>
-                <h2 className="font-display text-2xl mb-1">Wereld {w.id}: {w.name}</h2>
+                <h2 className="font-display text-xl sm:text-2xl mb-1">Wereld {w.id}: {w.name}</h2>
                 <p className="text-sm opacity-90 mb-4">{w.tagline}</p>
                 <div className="flex items-center justify-between text-sm font-semibold">
                   <span>{w.done} / {w.lessons.length} klaar</span>
@@ -147,13 +147,13 @@ export const Dashboard = () => {
                       <div
                         key={b.id}
                         title={b.description}
-                        className={`rounded-2xl p-4 text-center transition-bounce ${
+                        className={`rounded-2xl p-3 sm:p-4 text-center transition-bounce ${
                           earned
                             ? `${TONE_BG[b.tone ?? "primary"]} shadow-pop animate-pop-in`
                             : "bg-muted text-muted-foreground"
                         }`}
                       >
-                        <div className="text-3xl" aria-hidden>
+                        <div className="text-2xl sm:text-3xl" aria-hidden>
                           {earned ? b.emoji : "🔒"}
                         </div>
                         <div className="font-display text-sm mt-2 leading-tight">{b.name}</div>

@@ -13,10 +13,10 @@ export const WelcomeBlock = () => {
   const overall = overallClassProgressPct();
   return (
     <section className="mb-8">
-      <h1 className="font-fraunces text-3xl md:text-4xl text-classroom-dark">
+      <h1 className="font-fraunces text-2xl sm:text-3xl md:text-4xl text-classroom-dark">
         {greeting()}, {teacher.firstName}.
       </h1>
-      <p className="mt-2 text-classroom-muted text-lg">
+      <p className="mt-2 text-classroom-muted text-base sm:text-lg">
         Je klas is {w1.completedAvg}% door wereld 1. Totaal: {overall}% van het curriculum.
       </p>
     </section>

@@ -9,12 +9,12 @@ export const Footer = () => {
       <div className="container pt-8 pb-4 text-center">
         <p className="font-display text-base text-foreground/80">{t("footer.tagline")}</p>
       </div>
-      <div className="container pb-10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="container pb-10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
         <div className="flex items-center gap-3">
           <Spark size={44} animate={false} />
           <span className="font-display text-lg">{t("common.appName")}</span>
         </div>
-        <nav className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+        <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
           <Link to="/privacy" className="hover:text-foreground transition-colors">{t("footer.privacy")}</Link>
           <Link to="/terms" className="hover:text-foreground transition-colors">{t("footer.terms")}</Link>
           <Link to="/schools/contact" className="hover:text-foreground transition-colors">{t("footer.contact")}</Link>

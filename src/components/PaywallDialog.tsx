@@ -35,21 +35,21 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-2xl rounded-3xl">
+      <DialogContent className="max-w-2xl rounded-3xl p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle className="font-display text-2xl flex items-center gap-2">
-            <Lock className="h-5 w-5 text-primary" /> Speel alle 12 lessen vrij
+          <DialogTitle className="font-display text-lg sm:text-2xl flex items-center gap-2">
+            <Lock className="h-5 w-5 text-primary shrink-0" /> Speel alle 12 lessen vrij
           </DialogTitle>
         </DialogHeader>
 
         {!showCheckout ? (
-          <div className="text-center py-4">
-            <Spark size={120} mood="happy" />
-            <div className="mt-4 mb-2 inline-block rounded-2xl bg-gradient-sunshine px-6 py-3">
-              <span className="font-display text-4xl text-secondary-foreground">€14</span>
-              <span className="font-display text-secondary-foreground/80 ml-2">eenmalig</span>
+          <div className="text-center py-2 sm:py-4">
+            <Spark size={96} mood="happy" />
+            <div className="mt-4 mb-2 inline-block rounded-2xl bg-gradient-sunshine px-5 py-2.5 sm:px-6 sm:py-3">
+              <span className="font-display text-3xl sm:text-4xl text-secondary-foreground">€14</span>
+              <span className="font-display text-secondary-foreground/80 ml-2 text-sm sm:text-base">eenmalig</span>
             </div>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-sm sm:text-base text-muted-foreground mb-6">
               Voor altijd toegang tot alle 3 werelden, de eindtoets en een persoonlijk diploma dat naar de ouder gemaild wordt.
             </p>
             <Button
@@ -61,7 +61,7 @@ export const PaywallDialog = ({ open, onClose }: PaywallProps) => {
                 }
                 setShowCheckout(true);
               }}
-              className="h-14 px-8 rounded-full font-display text-base bg-primary shadow-pop"
+              className="h-12 sm:h-14 px-6 sm:px-8 rounded-full font-display text-sm sm:text-base bg-primary shadow-pop"
             >
               🚀 Nu vrijspelen
             </Button>

@@ -14,7 +14,7 @@ export const ClassOverviewCard = () => {
         </h2>
         <span className="text-sm text-classroom-muted">{students.length} leerlingen</span>
       </div>
-      <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 xl:grid-cols-14 gap-3">
+      <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 xl:grid-cols-14 gap-3">
         {students.map((s) => (
           <StudentAvatar key={s.id} student={s} onClick={() => setSelected(s)} />
         ))}

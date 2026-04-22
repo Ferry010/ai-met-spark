@@ -141,7 +141,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             <Spark size={72} mood="hinting" />
           </div>
           <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
-          <p className="font-display text-2xl sm:text-3xl leading-snug">{lesson.fact}</p>
+          <p className="font-display text-xl sm:text-2xl md:text-3xl leading-snug">{lesson.fact}</p>
           <Button onClick={() => goNext("fact")} className="mt-8 h-14 px-8 rounded-full font-display bg-primary shadow-soft">
             Verder →
           </Button>
@@ -213,9 +213,9 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       )}
 
       {step === "done" && (
-        <section className="rounded-3xl bg-success/15 border-2 border-success p-8 text-center shadow-pop animate-pop-in">
-          <div className="flex justify-center"><Spark size={140} mood="celebrating" /></div>
-          <h2 className="font-display text-3xl mt-4">Goed gedaan!</h2>
+        <section className="rounded-3xl bg-success/15 border-2 border-success p-6 sm:p-8 text-center shadow-pop animate-pop-in">
+          <div className="flex justify-center"><Spark size={110} mood="celebrating" /></div>
+          <h2 className="font-display text-2xl sm:text-3xl mt-4">Goed gedaan!</h2>
           <div className="flex justify-center gap-1 mt-3">
             {Array.from({ length: 3 }).map((_, i) => (
               <Star
@@ -383,11 +383,11 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
   }, [text, lesson.id]);
 
   return (
-    <section className={`rounded-3xl p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
+    <section className={`rounded-3xl p-6 sm:p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
       <div className="text-xs font-display opacity-90 animate-kickoff-fade-up">
         Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
       </div>
-      <h1 className="font-display text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
+      <h1 className="font-display text-2xl sm:text-3xl md:text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
 
       <div className="flex justify-center mb-2 min-h-[160px] items-end">
         <SparkJetEntry size={140} />
@@ -690,7 +690,7 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
               )}
             >
               <span className="flex-1 min-w-0 font-body text-sm">{it.label}</span>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {step.buckets.map((b, bi) => (
                   <Button
                     key={bi}
