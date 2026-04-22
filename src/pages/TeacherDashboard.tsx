@@ -30,6 +30,22 @@ export const TeacherDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
 
+  const loadStudents = async () => {
+    const { data, error } = await supabase.rpc("list_students_in_my_school");
+    if (error) throw error;
+
+    const studentList: Student[] = [];
+    for (const p of (data ?? []) as { id: string; first_name: string }[]) {
+      const [{ count }, { data: attempt }] = await Promise.all([
+        supabase.from("user_progress").select("*", { count: "exact", head: true }).eq("user_id", p.id),
+        supabase.from("final_test_attempts").select("passed").eq("user_id", p.id).order("attempted_at", { ascending: false }).limit(1).maybeSingle(),
+      ]);
+      studentList.push({ id: p.id, first_name: p.first_name, done: count ?? 0, passed: attempt?.passed ?? null });
+    }
+
+    setStudents(studentList);
+  };
+
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -37,21 +53,11 @@ export const TeacherDashboard = () => {
       setSchool(s as School | null);
 
       if (s) {
-        const [{ data: cs }, { data: ps }] = await Promise.all([
+        const [{ data: cs }] = await Promise.all([
           supabase.from("class_codes").select("id, code").eq("school_id", s.id),
-          supabase.from("profiles").select("id, first_name").eq("school_id", s.id),
         ]);
         setCodes((cs ?? []) as ClassCode[]);
-
-        const studentList: Student[] = [];
-        for (const p of (ps ?? []) as { id: string; first_name: string }[]) {
-          const [{ count }, { data: attempt }] = await Promise.all([
-            supabase.from("user_progress").select("*", { count: "exact", head: true }).eq("user_id", p.id),
-            supabase.from("final_test_attempts").select("passed").eq("user_id", p.id).order("attempted_at", { ascending: false }).limit(1).maybeSingle(),
-          ]);
-          studentList.push({ id: p.id, first_name: p.first_name, done: count ?? 0, passed: attempt?.passed ?? null });
-        }
-        setStudents(studentList);
+        await loadStudents();
       }
       setLoading(false);
     })();
