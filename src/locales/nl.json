@@ -5,7 +5,7 @@
     "login": "Inloggen",
     "signup": "Aanmelden",
     "logout": "Uitloggen",
-    "tryFree": "Maak een account",
+    "tryFree": "Maak gratis account",
     "continue": "Verder",
     "next": "Volgende",
     "back": "Terug",
@@ -27,8 +27,8 @@
     "heroTitle": "Leer veilig én leuk met AI",
     "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 9 tot 11 jaar.",
     "heroSparkLine": "Hoi, ik ben Spark. Ik ben je AI-gids!",
-    "heroMicroCopy": "Gratis toegang tot alle lessen. In 60 seconden begonnen.",
-    "ctaPrimary": "Maak een account",
+    "heroMicroCopy": "Alle lessen zijn gratis. Gratis nu en gratis blijvend — geen proefperiode.",
+    "ctaPrimary": "Maak gratis account",
     "ctaSecondary": "Inloggen",
     "trustChips": {
       "gdpr": "AVG-veilig",
@@ -170,7 +170,7 @@
       "eyebrow": "Volledig gratis",
       "title": "Alles staat open voor elke leerling.",
       "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
-      "cta": "Maak een account",
+      "cta": "Maak gratis account",
       "badge": "Gratis",
       "badgeCaption": "alle lessen · altijd",
       "features": [
@@ -202,7 +202,7 @@
       "eyebrow": "Volledig gratis",
       "title": "Alles staat open voor elke leerling.",
       "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
-      "cta": "Maak een account",
+      "cta": "Maak gratis account",
       "badge": "Gratis",
       "badgeCaption": "alle lessen · altijd",
       "features": [
@@ -231,7 +231,7 @@
         "Taal wisselen in je account",
         "Nieuwe lesupdates automatisch beschikbaar"
       ],
-      "cta": "Maak een account"
+      "cta": "Maak gratis account"
     },
     "schools": {
       "name": "Scholen",
@@ -306,7 +306,7 @@
         "Taal wisselen in je account",
         "Nieuwe lesupdates automatisch beschikbaar"
       ],
-      "cta": "Maak een account"
+      "cta": "Maak gratis account"
     }
   },
   "schoolForm": {
