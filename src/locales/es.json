@@ -198,6 +198,28 @@
       "title": "Hecho para padres que quieren que sus hijos prosperen con la IA, no que le teman",
       "desc": "Sin chat. Sin recolección de datos. Nada que dé miedo. Solo lecciones probadas con niños que construyen confianza y pensamiento crítico."
     },
+    "freeFaq": {
+      "eyebrow": "Sin trampas",
+      "title": "¿De verdad gratis? Sí — la versión corta",
+      "items": [
+        {
+          "q": "¿Hay un muro de pago?",
+          "a": "No. Cada mundo, lección, quiz y certificado se desbloquea en cuanto creas una cuenta."
+        },
+        {
+          "q": "¿Es una prueba gratis que caduca?",
+          "a": "No. No hay temporizador de prueba ni cuenta atrás. Tu cuenta sigue gratis para siempre."
+        },
+        {
+          "q": "¿Cobrarán más adelante?",
+          "a": "No. La app para estudiantes es gratis ahora y gratis para siempre. Nunca pedimos pagos a niños ni a padres."
+        },
+        {
+          "q": "¿Y las lecciones nuevas?",
+          "a": "Las lecciones nuevas se añaden a tu cuenta automáticamente — también gratis, siempre."
+        }
+      ]
+    },
     "freeAccess": {
       "eyebrow": "Totalmente gratis",
       "title": "Todo está abierto para cada alumno.",
