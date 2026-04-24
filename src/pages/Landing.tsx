@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   Shield,
   Brain,
   Rocket,
@@ -125,6 +131,7 @@ const ParentCard = ({
 export const Landing = () => {
   const { t } = useTranslation();
   const teaserFeatures = t("landing.freeAccess.features", { returnObjects: true }) as string[];
+  const freeFaq = t("landing.freeFaq.items", { returnObjects: true }) as { q: string; a: string }[];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -315,6 +322,30 @@ export const Landing = () => {
           </div>
           </div>
         </div>
+      </section>
+
+      {/* Free FAQ — no paywall reassurance */}
+      <section className="container py-12 sm:py-16 md:py-20">
+        <div className="max-w-3xl mx-auto text-center mb-8">
+          <p className="text-sm font-bold uppercase tracking-wider text-success mb-3">{t("landing.freeFaq.eyebrow")}</p>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl">{t("landing.freeFaq.title")}</h2>
+        </div>
+        <Accordion
+          type="single"
+          collapsible
+          className="max-w-3xl mx-auto rounded-2xl bg-card border border-border shadow-soft px-4 sm:px-6"
+        >
+          {freeFaq.map((item, i) => (
+            <AccordionItem key={i} value={`free-faq-${i}`} className="border-b last:border-b-0 border-border/60">
+              <AccordionTrigger className="font-display text-base sm:text-lg text-left">
+                {item.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {item.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </section>
 
       {/* Schools */}
