@@ -8,7 +8,7 @@
     "continue": "Continuar",
     "next": "Siguiente",
     "back": "Atrás",
-    "tryFree": "Crea una cuenta",
+    "tryFree": "Crea tu cuenta gratis",
     "unlockNow": "Empieza ahora",
     "comingSoon": "Próximamente",
     "loading": "Cargando…",
@@ -27,8 +27,8 @@
     "heroTitle": "¡Aprende a usar la IA como un pro!",
     "heroSubtitle": "Una aventura divertida que enseña a los niños a usar la IA con seguridad, hacer preguntas más inteligentes y convertirse en aprendices imparables. Hecho para 8 a 12 años.",
     "heroSparkLine": "¡Hola, soy Spark. Seré tu guía de IA!",
-    "heroMicroCopy": "Acceso gratis a todas las lecciones. Empieza en 60 segundos.",
-    "ctaPrimary": "Crea una cuenta",
+    "heroMicroCopy": "Todas las lecciones son gratis. Gratis ahora y gratis para siempre — sin prueba.",
+    "ctaPrimary": "Crea tu cuenta gratis",
     "ctaSecondary": "Iniciar sesión",
     "trustChips": {
       "gdpr": "Seguro con RGPD",
@@ -170,7 +170,7 @@
       "eyebrow": "Totalmente gratis",
       "title": "Todo está abierto para cada alumno.",
       "subtitle": "Sin muro de pago, sin prueba limitada y sin sorpresas. Regístrate y recorre todos los mundos y lecciones desde el primer momento.",
-      "cta": "Crea una cuenta",
+      "cta": "Crea tu cuenta gratis",
       "badge": "Gratis",
       "badgeCaption": "todas las lecciones · siempre",
       "features": [
@@ -190,8 +190,8 @@
     },
     "finalCta": {
       "title": "¿Listo para criar a un AI Smart Kid?",
-      "subtitle": "Todas las lecciones son gratis. Crea una cuenta y empieza al momento.",
-      "cta": "Empieza la aventura",
+      "subtitle": "Todas las lecciones son gratis y seguirán siendo gratis. Crea una cuenta y empieza al momento.",
+      "cta": "Empieza aquí — gratis",
       "secondary": "Para escuelas"
     },
     "parents": {
@@ -202,7 +202,7 @@
       "eyebrow": "Totalmente gratis",
       "title": "Todo está abierto para cada alumno.",
       "subtitle": "Sin muro de pago, sin prueba limitada y sin sorpresas. Regístrate y recorre todos los mundos y lecciones desde el primer momento.",
-      "cta": "Crea una cuenta",
+      "cta": "Crea tu cuenta gratis",
       "badge": "Gratis",
       "badgeCaption": "todas las lecciones · siempre",
       "features": [
@@ -231,7 +231,7 @@
         "Cambio de idioma desde la cuenta",
         "Nuevas lecciones añadidas automáticamente"
       ],
-      "cta": "Crea una cuenta"
+      "cta": "Crea tu cuenta gratis"
     },
     "schools": {
       "name": "Escuelas",
@@ -306,7 +306,7 @@
         "Cambio de idioma desde la cuenta",
         "Nuevas lecciones añadidas automáticamente"
       ],
-      "cta": "Crea una cuenta"
+      "cta": "Crea tu cuenta gratis"
     }
   },
   "schoolForm": {
