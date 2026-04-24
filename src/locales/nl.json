@@ -198,6 +198,28 @@
       "title": "Gemaakt voor ouders die willen dat hun kids opbloeien met AI, niet bang ervoor zijn",
       "desc": "Geen chat. Geen data-graaien. Niets engs. Gewoon door kids geteste lessen die zelfvertrouwen en kritisch denken bouwen."
     },
+    "freeFaq": {
+      "eyebrow": "Geen addertjes",
+      "title": "Echt gratis? Ja — kort uitgelegd",
+      "items": [
+        {
+          "q": "Is er een betaalmuur?",
+          "a": "Nee. Elke wereld, les, quiz en het diploma staan direct open zodra je een account maakt."
+        },
+        {
+          "q": "Is dit een proefperiode die afloopt?",
+          "a": "Nee. Er is geen proefperiode en geen aftellende timer. Je account blijft voor altijd gratis."
+        },
+        {
+          "q": "Gaan jullie later geld vragen?",
+          "a": "Nee. De studenten-app is gratis nu en blijft gratis. We vragen kinderen of ouders nooit om te betalen."
+        },
+        {
+          "q": "En nieuwe lessen?",
+          "a": "Nieuwe lessen komen automatisch in je account — ook gratis, altijd."
+        }
+      ]
+    },
     "freeAccess": {
       "eyebrow": "Volledig gratis",
       "title": "Alles staat open voor elke leerling.",

@@ -199,6 +199,28 @@
       "title": "Built for parents who want their kids to thrive with AI, not fear it",
       "desc": "No chat. No data harvesting. No scary stuff. Just kid-tested lessons that build confidence and critical thinking."
     },
+    "freeFaq": {
+      "eyebrow": "No catch",
+      "title": "Really free? Yes — here's the short version",
+      "items": [
+        {
+          "q": "Is there a paywall?",
+          "a": "No. Every world, lesson, quiz, and certificate is unlocked the moment you sign up."
+        },
+        {
+          "q": "Is this a free trial that expires?",
+          "a": "No. There is no trial timer and no countdown. Your account stays free forever."
+        },
+        {
+          "q": "Will you start charging later?",
+          "a": "No. The student app is free now and free to stay. We never ask kids or parents for payment."
+        },
+        {
+          "q": "What about new lessons?",
+          "a": "New lessons are added to your account automatically — also free, always."
+        }
+      ]
+    },
     "freeAccess": {
       "eyebrow": "Fully free",
       "title": "Everything is open for every learner.",
