@@ -324,6 +324,30 @@ export const Landing = () => {
         </div>
       </section>
 
+      {/* Free FAQ — no paywall reassurance */}
+      <section className="container py-12 sm:py-16 md:py-20">
+        <div className="max-w-3xl mx-auto text-center mb-8">
+          <p className="text-sm font-bold uppercase tracking-wider text-success mb-3">{t("landing.freeFaq.eyebrow")}</p>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl">{t("landing.freeFaq.title")}</h2>
+        </div>
+        <Accordion
+          type="single"
+          collapsible
+          className="max-w-3xl mx-auto rounded-2xl bg-card border border-border shadow-soft px-4 sm:px-6"
+        >
+          {freeFaq.map((item, i) => (
+            <AccordionItem key={i} value={`free-faq-${i}`} className="border-b last:border-b-0 border-border/60">
+              <AccordionTrigger className="font-display text-base sm:text-lg text-left">
+                {item.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {item.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </section>
+
       {/* Schools */}
       <section className="container py-12 sm:py-16 md:py-20">
         <div className="rounded-3xl bg-gradient-sky text-primary-foreground p-6 sm:p-10 md:p-12 shadow-pop flex flex-col md:flex-row items-center gap-6 justify-between">
