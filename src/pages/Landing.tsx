@@ -125,6 +125,7 @@ const ParentCard = ({
 export const Landing = () => {
   const { t } = useTranslation();
   const teaserFeatures = t("landing.freeAccess.features", { returnObjects: true }) as string[];
+  const freeFaq = t("landing.freeFaq.items", { returnObjects: true }) as { q: string; a: string }[];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
