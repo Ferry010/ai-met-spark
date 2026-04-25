@@ -346,11 +346,38 @@
     "success": "Bedankt! We nemen snel contact op.",
     "error": "Er ging iets mis. Probeer het opnieuw."
   },
+  "about": {
+    "eyebrow": "Het verhaal achter Spark",
+    "title": "Over Ferry",
+    "subtitle": "Spreker, auteur, AI-expert. Maar vooral: vader.",
+    "chips": ["Spreker", "Auteur", "AI-expert"],
+    "sparkBubble": "Hoi! Ik ben Spark. Maar het was Ferry's idee. Lees even mee?",
+    "paragraphs": [
+      "Ik ben Ferry Hoes. Spreker, auteur, AI-expert. Maar voor alles ben ik vader van twee kleine kinderen die opgroeien in een wereld die straks runt op AI en automatisering.",
+      "Ze zijn nog jong. Ze begrijpen nog niet wat dat betekent. Maar ik wel.",
+      "Ik reis de wereld over om bedrijven en overheden te vertellen hoe ze met AI moeten omgaan. Ik heb de AI Geletterdheid Academy opgericht zodat professionals begrijpen wat AI is, wat het kan en wat het niet kan. Ik schrijf erover. Ik spreek erover. Het is mijn vak.",
+      "Maar thuis, aan de keukentafel, had ik niks.",
+      "Ik zocht iets waarmee ik mijn eigen kinderen kon leren wat AI echt is. Hoe het werkt. Wanneer je het vertrouwt en wanneer niet. Hoe je de baas blijft over een tool die slim doet maar niet denkt.",
+      "Dat bestond niet. Niet in het Nederlands. Niet voor hun leeftijd. Niet op een manier die past bij hoe zij de wereld beleven.",
+      "Dus heb ik het zelf gebouwd.",
+      "AI met Spark is gratis, omdat ik wil dat elk kind hier gebruik van kan maken. Ongeacht of ze een grote of kleine portemonnee hebben. Deze kennis mag geen luxe zijn.",
+      "Spark is de gids die ik voor mijn eigen kinderen wilde. En nu is hij er voor jouw kind ook."
+    ],
+    "punchline1": "Maar thuis, aan de keukentafel, had ik niks.",
+    "punchline2": "Dus heb ik het zelf gebouwd.",
+    "pullQuote": "Deze kennis mag geen luxe zijn. Daarom is AI met Spark gratis — voor elk kind.",
+    "signature": "— Ferry Hoes",
+    "ctaTitle": "Klaar om kennis te maken met Spark?",
+    "ctaSubtitle": "Maak gratis een account en laat je kind beginnen aan het avontuur.",
+    "ctaSecondary": "Terug naar home",
+    "ctaMicro": "Gratis nu en gratis blijvend — geen proefperiode."
+  },
   "footer": {
     "tagline": "We helpen de eerste generatie AI-slimme kids opgroeien.",
     "privacy": "Privacy",
     "terms": "Voorwaarden",
     "contact": "Contact",
+    "about": "Over Ferry",
     "rights": "Alle rechten voorbehouden."
   },
   "cookies": {

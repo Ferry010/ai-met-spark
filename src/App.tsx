@@ -15,6 +15,7 @@ import Pricing from "./pages/Pricing.tsx";
 import SchoolContact from "./pages/SchoolContact.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
+import About from "./pages/About.tsx";
 import Auth from "./pages/Auth.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import WorldPage from "./pages/WorldPage.tsx";
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="/schools/contact" element={<SchoolContact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/about" element={<About />} />
           <Route path="/auth" element={<Auth />} />
           <Route
             path="/dashboard"
