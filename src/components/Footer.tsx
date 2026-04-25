@@ -15,6 +15,7 @@ export const Footer = () => {
           <span className="font-display text-lg">{t("common.appName")}</span>
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
+          <Link to="/about" className="hover:text-foreground transition-colors">{t("footer.about")}</Link>
           <Link to="/privacy" className="hover:text-foreground transition-colors">{t("footer.privacy")}</Link>
           <Link to="/terms" className="hover:text-foreground transition-colors">{t("footer.terms")}</Link>
           <Link to="/schools/contact" className="hover:text-foreground transition-colors">{t("footer.contact")}</Link>

@@ -347,11 +347,38 @@
     "success": "Thanks! We'll be in touch soon.",
     "error": "Something went wrong. Please try again."
   },
+  "about": {
+    "eyebrow": "The story behind Spark",
+    "title": "About Ferry",
+    "subtitle": "Speaker, author, AI expert. But above all: a dad.",
+    "chips": ["Speaker", "Author", "AI expert"],
+    "sparkBubble": "Hi! I'm Spark. But this was Ferry's idea. Read along?",
+    "paragraphs": [
+      "I'm Ferry Hoes. Speaker, author, AI expert. But above all, I'm the dad of two small kids growing up in a world that's about to run on AI and automation.",
+      "They're still young. They don't yet understand what that means. But I do.",
+      "I travel the world telling companies and governments how to handle AI. I founded the AI Literacy Academy so professionals understand what AI is, what it can do, and what it can't. I write about it. I speak about it. It's my craft.",
+      "But at home, at the kitchen table, I had nothing.",
+      "I was looking for something to teach my own kids what AI really is. How it works. When to trust it and when not. How to stay in charge of a tool that acts smart but doesn't actually think.",
+      "It didn't exist. Not in their language. Not for their age. Not in a way that matches how they experience the world.",
+      "So I built it myself.",
+      "AI met Spark is free, because I want every kid to be able to use it. No matter the size of their parents' wallet. This knowledge shouldn't be a luxury.",
+      "Spark is the guide I wanted for my own kids. And now he's here for your kid too."
+    ],
+    "punchline1": "But at home, at the kitchen table, I had nothing.",
+    "punchline2": "So I built it myself.",
+    "pullQuote": "This knowledge shouldn't be a luxury. That's why AI met Spark is free — for every kid.",
+    "signature": "— Ferry Hoes",
+    "ctaTitle": "Ready to meet Spark?",
+    "ctaSubtitle": "Create a free account and let your kid start the adventure.",
+    "ctaSecondary": "Back to home",
+    "ctaMicro": "Free now and free to stay — no trial."
+  },
   "footer": {
     "tagline": "Raising the first generation of AI-smart kids.",
     "privacy": "Privacy",
     "terms": "Terms",
     "contact": "Contact",
+    "about": "About Ferry",
     "rights": "All rights reserved."
   },
   "cookies": {

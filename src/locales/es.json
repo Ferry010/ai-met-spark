@@ -346,11 +346,38 @@
     "success": "¡Gracias! Te contactaremos pronto.",
     "error": "Algo salió mal. Inténtalo de nuevo."
   },
+  "about": {
+    "eyebrow": "La historia detrás de Spark",
+    "title": "Sobre Ferry",
+    "subtitle": "Conferenciante, autor, experto en IA. Pero ante todo: padre.",
+    "chips": ["Conferenciante", "Autor", "Experto en IA"],
+    "sparkBubble": "¡Hola! Soy Spark. Pero esta fue la idea de Ferry. ¿Lees conmigo?",
+    "paragraphs": [
+      "Soy Ferry Hoes. Conferenciante, autor, experto en IA. Pero ante todo soy padre de dos niños pequeños que crecen en un mundo que pronto funcionará con IA y automatización.",
+      "Aún son pequeños. Todavía no entienden lo que eso significa. Pero yo sí.",
+      "Viajo por el mundo contándole a empresas y gobiernos cómo manejar la IA. Fundé la AI Literacy Academy para que los profesionales entiendan qué es la IA, qué puede hacer y qué no. Escribo sobre ello. Hablo sobre ello. Es mi oficio.",
+      "Pero en casa, en la mesa de la cocina, no tenía nada.",
+      "Buscaba algo con lo que enseñar a mis propios hijos qué es la IA de verdad. Cómo funciona. Cuándo confiar en ella y cuándo no. Cómo mantener el control sobre una herramienta que parece lista pero no piensa.",
+      "No existía. Ni en su idioma. Ni para su edad. Ni de una forma que encajara con cómo viven el mundo.",
+      "Así que lo construí yo mismo.",
+      "AI met Spark es gratis, porque quiero que cualquier niño pueda usarlo. Sin importar lo grande o pequeño que sea el bolsillo de su familia. Este conocimiento no debe ser un lujo.",
+      "Spark es la guía que quería para mis propios hijos. Y ahora también está aquí para el tuyo."
+    ],
+    "punchline1": "Pero en casa, en la mesa de la cocina, no tenía nada.",
+    "punchline2": "Así que lo construí yo mismo.",
+    "pullQuote": "Este conocimiento no debe ser un lujo. Por eso AI met Spark es gratis — para cada niño.",
+    "signature": "— Ferry Hoes",
+    "ctaTitle": "¿Listo para conocer a Spark?",
+    "ctaSubtitle": "Crea una cuenta gratis y deja que tu hijo empiece la aventura.",
+    "ctaSecondary": "Volver al inicio",
+    "ctaMicro": "Gratis ahora y gratis para siempre — sin prueba."
+  },
   "footer": {
     "tagline": "Criando la primera generación de niños listos en IA.",
     "privacy": "Privacidad",
     "terms": "Términos",
     "contact": "Contacto",
+    "about": "Sobre Ferry",
     "rights": "Todos los derechos reservados."
   },
   "cookies": {
