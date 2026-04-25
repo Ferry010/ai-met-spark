@@ -348,10 +348,10 @@
     "error": "Something went wrong. Please try again."
   },
   "about": {
-    "eyebrow": "The story behind Spark",
-    "title": "About Ferry",
-    "subtitle": "Speaker, author, AI expert. But above all: a dad.",
-    "chips": ["Speaker", "Author", "AI expert"],
+    "eyebrow": "About Spark",
+    "title": "Spark is free — and that's not by accident",
+    "subtitle": "The story of a dad who went looking for something for his own kids — and built it himself.",
+    "chips": ["Free", "For every kid", "Built by a dad"],
     "sparkBubble": "Hi! I'm Spark. But this was Ferry's idea. Read along?",
     "paragraphs": [
       "I'm Ferry Hoes. Speaker, author, AI expert. But above all, I'm the dad of two small kids growing up in a world that's about to run on AI and automation.",
@@ -378,7 +378,7 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "contact": "Contact",
-    "about": "About Ferry",
+    "about": "About Spark",
     "rights": "All rights reserved."
   },
   "cookies": {
