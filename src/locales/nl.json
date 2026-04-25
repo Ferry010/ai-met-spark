@@ -27,7 +27,7 @@
     "heroTitle": "Leer veilig én leuk met AI",
     "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 9 tot 11 jaar.",
     "heroSparkLine": "Hoi, ik ben Spark. Ik ben je AI-gids!",
-    "heroMicroCopy": "Alle lessen zijn gratis. Gratis nu en gratis blijvend · geen proefperiode.",
+    "heroMicroCopy": "Alle lessen zijn gratis. Gratis nu en gratis blijvend. Geen proefperiode.",
     "ctaPrimary": "Maak gratis account",
     "ctaSecondary": "Inloggen",
     "trustChips": {
@@ -200,7 +200,7 @@
     },
     "freeFaq": {
       "eyebrow": "Geen addertjes",
-      "title": "Echt gratis? Ja · kort uitgelegd",
+      "title": "Echt gratis? Ja, kort uitgelegd",
       "items": [
         {
           "q": "Is er een betaalmuur?",
@@ -216,7 +216,7 @@
         },
         {
           "q": "En nieuwe lessen?",
-          "a": "Nieuwe lessen komen automatisch in je account · ook gratis, altijd."
+          "a": "Nieuwe lessen komen automatisch in je account. Ook gratis, altijd."
         }
       ]
     },
@@ -349,7 +349,7 @@
   "about": {
     "eyebrow": "Over Spark",
     "title": "Spark is gratis en dat is niet zonder reden",
-    "subtitle": "Het verhaal van een vader die voor zijn eigen kinderen iets zocht · en het zelf bouwde.",
+    "subtitle": "Het verhaal van een vader die voor zijn eigen kinderen iets zocht, en het zelf bouwde.",
     "chips": ["Gratis", "Voor elk kind", "Gemaakt door een vader"],
     "sparkBubble": "Hoi! Ik ben Spark. Maar het was Ferry's idee. Lees even mee?",
     "paragraphs": [
@@ -365,12 +365,12 @@
     ],
     "punchline1": "Maar thuis, aan de keukentafel, had ik niks.",
     "punchline2": "Dus heb ik het zelf gebouwd.",
-    "pullQuote": "Deze kennis mag geen luxe zijn. Daarom is AI met Spark gratis · voor elk kind.",
+    "pullQuote": "Deze kennis mag geen luxe zijn. Daarom is AI met Spark gratis, voor elk kind.",
     "signature": "- Ferry Hoes",
     "ctaTitle": "Klaar om kennis te maken met Spark?",
     "ctaSubtitle": "Maak gratis een account en laat je kind beginnen aan het avontuur.",
     "ctaSecondary": "Terug naar home",
-    "ctaMicro": "Gratis nu en gratis blijvend · geen proefperiode."
+    "ctaMicro": "Gratis nu en gratis blijvend. Geen proefperiode."
   },
   "footer": {
     "tagline": "We helpen de eerste generatie AI-slimme kids opgroeien.",
