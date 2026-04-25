@@ -27,7 +27,7 @@
     "heroTitle": "Learn how to use AI like a pro!",
     "heroSubtitle": "A fun adventure that teaches kids to use AI safely, ask smarter questions, and become unstoppable learners. Built for ages 8 to 12.",
     "heroSparkLine": "Hi, I'm Spark. I'll be your AI guide!",
-    "heroMicroCopy": "Every lesson is free. Free now and free to stay — no trial.",
+    "heroMicroCopy": "Every lesson is free. Free now and free to stay · no trial.",
     "ctaPrimary": "Create free account",
     "ctaSecondary": "Log In",
     "trustChips": {
@@ -192,7 +192,7 @@
     "finalCta": {
       "title": "Ready to raise an AI Smart Kid?",
       "subtitle": "Every lesson is free and stays free. Create an account and begin right away.",
-      "cta": "Start here — free",
+      "cta": "Start here · free",
       "secondary": "For schools"
     },
     "parents": {
@@ -201,7 +201,7 @@
     },
     "freeFaq": {
       "eyebrow": "No catch",
-      "title": "Really free? Yes — here's the short version",
+      "title": "Really free? Yes · here's the short version",
       "items": [
         {
           "q": "Is there a paywall?",
@@ -217,7 +217,7 @@
         },
         {
           "q": "What about new lessons?",
-          "a": "New lessons are added to your account automatically — also free, always."
+          "a": "New lessons are added to your account automatically · also free, always."
         }
       ]
     },
@@ -349,8 +349,8 @@
   },
   "about": {
     "eyebrow": "About Spark",
-    "title": "Spark is free — and that's not by accident",
-    "subtitle": "The story of a dad who went looking for something for his own kids — and built it himself.",
+    "title": "Spark is free · and that's not by accident",
+    "subtitle": "The story of a dad who went looking for something for his own kids · and built it himself.",
     "chips": ["Free", "For every kid", "Built by a dad"],
     "sparkBubble": "Hi! I'm Spark. But this was Ferry's idea. Read along?",
     "paragraphs": [
@@ -366,12 +366,12 @@
     ],
     "punchline1": "But at home, at the kitchen table, I had nothing.",
     "punchline2": "So I built it myself.",
-    "pullQuote": "This knowledge shouldn't be a luxury. That's why AI met Spark is free — for every kid.",
-    "signature": "— Ferry Hoes",
+    "pullQuote": "This knowledge shouldn't be a luxury. That's why AI met Spark is free · for every kid.",
+    "signature": "- Ferry Hoes",
     "ctaTitle": "Ready to meet Spark?",
     "ctaSubtitle": "Create a free account and let your kid start the adventure.",
     "ctaSecondary": "Back to home",
-    "ctaMicro": "Free now and free to stay — no trial."
+    "ctaMicro": "Free now and free to stay · no trial."
   },
   "footer": {
     "tagline": "Raising the first generation of AI-smart kids.",
