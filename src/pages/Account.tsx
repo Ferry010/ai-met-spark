@@ -21,6 +21,8 @@ export const Account = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+  const [resetting, setResetting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [backgroundAudioEnabled, setBackgroundAudioEnabledState] = useState(() => getBackgroundAudioEnabled());
   const [backgroundAudioVolume, setBackgroundAudioVolumeState] = useState(() => getBackgroundAudioVolume());
 
@@ -30,9 +32,13 @@ export const Account = () => {
     e.preventDefault();
     if (!user) return;
     const form = new FormData(e.currentTarget);
+    const ageRaw = String(form.get("age") || "").trim();
+    const parentEmailRaw = String(form.get("parent_email") || "").trim();
     setBusy(true);
     const { error } = await supabase.from("profiles").update({
       first_name: String(form.get("first_name") || profile.first_name),
+      age: ageRaw === "" ? null : Number(ageRaw),
+      parent_email: parentEmailRaw === "" ? null : parentEmailRaw,
       language: "nl",
     }).eq("id", user.id);
     setBusy(false);
@@ -42,6 +48,20 @@ export const Account = () => {
     }
     refreshProfile();
     toast({ title: "Opgeslagen!" });
+  };
+
+  const requestPasswordReset = async () => {
+    if (!user?.email) return;
+    setResetting(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+      redirectTo: `${window.location.origin}/auth`,
+    });
+    setResetting(false);
+    if (error) {
+      toast({ title: "Kon mail niet sturen", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Mail verstuurd", description: "Check je inbox voor de resetlink." });
   };
 
   const resetProgress = async () => {
@@ -54,10 +74,16 @@ export const Account = () => {
   };
 
   const deleteAccount = async () => {
-    if (!confirm("Account verwijderen? Dit wist permanent alle data.")) return;
-    if (!user) return;
+    if (!confirm("Account verwijderen? Dit wist permanent al je voortgang en je diploma.")) return;
+    setDeleting(true);
+    const { error } = await supabase.functions.invoke("delete-account");
+    if (error) {
+      setDeleting(false);
+      toast({ title: "Kon account niet verwijderen", description: error.message, variant: "destructive" });
+      return;
+    }
     await supabase.auth.signOut();
-    toast({ title: "Uitgelogd", description: "Mail support om je account volledig te verwijderen." });
+    toast({ title: "Account verwijderd" });
     navigate("/");
   };
 
@@ -72,10 +98,27 @@ export const Account = () => {
             <Label htmlFor="first_name">Voornaam</Label>
             <Input id="first_name" name="first_name" defaultValue={profile.first_name} maxLength={40} className="h-12 rounded-xl" />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="age">Leeftijd</Label>
+            <Input id="age" name="age" type="number" min={4} max={18} defaultValue={profile.age ?? ""} className="h-12 rounded-xl" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="parent_email">E-mail van je ouder</Label>
+            <Input id="parent_email" name="parent_email" type="email" defaultValue={profile.parent_email ?? ""} placeholder="ouder@voorbeeld.nl" className="h-12 rounded-xl" />
+            <p className="text-xs text-muted-foreground">Hier sturen we updates over voltooide werelden en je diploma.</p>
+          </div>
           <Button type="submit" disabled={busy} className="w-full h-14 rounded-full font-display bg-primary shadow-soft">
             {busy ? "…" : "Opslaan"}
           </Button>
         </form>
+
+        <section className="rounded-3xl bg-card border border-border p-6 shadow-soft space-y-3 mb-6">
+          <h2 className="font-display text-xl">Wachtwoord</h2>
+          <p className="text-sm text-muted-foreground">We sturen een resetlink naar {user?.email}.</p>
+          <Button variant="outline" onClick={requestPasswordReset} disabled={resetting} className="w-full rounded-full font-display border-2">
+            {resetting ? "…" : "Stuur resetlink"}
+          </Button>
+        </section>
 
         <section className="rounded-3xl bg-card border border-border p-6 shadow-soft space-y-5 mb-6">
           <div>
@@ -124,8 +167,8 @@ export const Account = () => {
           <Button variant="outline" onClick={resetProgress} className="w-full rounded-full font-display border-2">
             Alle lesvoortgang resetten
           </Button>
-          <Button variant="destructive" onClick={deleteAccount} className="w-full rounded-full font-display">
-            Account verwijderen
+          <Button variant="destructive" onClick={deleteAccount} disabled={deleting} className="w-full rounded-full font-display">
+            {deleting ? "…" : "Account verwijderen"}
           </Button>
         </div>
       </main>

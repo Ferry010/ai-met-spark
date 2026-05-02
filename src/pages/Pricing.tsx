@@ -15,7 +15,7 @@ interface FAQItem { q: string; a: string }
 
 export const Pricing = () => {
   const { t } = useTranslation();
-  const studentFeatures = t("pricing.student.features", { returnObjects: true }) as string[];
+  const studentFeatures = t("pricing.individual.features", { returnObjects: true }) as string[];
   const schoolFeatures = t("pricing.schools.features", { returnObjects: true }) as string[];
   const includedItems = t("pricing.included.items", { returnObjects: true }) as string[];
   const faq = t("pricing.faq.items", { returnObjects: true }) as FAQItem[];
@@ -32,11 +32,11 @@ export const Pricing = () => {
 
       <section className="container py-10 grid md:grid-cols-2 gap-6 max-w-5xl">
         <div className="rounded-3xl bg-card border-2 border-primary shadow-pop p-6 sm:p-8 flex flex-col">
-          <h2 className="font-display text-2xl mb-1">{t("pricing.student.name")}</h2>
-          <p className="text-sm text-muted-foreground mb-5">{t("pricing.student.tagline")}</p>
+          <h2 className="font-display text-2xl mb-1">{t("pricing.individual.name")}</h2>
+          <p className="text-sm text-muted-foreground mb-5">{t("pricing.individual.tagline")}</p>
           <div className="mb-6 rounded-2xl bg-primary/10 px-4 py-4 text-center">
-            <span className="font-display text-4xl sm:text-5xl text-primary">{t("pricing.student.price")}</span>
-            <p className="mt-2 text-sm text-muted-foreground">{t("pricing.student.billing")}</p>
+            <span className="font-display text-4xl sm:text-5xl text-primary">{t("pricing.individual.price")}</span>
+            <p className="mt-2 text-sm text-muted-foreground">{t("pricing.individual.billing")}</p>
           </div>
           <ul className="space-y-3 mb-8 flex-1">
             {studentFeatures.map((f) => (
@@ -50,12 +50,11 @@ export const Pricing = () => {
           </ul>
           <Link to="/auth?mode=signup">
             <Button className="w-full h-14 rounded-full font-display text-base bg-primary hover:bg-primary/90 shadow-soft">
-              {t("pricing.student.cta")}
+              {t("pricing.individual.cta")}
             </Button>
           </Link>
         </div>
 
-        {/* Schools */}
         <div className="rounded-3xl bg-card border border-border shadow-soft p-6 sm:p-8 flex flex-col">
           <h2 className="font-display text-2xl mb-1">{t("pricing.schools.name")}</h2>
           <p className="text-sm text-muted-foreground mb-1">{t("pricing.schools.tagline")}</p>
@@ -82,7 +81,6 @@ export const Pricing = () => {
         </div>
       </section>
 
-      {/* What's included strip */}
       <section className="container max-w-5xl pb-10">
         <div className="rounded-3xl bg-gradient-sunshine p-8 shadow-soft">
           <h3 className="font-display text-xl text-secondary-foreground text-center mb-5">
@@ -101,7 +99,6 @@ export const Pricing = () => {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="container py-12 sm:py-16 max-w-3xl">
         <h2 className="font-display text-2xl sm:text-3xl text-center mb-8">{t("pricing.faq.title")}</h2>
         <Accordion type="single" collapsible className="rounded-2xl bg-card border border-border shadow-soft px-4 sm:px-6">
