@@ -1,41 +1,75 @@
+# P0 implementatieplan voor v1 launch
 
-# Volledig Nederlands maken
+We focussen volledig op de leerling + ouder flow. Teacher/school dashboards blijven staan zoals ze zijn (mock/binnenkort) en komen pas in een latere release. Hieronder wat ik concreet ga bouwen, in de volgorde waarin het logisch is om te releasen.
 
-We halen alle meertaligheid eruit. NL wordt de enige taal. Geen taalkiezer meer, geen EN/ES bestanden, geen taal-detectie.
+## 1. Echte voortgang per gebruiker
 
-## Wat er weggaat
+Nu wordt voortgang her en der lokaal afgeleid. We hebben al een `user_progress` tabel met RLS. Die ga ik consequent gebruiken.
 
-- `src/locales/en.json` en `src/locales/es.json` (verwijderen)
-- `src/components/LanguageSwitcher.tsx` (verwijderen)
-- `src/pages/LanguageSelect.tsx` en de bijbehorende route in `src/App.tsx` (verwijderen)
-- Alle imports/gebruik van `LanguageSwitcher` in `SiteHeader`, `AppHeader`, `Footer`, `Account`, etc.
-- `localStorage` key `aisk_lang` wordt niet meer gebruikt (oude waarde mag blijven staan, doet niks meer)
-- Verwijzingen naar "wissel taal" / "language" in copy (o.a. in `nl.json` bij `pricing.student.features` en `pricing.individual.features`: "Taal wisselen in je account" eruit)
+- Nieuwe hook `useUserProgress()` die alle rijen voor `auth.uid()` ophaalt en cached via React Query.
+- Bij afronden van een les in `LessonPage` → `upsert` in `user_progress` (`lesson_id`, `stars`, `completed_at`). Conflict op `(user_id, lesson_id)` zodat herhalen het record bijwerkt.
+- `Dashboard`, `WorldPage` en `Certificate` lezen voortgang uit deze hook in plaats van uit lokale state / mock.
+- Wereld is "voltooid" als alle lessen van die wereld een rij hebben.
+- Eindtoets pas zichtbaar als alle werelden voltooid zijn.
 
-## Wat er blijft
+Schemawijziging: unieke index op `user_progress(user_id, lesson_id)` zodat upsert werkt. Migratie nodig.
 
-- `react-i18next` blijft staan zodat `useTranslation()` calls in alle pagina's blijven werken zonder dat we overal `t(...)` moeten herschrijven.
-- `src/i18n.ts` wordt versimpeld:
-  - alleen `nl` als resource
-  - `lng: "nl"`, `fallbackLng: "nl"`
-  - geen `LanguageDetector`, geen `supportedLngs`, geen `detection`-blok
-  - `i18next-browser-languagedetector` import eruit
-- `src/locales/nl.json` blijft ongewijzigd qua inhoud, behalve het verwijderen van regels die over taal wisselen gaan.
+## 2. Betaalmuur die echt iets afsluit
 
-## UI gevolgen
+verwijder allemaal rondom betalen. De app is en blijft volledig gratis. 
 
-- Header (mobiel + desktop) toont geen globe/taal-knop meer.
-- Eerste bezoek gaat direct naar `/` (Landing) in plaats van `/language`.
-- `LanguageSelect` route `/language` wordt een redirect naar `/` (of helemaal weggehaald uit de router).
+## 3. Ouder-flow: e-mail bij voltooiing wereld + diploma
 
-## Bestanden die ik aanraak
+Nu hebben we `parent_email` op het profiel maar er gebeurt niks mee.
 
-- bewerken: `src/i18n.ts`, `src/App.tsx`, `src/components/SiteHeader.tsx`, `src/components/AppHeader.tsx`, `src/components/Footer.tsx`, `src/pages/Account.tsx` (alleen als daar de switcher staat), `src/locales/nl.json` (kleine copy-cleanup)
-- verwijderen: `src/locales/en.json`, `src/locales/es.json`, `src/components/LanguageSwitcher.tsx`, `src/pages/LanguageSelect.tsx`
+- Auth-email infra opzetten (Lovable Emails) zodat we vanaf eigen domein kunnen sturen. Tijdens setup vraag ik je om het domein in te vullen.
+- Edge function `notify-parent` (geen JWT vereist intern, wel server-side validatie via service role): verstuurt mail naar `parent_email`.
+  - Trigger 1: bij eerste `user_progress` insert van laatste les van een wereld → "je kind heeft wereld X afgerond".
+  - Trigger 2: bij aanmaken `certificates` rij → "je kind heeft het diploma behaald" + link naar pdf.
+- Aanroep gebeurt vanuit de client direct na de upsert (eenvoudig en goed genoeg voor v1). Idempotentie via `lesson_id` check zodat dubbele triggers niks doen.
+- Templates in NL, witte achtergrond, Spark-branding (oranje accent, Fraunces voor heading).
 
-## Niet-doel
+## 4. Account opschonen voor leerlingen
 
-- We raken de lesinhoud (`src/content/lessons.ts`) en audio niet aan; die is al Nederlands.
-- We laten `react-i18next` infrastructuur staan zodat er geen grote refactor nodig is. Mocht je later 100% strings inline willen, dan is dat een aparte opruim-klus.
+Nu staat in `Account.tsx` nog logica die taal-keuze en andere zaken aanstuurt die we niet meer willen.
 
-Akkoord? Dan bouw ik dit in één keer om.
+- Velden tonen: voornaam, leeftijd, e-mail ouder. Alle drie editable.
+- "Wachtwoord wijzigen" knop die Supabase password reset triggert.
+- "Account verwijderen" knop (edge function `delete-account` met service role) die alle eigen data wist en uitlogt.
+- Geen taalkeuze meer (al weg), geen dashboards-switch voor gewone leerlingen.
+
+Edge function nodig: `delete-account`.
+
+## 5. Pricing pagina afmaken
+
+- Knoppen koppelen aan `create-checkout` (al bestaand) met de juiste `priceId` lookup keys.
+- Duidelijke "1 gratis proefles, daarna eenmalig X" copy.
+- School-kaart blijft "neem contact op" → `/schools/contact`.
+
+## 6. Diploma pdf echt genereren
+
+Nu wordt het diploma alleen als HTML/scherm getoond. We willen een echte pdf in de `certificates` bucket.
+
+- Edge function `generate-certificate` (puppeteer-vrij, gewoon `pdf-lib` of `jspdf` via npm in Deno) die een eenvoudige A4 pdf maakt met naam, datum, score.
+- Upload naar `certificates/<user_id>/diploma.pdf`.
+- `attach_certificate_pdf` rpc (bestaat al) wordt aangeroepen om het pad te koppelen.
+- "Download diploma" knop op `/certificate` haalt signed url op.
+
+## Volgorde van releasen
+
+```text
+week 1  →  punten 1, 2, 4, 5   (kern leerling + betaling + account)
+week 2  →  punten 3, 6         (ouder-mail + echte pdf diploma)
+```
+
+Dit is een grote brok werk. Ik stel voor dat we beginnen met **punten 1 + 2 in deze ronde** (echte voortgang + betaalmuur) want dat is de fundering waar de rest op leunt. Daarna pak ik in een volgende ronde 4 + 5 op, en als laatste 3 + 6.
+
+## Technische details
+
+- Migratie: `CREATE UNIQUE INDEX IF NOT EXISTS user_progress_user_lesson_idx ON public.user_progress(user_id, lesson_id);`
+- React Query keys: `['user-progress', userId]`, invalidate na les-afronding.
+- `useAuth` profile refetch toevoegen (`refetchProfile()`) voor checkout-success flow.
+- Edge functions die nieuw komen: `notify-parent`, `delete-account`, `generate-certificate`. Allemaal volgen het bestaande patroon (CORS, zod validatie, service role waar nodig).
+- Geen wijziging aan teacher/admin code in deze ronde.
+
+Akkoord? Dan begin ik met de eerste twee punten (voortgang + betaalmuur) zodra je goedkeurt.
