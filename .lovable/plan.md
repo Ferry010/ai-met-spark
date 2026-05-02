@@ -1,117 +1,41 @@
 
-# CTA-copy aanpassen zodat gratis permanent voelt
+# Volledig Nederlands maken
 
-## Doel
-De call-to-actions moeten duidelijk maken dat het product gratis is, zonder te klinken als een tijdelijke trial. De combinatie wordt:
+We halen alle meertaligheid eruit. NL wordt de enige taal. Geen taalkiezer meer, geen EN/ES bestanden, geen taal-detectie.
 
-- CTA: bijvoorbeeld `Maak gratis account` of `Start hier`
-- direct daaronder of ernaast: heel duidelijk dat het `gratis is en gratis blijft`
+## Wat er weggaat
 
-## Wat er aangepast wordt
+- `src/locales/en.json` en `src/locales/es.json` (verwijderen)
+- `src/components/LanguageSwitcher.tsx` (verwijderen)
+- `src/pages/LanguageSelect.tsx` en de bijbehorende route in `src/App.tsx` (verwijderen)
+- Alle imports/gebruik van `LanguageSwitcher` in `SiteHeader`, `AppHeader`, `Footer`, `Account`, etc.
+- `localStorage` key `aisk_lang` wordt niet meer gebruikt (oude waarde mag blijven staan, doet niks meer)
+- Verwijzingen naar "wissel taal" / "language" in copy (o.a. in `nl.json` bij `pricing.student.features` en `pricing.individual.features`: "Taal wisselen in je account" eruit)
 
-### 1) Primaire CTA’s herschrijven
-De belangrijkste knoppen worden aangepast van neutrale of mogelijk dubbelzinnige copy naar copy die gratis expliciet benoemt.
+## Wat er blijft
 
-Te wijzigen teksten:
-- `common.tryFree`
-- `landing.ctaPrimary`
-- `landing.freeAccess.cta`
-- eventueel `pricing.individual.cta`
-- eventueel `landing.finalCta.cta`
+- `react-i18next` blijft staan zodat `useTranslation()` calls in alle pagina's blijven werken zonder dat we overal `t(...)` moeten herschrijven.
+- `src/i18n.ts` wordt versimpeld:
+  - alleen `nl` als resource
+  - `lng: "nl"`, `fallbackLng: "nl"`
+  - geen `LanguageDetector`, geen `supportedLngs`, geen `detection`-blok
+  - `i18next-browser-languagedetector` import eruit
+- `src/locales/nl.json` blijft ongewijzigd qua inhoud, behalve het verwijderen van regels die over taal wisselen gaan.
 
-Voorkeursrichting:
-- Nederlands:
-  - `Maak gratis account`
-  - of `Start hier`
-- Engels:
-  - `Create free account`
-  - of `Start here`
-- Spaans:
-  - `Crea tu cuenta gratis`
-  - of `Empieza aquí`
+## UI gevolgen
 
-## 2) Duidelijke geruststelling direct onder de CTA
-Onder de hoofdknop komt expliciete ondersteunende copy die zegt dat het niet om een proefperiode gaat.
+- Header (mobiel + desktop) toont geen globe/taal-knop meer.
+- Eerste bezoek gaat direct naar `/` (Landing) in plaats van `/language`.
+- `LanguageSelect` route `/language` wordt een redirect naar `/` (of helemaal weggehaald uit de router).
 
-Beste plek:
-- hero-sectie op de landing
-- eventueel ook bij de gratis-sectie en laatste CTA
+## Bestanden die ik aanraak
 
-Voorbeeldrichting:
-- Nederlands:
-  - `Gratis toegang tot alle lessen. Gratis en gratis blijvend.`
-  - of `Geen proefperiode, geen betaalmuur. Gratis en gratis blijvend.`
-- Engels:
-  - `Free access to every lesson. Free now and free to stay.`
-- Spaans:
-  - `Acceso gratis a todas las lecciones. Gratis ahora y gratis para siempre.`
+- bewerken: `src/i18n.ts`, `src/App.tsx`, `src/components/SiteHeader.tsx`, `src/components/AppHeader.tsx`, `src/components/Footer.tsx`, `src/pages/Account.tsx` (alleen als daar de switcher staat), `src/locales/nl.json` (kleine copy-cleanup)
+- verwijderen: `src/locales/en.json`, `src/locales/es.json`, `src/components/LanguageSwitcher.tsx`, `src/pages/LanguageSelect.tsx`
 
-De bestaande `heroMicroCopy` is hier een logische plek voor.
+## Niet-doel
 
-## 3) Gratis-boodschap consistent maken op alle belangrijke schermen
-Niet alleen de hero, maar ook andere conversion-momenten moeten dezelfde boodschap dragen.
+- We raken de lesinhoud (`src/content/lessons.ts`) en audio niet aan; die is al Nederlands.
+- We laten `react-i18next` infrastructuur staan zodat er geen grote refactor nodig is. Mocht je later 100% strings inline willen, dan is dat een aparte opruim-klus.
 
-Na te lopen teksten:
-- landing hero
-- header CTA
-- free access / pricing teaser
-- final CTA
-- pricing-pagina student-aanbod
-
-Zo blijft het verhaal overal hetzelfde:
-- aanmelden is gratis
-- alle lessen zijn gratis
-- het blijft gratis
-- geen trial / geen verborgen betaalmuur
-
-## 4) Copy aanscherpen zonder visuele onrust
-Omdat de viewport mobiel is, wordt de extra gratis-boodschap kort en scanbaar gehouden.
-
-Richtlijn:
-- knoptekst maximaal kort houden
-- geruststelling in 1 korte regel eronder
-- geen lange alinea direct rondom CTA’s
-
-Conceptueel:
-
-```text
-[ Maak gratis account ]
-Gratis en gratis blijvend. Geen proefperiode.
-```
-
-of
-
-```text
-[ Start hier ]
-Maak gratis een account. Alle lessen blijven gratis.
-```
-
-## Bestanden die aangepast worden
-- `src/locales/nl.json`
-- `src/locales/en.json`
-- `src/locales/es.json`
-
-Waarschijnlijk geen structurele componentwijziging nodig, omdat:
-- `SiteHeader.tsx` al `common.tryFree` gebruikt
-- `Landing.tsx` al CTA + microcopy onder de knop heeft
-
-Alleen als de boodschap visueel niet sterk genoeg overkomt, kan een kleine tekstregel of styling-aanpassing in:
-- `src/pages/Landing.tsx`
-- `src/components/SiteHeader.tsx`
-
-## Aanbevolen copyrichting
-Voor Nederlands sluit dit het best aan bij je feedback:
-
-- Header knop: `Maak gratis account`
-- Hero knop: `Maak gratis account`
-- Hero microcopy: `Alle lessen zijn gratis. Gratis en gratis blijvend.`
-- Free access CTA: `Maak gratis account`
-- Final CTA: `Start hier`
-- Final CTA subtitle: `Alle lessen zijn gratis en blijven gratis. Maak een account en begin meteen.`
-
-## Acceptatiecriteria
-- nergens klinkt de student-CTA nog als een tijdelijke gratis proefperiode
-- op de belangrijkste plekken staat expliciet dat het gratis is
-- op minstens één prominente plek bij de hero staat duidelijk dat het gratis blijft
-- de boodschap blijft kort genoeg voor mobiel
-- de gratis-positionering is consistent in NL, EN en ES
+Akkoord? Dan bouw ik dit in één keer om.
