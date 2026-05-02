@@ -6,8 +6,8 @@ export interface Profile {
   id: string;
   first_name: string;
   age: number | null;
+  parent_email: string | null;
   language: "en" | "nl" | "es";
-  paid: boolean;
   school_id: string | null;
 }
 
@@ -25,7 +25,6 @@ export const useAuth = () => {
       setSession(s);
       setUser(s?.user ?? null);
       if (s?.user) {
-        // defer to avoid deadlock
         setTimeout(() => loadProfile(s.user.id), 0);
       } else {
         setProfile(null);
@@ -48,7 +47,7 @@ export const useAuth = () => {
     const [{ data: p }, { data: r }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("id, first_name, age, language, paid, school_id")
+        .select("id, first_name, age, parent_email, language, school_id")
         .eq("id", uid)
         .maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", uid),
