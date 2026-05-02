@@ -72,17 +72,6 @@ export const Account = () => {
             <Label htmlFor="first_name">Voornaam</Label>
             <Input id="first_name" name="first_name" defaultValue={profile.first_name} maxLength={40} className="h-12 rounded-xl" />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="language">Taal</Label>
-            <Select name="language" defaultValue={profile.language}>
-              <SelectTrigger id="language" className="h-12 rounded-xl"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="nl">🇳🇱 Nederlands</SelectItem>
-                <SelectItem value="en">🇬🇧 English</SelectItem>
-                <SelectItem value="es">🇪🇸 Español</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
           <Button type="submit" disabled={busy} className="w-full h-14 rounded-full font-display bg-primary shadow-soft">
             {busy ? "…" : "Opslaan"}
           </Button>
