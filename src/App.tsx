@@ -9,7 +9,7 @@ import { AdminViewSwitcher } from "@/components/AdminViewSwitcher";
 import { BackgroundAudioController } from "@/components/BackgroundAudioController";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import LanguageSelect from "./pages/LanguageSelect.tsx";
+
 import Landing from "./pages/Landing.tsx";
 import Pricing from "./pages/Pricing.tsx";
 import SchoolContact from "./pages/SchoolContact.tsx";
@@ -45,7 +45,7 @@ const App = () => (
         <BackgroundAudioController />
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/welcome" element={<LanguageSelect />} />
+          
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/schools/contact" element={<SchoolContact />} />
           <Route path="/privacy" element={<Privacy />} />
