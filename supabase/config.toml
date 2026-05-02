@@ -1,11 +1,5 @@
 project_id = "kqlytfyvlosnhbszkesd"
 
-[functions.create-checkout]
-verify_jwt = false
-
-[functions.payments-webhook]
-verify_jwt = false
-
 [functions.generate-lesson-audio]
 verify_jwt = false
 
@@ -13,4 +7,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.delete-lesson-audio]
+verify_jwt = false
+
+[functions.delete-account]
 verify_jwt = false
