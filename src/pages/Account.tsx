@@ -8,11 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import i18n from "@/i18n";
 import {
   getBackgroundAudioEnabled,
   getBackgroundAudioVolume,
@@ -35,18 +31,15 @@ export const Account = () => {
     if (!user) return;
     const form = new FormData(e.currentTarget);
     setBusy(true);
-    const language = String(form.get("language") || "nl") as "en" | "nl" | "es";
     const { error } = await supabase.from("profiles").update({
       first_name: String(form.get("first_name") || profile.first_name),
-      language,
+      language: "nl",
     }).eq("id", user.id);
     setBusy(false);
     if (error) {
       toast({ title: "Kon niet opslaan", description: error.message, variant: "destructive" });
       return;
     }
-    localStorage.setItem("aisk_lang", language);
-    i18n.changeLanguage(language);
     refreshProfile();
     toast({ title: "Opgeslagen!" });
   };

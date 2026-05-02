@@ -62,7 +62,7 @@ export const Auth = () => {
       return;
     }
     setBusy(true);
-    const lang = (localStorage.getItem("aisk_lang") as "en" | "nl" | "es") || "nl";
+    const lang = "nl" as const;
     try {
       const classCodeIsValid = await validateClassCode(parsed.data.class_code);
       if (!classCodeIsValid) {
