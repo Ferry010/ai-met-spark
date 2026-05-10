@@ -12,7 +12,7 @@ import { ChevronLeft } from "lucide-react";
 export const LessonPage = () => {
   const params = useParams<{ id?: string; lessonId?: string }>();
   const lessonId = params.lessonId ?? params.id ?? "";
-  const { user } = useAuth();
+  const { finishLesson } = useUserProgress();
   const baseLesson = useMemo(() => getLesson(lessonId), [lessonId]);
   const [override, setOverride] = useState<any>(null);
 
