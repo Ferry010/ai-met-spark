@@ -10,6 +10,7 @@ import { WORLDS, ALL_LESSONS } from "@/content/lessons";
 import { Lock, Star, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { BADGES, TONE_BG } from "@/lib/badges";
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "bg-gradient-sky text-primary-foreground",
