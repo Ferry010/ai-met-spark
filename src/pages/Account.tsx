@@ -69,7 +69,7 @@ export const Account = () => {
   const resetProgress = async () => {
     if (!user) return;
     if (!confirm("Alle lesvoortgang resetten? Dit kan niet ongedaan worden.")) return;
-    await supabase.from("user_progress").delete().eq("user_id", user.id);
+    await resetProgressMutation();
     await supabase.from("final_test_attempts").delete().eq("user_id", user.id);
     toast({ title: "Voortgang gereset" });
     navigate("/dashboard");
