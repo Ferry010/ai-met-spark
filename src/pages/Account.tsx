@@ -15,6 +15,7 @@ import {
   setBackgroundAudioEnabled,
   setBackgroundAudioVolume,
 } from "@/lib/backgroundAudio";
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 export const Account = () => {
   const { user, profile, refreshProfile } = useAuth();
