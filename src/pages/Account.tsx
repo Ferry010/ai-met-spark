@@ -19,6 +19,7 @@ import { useUserProgress } from "@/hooks/useUserProgress";
 
 export const Account = () => {
   const { user, profile, refreshProfile } = useAuth();
+  const { resetProgress: resetProgressMutation } = useUserProgress();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
