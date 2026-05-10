@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { getWorld } from "@/content/lessons";
 import { ChevronLeft, Check } from "lucide-react";
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "from-primary-glow to-primary",
@@ -18,18 +18,11 @@ export const WorldPage = () => {
   const params = useParams<{ worldId?: string; id?: string }>();
   const worldId = params.worldId ?? params.id;
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { completed } = useUserProgress();
   const baseWorld = getWorld(Number(worldId));
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [overrides, setOverrides] = useState<Record<string, { title?: string | null; emoji?: string | null }>>({});
 
   useEffect(() => {
-    if (!user) return;
-    supabase
-      .from("user_progress")
-      .select("lesson_id")
-      .eq("user_id", user.id)
-      .then(({ data }) => setCompleted(new Set((data ?? []).map((r: any) => r.lesson_id))));
     supabase
       .from("lesson_overrides")
       .select("lesson_id, title, emoji")
@@ -38,7 +31,7 @@ export const WorldPage = () => {
         (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title, emoji: o.emoji }));
         setOverrides(map);
       });
-  }, [user]);
+  }, []);
 
   const world = baseWorld
     ? {

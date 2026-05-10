@@ -10,6 +10,7 @@ import { WORLDS, ALL_LESSONS } from "@/content/lessons";
 import { Lock, Star, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { BADGES, TONE_BG } from "@/lib/badges";
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "bg-gradient-sky text-primary-foreground",
@@ -19,19 +20,12 @@ const PILLAR_BG: Record<string, string> = {
 
 export const Dashboard = () => {
   const { profile, user } = useAuth();
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const { completed } = useUserProgress();
   const [finalPassed, setFinalPassed] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from("user_progress")
-      .select("lesson_id")
-      .eq("user_id", user.id)
-      .then(({ data }) => {
-        setCompleted(new Set((data ?? []).map((r: any) => r.lesson_id)));
-      });
     supabase
       .from("final_test_attempts")
       .select("passed")

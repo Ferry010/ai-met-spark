@@ -15,9 +15,11 @@ import {
   setBackgroundAudioEnabled,
   setBackgroundAudioVolume,
 } from "@/lib/backgroundAudio";
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 export const Account = () => {
   const { user, profile, refreshProfile } = useAuth();
+  const { resetProgress: resetProgressMutation } = useUserProgress();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
@@ -67,7 +69,7 @@ export const Account = () => {
   const resetProgress = async () => {
     if (!user) return;
     if (!confirm("Alle lesvoortgang resetten? Dit kan niet ongedaan worden.")) return;
-    await supabase.from("user_progress").delete().eq("user_id", user.id);
+    await resetProgressMutation();
     await supabase.from("final_test_attempts").delete().eq("user_id", user.id);
     toast({ title: "Voortgang gereset" });
     navigate("/dashboard");
