@@ -43,12 +43,8 @@ export const LessonPage = () => {
     );
   }
 
-  const finishLesson = async (stars: number) => {
-    if (!user) return;
-    await supabase.from("user_progress").upsert(
-      { user_id: user.id, lesson_id: lesson.id, stars },
-      { onConflict: "user_id,lesson_id" },
-    );
+  const handleFinish = (stars: number) => {
+    finishLesson({ lessonId: lesson.id, stars }).catch(() => {});
   };
 
   return (
@@ -61,7 +57,7 @@ export const LessonPage = () => {
 
         <LessonRunner
           lesson={lesson}
-          onComplete={finishLesson}
+          onComplete={handleFinish}
           renderDoneCta={() => (
             <Link to={`/world/${lesson.worldId}`}>
               <Button className="h-14 px-8 rounded-full font-display bg-primary shadow-soft">
