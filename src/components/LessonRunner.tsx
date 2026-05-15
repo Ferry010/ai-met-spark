@@ -335,6 +335,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
               picked={pickedAnswer}
               onPick={handleQuizPick}
               onNext={() => {
+                playClick();
                 setPickedAnswer(null);
                 if (quizIndex + 1 >= lesson.quiz.length) advance("done");
                 else setQuizIndex(quizIndex + 1);
