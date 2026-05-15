@@ -179,12 +179,10 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true,
 
       {/* Question mark for thinking mood */}
       {mood === "thinking" && (
-        <g>
-          <text x="155" y="48" fontSize="32" fontWeight="bold" fill="hsl(var(--primary))" fontFamily="Fredoka, sans-serif">?</text>
-          {animate && (
-            <animate xlinkHref="#" attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite" />
-          )}
-        </g>
+        <text x="155" y="48" fontSize="32" fontWeight="bold" fill="hsl(var(--primary))" fontFamily="Fredoka, sans-serif">
+          ?
+          {animate && <animate attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite" />}
+        </text>
       )}
     </svg>
   );
