@@ -1,101 +1,84 @@
-# Spark wordt een echte leraar — animaties + gamification
+## Doel
 
-Doel: lessen voelen als een spel waar Spark je actief doorheen begeleidt. Geen kleur- of brand-wijziging — alleen meer beweging, meer Spark, meer beloning.
+De app voelt nu als een nette website met cards en progressbars. We gaan het ombouwen naar een echte *kindergame*: een avontuurkaart met levels, een mascotte-HUD en speelse vormen — geen rechthoekige business-cards meer. Stijl en kleuren blijven, maar de **visual language** verandert van "dashboard" naar "spelwereld".
 
-## 1. Framer Motion installeren
-Toevoegen: `framer-motion` (al beschikbaar in stack-richtlijnen). Gebruik voor:
-- pagina/stap-overgangen (`AnimatePresence` met slide+fade)
-- Spark die zelf van plek naar plek vliegt tussen stappen
-- micro-interacties op knoppen/quiz-opties (spring tap)
+Geen content- of backendwijzigingen. Alleen frontend/presentatie.
 
-## 2. Spark als persistente leraar (nieuw component)
-Nieuw: `src/components/SparkTeacher.tsx`
-- Vaste "teacher dock" linksonder die door de hele les zichtbaar blijft
-- Verandert mood per stap (intro=happy, theory=explaining, fact=hinting, quiz=questioning, correct=celebrating, fout=thinking)
-- Reageert live op events: knipoogt bij goed antwoord, schudt licht bij fout, juicht bij ster verdiend
-- Kleine "denkbubbel" met contextuele aanmoediging ("Mooi! Nog 2 vragen", "Pak die 3 sterren!")
-- Zwevend, sub­tiel ademend (idle bob), met parallax bij scroll
+---
 
-## 3. Nieuwe Spark-moodanimaties (in `Spark.tsx` + `index.css`)
-- `cheering`: armen omhoog + sparkles
-- `oops`: hoofd licht gekanteld, knippert
-- `teaching`: pointer arm wijst naar bubble, mond beweegt mee met typewriter
-- `thinking`: vraagteken zweeft boven antenne
-- `levelup`: gouden gloed pulseert
-Alle als CSS keyframes met `prefers-reduced-motion` respect.
+## Wat verandert per scherm
 
-## 4. Gamification-laag
-Nieuw: `src/lib/gamification.ts` + `src/hooks/useGameStats.ts`
-- **XP**: per voltooide stap (+10), correct quiz-antwoord (+25), perfecte les (+100 bonus)
-- **Combo-meter**: streak van goede antwoorden binnen één les → multiplier x2/x3 met visueel meter dat oplaadt
-- **Daily streak**: dagen op rij gespeeld, vlam-icoon in header (`AppHeader`)
-- **Level**: afgeleid van totale XP, met level-up celebratie (full-screen confetti + Spark "LEVEL UP!" overlay)
-- Persistent via nieuwe Supabase-tabel `user_stats` (xp, level, streak, last_played_date, longest_combo)
+### 1. Dashboard → "Avonturenkaart"
+Vervang het strakke 3-card grid + losse stats card door één samenhangend gameplay-scherm:
 
-## 5. LessonRunner upgrades
-- **Stappen-overgangen**: elke stap slidet in van rechts, vorige uit naar links (AnimatePresence)
-- **Progressbar**: van platte balk → segmented met checkmark-pop per voltooide stap, glow op huidige
-- **Quiz**:
-  - Knoppen krijgen spring/scale op tap
-  - Goed antwoord: groene flash + Spark juicht + +XP teller telt op + combo-meter vult
-  - Fout antwoord: korte rode shake + Spark "oops" + zachte bubble met aanmoediging ("Geen punt, kijk nog eens!")
-  - Hint kost 5 XP → zichtbare keuze, voelt als game-resource
-- **Sort/Reveal/MultiChoice**: drag-feedback met framer-motion `whileHover`/`whileTap`, magnetisch snappen naar bucket
-- **Done-scherm**: 
-  - Sterren tellen één voor één in met pop+ding-geluid (al aanwezig)
-  - XP-balk vult naar nieuw level
-  - Spark doet "cheering" mood, badge-unlocks tonen met glow
+- **Sky-achtergrond** met parallax-wolkjes, sterretjes, zwevende sparkles (CSS + framer-motion).
+- **Spark mascotte links groot** die zwaait/spreekt in een echte tekstballon ("Klaar voor avontuur, {naam}?"). Niet meer "headline naast plaatje".
+- **3 werelden als zwevende eilanden** (geen rechthoekige kaarten):
+  - Eiland-shape via SVG (organische blob), met embleem/emoji erop, naambordje eronder als houten plankje.
+  - Verbonden met een **stippellijn-pad** dat van eiland naar eiland kronkelt.
+  - Locked werelden tonen een ketting/slot met Spark die ernaar wijst.
+  - Hover/tap = wiebel + "level X" badge poppt eruit.
+- **XP/level/streak HUD** als arcade scoreboard (rechtsboven) i.p.v. losse gradient card: pixel-achtige badges, vlam-icoon, level coin met glans.
+- **Badges** nu rechthoekige tegels → ronde munten/stickers in een "verzamelboek"-rij; verdiend = glans + lint, locked = grijze schim.
+- **Eindtoets card** vervangen door een **"Boss-poort"** onderaan: grote gouden poort/sticker met sloten die opengaan als alle werelden af zijn.
 
-## 6. Dashboard + WorldPage
-- **Dashboard header**: streak-vlam + level-badge + XP-balk naar volgend level
-- **Wereld-kaarten**: hover tilt 3D, locked-werelden krijgen rammelende ketting bij klik
-- **Lessen-lijst (WorldPage)**: pad-stijl met Spark-icoon dat naar volgende les "loopt", afgeronde lessen met gouden glow, huidige les pulseert zachtjes
-- **Badges**: nieuw verdiende badge schiet groot in beeld met confetti (toast + overlay)
+### 2. WorldPage → "Levelpad"
+Vervang de zigzag-lessenlijst (die nog rechthoekige cards is) door een echt **Mario/Candy-Crush style pad**:
 
-## 7. Geluid (gebruikt bestaande `lib/sounds.ts`)
-Voeg toe: `playCorrect`, `playWrong`, `playLevelUp`, `playCombo` (korte, niet-opdringerige tones). Mute-toggle in header.
+- Verticaal SVG-pad met **bobbels (level-knoppen)**, niet rechthoekige tiles.
+- Elk level = ronde knop met emoji, gloeiende ring als "next", check-medaille als done, slot-icoon als locked.
+- Spark loopt/zweeft op het pad bij het huidige level (geanimeerd: idle bob).
+- Achtergrond past bij wereldthema (ocean voor safe, zon/desert voor smart, vulkaan voor stronger) via gradient + subtiele SVG-elementen.
+- Tap op level = zoom-in + page transition naar les.
 
-## Technische details
+### 3. LessonRunner → "Game stages"
+De lesstappen blijven, maar verpakking wordt gamey:
 
-### Database migratie
-```sql
-create table public.user_stats (
-  user_id uuid primary key references auth.users(id) on delete cascade,
-  xp int not null default 0,
-  level int not null default 1,
-  streak_days int not null default 0,
-  longest_combo int not null default 0,
-  last_played_date date,
-  updated_at timestamptz not null default now()
-);
-alter table public.user_stats enable row level security;
-create policy "own stats read" on public.user_stats for select using (auth.uid() = user_id);
-create policy "own stats write" on public.user_stats for insert with check (auth.uid() = user_id);
-create policy "own stats update" on public.user_stats for update using (auth.uid() = user_id);
-```
+- **Topbalk**: vervang strakke segmented progressbar door een **rij sterren/gemstones** die invullen per stap.
+- **GameHud** (XP/combo): herontwerp als echte arcade-meter — combo wordt een "FEVER × 2" badge die schudt, XP-burst groter en met sterretjes.
+- **Stages** in plaats van cards: pas de sectiewrappers aan zodat ze meer op een **dialoogvenster / scroll** lijken (afgeronde pergament/sticker-look, dikke outline, lichte tilt) i.p.v. nette `bg-card border` rechthoeken.
+- **Quiz-antwoorden**: ronde "bubble buttons" met indrukbaar-gevoel (3D shadow die platdrukt op tap) i.p.v. lijstknoppen.
+- **Done-scherm**: groot trofee-podium met Spark erop, sterren ploppen één voor één met confetti.
 
-### Te wijzigen / nieuwe bestanden
-- nieuw: `src/components/SparkTeacher.tsx`, `src/lib/gamification.ts`, `src/hooks/useGameStats.ts`
-- edit: `src/components/Spark.tsx` (nieuwe moods), `src/index.css` (keyframes), `src/components/LessonRunner.tsx` (AnimatePresence + XP/combo hooks), `src/pages/Dashboard.tsx` (stats header), `src/pages/WorldPage.tsx` (pad-animatie), `src/components/AppHeader.tsx` (streak/level), `src/lib/sounds.ts` (extra cues)
-- dependency: `framer-motion`
+### 4. Globale "game chrome"
+- **AppHeader** krijgt een speelser uiterlijk: titel als logo-sticker, level/streak badges als arcade-coins.
+- Voeg lichte **noise/grain texture** toe aan body voor warme illustratie-feel.
+- Cursor-trail van mini sparkles op desktop (subtiel, kan uit met reduced-motion).
 
-### Performance & a11y
-- Alle nieuwe animaties achter `prefers-reduced-motion: reduce` uitgeschakeld
-- Spring-animaties met `transform`/`opacity` only, geen layout thrash
-- SparkTeacher dock: `pointer-events-none` behalve op bubble
+---
 
-## Scope-grens
-- Geen wijziging aan kleurpalet, fonts, brand
-- Geen content/lesson-data wijzigingen
-- Geen backend behalve `user_stats` tabel
-- Eindtoets/Certificaat blijven functioneel zoals nu, krijgen alleen de nieuwe done-celebratie
+## Nieuwe assets / componenten
 
-## Volgorde van uitvoering
-1. framer-motion install + `user_stats` migratie
-2. Gamification core (`useGameStats` + XP/level math + persist)
-3. SparkTeacher dock + nieuwe moods/keyframes
-4. LessonRunner overgangen + quiz feedback + combo-meter
-5. Dashboard/WorldPage/AppHeader stats + pad-animatie
-6. Polish: geluiden, badge-unlock overlay, level-up celebratie
+- `src/components/game/IslandTile.tsx` — SVG blob-island voor dashboard.
+- `src/components/game/LevelNode.tsx` — ronde levelknop voor WorldPage.
+- `src/components/game/AdventureMap.tsx` — wrapper met wolken/sterren/parallax.
+- `src/components/game/Scoreboard.tsx` — arcade XP/level/streak HUD (vervangt huidige "Cosmic" card).
+- `src/components/game/BossGate.tsx` — eindtoets-poort.
+- `src/components/game/StageFrame.tsx` — speelse wrapper voor lesstappen.
+- Extra keyframes in `index.css`: `cloud-drift`, `island-bob`, `coin-spin`, `gate-unlock`, `bubble-press`, `sparkle-trail`.
+- 2–3 SVG illustraties (inline) voor wolk, ster, pad-stippel, lint.
 
-Akkoord? Ik begin dan bij stap 1.
+## Wat blijft onveranderd
+
+- Kleuren, fonts, design tokens (alleen toepassing verandert).
+- Content (`src/content/lessons.ts`), Supabase-tabellen, hooks (`useUserProgress`, `useGameStats`), routing, i18n.
+- Spark-component zelf (bestaande moods worden hergebruikt).
+- LessonRunner-stap-logica, XP-formules, badge-regels.
+
+## Scope-grenzen
+
+- Geen nieuwe pagina's, geen nieuwe routes.
+- Geen wijzigingen aan auth, account, admin, teacher-dashboards.
+- Mobile-first: alle nieuwe layouts werken op 375px t/m desktop.
+- `prefers-reduced-motion` gerespecteerd voor alle nieuwe animaties.
+
+## Aanpak in volgorde
+
+1. Globale animaties/keyframes + `AdventureMap` achtergrond + `Scoreboard` HUD.
+2. Dashboard ombouw met `IslandTile` + pad + `BossGate`; badges-rij naar verzamelboek.
+3. WorldPage ombouw naar `LevelNode`-pad met thema-achtergrond + Spark op pad.
+4. LessonRunner-wrapper naar `StageFrame`, nieuwe progress-sterrenbalk, quiz bubble-buttons, done-podium.
+5. AppHeader speelser maken (badges/coin-stijl).
+6. QA op mobiel + reduced-motion.
+
+Akkoord? Dan begin ik bij stap 1.
