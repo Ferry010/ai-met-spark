@@ -22,15 +22,15 @@ export const WorldPage = () => {
   const navigate = useNavigate();
   const { completed, rows } = useUserProgress();
   const baseWorld = getWorld(Number(worldId));
-  const [overrides, setOverrides] = useState<Record<string, { title?: string | null; emoji?: string | null }>>({});
+  const [overrides, setOverrides] = useState<Record<string, { title?: string | null }>>({});
 
   useEffect(() => {
     supabase
       .from("lesson_overrides")
-      .select("lesson_id, title, emoji")
+      .select("lesson_id, title")
       .then(({ data }) => {
-        const map: Record<string, { title?: string | null; emoji?: string | null }> = {};
-        (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title, emoji: o.emoji }));
+        const map: Record<string, { title?: string | null }> = {};
+        (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title }));
         setOverrides(map);
       });
   }, []);
@@ -41,7 +41,6 @@ export const WorldPage = () => {
         lessons: baseWorld.lessons.map((l) => ({
           ...l,
           title: overrides[l.id]?.title?.trim() || l.title,
-          emoji: overrides[l.id]?.emoji?.trim() || l.emoji,
         })),
       }
     : undefined;
