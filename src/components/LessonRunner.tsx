@@ -204,23 +204,32 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       {showProgress && currentIndex >= 0 && (
         <div className="mb-3 sm:mb-4">
           <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] font-display text-muted-foreground sm:text-xs">
-            <span>Stap {currentIndex + 1} van {stepOrder.length}</span>
+            <span>Etappe {currentIndex + 1} / {stepOrder.length}</span>
             <span className="opacity-70">Les {lesson.id}</span>
           </div>
-          <div className="flex gap-1">
-            {stepOrder.map((_, i) => (
-              <motion.div
-                key={i}
-                className={cn(
-                  "h-1.5 flex-1 rounded-full",
-                  i < currentIndex && "bg-success",
-                  i === currentIndex && "bg-primary",
-                  i > currentIndex && "bg-muted",
-                )}
-                initial={false}
-                animate={{ scale: i === currentIndex ? 1 : 0.95 }}
-              />
-            ))}
+          {/* Gemstone progress */}
+          <div className="flex items-center gap-1">
+            {stepOrder.map((_, i) => {
+              const filled = i < currentIndex;
+              const current = i === currentIndex;
+              return (
+                <motion.div
+                  key={i}
+                  initial={false}
+                  animate={{ scale: current ? 1.15 : 1, rotate: current ? 0 : 0 }}
+                  className="flex-1 grid place-items-center"
+                >
+                  <div
+                    className={cn(
+                      "h-3.5 w-3.5 rotate-45 border-2",
+                      filled && "bg-success border-success shadow-soft",
+                      current && "bg-secondary border-[hsl(36_60%_28%)] animate-coin-shine",
+                      !filled && !current && "bg-muted border-muted-foreground/30",
+                    )}
+                  />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       )}
