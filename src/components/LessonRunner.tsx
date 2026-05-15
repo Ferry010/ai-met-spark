@@ -1,15 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
-import { Spark } from "@/components/Spark";
+import { Spark, type SparkMood } from "@/components/Spark";
 import { SparkBubble } from "@/components/SparkBubble";
+import { SparkTeacher } from "@/components/SparkTeacher";
+import { GameHud, LevelUpOverlay } from "@/components/GameHud";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
 import { Check, Star, X, Lightbulb, BookOpen, ListChecks, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { unlockAudio, playSparkEntry, playBubblePop } from "@/lib/sounds";
+import { unlockAudio, playSparkEntry, playBubblePop, playCorrect, playWrong, playLevelUp, playCombo } from "@/lib/sounds";
 import { renderRichText, estimateReadSeconds } from "@/lib/markdown";
 import { SparkVoiceButton } from "@/components/SparkVoiceButton";
 import { useSparkVoice } from "@/hooks/useSparkVoice";
+import { useGameStats } from "@/hooks/useGameStats";
+import { XP, comboMultiplier } from "@/lib/gamification";
 
 // Unlock WebAudio on the first user gesture anywhere in the app.
 if (typeof window !== "undefined") {
