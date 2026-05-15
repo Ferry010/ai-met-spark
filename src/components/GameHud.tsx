@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Flame, Sparkles, Star } from "lucide-react";
+import { GameGlyph } from "@/components/game/GameGlyph";
 import { cn } from "@/lib/utils";
 
 interface GameHudProps {
