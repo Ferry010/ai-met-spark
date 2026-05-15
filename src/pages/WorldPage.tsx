@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { getWorld } from "@/content/lessons";
 import { ChevronLeft, Check } from "lucide-react";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import { cn } from "@/lib/utils";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "from-primary-glow to-primary",
