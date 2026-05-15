@@ -49,9 +49,10 @@ export const GameHud = ({
                     animate={{ opacity: 1, y: -28, scale: 1.3 }}
                     exit={{ opacity: 0, y: -50 }}
                     transition={{ duration: 1 }}
-                    className="absolute right-0 -top-2 text-[hsl(48_100%_75%)] font-display font-bold drop-shadow pointer-events-none"
+                    className="absolute right-0 -top-2 inline-flex items-center gap-1 text-[hsl(48_100%_75%)] font-display font-bold drop-shadow pointer-events-none"
                   >
-                    +{b.amount} ✦
+                    +{b.amount}
+                    <GameGlyph name="gem" size={12} />
                   </motion.span>
                 ))}
               </AnimatePresence>
@@ -84,13 +85,13 @@ export const GameHud = ({
                 )}
                 style={{ textShadow: "0 1px 0 hsl(48 100% 92%)" }}
               >
-                <Sparkles className="h-3 w-3" /> Fever ×{comboMultiplier}
+                <GameGlyph name="sparkle" size={12} /> Fever ×{comboMultiplier}
               </motion.span>
             )}
           </AnimatePresence>
           {streak > 0 && (
             <span className="inline-flex items-center gap-1 rounded-full border-2 border-foreground/40 bg-[hsl(0_100%_71%)] text-white px-2 py-0.5 font-display text-[11px]">
-              <Flame className="h-3 w-3" /> {streak}d
+              <GameGlyph name="flame" size={12} /> {streak}d
             </span>
           )}
         </div>
@@ -122,7 +123,7 @@ export const LevelUpOverlay = ({ level, onClose }: LevelUpOverlayProps) => (
           className="rounded-3xl border-4 border-foreground/85 bg-gradient-cosmic text-primary-foreground px-8 py-10 text-center shadow-glow max-w-sm mx-4"
         >
           <div className="mx-auto mb-3 inline-flex items-center gap-1 rounded-full bg-secondary/95 text-secondary-foreground px-3 py-1 font-display text-xs uppercase tracking-wider">
-            <Star className="h-3.5 w-3.5 fill-current" /> Level up
+            <GameGlyph name="star" size={14} /> Level up
           </div>
           <h2 className="font-display text-4xl mb-1">Niveau {level}!</h2>
           <p className="text-primary-foreground/90 font-body">
