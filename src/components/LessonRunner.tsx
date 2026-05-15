@@ -187,7 +187,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       playCorrect();
       if (newCombo >= 2) playCombo(newCombo);
       confetti({ particleCount: 60 + newCombo * 20, spread: 60, origin: { y: 0.5 } });
-      setTeacherMsg(newCombo >= 3 ? `Hot streak! ${newCombo} op rij 🔥` : "Goed zo!");
+      setTeacherMsg(newCombo >= 3 ? `Hot streak! ${newCombo} op rij!` : "Goed zo!");
     } else {
       setCombo(0);
       playWrong();
@@ -386,7 +386,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                 </p>
                 {longestComboThisLesson >= 2 && (
                   <p className="mt-1 text-sm font-display text-[hsl(30_60%_18%)]">
-                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span> 🔥
+                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span>
                   </p>
                 )}
                 {lesson.reflection && (
@@ -553,7 +553,7 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
   return (
     <section className={`rounded-3xl p-6 sm:p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
       <div className="text-xs font-display opacity-90 animate-kickoff-fade-up">
-        Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
+        Les {lesson.id} {lesson.bossTest && "· Baas-test"}
       </div>
       <h1 className="font-display text-2xl sm:text-3xl md:text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
 
