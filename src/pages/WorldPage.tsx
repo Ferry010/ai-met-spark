@@ -132,12 +132,14 @@ export const WorldPage = () => {
 
             {/* World boss flag at bottom */}
             <div className="text-center mt-12">
-              <div className="inline-block">
+              <div className="inline-flex flex-col items-center">
                 <Spark
                   size={88}
                   mood={world.lessons.every((l) => completed.has(l.id)) ? "celebrating" : "happy"}
                 />
-                <div className="text-2xl mt-1" aria-hidden>🚩</div>
+                <div className="mt-2 px-3 py-1 rounded-md border-2 border-[hsl(36_60%_28%)] bg-gradient-to-b from-[hsl(48_100%_72%)] to-[hsl(36_100%_45%)] font-display text-xs uppercase tracking-wider text-[hsl(30_60%_18%)] shadow-pop">
+                  Einde wereld
+                </div>
               </div>
             </div>
           </div>
