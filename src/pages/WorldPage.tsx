@@ -74,35 +74,49 @@ export const WorldPage = () => {
         <ol className="relative space-y-5">
           {world.lessons.map((lesson, idx) => {
             const isDone = completed.has(lesson.id);
+            const prevDone = idx === 0 || completed.has(world.lessons[idx - 1].id);
+            const isNext = !isDone && prevDone;
             const offset = idx % 2 === 0 ? "sm:ml-0 sm:mr-auto" : "sm:ml-auto sm:mr-0";
 
             return (
-              <li key={lesson.id} className={`max-w-md ${offset}`}>
-                <button
+              <motion.li
+                key={lesson.id}
+                className={`max-w-md ${offset}`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.06, duration: 0.35, ease: "easeOut" }}
+              >
+                <motion.button
                   onClick={() => navigate(`/lesson/${lesson.id}`)}
-                  className={`w-full text-left rounded-3xl p-5 border-2 transition-bounce hover:-translate-y-1 ${
-                    isDone
-                      ? "bg-success/10 border-success shadow-soft"
-                      : "bg-card border-primary shadow-soft hover:shadow-pop"
-                  }`}
+                  whileHover={{ y: -4, scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={cn(
+                    "w-full text-left rounded-3xl p-5 border-2 transition-shadow",
+                    isDone && "bg-success/10 border-success shadow-soft",
+                    !isDone && isNext && "bg-card border-primary shadow-pop classroom-shimmer",
+                    !isDone && !isNext && "bg-card border-border shadow-soft hover:shadow-pop",
+                  )}
                 >
                   <div className="flex items-center gap-4">
-                    <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${
-                      isDone ? "bg-success text-success-foreground" : "bg-primary/10"
-                    }`}>
+                    <div className={cn(
+                      "h-14 w-14 rounded-2xl flex items-center justify-center text-3xl shrink-0",
+                      isDone ? "bg-success text-success-foreground" : isNext ? "bg-primary/15" : "bg-muted",
+                    )}>
                       {isDone ? (
                         <Check className="h-6 w-6" />
                       ) : (
-                        <Spark size={44} mood="pointing" animate={false} />
+                        <Spark size={44} mood={isNext ? "pointing" : "happy"} animate={isNext} />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-display text-muted-foreground">Les {lesson.id}</div>
+                      <div className="text-xs font-display text-muted-foreground">
+                        Les {lesson.id} {isNext && <span className="ml-1 text-primary">· nu spelen</span>}
+                      </div>
                       <div className="font-display text-base sm:text-lg line-clamp-2 leading-tight">{lesson.title}</div>
                     </div>
                   </div>
-                </button>
-              </li>
+                </motion.button>
+              </motion.li>
             );
           })}
         </ol>
