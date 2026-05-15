@@ -35,11 +35,11 @@ export const AppHeader = () => {
         <div className="flex items-center gap-2 shrink-0">
           {showStats && (
             <>
-              <div className="hidden sm:inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary px-2.5 py-1 font-display text-xs">
+              <div className="hidden sm:inline-flex items-center gap-1 rounded-full border-2 border-[hsl(36_60%_28%)] bg-gradient-to-br from-[hsl(48_100%_72%)] to-[hsl(36_100%_50%)] text-[hsl(30_60%_18%)] px-2.5 py-1 font-display text-xs shadow-soft animate-coin-shine">
                 <Sparkles className="h-3.5 w-3.5" /> Lv {progress.level}
               </div>
               {stats.streak_days > 0 && (
-                <div className="inline-flex items-center gap-1 rounded-full bg-accent/15 text-accent px-2.5 py-1 font-display text-xs">
+                <div className="inline-flex items-center gap-1 rounded-full border-2 border-foreground/30 bg-[hsl(0_100%_71%)] text-white px-2.5 py-1 font-display text-xs shadow-soft">
                   <Flame className="h-3.5 w-3.5" /> {stats.streak_days}
                 </div>
               )}

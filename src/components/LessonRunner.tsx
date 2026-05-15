@@ -204,23 +204,32 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       {showProgress && currentIndex >= 0 && (
         <div className="mb-3 sm:mb-4">
           <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] font-display text-muted-foreground sm:text-xs">
-            <span>Stap {currentIndex + 1} van {stepOrder.length}</span>
+            <span>Etappe {currentIndex + 1} / {stepOrder.length}</span>
             <span className="opacity-70">Les {lesson.id}</span>
           </div>
-          <div className="flex gap-1">
-            {stepOrder.map((_, i) => (
-              <motion.div
-                key={i}
-                className={cn(
-                  "h-1.5 flex-1 rounded-full",
-                  i < currentIndex && "bg-success",
-                  i === currentIndex && "bg-primary",
-                  i > currentIndex && "bg-muted",
-                )}
-                initial={false}
-                animate={{ scale: i === currentIndex ? 1 : 0.95 }}
-              />
-            ))}
+          {/* Gemstone progress */}
+          <div className="flex items-center gap-1">
+            {stepOrder.map((_, i) => {
+              const filled = i < currentIndex;
+              const current = i === currentIndex;
+              return (
+                <motion.div
+                  key={i}
+                  initial={false}
+                  animate={{ scale: current ? 1.15 : 1, rotate: current ? 0 : 0 }}
+                  className="flex-1 grid place-items-center"
+                >
+                  <div
+                    className={cn(
+                      "h-3.5 w-3.5 rotate-45 border-2",
+                      filled && "bg-success border-success shadow-soft",
+                      current && "bg-secondary border-[hsl(36_60%_28%)] animate-coin-shine",
+                      !filled && !current && "bg-muted border-muted-foreground/30",
+                    )}
+                  />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -332,43 +341,65 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
           )}
 
           {step === "done" && (
-            <section className="rounded-3xl bg-success/15 border-2 border-success p-6 sm:p-8 text-center shadow-pop animate-pop-in">
-              <div className="flex justify-center"><Spark size={110} mood="cheering" /></div>
-              <h2 className="font-display text-2xl sm:text-3xl mt-4">Goed gedaan!</h2>
-              <div className="flex justify-center gap-1 mt-3">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 14 }}
-                  >
-                    <Star
-                      className={cn(
-                        "h-9 w-9",
-                        i < stars ? "fill-secondary text-secondary" : "text-muted-foreground/30",
-                      )}
-                    />
-                  </motion.div>
-                ))}
+            <section className="relative rounded-3xl border-4 border-foreground/85 bg-gradient-to-b from-[hsl(48_100%_88%)] via-[hsl(45_100%_78%)] to-[hsl(40_100%_68%)] p-6 sm:p-8 text-center shadow-pop animate-pop-in overflow-hidden">
+              {/* Confetti dots in background */}
+              <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden>
+                <span className="absolute left-4 top-6 text-2xl animate-twinkle">✦</span>
+                <span className="absolute right-6 top-10 text-xl animate-twinkle" style={{ animationDelay: "0.6s" }}>✦</span>
+                <span className="absolute left-10 bottom-8 text-2xl animate-twinkle" style={{ animationDelay: "1.2s" }}>✨</span>
+                <span className="absolute right-10 bottom-6 text-xl animate-twinkle" style={{ animationDelay: "0.3s" }}>✨</span>
               </div>
-              <p className="mt-4 text-muted-foreground">Je had er {quizScore} van de {lesson.quiz.length} goed.</p>
-              {longestComboThisLesson >= 2 && (
-                <p className="mt-1 text-sm font-display text-secondary-foreground">
-                  Beste combo: <span className="font-bold">{longestComboThisLesson}× op rij</span> 🔥
-                </p>
-              )}
-              {lesson.reflection && (
-                <div className="mt-4 mx-auto max-w-md">
-                  <SparkBubble text={lesson.reflection} mood="celebrating" size={72} />
+
+              {/* Podium */}
+              <div className="relative flex justify-center items-end gap-2 mb-3">
+                <div className="h-10 w-12 rounded-t-md bg-[hsl(0_85%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">3</div>
+                <div className="relative -mb-2">
+                  <Spark size={120} mood="cheering" />
                 </div>
-              )}
-              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-                {renderDoneCta?.(stars)}
+                <div className="h-7 w-12 rounded-t-md bg-[hsl(248_78%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">2</div>
               </div>
-              {preview && (
-                <p className="mt-4 text-xs text-muted-foreground">Preview-modus, niets opgeslagen</p>
-              )}
+              <div className="relative">
+                <h2 className="font-display text-3xl sm:text-4xl text-[hsl(30_60%_18%)] drop-shadow">VICTORY!</h2>
+                <div className="flex justify-center gap-1.5 mt-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0, rotate: -90, y: -10 }}
+                      animate={{ scale: 1, rotate: 0, y: 0 }}
+                      transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 12 }}
+                    >
+                      <Star
+                        className={cn(
+                          "h-12 w-12 drop-shadow",
+                          i < stars
+                            ? "fill-secondary text-[hsl(36_60%_28%)]"
+                            : "text-foreground/20",
+                        )}
+                        strokeWidth={2.5}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                <p className="mt-4 font-display text-[hsl(30_60%_18%)]">
+                  Score: {quizScore} / {lesson.quiz.length}
+                </p>
+                {longestComboThisLesson >= 2 && (
+                  <p className="mt-1 text-sm font-display text-[hsl(30_60%_18%)]">
+                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span> 🔥
+                  </p>
+                )}
+                {lesson.reflection && (
+                  <div className="mt-4 mx-auto max-w-md">
+                    <SparkBubble text={lesson.reflection} mood="celebrating" size={72} />
+                  </div>
+                )}
+                <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                  {renderDoneCta?.(stars)}
+                </div>
+                {preview && (
+                  <p className="mt-4 text-xs text-[hsl(30_60%_28%)]">Preview-modus, niets opgeslagen</p>
+                )}
+              </div>
             </section>
           )}
         </motion.div>
@@ -646,24 +677,31 @@ const QuizCard = ({
           const isPicked = picked === i;
           const showCorrect = picked !== null && i === correct;
           const showWrong = isPicked && i !== correct;
+          const letter = String.fromCharCode(65 + i);
           return (
             <button
               key={i}
               onClick={() => onPick(i)}
               disabled={picked !== null}
               className={cn(
-                "w-full text-left p-4 rounded-2xl border-2 transition-bounce min-h-[56px] font-body",
-                showCorrect && "bg-success/15 border-success",
-                showWrong && "bg-destructive/10 border-destructive",
-                picked === null && "border-border hover:border-primary hover:bg-primary/5",
-                picked !== null && !showCorrect && !showWrong && "border-border opacity-60",
+                "btn-squish w-full text-left p-4 rounded-2xl border-[3px] min-h-[60px] font-body bg-card flex items-center gap-3",
+                showCorrect && "bg-success/20 border-success",
+                showWrong && "bg-destructive/15 border-destructive",
+                picked === null && "border-foreground/15 hover:border-primary",
+                picked !== null && !showCorrect && !showWrong && "border-foreground/10 opacity-60",
               )}
             >
-              <div className="flex items-center justify-between gap-3">
-                <span>{opt}</span>
-                {showCorrect && <Check className="h-5 w-5 text-success shrink-0" />}
-                {showWrong && <X className="h-5 w-5 text-destructive shrink-0" />}
-              </div>
+              <span
+                className={cn(
+                  "shrink-0 grid place-items-center h-9 w-9 rounded-full font-display text-base border-2",
+                  showCorrect && "bg-success text-success-foreground border-success",
+                  showWrong && "bg-destructive text-destructive-foreground border-destructive",
+                  !showCorrect && !showWrong && "bg-primary/10 text-primary border-primary/30",
+                )}
+              >
+                {showCorrect ? <Check className="h-4 w-4" /> : showWrong ? <X className="h-4 w-4" /> : letter}
+              </span>
+              <span className="flex-1 leading-snug">{opt}</span>
             </button>
           );
         })}
