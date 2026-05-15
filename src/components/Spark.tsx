@@ -9,7 +9,11 @@ export type SparkMood =
   | "explaining"
   | "hinting"
   | "questioning"
-  | "pointing";
+  | "pointing"
+  | "cheering"
+  | "oops"
+  | "teaching"
+  | "levelup";
 
 interface SparkProps {
   mood?: SparkMood;
@@ -25,11 +29,13 @@ interface SparkProps {
  * Pure inline SVG so it scales crisply and can be themed via design tokens.
  */
 export const Spark = ({ mood = "default", size = 160, className, animate = true, waving = false }: SparkProps) => {
-  const isHappy = mood === "happy" || mood === "celebrating";
-  const isSad = mood === "sad";
-  const isThinking = mood === "thinking" || mood === "explaining";
+  const isHappy = mood === "happy" || mood === "celebrating" || mood === "cheering" || mood === "levelup";
+  const isSad = mood === "sad" || mood === "oops";
+  const isThinking = mood === "thinking" || mood === "explaining" || mood === "teaching";
   const isQuestioning = mood === "questioning" || mood === "hinting";
-  const isPointing = mood === "pointing";
+  const isPointing = mood === "pointing" || mood === "teaching";
+  const isCheering = mood === "cheering" || mood === "levelup";
+  const hasGlow = mood === "levelup";
 
   return (
     <svg
