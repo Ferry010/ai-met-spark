@@ -37,12 +37,20 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true,
   const isCheering = mood === "cheering" || mood === "levelup";
   const hasGlow = mood === "levelup";
 
+  const wrapperClass = cn(
+    animate && "animate-float",
+    mood === "oops" && "animate-shake",
+    mood === "cheering" && "animate-spark-cheer",
+    mood === "levelup" && "animate-spark-glow",
+    className,
+  );
+
   return (
     <svg
       viewBox="0 0 200 200"
       width={size}
       height={size}
-      className={cn(animate && "animate-float", className)}
+      className={wrapperClass}
       aria-label="Spark — je AI met Spark leraar"
       role="img"
     >
