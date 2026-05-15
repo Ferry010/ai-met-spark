@@ -160,12 +160,30 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true,
       )}
 
       {/* Celebrating sparkles */}
-      {mood === "celebrating" && (
+      {(mood === "celebrating" || isCheering) && (
         <g fill="hsl(var(--secondary))">
-          <circle cx="40" cy="40" r="4" />
-          <circle cx="160" cy="50" r="3" />
-          <circle cx="170" cy="80" r="4" />
-          <circle cx="30" cy="80" r="3" />
+          <circle cx="40" cy="40" r="4">{animate && <animate attributeName="opacity" values="0.4;1;0.4" dur="1s" repeatCount="indefinite" />}</circle>
+          <circle cx="160" cy="50" r="3">{animate && <animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite" />}</circle>
+          <circle cx="170" cy="80" r="4">{animate && <animate attributeName="opacity" values="0.5;1;0.5" dur="0.9s" repeatCount="indefinite" />}</circle>
+          <circle cx="30" cy="80" r="3">{animate && <animate attributeName="opacity" values="1;0.4;1" dur="1.1s" repeatCount="indefinite" />}</circle>
+        </g>
+      )}
+
+      {/* Level-up gold ring */}
+      {hasGlow && (
+        <circle cx="100" cy="110" r="78" fill="none" stroke="hsl(var(--secondary))" strokeWidth="3" opacity="0.6">
+          {animate && <animate attributeName="r" values="78;88;78" dur="1.4s" repeatCount="indefinite" />}
+          {animate && <animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.4s" repeatCount="indefinite" />}
+        </circle>
+      )}
+
+      {/* Question mark for thinking mood */}
+      {mood === "thinking" && (
+        <g>
+          <text x="155" y="48" fontSize="32" fontWeight="bold" fill="hsl(var(--primary))" fontFamily="Fredoka, sans-serif">?</text>
+          {animate && (
+            <animate xlinkHref="#" attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite" />
+          )}
         </g>
       )}
     </svg>
