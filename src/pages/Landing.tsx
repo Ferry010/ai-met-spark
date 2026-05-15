@@ -93,7 +93,7 @@ const HowStep = ({
   title,
   desc,
 }: {
-  n: number;
+  n: number | string;
   icon: React.ReactNode;
   title: string;
   desc: string;

@@ -355,11 +355,14 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 
               {/* Podium */}
               <div className="relative flex justify-center items-end gap-2 mb-3">
-                <div className="h-10 w-12 rounded-t-md bg-[hsl(0_85%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">3</div>
-                <div className="relative -mb-2">
-                  <Spark size={120} mood="cheering" />
+                <div className="h-10 w-12 rounded-t-md bg-[hsl(248_78%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">2</div>
+                <div className="relative flex flex-col items-center">
+                  <div className="relative -mb-2 z-10">
+                    <Spark size={120} mood="cheering" />
+                  </div>
+                  <div className="h-14 w-16 rounded-t-md bg-[hsl(45_100%_50%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xl pb-1 shadow-pop">💪</div>
                 </div>
-                <div className="h-7 w-12 rounded-t-md bg-[hsl(248_78%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">2</div>
+                <div className="h-7 w-12 rounded-t-md bg-[hsl(0_85%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">3</div>
               </div>
               <div className="relative">
                 <h2 className="font-display text-3xl sm:text-4xl text-[hsl(30_60%_18%)] drop-shadow">VICTORY!</h2>
