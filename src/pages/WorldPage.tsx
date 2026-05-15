@@ -73,8 +73,8 @@ export const WorldPage = () => {
             <div className="inline-block rounded-full bg-foreground text-background font-display text-xs px-3 py-1 mb-2">
               WERELD {world.id}
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl text-foreground drop-shadow-sm flex items-center justify-center gap-2">
-              <span aria-hidden>{world.emoji}</span> {world.name}
+            <h1 className="font-display text-3xl sm:text-4xl text-foreground drop-shadow-sm">
+              {world.name}
             </h1>
             <p className="font-body text-foreground/70 mt-1">{world.tagline}</p>
           </div>
