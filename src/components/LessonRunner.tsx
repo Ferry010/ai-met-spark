@@ -341,43 +341,65 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
           )}
 
           {step === "done" && (
-            <section className="rounded-3xl bg-success/15 border-2 border-success p-6 sm:p-8 text-center shadow-pop animate-pop-in">
-              <div className="flex justify-center"><Spark size={110} mood="cheering" /></div>
-              <h2 className="font-display text-2xl sm:text-3xl mt-4">Goed gedaan!</h2>
-              <div className="flex justify-center gap-1 mt-3">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0, rotate: -90 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 14 }}
-                  >
-                    <Star
-                      className={cn(
-                        "h-9 w-9",
-                        i < stars ? "fill-secondary text-secondary" : "text-muted-foreground/30",
-                      )}
-                    />
-                  </motion.div>
-                ))}
+            <section className="relative rounded-3xl border-4 border-foreground/85 bg-gradient-to-b from-[hsl(48_100%_88%)] via-[hsl(45_100%_78%)] to-[hsl(40_100%_68%)] p-6 sm:p-8 text-center shadow-pop animate-pop-in overflow-hidden">
+              {/* Confetti dots in background */}
+              <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden>
+                <span className="absolute left-4 top-6 text-2xl animate-twinkle">✦</span>
+                <span className="absolute right-6 top-10 text-xl animate-twinkle" style={{ animationDelay: "0.6s" }}>✦</span>
+                <span className="absolute left-10 bottom-8 text-2xl animate-twinkle" style={{ animationDelay: "1.2s" }}>✨</span>
+                <span className="absolute right-10 bottom-6 text-xl animate-twinkle" style={{ animationDelay: "0.3s" }}>✨</span>
               </div>
-              <p className="mt-4 text-muted-foreground">Je had er {quizScore} van de {lesson.quiz.length} goed.</p>
-              {longestComboThisLesson >= 2 && (
-                <p className="mt-1 text-sm font-display text-secondary-foreground">
-                  Beste combo: <span className="font-bold">{longestComboThisLesson}× op rij</span> 🔥
-                </p>
-              )}
-              {lesson.reflection && (
-                <div className="mt-4 mx-auto max-w-md">
-                  <SparkBubble text={lesson.reflection} mood="celebrating" size={72} />
+
+              {/* Podium */}
+              <div className="relative flex justify-center items-end gap-2 mb-3">
+                <div className="h-10 w-12 rounded-t-md bg-[hsl(0_85%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">3</div>
+                <div className="relative -mb-2">
+                  <Spark size={120} mood="cheering" />
                 </div>
-              )}
-              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-                {renderDoneCta?.(stars)}
+                <div className="h-7 w-12 rounded-t-md bg-[hsl(248_78%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">2</div>
               </div>
-              {preview && (
-                <p className="mt-4 text-xs text-muted-foreground">Preview-modus, niets opgeslagen</p>
-              )}
+              <div className="relative">
+                <h2 className="font-display text-3xl sm:text-4xl text-[hsl(30_60%_18%)] drop-shadow">VICTORY!</h2>
+                <div className="flex justify-center gap-1.5 mt-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0, rotate: -90, y: -10 }}
+                      animate={{ scale: 1, rotate: 0, y: 0 }}
+                      transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 12 }}
+                    >
+                      <Star
+                        className={cn(
+                          "h-12 w-12 drop-shadow",
+                          i < stars
+                            ? "fill-secondary text-[hsl(36_60%_28%)]"
+                            : "text-foreground/20",
+                        )}
+                        strokeWidth={2.5}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                <p className="mt-4 font-display text-[hsl(30_60%_18%)]">
+                  Score: {quizScore} / {lesson.quiz.length}
+                </p>
+                {longestComboThisLesson >= 2 && (
+                  <p className="mt-1 text-sm font-display text-[hsl(30_60%_18%)]">
+                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span> 🔥
+                  </p>
+                )}
+                {lesson.reflection && (
+                  <div className="mt-4 mx-auto max-w-md">
+                    <SparkBubble text={lesson.reflection} mood="celebrating" size={72} />
+                  </div>
+                )}
+                <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                  {renderDoneCta?.(stars)}
+                </div>
+                {preview && (
+                  <p className="mt-4 text-xs text-[hsl(30_60%_28%)]">Preview-modus, niets opgeslagen</p>
+                )}
+              </div>
             </section>
           )}
         </motion.div>
