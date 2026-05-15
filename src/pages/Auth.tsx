@@ -159,6 +159,11 @@ export const Auth = () => {
                 <Label htmlFor="password">Wachtwoord</Label>
                 <Input id="password" name="password" type="password" required className="h-12 rounded-xl" />
               </div>
+              <div className="flex items-center justify-end">
+                <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground underline">
+                  Wachtwoord vergeten?
+                </Link>
+              </div>
               <Button type="submit" disabled={busy} className="w-full h-14 rounded-full font-display text-base shadow-soft">
                 {busy ? "…" : "Inloggen"}
               </Button>
