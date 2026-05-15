@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useGameStats } from "@/hooks/useGameStats";
 import { Spark } from "./Spark";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, GraduationCap, ShieldCheck } from "lucide-react";
+import { LogOut, Settings, GraduationCap, ShieldCheck, Flame, Sparkles } from "lucide-react";
 
 export const AppHeader = () => {
   const { profile, isTeacher, isAdmin } = useAuth();
