@@ -119,3 +119,30 @@ export const playSparkEntry = () => {
 export const playBubblePop = () => {
   playPop({ freq: 720, endFreq: 380, duration: 0.14, volume: 0.14, type: "sine" });
 };
+
+/** Cheerful two-note ding for a correct quiz answer. */
+export const playCorrect = () => {
+  playPop({ freq: 660, endFreq: 880, duration: 0.12, volume: 0.16, type: "triangle" });
+  setTimeout(() => playPop({ freq: 990, endFreq: 1320, duration: 0.18, volume: 0.16, type: "triangle" }), 110);
+};
+
+/** Soft descending tone for a wrong answer. */
+export const playWrong = () => {
+  playPop({ freq: 320, endFreq: 180, duration: 0.22, volume: 0.14, type: "sine" });
+};
+
+/** Rising arpeggio for level up. */
+export const playLevelUp = () => {
+  if (!unlocked) return;
+  if (reduceMotion()) return;
+  const notes = [523, 659, 784, 1047];
+  notes.forEach((f, i) =>
+    setTimeout(() => playPop({ freq: f, endFreq: f * 1.05, duration: 0.18, volume: 0.18, type: "triangle" }), i * 90),
+  );
+};
+
+/** Combo step — short rising blip. */
+export const playCombo = (step: number) => {
+  const base = 440 + Math.min(step, 6) * 60;
+  playPop({ freq: base, endFreq: base * 1.4, duration: 0.1, volume: 0.14, type: "square" });
+};
