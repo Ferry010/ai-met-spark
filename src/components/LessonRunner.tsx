@@ -69,6 +69,16 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   const [quizScore, setQuizScore] = useState(0);
   const [pickedAnswer, setPickedAnswer] = useState<number | null>(null);
 
+  // Gamification
+  const { stats, progress, addXp } = useGameStats();
+  const [combo, setCombo] = useState(0);
+  const [longestComboThisLesson, setLongestComboThisLesson] = useState(0);
+  const [bursts, setBursts] = useState<{ id: number; amount: number }[]>([]);
+  const [levelUpTo, setLevelUpTo] = useState<number | null>(null);
+  const [teacherMsg, setTeacherMsg] = useState<string | undefined>();
+  const burstId = useRef(0);
+  const completedRef = useRef(false);
+
   const stepOrder = useMemo(() => buildSteps(lesson), [lesson]);
 
   // Reset when lesson changes
@@ -77,6 +87,9 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
     setQuizIndex(0);
     setQuizScore(0);
     setPickedAnswer(null);
+    setCombo(0);
+    setLongestComboThisLesson(0);
+    completedRef.current = false;
   }, [lesson.id]);
 
   // Admin jump-to-step
@@ -89,10 +102,65 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
     [quizScore, lesson.quiz.length],
   );
 
+  // Spark teacher mood per step
+  const teacherMood: SparkMood = useMemo(() => {
+    if (step === "intro") return "happy";
+    if (step === "theoryIntro" || step === "theoryDeep") return "explaining";
+    if (step === "fact") return "hinting";
+    if (step === "sparkMiddle") return "teaching";
+    if (step === "interactive") return "questioning";
+    if (step === "summary") return "pointing";
+    if (step === "quiz") return pickedAnswer === null ? "questioning" : pickedAnswer === lesson.quiz[quizIndex]?.correctIndex ? "cheering" : "oops";
+    if (step === "done") return "celebrating";
+    return "happy";
+  }, [step, pickedAnswer, quizIndex, lesson.quiz]);
+
+  // Encouragement messages per step transition
+  useEffect(() => {
+    const messages: Partial<Record<Step, string>> = {
+      theoryIntro: "Lees rustig mee, ik leg het zo nog uit.",
+      fact: "Wist je dit al? Cool, hè?",
+      sparkMiddle: "Let goed op, dit is belangrijk!",
+      theoryDeep: "Bijna door de uitleg.",
+      interactive: "Tijd om zelf te oefenen!",
+      summary: "Even alles op een rij.",
+      quiz: "Laat zien wat je hebt geleerd. Je kan dit!",
+    };
+    if (messages[step]) setTeacherMsg(messages[step]);
+  }, [step]);
+
+  const pushBurst = (amount: number) => {
+    burstId.current += 1;
+    const id = burstId.current;
+    setBursts((b) => [...b, { id, amount }]);
+    window.setTimeout(() => setBursts((b) => b.filter((x) => x.id !== id)), 1100);
+  };
+
+  const awardXp = async (amount: number, currentCombo?: number) => {
+    pushBurst(amount);
+    try {
+      const r = await addXp({ amount, combo: currentCombo ?? longestComboThisLesson });
+      if (r.leveledUp) {
+        setLevelUpTo(r.newLevel);
+        playLevelUp();
+      }
+    } catch {
+      // ignore — preview / not authenticated
+    }
+  };
+
   const advance = (next: Step) => {
     if (next === "done") {
       fireConfetti();
-      onComplete?.(stars);
+      if (!completedRef.current) {
+        completedRef.current = true;
+        const bonus = stars === 3 ? XP.PERFECT_LESSON : 0;
+        awardXp(XP.STEP + bonus, longestComboThisLesson);
+        onComplete?.(stars);
+      }
+    } else {
+      // Reward for clearing a non-quiz step
+      awardXp(XP.STEP);
     }
     setStep(next);
   };
@@ -104,149 +172,210 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
     if (idx + 1 >= stepOrder.length) advance("done");
   };
 
+  const handleQuizPick = (i: number) => {
+    if (pickedAnswer !== null) return;
+    setPickedAnswer(i);
+    const correct = i === lesson.quiz[quizIndex].correctIndex;
+    if (correct) {
+      const newCombo = combo + 1;
+      setCombo(newCombo);
+      setLongestComboThisLesson((c) => Math.max(c, newCombo));
+      setQuizScore((s) => s + 1);
+      const mult = comboMultiplier(newCombo);
+      const reward = XP.CORRECT * mult + (newCombo >= 2 ? XP.COMBO_BONUS : 0);
+      awardXp(reward, newCombo);
+      playCorrect();
+      if (newCombo >= 2) playCombo(newCombo);
+      confetti({ particleCount: 60 + newCombo * 20, spread: 60, origin: { y: 0.5 } });
+      setTeacherMsg(newCombo >= 3 ? `Hot streak! ${newCombo} op rij 🔥` : "Goed zo!");
+    } else {
+      setCombo(0);
+      playWrong();
+      setTeacherMsg("Geen punt — kijk nog eens, je leert ervan!");
+    }
+  };
+
   const currentIndex = stepOrder.indexOf(step);
   const showProgress = step !== "intro" && step !== "done";
+  const dockHidden = step === "intro" || step === "done";
 
   return (
     <>
       {showProgress && currentIndex >= 0 && (
-        <div className="mb-4 sm:mb-5">
+        <div className="mb-3 sm:mb-4">
           <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px] font-display text-muted-foreground sm:text-xs">
             <span>Stap {currentIndex + 1} van {stepOrder.length}</span>
             <span className="opacity-70">Les {lesson.id}</span>
           </div>
-          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all"
-              style={{ width: `${((currentIndex + 1) / stepOrder.length) * 100}%` }}
-            />
+          <div className="flex gap-1">
+            {stepOrder.map((_, i) => (
+              <motion.div
+                key={i}
+                className={cn(
+                  "h-1.5 flex-1 rounded-full",
+                  i < currentIndex && "bg-success",
+                  i === currentIndex && "bg-primary",
+                  i > currentIndex && "bg-muted",
+                )}
+                initial={false}
+                animate={{ scale: i === currentIndex ? 1 : 0.95 }}
+              />
+            ))}
           </div>
         </div>
       )}
 
-      {step === "intro" && (
-        <LessonKickoff lesson={lesson} onStart={() => goNext("intro")} />
-      )}
-
-      {step === "theoryIntro" && (
-        <TheoryCard
-          eyebrow="Even uitleggen"
-          text={lesson.theoryIntro!}
-          lessonId={lesson.id}
-          step="theoryIntro"
-          onNext={() => goNext("theoryIntro")}
+      {showProgress && (
+        <GameHud
+          xp={progress.xpInLevel}
+          level={progress.level}
+          pct={progress.pct}
+          streak={stats.streak_days}
+          combo={combo}
+          comboMultiplier={comboMultiplier(combo)}
+          bursts={bursts}
         />
       )}
 
-      {step === "fact" && (
-        <section className="relative rounded-3xl bg-card border-2 border-primary p-5 text-center shadow-pop animate-pop-in sm:p-8">
-          <div className="absolute top-4 right-4">
-            <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
-          </div>
-          <div className="flex justify-center mb-3">
-            <Spark size={72} mood="hinting" />
-          </div>
-          <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
-          <p className="font-display text-lg leading-snug sm:text-2xl md:text-3xl">{lesson.fact}</p>
-          <Button onClick={() => goNext("fact")} className="mt-8 h-14 w-full rounded-full font-display bg-primary shadow-soft sm:w-auto sm:px-8">
-            Verder →
-          </Button>
-        </section>
-      )}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -24 }}
+          transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          {step === "intro" && (
+            <LessonKickoff lesson={lesson} onStart={() => goNext("intro")} />
+          )}
 
-      {step === "sparkMiddle" && (
-        <section className={`rounded-3xl p-6 sm:p-8 shadow-soft animate-pop-in ${PILLAR_BG[lesson.pillar]}`}>
-          <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
-            <div className="shrink-0">
-              <Spark size={96} mood="explaining" />
-            </div>
-            <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-5 shadow-soft">
-              <div className="flex items-center justify-between mb-2">
-                <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
-                <SparkVoiceButton lessonId={lesson.id} step="sparkMiddle" variant="compact" />
+          {step === "theoryIntro" && (
+            <TheoryCard
+              eyebrow="Even uitleggen"
+              text={lesson.theoryIntro!}
+              lessonId={lesson.id}
+              step="theoryIntro"
+              onNext={() => goNext("theoryIntro")}
+            />
+          )}
+
+          {step === "fact" && (
+            <section className="relative rounded-3xl bg-card border-2 border-primary p-5 text-center shadow-pop animate-pop-in sm:p-8">
+              <div className="absolute top-4 right-4">
+                <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
               </div>
-              <div className="font-body">{renderRichText(lesson.sparkMiddle!)}</div>
-            </div>
-          </div>
-          <Button
-            onClick={() => goNext("sparkMiddle")}
-            className="mt-6 w-full sm:w-auto sm:mx-auto sm:flex h-14 px-8 rounded-full font-display bg-white text-foreground hover:bg-white/90 shadow-pop"
-          >
-            Verder →
-          </Button>
-        </section>
-      )}
-
-      {step === "theoryDeep" && (
-        <TheoryCard
-          eyebrow="Nog iets erbij"
-          text={lesson.theoryDeep!}
-          lessonId={lesson.id}
-          step="theoryDeep"
-          onNext={() => goNext("theoryDeep")}
-        />
-      )}
-
-      {step === "interactive" && (
-        <Interactive interactive={lesson.interactive} onDone={() => goNext("interactive")} />
-      )}
-
-      {step === "summary" && (
-        <SummaryCard bullets={lesson.summary!} lessonId={lesson.id} onNext={() => goNext("summary")} />
-      )}
-
-      {step === "quiz" && (
-        <QuizCard
-          question={lesson.quiz[quizIndex]}
-          index={quizIndex}
-          total={lesson.quiz.length}
-          picked={pickedAnswer}
-          onPick={(i) => {
-            if (pickedAnswer !== null) return;
-            setPickedAnswer(i);
-            const correct = i === lesson.quiz[quizIndex].correctIndex;
-            if (correct) {
-              setQuizScore((s) => s + 1);
-              confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } });
-            }
-          }}
-          onNext={() => {
-            setPickedAnswer(null);
-            if (quizIndex + 1 >= lesson.quiz.length) advance("done");
-            else setQuizIndex(quizIndex + 1);
-          }}
-        />
-      )}
-
-      {step === "done" && (
-        <section className="rounded-3xl bg-success/15 border-2 border-success p-6 sm:p-8 text-center shadow-pop animate-pop-in">
-          <div className="flex justify-center"><Spark size={110} mood="celebrating" /></div>
-          <h2 className="font-display text-2xl sm:text-3xl mt-4">Goed gedaan!</h2>
-          <div className="flex justify-center gap-1 mt-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Star
-                key={i}
-                className={cn(
-                  "h-8 w-8",
-                  i < stars ? "fill-secondary text-secondary" : "text-muted-foreground/30",
-                )}
-              />
-            ))}
-          </div>
-          <p className="mt-4 text-muted-foreground">Je had er {quizScore} van de {lesson.quiz.length} goed.</p>
-          {lesson.reflection && (
-            <div className="mt-4 mx-auto max-w-md">
-              <SparkBubble text={lesson.reflection} mood="celebrating" size={72} />
-            </div>
+              <div className="flex justify-center mb-3">
+                <Spark size={72} mood="hinting" />
+              </div>
+              <div className="text-sm font-display text-primary uppercase tracking-wider mb-2">Wist je dat?</div>
+              <p className="font-display text-lg leading-snug sm:text-2xl md:text-3xl">{lesson.fact}</p>
+              <Button onClick={() => goNext("fact")} className="mt-8 h-14 w-full rounded-full font-display bg-primary shadow-soft sm:w-auto sm:px-8">
+                Verder →
+              </Button>
+            </section>
           )}
-          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-            {renderDoneCta?.(stars)}
-          </div>
-          {preview && (
-            <p className="mt-4 text-xs text-muted-foreground">Preview-modus, niets opgeslagen</p>
+
+          {step === "sparkMiddle" && (
+            <section className={`rounded-3xl p-6 sm:p-8 shadow-soft animate-pop-in ${PILLAR_BG[lesson.pillar]}`}>
+              <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                <div className="shrink-0">
+                  <Spark size={96} mood="explaining" />
+                </div>
+                <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-5 shadow-soft">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+                    <SparkVoiceButton lessonId={lesson.id} step="sparkMiddle" variant="compact" />
+                  </div>
+                  <div className="font-body">{renderRichText(lesson.sparkMiddle!)}</div>
+                </div>
+              </div>
+              <Button
+                onClick={() => goNext("sparkMiddle")}
+                className="mt-6 w-full sm:w-auto sm:mx-auto sm:flex h-14 px-8 rounded-full font-display bg-white text-foreground hover:bg-white/90 shadow-pop"
+              >
+                Verder →
+              </Button>
+            </section>
           )}
-        </section>
-      )}
+
+          {step === "theoryDeep" && (
+            <TheoryCard
+              eyebrow="Nog iets erbij"
+              text={lesson.theoryDeep!}
+              lessonId={lesson.id}
+              step="theoryDeep"
+              onNext={() => goNext("theoryDeep")}
+            />
+          )}
+
+          {step === "interactive" && (
+            <Interactive interactive={lesson.interactive} onDone={() => goNext("interactive")} />
+          )}
+
+          {step === "summary" && (
+            <SummaryCard bullets={lesson.summary!} lessonId={lesson.id} onNext={() => goNext("summary")} />
+          )}
+
+          {step === "quiz" && (
+            <QuizCard
+              question={lesson.quiz[quizIndex]}
+              index={quizIndex}
+              total={lesson.quiz.length}
+              picked={pickedAnswer}
+              onPick={handleQuizPick}
+              onNext={() => {
+                setPickedAnswer(null);
+                if (quizIndex + 1 >= lesson.quiz.length) advance("done");
+                else setQuizIndex(quizIndex + 1);
+              }}
+            />
+          )}
+
+          {step === "done" && (
+            <section className="rounded-3xl bg-success/15 border-2 border-success p-6 sm:p-8 text-center shadow-pop animate-pop-in">
+              <div className="flex justify-center"><Spark size={110} mood="cheering" /></div>
+              <h2 className="font-display text-2xl sm:text-3xl mt-4">Goed gedaan!</h2>
+              <div className="flex justify-center gap-1 mt-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0, rotate: -90 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 14 }}
+                  >
+                    <Star
+                      className={cn(
+                        "h-9 w-9",
+                        i < stars ? "fill-secondary text-secondary" : "text-muted-foreground/30",
+                      )}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+              <p className="mt-4 text-muted-foreground">Je had er {quizScore} van de {lesson.quiz.length} goed.</p>
+              {longestComboThisLesson >= 2 && (
+                <p className="mt-1 text-sm font-display text-secondary-foreground">
+                  Beste combo: <span className="font-bold">{longestComboThisLesson}× op rij</span> 🔥
+                </p>
+              )}
+              {lesson.reflection && (
+                <div className="mt-4 mx-auto max-w-md">
+                  <SparkBubble text={lesson.reflection} mood="celebrating" size={72} />
+                </div>
+              )}
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                {renderDoneCta?.(stars)}
+              </div>
+              {preview && (
+                <p className="mt-4 text-xs text-muted-foreground">Preview-modus, niets opgeslagen</p>
+              )}
+            </section>
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      <SparkTeacher mood={teacherMood} message={teacherMsg} hidden={dockHidden} />
+      <LevelUpOverlay level={levelUpTo} onClose={() => setLevelUpTo(null)} />
     </>
   );
 };
