@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
@@ -7,10 +8,11 @@ import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { WORLDS, ALL_LESSONS } from "@/content/lessons";
-import { Lock, Star, Award } from "lucide-react";
+import { Lock, Star, Award, Flame, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { BADGES, TONE_BG } from "@/lib/badges";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import { useGameStats } from "@/hooks/useGameStats";
 
 const PILLAR_BG: Record<string, string> = {
   safe: "bg-gradient-sky text-primary-foreground",
