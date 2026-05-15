@@ -166,6 +166,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   };
 
   const goNext = (after: Step) => {
+    playClick();
     const idx = stepOrder.indexOf(after);
     const next = stepOrder[idx + 1] ?? "done";
     advance(next === undefined ? "done" : (next as Step) || "done");
@@ -174,6 +175,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 
   const handleQuizPick = (i: number) => {
     if (pickedAnswer !== null) return;
+    playClick();
     setPickedAnswer(i);
     const correct = i === lesson.quiz[quizIndex].correctIndex;
     if (correct) {
