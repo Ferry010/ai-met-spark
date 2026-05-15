@@ -7,9 +7,9 @@ import { SparkBubble } from "@/components/SparkBubble";
 import { SparkTeacher } from "@/components/SparkTeacher";
 import { GameHud, LevelUpOverlay } from "@/components/GameHud";
 import { type InteractiveStep, type Lesson } from "@/content/lessons";
-import { Check, Star, X, Lightbulb, BookOpen, ListChecks, Clock } from "lucide-react";
+import { GameGlyph } from "@/components/game/GameGlyph";
 import { cn } from "@/lib/utils";
-import { unlockAudio, playSparkEntry, playBubblePop, playCorrect, playWrong, playLevelUp, playCombo } from "@/lib/sounds";
+import { unlockAudio, playSparkEntry, playBubblePop, playCorrect, playWrong, playLevelUp, playCombo, playClick } from "@/lib/sounds";
 import { renderRichText, estimateReadSeconds } from "@/lib/markdown";
 import { SparkVoiceButton } from "@/components/SparkVoiceButton";
 import { useSparkVoice } from "@/hooks/useSparkVoice";
@@ -166,6 +166,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   };
 
   const goNext = (after: Step) => {
+    playClick();
     const idx = stepOrder.indexOf(after);
     const next = stepOrder[idx + 1] ?? "done";
     advance(next === undefined ? "done" : (next as Step) || "done");
@@ -174,6 +175,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 
   const handleQuizPick = (i: number) => {
     if (pickedAnswer !== null) return;
+    playClick();
     setPickedAnswer(i);
     const correct = i === lesson.quiz[quizIndex].correctIndex;
     if (correct) {
@@ -187,7 +189,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       playCorrect();
       if (newCombo >= 2) playCombo(newCombo);
       confetti({ particleCount: 60 + newCombo * 20, spread: 60, origin: { y: 0.5 } });
-      setTeacherMsg(newCombo >= 3 ? `Hot streak! ${newCombo} op rij 🔥` : "Goed zo!");
+      setTeacherMsg(newCombo >= 3 ? `Hot streak! ${newCombo} op rij!` : "Goed zo!");
     } else {
       setCombo(0);
       playWrong();
@@ -333,6 +335,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
               picked={pickedAnswer}
               onPick={handleQuizPick}
               onNext={() => {
+                playClick();
                 setPickedAnswer(null);
                 if (quizIndex + 1 >= lesson.quiz.length) advance("done");
                 else setQuizIndex(quizIndex + 1);
@@ -343,11 +346,11 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
           {step === "done" && (
             <section className="relative rounded-3xl border-4 border-foreground/85 bg-gradient-to-b from-[hsl(48_100%_88%)] via-[hsl(45_100%_78%)] to-[hsl(40_100%_68%)] p-6 sm:p-8 text-center shadow-pop animate-pop-in overflow-hidden">
               {/* Confetti dots in background */}
-              <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden>
-                <span className="absolute left-4 top-6 text-2xl animate-twinkle">✦</span>
-                <span className="absolute right-6 top-10 text-xl animate-twinkle" style={{ animationDelay: "0.6s" }}>✦</span>
-                <span className="absolute left-10 bottom-8 text-2xl animate-twinkle" style={{ animationDelay: "1.2s" }}>✨</span>
-                <span className="absolute right-10 bottom-6 text-xl animate-twinkle" style={{ animationDelay: "0.3s" }}>✨</span>
+              <div className="pointer-events-none absolute inset-0 opacity-60 text-[hsl(36_60%_28%)]" aria-hidden>
+                <span className="absolute left-4 top-6 animate-twinkle"><GameGlyph name="sparkle" size={20} /></span>
+                <span className="absolute right-6 top-10 animate-twinkle" style={{ animationDelay: "0.6s" }}><GameGlyph name="sparkle" size={16} /></span>
+                <span className="absolute left-10 bottom-8 animate-twinkle" style={{ animationDelay: "1.2s" }}><GameGlyph name="sparkle" size={20} /></span>
+                <span className="absolute right-10 bottom-6 animate-twinkle" style={{ animationDelay: "0.3s" }}><GameGlyph name="sparkle" size={16} /></span>
               </div>
 
               {/* Podium */}
@@ -368,15 +371,16 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                       animate={{ scale: 1, rotate: 0, y: 0 }}
                       transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 12 }}
                     >
-                      <Star
+                      <span
                         className={cn(
-                          "h-12 w-12 drop-shadow",
+                          "inline-block",
                           i < stars
-                            ? "fill-secondary text-[hsl(36_60%_28%)]"
+                            ? "text-secondary"
                             : "text-foreground/20",
                         )}
-                        strokeWidth={2.5}
-                      />
+                      >
+                        <GameGlyph name="star" size={48} />
+                      </span>
                     </motion.div>
                   ))}
                 </div>
@@ -385,7 +389,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                 </p>
                 {longestComboThisLesson >= 2 && (
                   <p className="mt-1 text-sm font-display text-[hsl(30_60%_18%)]">
-                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span> 🔥
+                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span>
                   </p>
                 )}
                 {lesson.reflection && (
@@ -552,7 +556,7 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
   return (
     <section className={`rounded-3xl p-6 sm:p-8 text-center shadow-pop ${PILLAR_BG[lesson.pillar]} animate-pop-in`}>
       <div className="text-xs font-display opacity-90 animate-kickoff-fade-up">
-        Les {lesson.id} {lesson.bossTest && "· 🏅 Baas-test"}
+        Les {lesson.id} {lesson.bossTest && "· Baas-test"}
       </div>
       <h1 className="font-display text-2xl sm:text-3xl md:text-4xl mt-1 mb-6 animate-kickoff-fade-up">{lesson.title}</h1>
 
@@ -601,7 +605,7 @@ const TheoryCard = ({
     <section className="rounded-3xl bg-card border border-border p-6 sm:p-8 shadow-soft animate-pop-in">
       <div className="flex items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-primary">
-          <BookOpen className="h-4 w-4" /> {eyebrow}
+          <span className="inline-block h-2 w-2 rounded-full bg-primary" /> {eyebrow}
         </div>
         <SparkVoiceButton lessonId={lessonId} step={step} variant="compact" />
       </div>
@@ -611,9 +615,8 @@ const TheoryCard = ({
         </div>
         <div className="flex-1 min-w-0">
           {renderRichText(text, { detectLead: true })}
-          <div className="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground font-display">
-            <Clock className="h-3.5 w-3.5" />
-            <span>~{seconds < 60 ? `${seconds} sec` : `${Math.round(seconds / 60)} min`} lezen</span>
+          <div className="mt-5 text-xs text-muted-foreground font-display">
+            ~{seconds < 60 ? `${seconds} sec` : `${Math.round(seconds / 60)} min`} lezen
           </div>
         </div>
       </div>
@@ -628,7 +631,7 @@ const SummaryCard = ({ bullets, lessonId, onNext }: { bullets: string[]; lessonI
   <section className="rounded-3xl bg-success/10 border-2 border-success p-6 sm:p-8 shadow-soft animate-pop-in">
     <div className="flex items-center justify-between gap-3 mb-3">
       <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-success">
-        <ListChecks className="h-4 w-4" /> Onthoud dit
+        <span className="inline-block h-2 w-2 rounded-full bg-success" /> Onthoud dit
       </div>
       <SparkVoiceButton lessonId={lessonId} step="summary" variant="compact" />
     </div>
@@ -699,7 +702,7 @@ const QuizCard = ({
                   !showCorrect && !showWrong && "bg-primary/10 text-primary border-primary/30",
                 )}
               >
-                {showCorrect ? <Check className="h-4 w-4" /> : showWrong ? <X className="h-4 w-4" /> : letter}
+                {showCorrect ? <GameGlyph name="check" size={16} /> : showWrong ? <span className="font-display text-lg leading-none">×</span> : letter}
               </span>
               <span className="flex-1 leading-snug">{opt}</span>
             </button>
@@ -736,9 +739,8 @@ const HintButton = ({ hints }: { hints?: string[] }) => {
         size="sm"
         disabled={revealed >= hints.length}
         onClick={() => setRevealed((r) => Math.min(r + 1, hints.length))}
-        className="rounded-full font-display gap-1"
+        className="rounded-full font-display"
       >
-        <Lightbulb className="h-4 w-4" />
         {revealed === 0
           ? "Vraag Spark om hint"
           : revealed >= hints.length

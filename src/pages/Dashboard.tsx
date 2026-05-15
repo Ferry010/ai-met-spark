@@ -116,7 +116,7 @@ export const Dashboard = () => {
                   key={w.id}
                   index={idx}
                   worldNumber={w.id}
-                  emoji={w.emoji}
+                  
                   name={w.name}
                   done={w.done}
                   total={w.lessons.length}
@@ -131,9 +131,7 @@ export const Dashboard = () => {
           {/* Badges as collectible coins */}
           <section className="mb-12">
             <div className="flex items-end justify-between mb-3">
-              <h2 className="font-display text-2xl flex items-center gap-2">
-                🏵️ Verzamelboek
-              </h2>
+              <h2 className="font-display text-2xl">Verzamelboek</h2>
               <span className="font-display text-sm text-foreground/60">
                 {earnedCount} / {BADGES.length}
               </span>
@@ -142,6 +140,7 @@ export const Dashboard = () => {
               <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-3">
                 {BADGES.map((b) => {
                   const earned = b.earned(ctx);
+                  const initial = b.name.trim().charAt(0).toUpperCase();
                   return (
                     <div key={b.id} title={`${b.name} — ${b.description}`} className="flex flex-col items-center">
                       <motion.div
@@ -150,13 +149,13 @@ export const Dashboard = () => {
                         whileHover={{ rotate: earned ? 12 : 0, scale: earned ? 1.1 : 1 }}
                         transition={{ type: "spring", stiffness: 220, damping: 14 }}
                         className={cn(
-                          "h-14 w-14 rounded-full border-4 grid place-items-center text-2xl",
+                          "h-14 w-14 rounded-full border-4 grid place-items-center font-display text-xl",
                           earned
-                            ? "border-[hsl(36_60%_30%)] bg-gradient-to-br from-[hsl(48_100%_72%)] via-[hsl(45_100%_58%)] to-[hsl(36_100%_45%)] shadow-pop animate-coin-shine"
-                            : "border-foreground/15 bg-muted text-muted-foreground/40 grayscale opacity-60",
+                            ? "border-[hsl(36_60%_30%)] bg-gradient-to-br from-[hsl(48_100%_72%)] via-[hsl(45_100%_58%)] to-[hsl(36_100%_45%)] text-[hsl(30_60%_18%)] shadow-pop animate-coin-shine"
+                            : "border-foreground/15 bg-muted text-muted-foreground/40 opacity-60",
                         )}
                       >
-                        <span aria-hidden>{earned ? b.emoji : "?"}</span>
+                        <span aria-hidden>{earned ? initial : "?"}</span>
                       </motion.div>
                       <div className={cn(
                         "mt-1.5 text-[10px] font-display leading-tight text-center max-w-[68px] truncate",

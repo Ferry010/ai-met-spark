@@ -115,9 +115,59 @@ export const playSparkEntry = () => {
   setTimeout(() => playPop({ freq: 220, endFreq: 90, duration: 0.22, volume: 0.22, type: "triangle" }), 380);
 };
 
-/** Soft pop for the speech bubble appearing. */
+// ---- Sample-based click sound (uploaded MP3) -------------------------------
+const CLICK_URL = "/sounds/click.mp3";
+const POOL_SIZE = 4;
+let clickPool: HTMLAudioElement[] | null = null;
+let clickIndex = 0;
+let clickFailed = false;
+
+const getClickPool = (): HTMLAudioElement[] | null => {
+  if (typeof window === "undefined") return null;
+  if (clickFailed) return null;
+  if (!clickPool) {
+    try {
+      clickPool = Array.from({ length: POOL_SIZE }, () => {
+        const a = new Audio(CLICK_URL);
+        a.preload = "auto";
+        a.volume = 0.55;
+        return a;
+      });
+    } catch {
+      clickFailed = true;
+      return null;
+    }
+  }
+  return clickPool;
+};
+
+/** Play the friendly digital click — used for buttons, taps, and pop-ups. */
+export const playClick = (volume = 0.55) => {
+  if (!unlocked) return;
+  if (reduceMotion()) return;
+  const pool = getClickPool();
+  if (!pool) {
+    // Synth fallback
+    playPop({ freq: 620, endFreq: 360, duration: 0.12, volume: 0.14, type: "sine" });
+    return;
+  }
+  const node = pool[clickIndex % pool.length];
+  clickIndex += 1;
+  try {
+    node.volume = volume;
+    node.currentTime = 0;
+    void node.play().catch(() => {
+      clickFailed = true;
+      playPop({ freq: 620, endFreq: 360, duration: 0.12, volume: 0.14, type: "sine" });
+    });
+  } catch {
+    clickFailed = true;
+  }
+};
+
+/** Soft pop for the speech bubble appearing — uses the same friendly sample. */
 export const playBubblePop = () => {
-  playPop({ freq: 720, endFreq: 380, duration: 0.14, volume: 0.14, type: "sine" });
+  playClick(0.45);
 };
 
 /** Cheerful two-note ding for a correct quiz answer. */

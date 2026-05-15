@@ -1,12 +1,12 @@
-import { Check, Lock, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { Spark } from "@/components/Spark";
+import { GameGlyph } from "@/components/game/GameGlyph";
 import { cn } from "@/lib/utils";
+import { playClick } from "@/lib/sounds";
 
 interface LevelNodeProps {
   index: number;
   number: number;
-  emoji: string;
   title: string;
   state: "done" | "next" | "locked" | "future";
   pillar: "safe" | "smart" | "stronger";
@@ -23,11 +23,11 @@ const PILLAR_RING: Record<string, string> = {
 
 /**
  * One round level button on the winding adventure path.
+ * State is communicated by color and SVG glyph — no emojis, no UI-kit icons.
  */
 export const LevelNode = ({
   index,
   number,
-  emoji,
   title,
   state,
   pillar,
@@ -38,6 +38,12 @@ export const LevelNode = ({
   const isDone = state === "done";
   const isNext = state === "next";
   const isLocked = state === "locked" || state === "future";
+
+  const handleClick = () => {
+    if (isLocked) return;
+    playClick();
+    onClick();
+  };
 
   return (
     <motion.div
@@ -55,11 +61,11 @@ export const LevelNode = ({
           <div className="absolute -inset-2 rounded-full animate-node-pulse pointer-events-none" />
         )}
         <button
-          onClick={onClick}
+          onClick={handleClick}
           disabled={isLocked}
           aria-label={`Les ${number}: ${title}`}
           className={cn(
-            "relative h-24 w-24 rounded-full grid place-items-center btn-squish text-4xl font-display",
+            "relative h-24 w-24 rounded-full grid place-items-center btn-squish font-display",
             "border-4 border-white",
             isDone && "bg-success text-success-foreground",
             isNext && `bg-gradient-to-br ${PILLAR_RING[pillar]} text-white`,
@@ -67,11 +73,11 @@ export const LevelNode = ({
           )}
         >
           {isDone ? (
-            <Check className="h-9 w-9" strokeWidth={3.5} />
+            <GameGlyph name="check" size={40} />
           ) : isLocked ? (
-            <Lock className="h-7 w-7" />
+            <GameGlyph name="lock" size={32} />
           ) : (
-            <span aria-hidden>{emoji}</span>
+            <span className="text-3xl font-display drop-shadow-sm">{number}</span>
           )}
 
           {/* Level number badge */}
@@ -90,13 +96,15 @@ export const LevelNode = ({
           {isDone && stars > 0 && (
             <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 flex gap-0.5">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Star
+                <span
                   key={i}
                   className={cn(
-                    "h-3 w-3",
-                    i < stars ? "fill-secondary text-secondary" : "text-muted-foreground/30",
+                    "inline-block",
+                    i < stars ? "text-secondary" : "text-muted-foreground/30",
                   )}
-                />
+                >
+                  <GameGlyph name="star" size={12} />
+                </span>
               ))}
             </div>
           )}

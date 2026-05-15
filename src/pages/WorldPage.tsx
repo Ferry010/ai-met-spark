@@ -22,15 +22,15 @@ export const WorldPage = () => {
   const navigate = useNavigate();
   const { completed, rows } = useUserProgress();
   const baseWorld = getWorld(Number(worldId));
-  const [overrides, setOverrides] = useState<Record<string, { title?: string | null; emoji?: string | null }>>({});
+  const [overrides, setOverrides] = useState<Record<string, { title?: string | null }>>({});
 
   useEffect(() => {
     supabase
       .from("lesson_overrides")
-      .select("lesson_id, title, emoji")
+      .select("lesson_id, title")
       .then(({ data }) => {
-        const map: Record<string, { title?: string | null; emoji?: string | null }> = {};
-        (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title, emoji: o.emoji }));
+        const map: Record<string, { title?: string | null }> = {};
+        (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title }));
         setOverrides(map);
       });
   }, []);
@@ -41,7 +41,6 @@ export const WorldPage = () => {
         lessons: baseWorld.lessons.map((l) => ({
           ...l,
           title: overrides[l.id]?.title?.trim() || l.title,
-          emoji: overrides[l.id]?.emoji?.trim() || l.emoji,
         })),
       }
     : undefined;
@@ -74,8 +73,8 @@ export const WorldPage = () => {
             <div className="inline-block rounded-full bg-foreground text-background font-display text-xs px-3 py-1 mb-2">
               WERELD {world.id}
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl text-foreground drop-shadow-sm flex items-center justify-center gap-2">
-              <span aria-hidden>{world.emoji}</span> {world.name}
+            <h1 className="font-display text-3xl sm:text-4xl text-foreground drop-shadow-sm">
+              {world.name}
             </h1>
             <p className="font-body text-foreground/70 mt-1">{world.tagline}</p>
           </div>
@@ -118,7 +117,7 @@ export const WorldPage = () => {
                     <LevelNode
                       index={idx}
                       number={idx + 1}
-                      emoji={lesson.emoji}
+                      
                       title={lesson.title}
                       state={state}
                       pillar={world.pillar}
@@ -133,12 +132,14 @@ export const WorldPage = () => {
 
             {/* World boss flag at bottom */}
             <div className="text-center mt-12">
-              <div className="inline-block">
+              <div className="inline-flex flex-col items-center">
                 <Spark
                   size={88}
                   mood={world.lessons.every((l) => completed.has(l.id)) ? "celebrating" : "happy"}
                 />
-                <div className="text-2xl mt-1" aria-hidden>🚩</div>
+                <div className="mt-2 px-3 py-1 rounded-md border-2 border-[hsl(36_60%_28%)] bg-gradient-to-b from-[hsl(48_100%_72%)] to-[hsl(36_100%_45%)] font-display text-xs uppercase tracking-wider text-[hsl(30_60%_18%)] shadow-pop">
+                  Einde wereld
+                </div>
               </div>
             </div>
           </div>

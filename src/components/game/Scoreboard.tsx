@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Flame, Sparkles } from "lucide-react";
+import { GameGlyph } from "@/components/game/GameGlyph";
 
 interface ScoreboardProps {
   level: number;
@@ -57,15 +57,15 @@ export const Scoreboard = ({ level, xp, pct, xpToNext, streak, longestCombo }: S
 
         {/* Streak / combo coins */}
         <div className="hidden sm:flex flex-col gap-2 shrink-0">
-          <Pill icon={<Flame className="h-3.5 w-3.5" />} label={`${streak}d`} tint="accent" />
-          <Pill icon={<Sparkles className="h-3.5 w-3.5" />} label={`x${longestCombo}`} tint="gold" />
+          <Pill icon={<GameGlyph name="flame" size={14} />} label={`${streak}d`} tint="accent" />
+          <Pill icon={<GameGlyph name="gem" size={14} />} label={`x${longestCombo}`} tint="gold" />
         </div>
       </div>
 
       {/* Mobile streak row */}
       <div className="sm:hidden mt-3 flex gap-2">
-        <Pill icon={<Flame className="h-3.5 w-3.5" />} label={`${streak} dagen`} tint="accent" />
-        <Pill icon={<Sparkles className="h-3.5 w-3.5" />} label={`combo x${longestCombo}`} tint="gold" />
+        <Pill icon={<GameGlyph name="flame" size={14} />} label={`${streak} dagen`} tint="accent" />
+        <Pill icon={<GameGlyph name="gem" size={14} />} label={`combo x${longestCombo}`} tint="gold" />
       </div>
     </div>
   );
