@@ -1,24 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
 import { Spark } from "@/components/Spark";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { WORLDS, ALL_LESSONS } from "@/content/lessons";
-import { Lock, Star, Award, Flame, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { BADGES, TONE_BG } from "@/lib/badges";
+import { BADGES } from "@/lib/badges";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { useGameStats } from "@/hooks/useGameStats";
-
-const PILLAR_BG: Record<string, string> = {
-  safe: "bg-gradient-sky text-primary-foreground",
-  smart: "bg-gradient-sunshine text-secondary-foreground",
-  stronger: "bg-gradient-coral text-accent-foreground",
-};
+import { AdventureBackdrop } from "@/components/game/AdventureBackdrop";
+import { IslandTile } from "@/components/game/IslandTile";
+import { Scoreboard } from "@/components/game/Scoreboard";
+import { BossGate } from "@/components/game/BossGate";
+import { cn } from "@/lib/utils";
 
 export const Dashboard = () => {
   const { profile, user } = useAuth();
@@ -26,6 +22,7 @@ export const Dashboard = () => {
   const { stats, progress } = useGameStats();
   const [finalPassed, setFinalPassed] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) return;
@@ -48,165 +45,138 @@ export const Dashboard = () => {
     locked: w.id > 1 && !WORLDS[w.id - 2].lessons.every((l) => completed.has(l.id)),
   }));
 
+  const handleWorld = (worldId: number, locked: boolean) => {
+    if (locked) {
+      toast({ title: "Op slot!", description: `Maak eerst Wereld ${worldId - 1} af.` });
+      return;
+    }
+    navigate(`/world/${worldId}`);
+  };
+
+  const ctx = { completed, finalPassed };
+  const earnedCount = BADGES.filter((b) => b.earned(ctx)).length;
+
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <main className="container py-6 md:py-8 max-w-5xl">
-        <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 mb-6">
-          <Spark size={88} mood={allDone ? "celebrating" : "happy"} />
-          <div className="text-center sm:text-left flex-1">
-            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl">
-              Hoi {profile?.first_name ?? "vriend"}! Klaar om slimmer te worden?
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              {totalDone} van {totalLessons} lessen gedaan
-            </p>
-          </div>
-        </div>
-
-        {/* Stats card */}
-        <div className="mb-8 rounded-3xl bg-gradient-cosmic text-primary-foreground p-5 sm:p-6 shadow-pop">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+      <AdventureBackdrop theme="sky" className="min-h-[calc(100vh-3.5rem)]">
+        <main className="container py-6 md:py-8 max-w-5xl">
+          {/* Greeting + scoreboard */}
+          <div className="grid sm:grid-cols-[auto_1fr] gap-5 items-center mb-8">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center justify-center rounded-full bg-secondary text-secondary-foreground h-10 w-10 font-display font-bold shadow-soft">
-                {progress.level}
-              </span>
-              <div>
-                <div className="font-display text-lg leading-tight">Niveau {progress.level}</div>
-                <div className="text-xs opacity-90">{stats.xp} XP totaal</div>
+              <Spark size={96} mood={allDone ? "celebrating" : "happy"} waving />
+              <div className="relative max-w-[200px] rounded-2xl bg-white border-2 border-foreground/10 px-3 py-2 shadow-pop">
+                <div className="text-[11px] uppercase tracking-wider font-display text-primary">Spark zegt</div>
+                <div className="font-display text-sm leading-tight">
+                  {allDone ? "WOW! Alles uit. Naar de eindbaas?" : `Hé ${profile?.first_name ?? "vriend"}, klaar voor avontuur?`}
+                </div>
+                <div className="absolute -left-2 bottom-4 h-3 w-3 rotate-45 bg-white border-l-2 border-b-2 border-foreground/10" />
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-background/20 px-3 py-1 font-display text-sm">
-                <Flame className="h-4 w-4" /> {stats.streak_days} dag{stats.streak_days === 1 ? "" : "en"}
-              </span>
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-background/20 px-3 py-1 font-display text-sm">
-                <Sparkles className="h-4 w-4" /> Beste combo {stats.longest_combo}
-              </span>
-            </div>
-          </div>
-          <div className="h-2.5 rounded-full bg-background/25 overflow-hidden">
-            <motion.div
-              className="h-full bg-secondary"
-              initial={{ width: 0 }}
-              animate={{ width: `${progress.pct}%` }}
-              transition={{ type: "spring", stiffness: 100, damping: 18 }}
+
+            <Scoreboard
+              level={progress.level}
+              xp={stats.xp}
+              pct={progress.pct}
+              xpToNext={Math.max(0, progress.xpForNext - progress.xpInLevel)}
+              streak={stats.streak_days}
+              longestCombo={stats.longest_combo}
             />
           </div>
-          <div className="mt-1 text-[11px] opacity-80 font-display">
-            Nog {Math.max(0, progress.xpForNext - progress.xpInLevel)} XP tot niveau {progress.level + 1}
-          </div>
-        </div>
 
-        <Progress value={(totalDone / totalLessons) * 100} className="h-3 mb-10" />
+          {/* Adventure islands path */}
+          <section className="relative mb-12">
+            <h2 className="font-display text-2xl mb-4 text-center text-foreground/80">
+              Kies je avontuur
+            </h2>
 
-        <div className="grid md:grid-cols-3 gap-5 mb-10">
-          {worldProgress.map((w, idx) => {
-            const pct = Math.round((w.done / w.lessons.length) * 100);
-            return (
-              <motion.div
-                key={w.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.08, duration: 0.4 }}
-                whileHover={{ y: -6, rotate: -0.5 }}
-              >
-                <Link
-                  to={w.locked ? "#" : `/world/${w.id}`}
-                  onClick={(e) => {
-                    if (w.locked) {
-                      e.preventDefault();
-                      toast({ title: "Op slot!", description: `Maak eerst Wereld ${w.id - 1} af.` });
-                    }
-                  }}
-                  className={`block rounded-3xl p-5 sm:p-6 shadow-soft hover:shadow-pop ${PILLAR_BG[w.pillar]} ${w.locked ? "opacity-60" : ""}`}
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <span className="text-4xl sm:text-5xl" aria-hidden>{w.emoji}</span>
-                    {w.locked && <Lock className="h-6 w-6" />}
-                  </div>
-                  <h2 className="font-display text-xl sm:text-2xl mb-1">Wereld {w.id}: {w.name}</h2>
-                  <p className="text-sm opacity-90 mb-4">{w.tagline}</p>
-                  <div className="flex items-center justify-between text-sm font-semibold">
-                    <span>{w.done} / {w.lessons.length} klaar</span>
-                    <span>{pct}%</span>
-                  </div>
-                  <div className="mt-2 h-2 rounded-full bg-white/30 overflow-hidden">
-                    <motion.div
-                      className="h-full bg-white"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${pct}%` }}
-                      transition={{ duration: 0.6, delay: 0.3 + idx * 0.08 }}
-                    />
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        <section className="mb-10">
-          {(() => {
-            const ctx = { completed, finalPassed };
-            const earnedCount = BADGES.filter((b) => b.earned(ctx)).length;
-            return (
-              <>
-                <h2 className="font-display text-2xl mb-1 flex items-center gap-2">
-                  <Award className="h-6 w-6 text-secondary-foreground" /> Je badges
-                </h2>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {earnedCount} van {BADGES.length} verdiend
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                  {BADGES.map((b) => {
-                    const earned = b.earned(ctx);
-                    const Icon = b.icon;
-                    return (
-                      <div
-                        key={b.id}
-                        title={b.description}
-                        className={`rounded-2xl p-3 sm:p-4 text-center transition-bounce ${
-                          earned
-                            ? `${TONE_BG[b.tone ?? "primary"]} shadow-pop animate-pop-in`
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        <div className="text-2xl sm:text-3xl" aria-hidden>
-                          {earned ? b.emoji : "🔒"}
-                        </div>
-                        <div className="font-display text-sm mt-2 leading-tight">{b.name}</div>
-                        <div className="text-[11px] mt-1 opacity-80 leading-tight">
-                          {b.description}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            );
-          })()}
-        </section>
-
-        <div className="rounded-3xl bg-card border border-border p-6 text-center shadow-soft">
-          <Star className="h-10 w-10 mx-auto text-secondary-foreground mb-2" />
-          <h2 className="font-display text-2xl mb-1">Eindtoets</h2>
-          <p className="text-muted-foreground mb-4">Haal 8/10 om je diploma te verdienen!</p>
-          <Link to={allDone ? "/final-test" : "#"}>
-            <Button
-              disabled={!allDone}
-              onClick={(e) => {
-                if (!allDone) {
-                  e.preventDefault();
-                  toast({ title: "Bijna zover!", description: `Maak eerst alle ${totalLessons} lessen af.` });
-                }
-              }}
-              className="h-14 px-8 rounded-full font-display text-base shadow-soft"
+            {/* Dashed connecting path (desktop) */}
+            <svg
+              className="hidden md:block absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none"
+              height="80"
+              viewBox="0 0 800 80"
+              preserveAspectRatio="none"
+              style={{ width: "100%" }}
+              aria-hidden
             >
-              {allDone ? "🏆 Doe de toets" : `🔒 Op slot (${totalDone}/${totalLessons})`}
-            </Button>
-          </Link>
-        </div>
-      </main>
+              <path
+                d="M 60 40 Q 200 -10 400 40 T 740 40"
+                stroke="hsl(var(--primary) / 0.4)"
+                strokeWidth="6"
+                strokeDasharray="4 14"
+                strokeLinecap="round"
+                fill="none"
+                className="animate-path-march"
+              />
+            </svg>
+
+            <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 place-items-center">
+              {worldProgress.map((w, idx) => (
+                <IslandTile
+                  key={w.id}
+                  index={idx}
+                  worldNumber={w.id}
+                  emoji={w.emoji}
+                  name={w.name}
+                  done={w.done}
+                  total={w.lessons.length}
+                  locked={w.locked}
+                  pillar={w.pillar}
+                  onClick={() => handleWorld(w.id, w.locked)}
+                />
+              ))}
+            </div>
+          </section>
+
+          {/* Badges as collectible coins */}
+          <section className="mb-12">
+            <div className="flex items-end justify-between mb-3">
+              <h2 className="font-display text-2xl flex items-center gap-2">
+                🏵️ Verzamelboek
+              </h2>
+              <span className="font-display text-sm text-foreground/60">
+                {earnedCount} / {BADGES.length}
+              </span>
+            </div>
+            <div className="rounded-3xl bg-white/70 backdrop-blur-sm border-2 border-foreground/10 p-4 sm:p-5 shadow-soft">
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-3">
+                {BADGES.map((b) => {
+                  const earned = b.earned(ctx);
+                  return (
+                    <div key={b.id} title={`${b.name} — ${b.description}`} className="flex flex-col items-center">
+                      <motion.div
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        whileHover={{ rotate: earned ? 12 : 0, scale: earned ? 1.1 : 1 }}
+                        transition={{ type: "spring", stiffness: 220, damping: 14 }}
+                        className={cn(
+                          "h-14 w-14 rounded-full border-4 grid place-items-center text-2xl",
+                          earned
+                            ? "border-[hsl(36_60%_30%)] bg-gradient-to-br from-[hsl(48_100%_72%)] via-[hsl(45_100%_58%)] to-[hsl(36_100%_45%)] shadow-pop animate-coin-shine"
+                            : "border-foreground/15 bg-muted text-muted-foreground/40 grayscale opacity-60",
+                        )}
+                      >
+                        <span aria-hidden>{earned ? b.emoji : "?"}</span>
+                      </motion.div>
+                      <div className={cn(
+                        "mt-1.5 text-[10px] font-display leading-tight text-center max-w-[68px] truncate",
+                        earned ? "text-foreground" : "text-foreground/40",
+                      )}>
+                        {b.name}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+
+          {/* Boss gate */}
+          <section className="pb-10">
+            <BossGate unlocked={allDone} totalDone={totalDone} totalLessons={totalLessons} />
+          </section>
+        </main>
+      </AdventureBackdrop>
     </div>
   );
 };
