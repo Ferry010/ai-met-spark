@@ -14,13 +14,16 @@ import {
 import { LogOut, Settings, GraduationCap, ShieldCheck, Flame, Sparkles } from "lucide-react";
 
 export const AppHeader = () => {
-  const { profile, isTeacher, isAdmin } = useAuth();
+  const { profile, isTeacher, isAdmin, user } = useAuth();
+  const { stats, progress } = useGameStats();
   const navigate = useNavigate();
 
   const logout = async () => {
     await supabase.auth.signOut();
     navigate("/");
   };
+
+  const showStats = !!user && !isTeacher;
 
   return (
     <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -30,6 +33,18 @@ export const AppHeader = () => {
           <span className="max-w-[150px] truncate font-display text-base font-semibold sm:max-w-none sm:text-xl">AI met Spark</span>
         </Link>
         <div className="flex items-center gap-2 shrink-0">
+          {showStats && (
+            <>
+              <div className="hidden sm:inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary px-2.5 py-1 font-display text-xs">
+                <Sparkles className="h-3.5 w-3.5" /> Lv {progress.level}
+              </div>
+              {stats.streak_days > 0 && (
+                <div className="inline-flex items-center gap-1 rounded-full bg-accent/15 text-accent px-2.5 py-1 font-display text-xs">
+                  <Flame className="h-3.5 w-3.5" /> {stats.streak_days}
+                </div>
+              )}
+            </>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="rounded-full font-display gap-2 h-10 sm:h-11 px-2 sm:px-3">
