@@ -116,7 +116,7 @@ export const Dashboard = () => {
                   key={w.id}
                   index={idx}
                   worldNumber={w.id}
-                  emoji={w.emoji}
+                  
                   name={w.name}
                   done={w.done}
                   total={w.lessons.length}

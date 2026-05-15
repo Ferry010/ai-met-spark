@@ -117,7 +117,7 @@ export const WorldPage = () => {
                     <LevelNode
                       index={idx}
                       number={idx + 1}
-                      emoji={lesson.emoji}
+                      
                       title={lesson.title}
                       state={state}
                       pillar={world.pillar}
