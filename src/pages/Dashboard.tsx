@@ -23,6 +23,7 @@ const PILLAR_BG: Record<string, string> = {
 export const Dashboard = () => {
   const { profile, user } = useAuth();
   const { completed } = useUserProgress();
+  const { stats, progress } = useGameStats();
   const [finalPassed, setFinalPassed] = useState(false);
   const { toast } = useToast();
 
