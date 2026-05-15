@@ -9,7 +9,11 @@ export type SparkMood =
   | "explaining"
   | "hinting"
   | "questioning"
-  | "pointing";
+  | "pointing"
+  | "cheering"
+  | "oops"
+  | "teaching"
+  | "levelup";
 
 interface SparkProps {
   mood?: SparkMood;
@@ -25,18 +29,28 @@ interface SparkProps {
  * Pure inline SVG so it scales crisply and can be themed via design tokens.
  */
 export const Spark = ({ mood = "default", size = 160, className, animate = true, waving = false }: SparkProps) => {
-  const isHappy = mood === "happy" || mood === "celebrating";
-  const isSad = mood === "sad";
-  const isThinking = mood === "thinking" || mood === "explaining";
+  const isHappy = mood === "happy" || mood === "celebrating" || mood === "cheering" || mood === "levelup";
+  const isSad = mood === "sad" || mood === "oops";
+  const isThinking = mood === "thinking" || mood === "explaining" || mood === "teaching";
   const isQuestioning = mood === "questioning" || mood === "hinting";
-  const isPointing = mood === "pointing";
+  const isPointing = mood === "pointing" || mood === "teaching";
+  const isCheering = mood === "cheering" || mood === "levelup";
+  const hasGlow = mood === "levelup";
+
+  const wrapperClass = cn(
+    animate && "animate-float",
+    mood === "oops" && "animate-shake",
+    mood === "cheering" && "animate-spark-cheer",
+    mood === "levelup" && "animate-spark-glow",
+    className,
+  );
 
   return (
     <svg
       viewBox="0 0 200 200"
       width={size}
       height={size}
-      className={cn(animate && "animate-float", className)}
+      className={wrapperClass}
       aria-label="Spark — je AI met Spark leraar"
       role="img"
     >
@@ -146,13 +160,29 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true,
       )}
 
       {/* Celebrating sparkles */}
-      {mood === "celebrating" && (
+      {(mood === "celebrating" || isCheering) && (
         <g fill="hsl(var(--secondary))">
-          <circle cx="40" cy="40" r="4" />
-          <circle cx="160" cy="50" r="3" />
-          <circle cx="170" cy="80" r="4" />
-          <circle cx="30" cy="80" r="3" />
+          <circle cx="40" cy="40" r="4">{animate && <animate attributeName="opacity" values="0.4;1;0.4" dur="1s" repeatCount="indefinite" />}</circle>
+          <circle cx="160" cy="50" r="3">{animate && <animate attributeName="opacity" values="1;0.3;1" dur="1.2s" repeatCount="indefinite" />}</circle>
+          <circle cx="170" cy="80" r="4">{animate && <animate attributeName="opacity" values="0.5;1;0.5" dur="0.9s" repeatCount="indefinite" />}</circle>
+          <circle cx="30" cy="80" r="3">{animate && <animate attributeName="opacity" values="1;0.4;1" dur="1.1s" repeatCount="indefinite" />}</circle>
         </g>
+      )}
+
+      {/* Level-up gold ring */}
+      {hasGlow && (
+        <circle cx="100" cy="110" r="78" fill="none" stroke="hsl(var(--secondary))" strokeWidth="3" opacity="0.6">
+          {animate && <animate attributeName="r" values="78;88;78" dur="1.4s" repeatCount="indefinite" />}
+          {animate && <animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.4s" repeatCount="indefinite" />}
+        </circle>
+      )}
+
+      {/* Question mark for thinking mood */}
+      {mood === "thinking" && (
+        <text x="155" y="48" fontSize="32" fontWeight="bold" fill="hsl(var(--primary))" fontFamily="Fredoka, sans-serif">
+          ?
+          {animate && <animate attributeName="opacity" values="0.6;1;0.6" dur="1.2s" repeatCount="indefinite" />}
+        </text>
       )}
     </svg>
   );
