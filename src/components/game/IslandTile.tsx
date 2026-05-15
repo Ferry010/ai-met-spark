@@ -1,8 +1,8 @@
-import { Lock } from "lucide-react";
 import { motion } from "framer-motion";
+import { GameGlyph } from "@/components/game/GameGlyph";
+import { playClick } from "@/lib/sounds";
 
 interface IslandTileProps {
-  emoji: string;
   name: string;
   worldNumber: number;
   done: number;
@@ -13,23 +13,11 @@ interface IslandTileProps {
   index: number;
 }
 
-const PILLAR_TOP: Record<string, string> = {
-  safe:     "from-[hsl(187_80%_55%)] to-[hsl(200_85%_45%)]",
-  smart:    "from-[hsl(48_100%_70%)] to-[hsl(38_100%_55%)]",
-  stronger: "from-[hsl(8_100%_75%)] to-[hsl(0_85%_60%)]",
-};
-
-const PILLAR_DIRT: Record<string, string> = {
-  safe:     "from-[hsl(28_50%_45%)] to-[hsl(28_55%_30%)]",
-  smart:    "from-[hsl(36_55%_45%)] to-[hsl(36_60%_28%)]",
-  stronger: "from-[hsl(18_55%_42%)] to-[hsl(18_60%_26%)]",
-};
-
 /**
  * Floating "island" world button. SVG-shaped, organic, kid-friendly.
+ * No emojis or icon-kit glyphs — number badge + ribbon do the storytelling.
  */
 export const IslandTile = ({
-  emoji,
   name,
   worldNumber,
   done,
@@ -42,9 +30,15 @@ export const IslandTile = ({
   const pct = Math.round((done / total) * 100);
   const allDone = done === total;
 
+  const handleClick = () => {
+    if (locked) return;
+    playClick();
+    onClick();
+  };
+
   return (
     <motion.button
-      onClick={onClick}
+      onClick={handleClick}
       disabled={locked}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
@@ -57,7 +51,11 @@ export const IslandTile = ({
     >
       {/* World number badge — floating */}
       <div className="absolute -top-1 left-1/2 -translate-x-1/2 z-20">
-        <div className={`flex h-11 w-11 items-center justify-center rounded-full border-4 border-white text-white font-display text-lg shadow-pop bg-gradient-to-br ${PILLAR_TOP[pillar]}`}>
+        <div className={`flex h-11 w-11 items-center justify-center rounded-full border-4 border-white text-white font-display text-lg shadow-pop bg-gradient-to-br ${
+          pillar === "safe" ? "from-[hsl(187_80%_55%)] to-[hsl(200_85%_45%)]"
+            : pillar === "smart" ? "from-[hsl(48_100%_70%)] to-[hsl(38_100%_55%)]"
+            : "from-[hsl(8_100%_75%)] to-[hsl(0_85%_60%)]"
+        }`}>
           {worldNumber}
         </div>
       </div>
@@ -89,25 +87,41 @@ export const IslandTile = ({
           {/* Decorative tufts */}
           <circle cx="40" cy="78" r="6" fill={pillar === "safe" ? "hsl(187 90% 38%)" : pillar === "smart" ? "hsl(38 90% 40%)" : "hsl(0 80% 45%)"} opacity="0.6" />
           <circle cx="180" cy="84" r="5" fill={pillar === "safe" ? "hsl(187 90% 38%)" : pillar === "smart" ? "hsl(38 90% 40%)" : "hsl(0 80% 45%)"} opacity="0.6" />
-        </svg>
 
-        {/* Big emoji centered on the island */}
-        <div className="absolute inset-0 flex items-center justify-center pt-2">
-          <span className="text-6xl drop-shadow-md" aria-hidden>{emoji}</span>
-        </div>
+          {/* Big stylized world numeral pressed into the grass */}
+          <text
+            x="110"
+            y="98"
+            textAnchor="middle"
+            fontFamily="inherit"
+            fontWeight="900"
+            fontSize="64"
+            fill="white"
+            opacity="0.85"
+            style={{ paintOrder: "stroke" } as React.CSSProperties}
+            stroke="hsl(0 0% 0% / 0.25)"
+            strokeWidth="3"
+          >
+            {worldNumber}
+          </text>
+        </svg>
 
         {/* Lock overlay */}
         {locked && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="rounded-full bg-foreground/80 p-3 shadow-pop">
-              <Lock className="h-7 w-7 text-white" />
+            <div className="rounded-full bg-foreground/80 p-3 shadow-pop text-white">
+              <GameGlyph name="lock" size={28} />
             </div>
           </div>
         )}
 
-        {/* All-done crown */}
+        {/* All-done crown ribbon */}
         {allDone && !locked && (
-          <div className="absolute -top-3 right-6 text-3xl rotate-12 drop-shadow-md" aria-hidden>👑</div>
+          <div className="absolute -top-3 right-4 rotate-12">
+            <div className="rounded-md border-2 border-[hsl(36_60%_28%)] bg-gradient-to-b from-[hsl(48_100%_72%)] to-[hsl(36_100%_45%)] px-2 py-0.5 text-[10px] font-display uppercase tracking-wider text-[hsl(30_60%_18%)] shadow-pop">
+              Klaar
+            </div>
+          </div>
         )}
       </div>
 
