@@ -677,24 +677,31 @@ const QuizCard = ({
           const isPicked = picked === i;
           const showCorrect = picked !== null && i === correct;
           const showWrong = isPicked && i !== correct;
+          const letter = String.fromCharCode(65 + i);
           return (
             <button
               key={i}
               onClick={() => onPick(i)}
               disabled={picked !== null}
               className={cn(
-                "w-full text-left p-4 rounded-2xl border-2 transition-bounce min-h-[56px] font-body",
-                showCorrect && "bg-success/15 border-success",
-                showWrong && "bg-destructive/10 border-destructive",
-                picked === null && "border-border hover:border-primary hover:bg-primary/5",
-                picked !== null && !showCorrect && !showWrong && "border-border opacity-60",
+                "btn-squish w-full text-left p-4 rounded-2xl border-[3px] min-h-[60px] font-body bg-card flex items-center gap-3",
+                showCorrect && "bg-success/20 border-success",
+                showWrong && "bg-destructive/15 border-destructive",
+                picked === null && "border-foreground/15 hover:border-primary",
+                picked !== null && !showCorrect && !showWrong && "border-foreground/10 opacity-60",
               )}
             >
-              <div className="flex items-center justify-between gap-3">
-                <span>{opt}</span>
-                {showCorrect && <Check className="h-5 w-5 text-success shrink-0" />}
-                {showWrong && <X className="h-5 w-5 text-destructive shrink-0" />}
-              </div>
+              <span
+                className={cn(
+                  "shrink-0 grid place-items-center h-9 w-9 rounded-full font-display text-base border-2",
+                  showCorrect && "bg-success text-success-foreground border-success",
+                  showWrong && "bg-destructive text-destructive-foreground border-destructive",
+                  !showCorrect && !showWrong && "bg-primary/10 text-primary border-primary/30",
+                )}
+              >
+                {showCorrect ? <Check className="h-4 w-4" /> : showWrong ? <X className="h-4 w-4" /> : letter}
+              </span>
+              <span className="flex-1 leading-snug">{opt}</span>
             </button>
           );
         })}
