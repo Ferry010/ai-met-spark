@@ -343,11 +343,11 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
           {step === "done" && (
             <section className="relative rounded-3xl border-4 border-foreground/85 bg-gradient-to-b from-[hsl(48_100%_88%)] via-[hsl(45_100%_78%)] to-[hsl(40_100%_68%)] p-6 sm:p-8 text-center shadow-pop animate-pop-in overflow-hidden">
               {/* Confetti dots in background */}
-              <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden>
-                <span className="absolute left-4 top-6 text-2xl animate-twinkle">✦</span>
-                <span className="absolute right-6 top-10 text-xl animate-twinkle" style={{ animationDelay: "0.6s" }}>✦</span>
-                <span className="absolute left-10 bottom-8 text-2xl animate-twinkle" style={{ animationDelay: "1.2s" }}>✨</span>
-                <span className="absolute right-10 bottom-6 text-xl animate-twinkle" style={{ animationDelay: "0.3s" }}>✨</span>
+              <div className="pointer-events-none absolute inset-0 opacity-60 text-[hsl(36_60%_28%)]" aria-hidden>
+                <span className="absolute left-4 top-6 animate-twinkle"><GameGlyph name="sparkle" size={20} /></span>
+                <span className="absolute right-6 top-10 animate-twinkle" style={{ animationDelay: "0.6s" }}><GameGlyph name="sparkle" size={16} /></span>
+                <span className="absolute left-10 bottom-8 animate-twinkle" style={{ animationDelay: "1.2s" }}><GameGlyph name="sparkle" size={20} /></span>
+                <span className="absolute right-10 bottom-6 animate-twinkle" style={{ animationDelay: "0.3s" }}><GameGlyph name="sparkle" size={16} /></span>
               </div>
 
               {/* Podium */}
