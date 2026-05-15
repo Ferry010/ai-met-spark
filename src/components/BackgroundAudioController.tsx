@@ -8,8 +8,12 @@ import {
   getBackgroundAudioVolume,
 } from "@/lib/backgroundAudio";
 
+const LESSON_MUSIC_URL = "/sounds/lesson-music.mp3";
+
 const PLAYABLE_PATHS = ["/dashboard", "/world/", "/account"];
 const LEARNING_PATHS = ["/lesson/", "/final-test", "/certificate"];
+
+type Mode = "ambient" | "lesson" | "off";
 
 const matchesPath = (pathname: string, prefixes: string[]) =>
   prefixes.some((prefix) => pathname === prefix || pathname.startsWith(prefix));
@@ -17,33 +21,48 @@ const matchesPath = (pathname: string, prefixes: string[]) =>
 export const BackgroundAudioController = () => {
   const location = useLocation();
   const { user, loading } = useAuth();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const ambientRef = useRef<HTMLAudioElement | null>(null);
+  const lessonRef = useRef<HTMLAudioElement | null>(null);
   const resumeOnInteractionRef = useRef(false);
   const [settings, setSettings] = useState({
     enabled: getBackgroundAudioEnabled(),
     volume: getBackgroundAudioVolume(),
   });
 
-  const shouldPlay = useMemo(() => {
-    if (!user) return false;
-    if (matchesPath(location.pathname, LEARNING_PATHS)) return false;
-    return matchesPath(location.pathname, PLAYABLE_PATHS);
+  const mode: Mode = useMemo(() => {
+    if (!user) return "off";
+    if (matchesPath(location.pathname, LEARNING_PATHS)) return "lesson";
+    if (matchesPath(location.pathname, PLAYABLE_PATHS)) return "ambient";
+    return "off";
   }, [location.pathname, user]);
 
+  // Create both audio elements once.
   useEffect(() => {
-    const audio = new Audio(orbitClassroomAudio);
-    audio.loop = true;
-    audio.preload = "auto";
-    audio.volume = settings.volume;
-    audioRef.current = audio;
+    const ambient = new Audio(orbitClassroomAudio);
+    ambient.loop = true;
+    ambient.preload = "auto";
+    ambient.volume = settings.volume;
+    ambientRef.current = ambient;
+
+    const lesson = new Audio(LESSON_MUSIC_URL);
+    lesson.loop = true;
+    lesson.preload = "auto";
+    // Lesson music sits a touch louder than ambient since it's the focus track.
+    lesson.volume = Math.min(1, settings.volume * 1.4);
+    lessonRef.current = lesson;
 
     return () => {
-      audio.pause();
-      audio.currentTime = 0;
-      audioRef.current = null;
+      ambient.pause();
+      ambient.currentTime = 0;
+      ambientRef.current = null;
+      lesson.pause();
+      lesson.currentTime = 0;
+      lessonRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Sync settings from elsewhere in the app.
   useEffect(() => {
     const syncSettings = () => {
       setSettings({
@@ -51,57 +70,61 @@ export const BackgroundAudioController = () => {
         volume: getBackgroundAudioVolume(),
       });
     };
-
     window.addEventListener(BACKGROUND_AUDIO_SETTINGS_EVENT, syncSettings);
-
-    return () => {
-      window.removeEventListener(BACKGROUND_AUDIO_SETTINGS_EVENT, syncSettings);
-    };
+    return () => window.removeEventListener(BACKGROUND_AUDIO_SETTINGS_EVENT, syncSettings);
   }, []);
 
+  // Keep volumes in sync with the user setting.
   useEffect(() => {
-    if (!audioRef.current) return;
-    audioRef.current.volume = settings.volume;
+    if (ambientRef.current) ambientRef.current.volume = settings.volume;
+    if (lessonRef.current) lessonRef.current.volume = Math.min(1, settings.volume * 1.4);
     if (!settings.enabled) {
       resumeOnInteractionRef.current = false;
-      audioRef.current.pause();
+      ambientRef.current?.pause();
+      lessonRef.current?.pause();
     }
   }, [settings]);
 
+  // Drive playback based on mode.
   useEffect(() => {
     if (loading) return;
+    const ambient = ambientRef.current;
+    const lesson = lessonRef.current;
+    if (!ambient || !lesson) return;
 
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const attemptPlay = async () => {
-      try {
-        await audio.play();
+    const playTarget = (target: HTMLAudioElement) => {
+      target.play().then(() => {
         resumeOnInteractionRef.current = false;
-      } catch {
+      }).catch(() => {
         resumeOnInteractionRef.current = true;
-      }
+      });
     };
 
-    if (shouldPlay && settings.enabled) {
-      void attemptPlay();
+    if (!settings.enabled || mode === "off") {
+      resumeOnInteractionRef.current = false;
+      ambient.pause();
+      lesson.pause();
       return;
     }
 
-    resumeOnInteractionRef.current = false;
-    audio.pause();
-  }, [loading, settings.enabled, shouldPlay]);
+    if (mode === "lesson") {
+      ambient.pause();
+      playTarget(lesson);
+    } else {
+      lesson.pause();
+      playTarget(ambient);
+    }
+  }, [loading, settings.enabled, mode]);
 
+  // Resume on first user interaction if autoplay was blocked.
   useEffect(() => {
-    if (!shouldPlay || !settings.enabled) return;
+    if (!settings.enabled || mode === "off") return;
 
     const resumeOnFirstInteraction = () => {
       if (!resumeOnInteractionRef.current) return;
-
-      const audio = audioRef.current;
-      if (!audio) return;
-
-      audio.play().then(() => {
+      const target = mode === "lesson" ? lessonRef.current : ambientRef.current;
+      if (!target) return;
+      target.play().then(() => {
         resumeOnInteractionRef.current = false;
       }).catch(() => {
         // keep listener active until the browser allows playback
@@ -110,12 +133,11 @@ export const BackgroundAudioController = () => {
 
     window.addEventListener("pointerdown", resumeOnFirstInteraction);
     window.addEventListener("keydown", resumeOnFirstInteraction);
-
     return () => {
       window.removeEventListener("pointerdown", resumeOnFirstInteraction);
       window.removeEventListener("keydown", resumeOnFirstInteraction);
     };
-  }, [settings.enabled, shouldPlay]);
+  }, [settings.enabled, mode]);
 
   return null;
 };
