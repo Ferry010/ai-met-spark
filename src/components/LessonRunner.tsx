@@ -368,15 +368,16 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                       animate={{ scale: 1, rotate: 0, y: 0 }}
                       transition={{ delay: 0.2 + i * 0.18, type: "spring", stiffness: 260, damping: 12 }}
                     >
-                      <Star
+                      <span
                         className={cn(
-                          "h-12 w-12 drop-shadow",
+                          "inline-block",
                           i < stars
-                            ? "fill-secondary text-[hsl(36_60%_28%)]"
+                            ? "text-secondary"
                             : "text-foreground/20",
                         )}
-                        strokeWidth={2.5}
-                      />
+                      >
+                        <GameGlyph name="star" size={48} />
+                      </span>
                     </motion.div>
                   ))}
                 </div>
@@ -601,7 +602,7 @@ const TheoryCard = ({
     <section className="rounded-3xl bg-card border border-border p-6 sm:p-8 shadow-soft animate-pop-in">
       <div className="flex items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-primary">
-          <BookOpen className="h-4 w-4" /> {eyebrow}
+          <span className="inline-block h-2 w-2 rounded-full bg-primary" /> {eyebrow}
         </div>
         <SparkVoiceButton lessonId={lessonId} step={step} variant="compact" />
       </div>
@@ -611,9 +612,8 @@ const TheoryCard = ({
         </div>
         <div className="flex-1 min-w-0">
           {renderRichText(text, { detectLead: true })}
-          <div className="mt-5 flex items-center gap-1.5 text-xs text-muted-foreground font-display">
-            <Clock className="h-3.5 w-3.5" />
-            <span>~{seconds < 60 ? `${seconds} sec` : `${Math.round(seconds / 60)} min`} lezen</span>
+          <div className="mt-5 text-xs text-muted-foreground font-display">
+            ~{seconds < 60 ? `${seconds} sec` : `${Math.round(seconds / 60)} min`} lezen
           </div>
         </div>
       </div>
@@ -628,7 +628,7 @@ const SummaryCard = ({ bullets, lessonId, onNext }: { bullets: string[]; lessonI
   <section className="rounded-3xl bg-success/10 border-2 border-success p-6 sm:p-8 shadow-soft animate-pop-in">
     <div className="flex items-center justify-between gap-3 mb-3">
       <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-success">
-        <ListChecks className="h-4 w-4" /> Onthoud dit
+        <span className="inline-block h-2 w-2 rounded-full bg-success" /> Onthoud dit
       </div>
       <SparkVoiceButton lessonId={lessonId} step="summary" variant="compact" />
     </div>
@@ -699,7 +699,7 @@ const QuizCard = ({
                   !showCorrect && !showWrong && "bg-primary/10 text-primary border-primary/30",
                 )}
               >
-                {showCorrect ? <Check className="h-4 w-4" /> : showWrong ? <X className="h-4 w-4" /> : letter}
+                {showCorrect ? <GameGlyph name="check" size={16} /> : showWrong ? <span className="font-display text-lg leading-none">×</span> : letter}
               </span>
               <span className="flex-1 leading-snug">{opt}</span>
             </button>
@@ -736,9 +736,8 @@ const HintButton = ({ hints }: { hints?: string[] }) => {
         size="sm"
         disabled={revealed >= hints.length}
         onClick={() => setRevealed((r) => Math.min(r + 1, hints.length))}
-        className="rounded-full font-display gap-1"
+        className="rounded-full font-display"
       >
-        <Lightbulb className="h-4 w-4" />
         {revealed === 0
           ? "Vraag Spark om hint"
           : revealed >= hints.length
