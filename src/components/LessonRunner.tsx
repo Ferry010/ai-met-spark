@@ -207,7 +207,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       playCorrect();
       if (newCombo >= 2) playCombo(newCombo);
       confetti({ particleCount: 60 + newCombo * 20, spread: 60, origin: { y: 0.5 } });
-      setTeacherMsg(newCombo >= 3 ? `Hot streak! ${newCombo} op rij!` : "Goed zo!");
+      setTeacherMsg(newCombo >= 3 ? `Wow! ${newCombo} op rij!` : "Yes, goed!");
     } else {
       setCombo(0);
       playWrong();
