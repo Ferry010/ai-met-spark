@@ -361,7 +361,41 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
             />
           )}
 
-          {step === "done" && (
+          {step === "done" && !passed && (
+            <section className="relative rounded-3xl border-4 border-foreground/85 bg-card p-6 sm:p-8 text-center shadow-pop animate-pop-in">
+              <div className="flex justify-center mb-3">
+                <Spark size={110} mood="thinking" />
+              </div>
+              <h2 className="font-display text-2xl sm:text-3xl">Bijna! Probeer nog een keer.</h2>
+              <p className="mt-3 font-body text-foreground/80 max-w-md mx-auto">
+                Je hebt <span className="font-display">{quizScore} van {lesson.quiz.length}</span> goed.
+                Om deze les af te ronden heb je er <span className="font-display">{passThreshold}</span> goed nodig.
+                Lees de uitleg nog eens of doe de quiz opnieuw — geen punt, daar leer je van.
+              </p>
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  onClick={() => { retryQuiz(); setStep("quiz"); }}
+                  className="h-14 px-8 rounded-full font-display bg-primary shadow-soft"
+                >
+                  Doe de quiz opnieuw
+                </Button>
+                {lesson.summary && lesson.summary.length > 0 && (
+                  <Button
+                    onClick={() => { retryQuiz(); setStep("summary"); }}
+                    variant="outline"
+                    className="h-14 px-8 rounded-full font-display"
+                  >
+                    Eerst nog eens lezen
+                  </Button>
+                )}
+              </div>
+              {preview && (
+                <p className="mt-4 text-xs text-muted-foreground">Preview-modus, niets opgeslagen</p>
+              )}
+            </section>
+          )}
+
+          {step === "done" && passed && (
             <section className="relative rounded-3xl border-4 border-foreground/85 bg-gradient-to-b from-[hsl(48_100%_88%)] via-[hsl(45_100%_78%)] to-[hsl(40_100%_68%)] p-6 sm:p-8 text-center shadow-pop animate-pop-in overflow-hidden">
               {/* Confetti dots in background */}
               <div className="pointer-events-none absolute inset-0 opacity-60 text-[hsl(36_60%_28%)]" aria-hidden>
@@ -383,7 +417,9 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                 <div className="h-7 w-12 rounded-t-md bg-[hsl(0_85%_60%)] border-2 border-foreground/30 flex items-end justify-center text-white font-display text-xs pb-1">3</div>
               </div>
               <div className="relative">
-                <h2 className="font-display text-3xl sm:text-4xl text-[hsl(30_60%_18%)] drop-shadow">VICTORY!</h2>
+                <h2 className="font-display text-3xl sm:text-4xl text-[hsl(30_60%_18%)] drop-shadow">
+                  {stars === 3 ? "Hoera! Helemaal top!" : "Yes, geslaagd!"}
+                </h2>
                 <div className="flex justify-center gap-1.5 mt-3">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <motion.div
@@ -406,11 +442,16 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                   ))}
                 </div>
                 <p className="mt-4 font-display text-[hsl(30_60%_18%)]">
-                  Score: {quizScore} / {lesson.quiz.length}
+                  {quizScore} van {lesson.quiz.length} goed
                 </p>
                 {longestComboThisLesson >= 2 && (
                   <p className="mt-1 text-sm font-display text-[hsl(30_60%_18%)]">
-                    Beste combo: <span className="font-bold">{longestComboThisLesson}× FEVER</span>
+                    Langste reeks: <span className="font-bold">{longestComboThisLesson} op rij</span>
+                  </p>
+                )}
+                {stars < 3 && (
+                  <p className="mt-2 text-sm font-body text-[hsl(30_60%_28%)] max-w-md mx-auto">
+                    Wil je 3 sterren? Doe de quiz nog eens — je weet nu al meer!
                   </p>
                 )}
                 {lesson.reflection && (
