@@ -160,7 +160,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   const advance = (next: Step) => {
     if (next === "done") {
       fireConfetti();
-      if (!completedRef.current) {
+      if (!completedRef.current && passed) {
         completedRef.current = true;
         const bonus = stars === 3 ? XP.PERFECT_LESSON : 0;
         awardXp(XP.STEP + bonus, longestComboThisLesson);
