@@ -807,7 +807,7 @@ const DragOrder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "d
             <Reorder.Item
               key={item}
               value={item}
-              disabled={checked}
+              dragListener={!checked}
               className="touch-none"
               whileDrag={{ scale: 1.03 }}
             >
