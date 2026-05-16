@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { isDevAdminBypass } from "@/lib/devBypass";
 import { Spark } from "./Spark";
 
 interface ProtectedProps {
@@ -17,6 +18,9 @@ export const ProtectedRoute = ({ children, requireRole }: ProtectedProps) => {
     return () => clearTimeout(t);
   }, []);
 
+  // Dev/preview bypass: skip auth + role checks on localhost and Lovable preview.
+  if (isDevAdminBypass()) return <>{children}</>;
+
   if (loading || !waited) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-hero">
@@ -32,3 +36,4 @@ export const ProtectedRoute = ({ children, requireRole }: ProtectedProps) => {
 };
 
 export default ProtectedRoute;
+
