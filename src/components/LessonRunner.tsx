@@ -173,6 +173,32 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
     setStep(next);
   };
 
+  const advance = (next: Step) => {
+    if (next === "done") {
+      fireConfetti();
+      if (!completedRef.current) {
+        completedRef.current = true;
+        const bonus = stars === 3 ? XP.PERFECT_LESSON : 0;
+        awardXp(XP.STEP + bonus, longestComboThisLesson);
+        onComplete?.(stars);
+      }
+    } else {
+      // Reward for clearing a non-quiz step
+      awardXp(XP.STEP);
+    }
+    setStep(next);
+  };
+
+  const retryQuiz = () => {
+    playClick();
+    setQuizIndex(0);
+    setQuizScore(0);
+    setPickedAnswer(null);
+    setCombo(0);
+    setQuizAttempt((a) => a + 1);
+    setTeacherMsg("Nieuwe kans! Lees rustig en kies je antwoord.");
+  };
+
   const goNext = (after: Step) => {
     playClick();
     const idx = stepOrder.indexOf(after);
