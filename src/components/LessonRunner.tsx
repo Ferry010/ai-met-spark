@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Reorder } from "framer-motion";
 import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { Spark, type SparkMood } from "@/components/Spark";
@@ -768,67 +768,100 @@ const Interactive = ({ interactive, onDone }: { interactive: InteractiveStep; on
   return <PromptBuilder step={interactive} onDone={onDone} />;
 };
 
+const shuffleArr = <T,>(arr: T[]): T[] => {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  if (out.length > 1 && out.every((v, i) => v === arr[i])) {
+    [out[0], out[1]] = [out[1], out[0]];
+  }
+  return out;
+};
+
 const DragOrder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "dragOrder" }>; onDone: () => void }) => {
   const correct = step.items;
-  const [shuffled] = useState(() => {
-    const arr = [...correct];
-    // Fisher-Yates, but ensure it differs from the correct order
-    for (let attempt = 0; attempt < 5; attempt++) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      if (arr.some((v, i) => v !== correct[i])) break;
-    }
-    return arr;
-  });
-  const [order, setOrder] = useState<string[]>(shuffled);
+  const initial = useMemo(() => shuffleArr(correct), [correct]);
+  const [order, setOrder] = useState<string[]>(initial);
   const [checked, setChecked] = useState(false);
-  const move = (i: number, dir: -1 | 1) => {
-    const j = i + dir;
-    if (j < 0 || j >= order.length) return;
-    const next = [...order];
-    [next[i], next[j]] = [next[j], next[i]];
-    setOrder(next);
-  };
   const allCorrect = order.every((v, i) => v === correct[i]);
+
+  const handleCheck = () => {
+    setChecked(true);
+    if (allCorrect) confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
+  };
+  const handleRetry = () => {
+    setOrder(shuffleArr(correct));
+    setChecked(false);
+  };
+
   return (
     <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
       <h3 className="mb-4 text-lg leading-snug font-display sm:mb-5 sm:text-xl">{step.prompt}</h3>
-      <ol className="space-y-2">
-        {order.map((item, i) => {
-          const right = checked && item === correct[i];
-          const wrong = checked && item !== correct[i];
+      <Reorder.Group axis="y" values={order} onReorder={setOrder} className="space-y-2.5">
+        {order.map((item, idx) => {
+          const right = checked && order[idx] === correct[idx];
+          const wrong = checked && order[idx] !== correct[idx];
           return (
-            <li
+            <Reorder.Item
               key={item}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl border-2 p-3",
-                right && "bg-success/10 border-success",
-                wrong && "bg-destructive/10 border-destructive",
-                !checked && "border-border",
-              )}
+              value={item}
+              dragListener={!checked}
+              className="touch-none"
+              whileDrag={{ scale: 1.03 }}
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-muted font-display text-sm">{i + 1}</span>
-              <span className="flex-1 text-sm leading-snug">{item}</span>
-              <div className="flex shrink-0 gap-1">
-                <Button size="sm" variant="outline" disabled={checked || i === 0} onClick={() => move(i, -1)} className="h-9 w-9 rounded-full p-0">↑</Button>
-                <Button size="sm" variant="outline" disabled={checked || i === order.length - 1} onClick={() => move(i, 1)} className="h-9 w-9 rounded-full p-0">↓</Button>
+              <div
+                className={cn(
+                  "flex items-center gap-3 rounded-2xl border-2 bg-card px-4 py-3.5 cursor-grab active:cursor-grabbing select-none transition-bounce",
+                  !checked && "border-border hover:border-primary",
+                  right && "border-success bg-success/10",
+                  wrong && "border-destructive bg-destructive/10",
+                )}
+              >
+                <span
+                  className={cn(
+                    "grid h-8 w-8 shrink-0 place-items-center rounded-full font-display text-sm",
+                    !checked && "bg-muted text-muted-foreground",
+                    right && "bg-success text-success-foreground",
+                    wrong && "bg-destructive text-destructive-foreground",
+                  )}
+                >
+                  {idx + 1}
+                </span>
+                <span className="flex-1 text-sm leading-snug">{item}</span>
+                {!checked && (
+                  <svg className="h-5 w-5 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
+                  </svg>
+                )}
               </div>
-            </li>
+            </Reorder.Item>
           );
         })}
-      </ol>
+      </Reorder.Group>
       <HintButton hints={step.hints} />
       {!checked ? (
-        <Button onClick={() => { setChecked(true); if (allCorrect) confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } }); }}
-          className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+        <Button onClick={handleCheck} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
           Check mijn volgorde
         </Button>
       ) : (
         <>
-          <div className="mt-4 p-4 rounded-2xl bg-muted/60 text-sm">{step.explanation}</div>
-          <Button onClick={onDone} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
+          <div
+            className={cn(
+              "mt-4 p-4 rounded-2xl border-2 text-sm",
+              allCorrect ? "bg-success/10 border-success" : "bg-destructive/10 border-destructive",
+            )}
+          >
+            <strong className="font-display">{allCorrect ? "Goed gedaan. " : "Bijna. "}</strong>
+            {step.explanation}
+          </div>
+          {!allCorrect && (
+            <Button onClick={handleRetry} variant="outline" className="mt-3 w-full h-12 rounded-full font-display">
+              Probeer opnieuw
+            </Button>
+          )}
+          <Button onClick={onDone} className="mt-3 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
         </>
       )}
     </section>
@@ -836,90 +869,173 @@ const DragOrder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "d
 };
 
 const SpotTheRed = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "spotTheRed" }>; onDone: () => void }) => {
-  const [tapped, setTapped] = useState<Set<number>>(new Set());
-  const reds = step.flags.filter((f) => f.isRed).length;
-  const foundReds = [...tapped].filter((i) => step.flags[i].isRed).length;
-  const done = foundReds === reds;
-  const toggle = (i: number) => {
-    if (tapped.has(i)) return;
-    setTapped(new Set([...tapped, i]));
-    if (step.flags[i].isRed) confetti({ particleCount: 30, spread: 40, origin: { y: 0.5 } });
+  const [tapped, setTapped] = useState<Set<string>>(new Set());
+  const [done, setDone] = useState(false);
+
+  const toggle = (fragment: string) => {
+    if (done) return;
+    setTapped((s) => {
+      const next = new Set(s);
+      if (next.has(fragment)) next.delete(fragment);
+      else next.add(fragment);
+      return next;
+    });
   };
+
+  const renderMessage = () => {
+    let remaining = step.message;
+    const parts: React.ReactNode[] = [];
+    let key = 0;
+    while (remaining.length > 0) {
+      let earliestIdx = -1;
+      let earliestFlag: (typeof step.flags)[number] | null = null;
+      for (const flag of step.flags) {
+        const idx = remaining.indexOf(flag.fragment);
+        if (idx !== -1 && (earliestIdx === -1 || idx < earliestIdx)) {
+          earliestIdx = idx;
+          earliestFlag = flag;
+        }
+      }
+      if (earliestIdx === -1 || !earliestFlag) {
+        parts.push(<span key={key++}>{remaining}</span>);
+        break;
+      }
+      if (earliestIdx > 0) parts.push(<span key={key++}>{remaining.slice(0, earliestIdx)}</span>);
+      const isTapped = tapped.has(earliestFlag.fragment);
+      const isRed = earliestFlag.isRed;
+      let cls = "cursor-pointer rounded px-1 py-0.5 transition select-none ";
+      if (!done) {
+        cls += isTapped
+          ? "bg-secondary/40 text-foreground"
+          : "bg-muted hover:bg-muted/70 text-foreground underline decoration-dotted underline-offset-4";
+      } else {
+        if (isRed && isTapped) cls += "bg-success/25 text-foreground";
+        else if (isRed && !isTapped) cls += "bg-destructive/20 text-foreground";
+        else if (!isRed && isTapped) cls += "bg-destructive/20 text-foreground line-through";
+        else cls += "text-foreground";
+      }
+      const frag = earliestFlag;
+      parts.push(
+        <span key={key++} onClick={() => toggle(frag.fragment)} className={cls}>
+          {frag.fragment}
+        </span>,
+      );
+      remaining = remaining.slice(earliestIdx + earliestFlag.fragment.length);
+    }
+    return parts;
+  };
+
+  const handleSubmit = () => {
+    setDone(true);
+    const allRedTapped = step.flags.filter((f) => f.isRed).every((f) => tapped.has(f.fragment));
+    const noFalsePositive = Array.from(tapped).every((t) => step.flags.find((f) => f.fragment === t)?.isRed);
+    if (allRedTapped && noFalsePositive) confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } });
+  };
+
   return (
     <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
       <h3 className="mb-3 text-lg leading-snug font-display sm:text-xl">{step.prompt}</h3>
-      <div className="mb-4 rounded-2xl bg-muted/40 p-4 text-sm italic">"{step.message}"</div>
-      <p className="mb-2 text-sm text-muted-foreground">Tik de stukjes aan die jou verdacht lijken:</p>
-      <div className="flex flex-wrap gap-2">
-        {step.flags.map((f, i) => {
-          const isTapped = tapped.has(i);
-          const right = isTapped && f.isRed;
-          const wrong = isTapped && !f.isRed;
-          return (
-            <button
-              key={i}
-              onClick={() => toggle(i)}
-              disabled={isTapped}
-              className={cn(
-                "rounded-full border-2 px-3 py-2 text-sm transition-bounce",
-                right && "bg-success/15 border-success",
-                wrong && "bg-destructive/10 border-destructive",
-                !isTapped && "border-border hover:border-primary",
-              )}
-            >
-              {f.fragment}
-            </button>
-          );
-        })}
+      <div className="rounded-2xl border border-border bg-muted/40 p-4 sm:p-5 text-sm sm:text-base leading-relaxed">
+        {renderMessage()}
       </div>
-      {tapped.size > 0 && (
-        <ul className="mt-4 space-y-2">
-          {[...tapped].map((i) => (
-            <li key={i} className="rounded-2xl bg-muted/60 p-3 text-sm">
-              <span className="font-display">{step.flags[i].isRed ? "Rode vlag: " : "Geen rode vlag: "}</span>
-              {step.flags[i].why}
-            </li>
-          ))}
-        </ul>
-      )}
       <HintButton hints={step.hints} />
-      <Button onClick={onDone} disabled={!done} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-        {done ? "Verder →" : `Vind alle rode vlaggen (${foundReds}/${reds})`}
-      </Button>
+      {!done ? (
+        <div className="mt-4 flex items-center gap-3">
+          <Button onClick={handleSubmit} disabled={tapped.size === 0} className="h-14 rounded-full px-6 font-display bg-primary shadow-soft">
+            Klaar, laat me zien
+          </Button>
+          <span className="text-xs text-muted-foreground">{tapped.size} aangetikt</span>
+        </div>
+      ) : (
+        <>
+          <div className="mt-4 space-y-3">
+            {step.flags.filter((f) => f.isRed).map((flag, i) => {
+              const found = tapped.has(flag.fragment);
+              return (
+                <div
+                  key={i}
+                  className={cn(
+                    "rounded-2xl border-2 p-3 text-sm",
+                    found ? "bg-success/10 border-success" : "bg-muted/60 border-border",
+                  )}
+                >
+                  <div className="flex items-start gap-2">
+                    <span className="font-display">{found ? "Gespot:" : "Gemist:"}</span>
+                    <div>
+                      <div className="font-display">"{flag.fragment}"</div>
+                      <div className="mt-1 opacity-90">{flag.why}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <Button onClick={onDone} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
+        </>
+      )}
     </section>
   );
 };
 
 const PromptBuilder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "promptBuilder" }>; onDone: () => void }) => {
-  const [choices, setChoices] = useState<Record<number, number>>({});
+  const [picked, setPicked] = useState<(number | null)[]>(step.slots.map(() => null));
   const [checked, setChecked] = useState(false);
-  const allPicked = Object.keys(choices).length === step.slots.length;
-  const strongCount = step.slots.reduce((n, s, i) => n + (choices[i] !== undefined && s.options[choices[i]].strong ? 1 : 0), 0);
+
+  const handlePick = (slotIdx: number, optionIdx: number) => {
+    if (checked) return;
+    setPicked((p) => {
+      const next = [...p];
+      next[slotIdx] = optionIdx;
+      return next;
+    });
+  };
+
+  const allPicked = picked.every((p) => p !== null);
+  const strongCount = picked.reduce<number>((acc, p, i) => {
+    if (p === null) return acc;
+    return acc + (step.slots[i].options[p].strong ? 1 : 0);
+  }, 0);
+  const totalSlots = step.slots.length;
+  const isPerfect = strongCount === totalSlots;
+
+  const handleCheck = () => {
+    setChecked(true);
+    if (isPerfect) confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
+  };
+  const handleRetry = () => {
+    setPicked(step.slots.map(() => null));
+    setChecked(false);
+  };
+
+  const previewText = picked.map((p, i) => (p !== null ? step.slots[i].options[p!].text : "...")).join(", ");
+  const scoreLabel =
+    strongCount === totalSlots ? "Topprompt" :
+    strongCount === totalSlots - 1 ? "Bijna top" :
+    strongCount === 0 ? "Vage prompt" : "Middelmatig";
+
   return (
     <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
       <h3 className="mb-4 text-lg leading-snug font-display sm:text-xl">{step.prompt}</h3>
-      <div className="space-y-4">
-        {step.slots.map((slot, si) => (
-          <div key={si}>
-            <div className="mb-2 font-display text-sm uppercase tracking-wide text-muted-foreground">{slot.label}</div>
-            <div className="space-y-2">
-              {slot.options.map((opt, oi) => {
-                const picked = choices[si] === oi;
-                const right = checked && picked && opt.strong;
-                const weak = checked && picked && !opt.strong;
+      <div className="space-y-5">
+        {step.slots.map((slot, slotIdx) => (
+          <div key={slotIdx}>
+            <div className="mb-2 font-display text-xs uppercase tracking-wider text-muted-foreground">{slot.label}</div>
+            <div className="grid gap-2">
+              {slot.options.map((opt, optIdx) => {
+                const isPicked = picked[slotIdx] === optIdx;
+                let cls = "text-left rounded-2xl border-2 px-4 py-3 text-sm sm:text-base transition-bounce select-none ";
+                if (!checked) {
+                  cls += isPicked
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card text-foreground hover:border-primary";
+                } else {
+                  if (isPicked && opt.strong) cls += "border-success bg-success/10 text-foreground";
+                  else if (isPicked && !opt.strong) cls += "border-destructive bg-destructive/10 text-foreground";
+                  else if (!isPicked && opt.strong) cls += "border-success/40 bg-card text-foreground opacity-70";
+                  else cls += "border-border bg-card text-muted-foreground";
+                }
                 return (
-                  <button
-                    key={oi}
-                    onClick={() => !checked && setChoices({ ...choices, [si]: oi })}
-                    disabled={checked}
-                    className={cn(
-                      "w-full text-left rounded-2xl border-2 p-3 text-sm transition-bounce",
-                      picked && !checked && "border-primary bg-primary/5",
-                      right && "border-success bg-success/10",
-                      weak && "border-destructive bg-destructive/10",
-                      !picked && "border-border hover:border-primary",
-                    )}
-                  >
+                  <button key={optIdx} onClick={() => handlePick(slotIdx, optIdx)} disabled={checked} className={cls}>
                     {opt.text}
                   </button>
                 );
@@ -928,25 +1044,45 @@ const PromptBuilder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind
           </div>
         ))}
       </div>
-      {allPicked && (
-        <div className="mt-4 rounded-2xl bg-muted/60 p-4 text-sm">
-          <div className="mb-1 font-display text-xs uppercase text-muted-foreground">Jouw prompt:</div>
-          {step.slots.map((s, i) => s.options[choices[i]].text).join(" • ")}
-        </div>
-      )}
+
+      <div className="mt-6 rounded-2xl border border-dashed border-border bg-muted/40 p-4">
+        <div className="mb-2 font-display text-xs uppercase tracking-wider text-muted-foreground">Jouw prompt</div>
+        <div className="text-sm sm:text-base italic leading-snug min-h-[1.5rem]">{previewText}</div>
+        {checked && (
+          <div className="mt-3 flex items-center gap-2">
+            <div className="flex gap-1">
+              {Array.from({ length: totalSlots }).map((_, i) => (
+                <div key={i} className={cn("h-2 w-8 rounded-full", i < strongCount ? "bg-success" : "bg-border")} />
+              ))}
+            </div>
+            <span className="text-sm font-display">{scoreLabel}</span>
+          </div>
+        )}
+      </div>
+
       <HintButton hints={step.hints} />
+
       {!checked ? (
-        <Button onClick={() => { setChecked(true); if (strongCount === step.slots.length) confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } }); }}
-          disabled={!allPicked} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-          Bouw mijn prompt
+        <Button onClick={handleCheck} disabled={!allPicked} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+          Check mijn prompt
         </Button>
       ) : (
         <>
-          <div className="mt-4 p-4 rounded-2xl bg-muted/60 text-sm">
-            <div className="mb-1 font-display">Sterke keuzes: {strongCount}/{step.slots.length}</div>
+          <div
+            className={cn(
+              "mt-4 p-4 rounded-2xl border-2 text-sm",
+              isPerfect ? "bg-success/10 border-success" : "bg-muted/60 border-border",
+            )}
+          >
+            <strong className="font-display">{isPerfect ? "Topprompt. " : "Goeie poging. "}</strong>
             {step.explanation}
           </div>
-          <Button onClick={onDone} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
+          {!isPerfect && (
+            <Button onClick={handleRetry} variant="outline" className="mt-3 w-full h-12 rounded-full font-display">
+              Probeer opnieuw
+            </Button>
+          )}
+          <Button onClick={onDone} className="mt-3 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
         </>
       )}
     </section>
