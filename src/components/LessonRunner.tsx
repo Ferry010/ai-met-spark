@@ -97,10 +97,18 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
     if (jumpToStep) setStep(jumpToStep);
   }, [jumpToStep]);
 
-  const stars = useMemo(
-    () => (quizScore === lesson.quiz.length ? 3 : quizScore >= 1 ? 2 : 1),
-    [quizScore, lesson.quiz.length],
+  // Pass threshold: need at least 2/3 of the quiz correct to complete the lesson.
+  const passThreshold = useMemo(
+    () => Math.max(1, Math.ceil(lesson.quiz.length * (2 / 3))),
+    [lesson.quiz.length],
   );
+  const passed = quizScore >= passThreshold;
+  const stars = useMemo(() => {
+    if (quizScore === lesson.quiz.length) return 3;
+    if (passed) return 2;
+    return 1;
+  }, [quizScore, lesson.quiz.length, passed]);
+  const [quizAttempt, setQuizAttempt] = useState(0);
 
   // Spark teacher mood per step
   const teacherMood: SparkMood = useMemo(() => {
