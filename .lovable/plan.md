@@ -1,75 +1,51 @@
-## Wat ik ga doen
+## Doel
 
-Twee dingen, in deze volgorde:
+De drie interactieve componenten in `src/components/LessonRunner.tsx` vervangen door de verfijnde versies uit de geüploade `interactive.tsx`. Diploma en lescontent blijven ongemoeid.
 
-1. **Een downloadbare brief voor Claude** schrijven op `/mnt/documents/claude-lesson-brief.md`. Daarin staat alles wat Claude nodig heeft om de volledige lescopy te herschrijven.
-2. **De twee "Spot de nep"-lessen vervangen** in `src/content/lessons.ts` door twee makkelijkere, interactieve lessen die beter passen bij 9-12 jaar.
+## Wat verbetert er voor de leerling
 
-## 1. Claude-brief (`/mnt/documents/claude-lesson-brief.md`)
+- **DragOrder**: echte drag-and-drop op mobiel én desktop via `framer-motion` `Reorder` (nu zijn het op/neer knoppen).
+- **SpotTheRed**: rode-vlag fragmenten zijn klikbaar binnen de leestekst zelf, met onthulling van gemiste vlaggen na inzenden (nu losse chips).
+- **PromptBuilder**: live preview van de gebouwde prompt + voortgangsbalkjes met label ("Topprompt" / "Vage prompt" / "Middelmatig").
 
-De brief bevat de volgende secties:
+## Wijzigingen
 
-**A. Productuitleg — "AI met Spark"**
-- Wat het is: een gratis AI-school voor kinderen van 9 tot 12 jaar in het Nederlands.
-- Doelgroep: nieuwsgierige kids die AI al gebruiken (TikTok, Snapchat, ChatGPT-huiswerk) maar geen basis hebben in veilig en slim gebruik.
-- Drie pijlers (werelden): **VEILIG** (online veilig blijven, geheimen beschermen), **SLIM** (betere vragen stellen, antwoorden checken), **STERKER** (AI als studiemaatje, niet als sluiproute).
-- Mascotte Spark begeleidt elke les. Geen echte AI-chat voor kids — alle content is door mensen geschreven.
-- Speelse "game-flow" UI (werelden, levels, sterren, badges, diploma).
+### 1. `src/components/LessonRunner.tsx`
+Vervang de drie bestaande inner componenten (`DragOrder`, `SpotTheRed`, `PromptBuilder`, regels ~771-end) door de geüploade implementaties, aangepast aan de bestaande interface:
 
-**B. Lesstructuur — exact format dat Claude moet aanhouden**
-Elke les heeft deze 7 stappen (matcht de `Lesson` interface in `src/content/lessons.ts`):
-1. `sparkIntro` — warme intro van Spark (1 alinea, vriendelijk, herkenbaar voorbeeld uit hun leven)
-2. `theoryIntro` — eerste theorieblok (markdown, 2-3 alinea's, vetgedrukte kop)
-3. `fact` — "wist-je-dat" weetje (1 alinea, concreet en verrassend)
-4. `sparkMiddle` — korte overgang van Spark (1-2 zinnen)
-5. `theoryDeep` — tweede theorieblok met praktisch trucje of stappenplan
-6. `interactive` — oefening: één van drie types (`multiChoice`, `tapReveal`, `sortBuckets`)
-7. `summary` (3 bullets) + `quiz` (3 vragen met uitleg) + `reflection` (1 zin)
+- Behoud de huidige props-shape: `{ step: Extract<InteractiveStep, {kind:"..."}>, onDone: () => void }`. Vertaal de uploaded `data` + `onComplete(correct)` naar `step` + `onDone()`.
+- Behoud bestaande geluids- en gamificatie-hooks die `LessonRunner` al rond `onDone` heeft (correct/wrong-tonen blijven via de wrapper waar nodig).
+- Importeer `Reorder` toevoegen aan de bestaande `framer-motion` import.
 
-**C. Toon & taalregels**
-- Nederlands, leeftijd 9-12.
-- Geen jargon. Geen Engelse termen tenzij ze die al kennen (TikTok, ChatGPT, Snapchat).
-- Voorbeelden uit hun wereld: games (Minecraft, Roblox, Fortnite), social (TikTok, Snapchat, YouTube), school, vrienden, gezin.
-- Spark spreekt als een coole oudere broer/zus: warm, eerlijk, nooit betuttelend, soms grappig.
-- Géén emoji's in de leslopende tekst (UI is emoji-vrij gemaakt). Emoji's wél toegestaan in het `emoji` data-veld en in interactieve labels.
-- Korte zinnen. Geen lappen tekst. Een les mag in ~5-7 minuten.
+### 2. Kleuren naar design tokens
+De upload gebruikt vaste Tailwind kleuren (`slate-900`, `emerald-50`, `rose-200`, `amber-200`, `sky-50`). Vervangen door semantic tokens uit `index.css` / `tailwind.config.ts`:
 
-**D. De volledige lessenlijst (24 lessen, 3×8)**
-Voor elke les: id, titel, pillar, kernidee in 1 zin, en leerdoel. Claude vult de copy in volgens het format uit B.
+| Gebruikt in upload          | Vervang door                                |
+|-----------------------------|---------------------------------------------|
+| `slate-900` (primary action)| `bg-primary text-primary-foreground`        |
+| `slate-50/100/200` (borders/bg) | `bg-muted` / `border-border`            |
+| `slate-700/800` (text)      | `text-foreground` / `text-muted-foreground` |
+| `emerald-*` (correct)       | `bg-success/10 border-success text-success` |
+| `rose-*` (incorrect / red flag) | `bg-destructive/10 border-destructive text-destructive` |
+| `amber-*` (tapped, neutraal)| `bg-accent/20 border-accent text-accent-foreground` |
+| `sky-*` (info)              | `bg-secondary/20 border-secondary text-secondary-foreground` |
 
-Inclusief de twee **nieuwe vervangers** voor 1.3 en 1.4:
-- **1.3 — "Wat is een goede vraag aan AI?"** (basis prompten, makkelijk, sluit aan op 1.1)
-- **1.4 — "AI is altijd beleefd, ook als het fout zit"** (AI klinkt altijd zeker — leer twijfelen, makkelijke versie van 2.1)
+Als `--success` nog niet bestaat in `index.css`, voeg ik een HSL token toe (groen, werkt licht/dark) en map het in `tailwind.config.ts`. Geen andere kleuren aanraken.
 
-De originele "Spot de nep"-thema's worden uit de scope gehaald omdat ze te abstract/visueel waren voor deze leeftijdsgroep.
-
-**E. Voorbeeldles**
-Eén volledig uitgewerkt voorbeeld (les 1.1 zoals die nu is) zodat Claude precies ziet hoe diepte, lengte en toon eruitzien.
-
-**F. Output-instructies voor Claude**
-- Lever per les een JSON-blok terug dat 1-op-1 in de `Lesson`-objecten geplakt kan worden (velden: `sparkIntro`, `theoryIntro`, `fact`, `sparkMiddle`, `theoryDeep`, `interactive`, `summary`, `quiz`, `reflection`).
-- Houd id, title, worldId, pillar, emoji ongewijzigd tenzij expliciet aangegeven.
-- Eén les per chat-bericht om kwaliteit hoog te houden.
-
-## 2. Codewijziging — Spot de nep eruit
-
-In `src/content/lessons.ts`:
-- **Verwijder** lesblok 1.3 ("Spot de nep: plaatjes", regels ~238-296) en 1.4 ("Spot de nep: video's en stemmen", regels ~297-355).
-- **Voeg toe** twee nieuwe lesblokken met dezelfde id's (`1.3` en `1.4`) zodat alle bestaande progress-records, overrides en routes blijven werken:
-  - `1.3 — "Wat is een goede vraag aan AI?"` met een `sortBuckets`-oefening ("goede vraag" vs "vage vraag")
-  - `1.4 — "AI klinkt altijd zeker"` met een `multiChoice`-oefening waarin kids een te zelfverzekerd AI-antwoord moeten herkennen
-- Kopij blijft bewust kort en concreet (placeholder-niveau); Claude levert later de finale copy via de brief.
-- Boss-test 1.8 en de teksten in `src/locales/nl.json` ("Voorbeeldles: Spot de Nep", trust-chip "Spot scams en deepfakes") worden in een **vervolgwijziging** bijgewerkt zodra Claude's copy binnen is — niet nu, om de scope klein te houden.
+### 3. Geen wijzigingen aan
+- `src/content/lessons.ts` (content is al up-to-date)
+- `src/pages/Certificate.tsx` (PDF-diploma blijft)
+- Andere interactives (`multiChoice`, `tapReveal`, `sortBuckets`) blijven exact zoals nu
 
 ## Technische details
 
-- Bestand om te schrijven: `/mnt/documents/claude-lesson-brief.md` (Markdown, ±6-8 KB).
-- Bestand om te bewerken: `src/content/lessons.ts` — alleen het lessons-array van wereld 1, posities van 1.3 en 1.4.
-- Geen DB-migraties nodig. De `lesson_overrides`-tabel keyt op `lesson_id` (string); door dezelfde id's te hergebruiken blijven eventuele overrides geldig.
-- Geen UI-componenten geraakt. Geen i18n-strings geraakt in deze stap.
+- `framer-motion` `Reorder.Group` / `Reorder.Item` zit al in de geïnstalleerde versie, geen nieuwe dependency.
+- `useMemo`-shuffle bij mount voorkomt re-shuffle bij re-render; safeguard zwapt twee items als shuffle toevallig identiek is aan correcte volgorde.
+- `SpotTheRed` werkt mits elk `fragment` uniek voorkomt in `message` (geldt voor alle huidige lessen — check ik bij implementatie).
+- Bestaande `onDone` wordt gefired zodra de leerling op "Check" / "Klaar" klikt, ongeacht correct. Dit matcht het bestaande gedrag van de andere interactives.
 
-## Out of scope (nu)
+## Out of scope
 
-- Landing-copy bijwerken ("Spot de Nep" als voorbeeldles).
-- Boss-test 1.8 herschrijven.
-- Daadwerkelijk uitvoeren van de Claude-prompt — dat doe jij in een Claude-gesprek met het bestand erbij.
+- Diploma upgrade (gebruiker koos: laat huidige PDF staan)
+- Lessenlijst aanpassen
+- Andere visuele refactors van LessonRunner
