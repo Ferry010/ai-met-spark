@@ -762,7 +762,195 @@ const HintButton = ({ hints }: { hints?: string[] }) => {
 const Interactive = ({ interactive, onDone }: { interactive: InteractiveStep; onDone: () => void }) => {
   if (interactive.kind === "multiChoice") return <MultiChoice step={interactive} onDone={onDone} />;
   if (interactive.kind === "tapReveal") return <TapReveal step={interactive} onDone={onDone} />;
-  return <SortBuckets step={interactive} onDone={onDone} />;
+  if (interactive.kind === "sortBuckets") return <SortBuckets step={interactive} onDone={onDone} />;
+  if (interactive.kind === "dragOrder") return <DragOrder step={interactive} onDone={onDone} />;
+  if (interactive.kind === "spotTheRed") return <SpotTheRed step={interactive} onDone={onDone} />;
+  return <PromptBuilder step={interactive} onDone={onDone} />;
+};
+
+const DragOrder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "dragOrder" }>; onDone: () => void }) => {
+  const correct = step.items;
+  const [shuffled] = useState(() => {
+    const arr = [...correct];
+    // Fisher-Yates, but ensure it differs from the correct order
+    for (let attempt = 0; attempt < 5; attempt++) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      if (arr.some((v, i) => v !== correct[i])) break;
+    }
+    return arr;
+  });
+  const [order, setOrder] = useState<string[]>(shuffled);
+  const [checked, setChecked] = useState(false);
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= order.length) return;
+    const next = [...order];
+    [next[i], next[j]] = [next[j], next[i]];
+    setOrder(next);
+  };
+  const allCorrect = order.every((v, i) => v === correct[i]);
+  return (
+    <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
+      <h3 className="mb-4 text-lg leading-snug font-display sm:mb-5 sm:text-xl">{step.prompt}</h3>
+      <ol className="space-y-2">
+        {order.map((item, i) => {
+          const right = checked && item === correct[i];
+          const wrong = checked && item !== correct[i];
+          return (
+            <li
+              key={item}
+              className={cn(
+                "flex items-center gap-3 rounded-2xl border-2 p-3",
+                right && "bg-success/10 border-success",
+                wrong && "bg-destructive/10 border-destructive",
+                !checked && "border-border",
+              )}
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-muted font-display text-sm">{i + 1}</span>
+              <span className="flex-1 text-sm leading-snug">{item}</span>
+              <div className="flex shrink-0 gap-1">
+                <Button size="sm" variant="outline" disabled={checked || i === 0} onClick={() => move(i, -1)} className="h-9 w-9 rounded-full p-0">↑</Button>
+                <Button size="sm" variant="outline" disabled={checked || i === order.length - 1} onClick={() => move(i, 1)} className="h-9 w-9 rounded-full p-0">↓</Button>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+      <HintButton hints={step.hints} />
+      {!checked ? (
+        <Button onClick={() => { setChecked(true); if (allCorrect) confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } }); }}
+          className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+          Check mijn volgorde
+        </Button>
+      ) : (
+        <>
+          <div className="mt-4 p-4 rounded-2xl bg-muted/60 text-sm">{step.explanation}</div>
+          <Button onClick={onDone} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
+        </>
+      )}
+    </section>
+  );
+};
+
+const SpotTheRed = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "spotTheRed" }>; onDone: () => void }) => {
+  const [tapped, setTapped] = useState<Set<number>>(new Set());
+  const reds = step.flags.filter((f) => f.isRed).length;
+  const foundReds = [...tapped].filter((i) => step.flags[i].isRed).length;
+  const done = foundReds === reds;
+  const toggle = (i: number) => {
+    if (tapped.has(i)) return;
+    setTapped(new Set([...tapped, i]));
+    if (step.flags[i].isRed) confetti({ particleCount: 30, spread: 40, origin: { y: 0.5 } });
+  };
+  return (
+    <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
+      <h3 className="mb-3 text-lg leading-snug font-display sm:text-xl">{step.prompt}</h3>
+      <div className="mb-4 rounded-2xl bg-muted/40 p-4 text-sm italic">"{step.message}"</div>
+      <p className="mb-2 text-sm text-muted-foreground">Tik de stukjes aan die jou verdacht lijken:</p>
+      <div className="flex flex-wrap gap-2">
+        {step.flags.map((f, i) => {
+          const isTapped = tapped.has(i);
+          const right = isTapped && f.isRed;
+          const wrong = isTapped && !f.isRed;
+          return (
+            <button
+              key={i}
+              onClick={() => toggle(i)}
+              disabled={isTapped}
+              className={cn(
+                "rounded-full border-2 px-3 py-2 text-sm transition-bounce",
+                right && "bg-success/15 border-success",
+                wrong && "bg-destructive/10 border-destructive",
+                !isTapped && "border-border hover:border-primary",
+              )}
+            >
+              {f.fragment}
+            </button>
+          );
+        })}
+      </div>
+      {tapped.size > 0 && (
+        <ul className="mt-4 space-y-2">
+          {[...tapped].map((i) => (
+            <li key={i} className="rounded-2xl bg-muted/60 p-3 text-sm">
+              <span className="font-display">{step.flags[i].isRed ? "Rode vlag: " : "Geen rode vlag: "}</span>
+              {step.flags[i].why}
+            </li>
+          ))}
+        </ul>
+      )}
+      <HintButton hints={step.hints} />
+      <Button onClick={onDone} disabled={!done} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+        {done ? "Verder →" : `Vind alle rode vlaggen (${foundReds}/${reds})`}
+      </Button>
+    </section>
+  );
+};
+
+const PromptBuilder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "promptBuilder" }>; onDone: () => void }) => {
+  const [choices, setChoices] = useState<Record<number, number>>({});
+  const [checked, setChecked] = useState(false);
+  const allPicked = Object.keys(choices).length === step.slots.length;
+  const strongCount = step.slots.reduce((n, s, i) => n + (choices[i] !== undefined && s.options[choices[i]].strong ? 1 : 0), 0);
+  return (
+    <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
+      <h3 className="mb-4 text-lg leading-snug font-display sm:text-xl">{step.prompt}</h3>
+      <div className="space-y-4">
+        {step.slots.map((slot, si) => (
+          <div key={si}>
+            <div className="mb-2 font-display text-sm uppercase tracking-wide text-muted-foreground">{slot.label}</div>
+            <div className="space-y-2">
+              {slot.options.map((opt, oi) => {
+                const picked = choices[si] === oi;
+                const right = checked && picked && opt.strong;
+                const weak = checked && picked && !opt.strong;
+                return (
+                  <button
+                    key={oi}
+                    onClick={() => !checked && setChoices({ ...choices, [si]: oi })}
+                    disabled={checked}
+                    className={cn(
+                      "w-full text-left rounded-2xl border-2 p-3 text-sm transition-bounce",
+                      picked && !checked && "border-primary bg-primary/5",
+                      right && "border-success bg-success/10",
+                      weak && "border-destructive bg-destructive/10",
+                      !picked && "border-border hover:border-primary",
+                    )}
+                  >
+                    {opt.text}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+      {allPicked && (
+        <div className="mt-4 rounded-2xl bg-muted/60 p-4 text-sm">
+          <div className="mb-1 font-display text-xs uppercase text-muted-foreground">Jouw prompt:</div>
+          {step.slots.map((s, i) => s.options[choices[i]].text).join(" • ")}
+        </div>
+      )}
+      <HintButton hints={step.hints} />
+      {!checked ? (
+        <Button onClick={() => { setChecked(true); if (strongCount === step.slots.length) confetti({ particleCount: 80, spread: 60, origin: { y: 0.5 } }); }}
+          disabled={!allPicked} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
+          Bouw mijn prompt
+        </Button>
+      ) : (
+        <>
+          <div className="mt-4 p-4 rounded-2xl bg-muted/60 text-sm">
+            <div className="mb-1 font-display">Sterke keuzes: {strongCount}/{step.slots.length}</div>
+            {step.explanation}
+          </div>
+          <Button onClick={onDone} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">Verder →</Button>
+        </>
+      )}
+    </section>
+  );
 };
 
 const MultiChoice = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "multiChoice" }>; onDone: () => void }) => {
