@@ -81,7 +81,7 @@ interface PopOptions {
 /** Play a short synthesized "pop" tone. Silent until unlockAudio() is called. */
 export const playPop = (opts: PopOptions = {}) => {
   if (!unlocked) return;
-  if (reduceMotion()) return;
+
   const c = getCtx();
   if (!c || c.state !== "running") return;
 
@@ -113,7 +113,7 @@ export const playPop = (opts: PopOptions = {}) => {
 /** Whoosh + thump for Spark's jet entry. */
 export const playSparkEntry = () => {
   if (!unlocked) return;
-  if (reduceMotion()) return;
+
   const c = getCtx();
   if (!c || c.state !== "running") return;
 
@@ -176,7 +176,7 @@ const getClickPool = (): HTMLAudioElement[] | null => {
 /** Play the friendly digital click — used for buttons, taps, and pop-ups. */
 export const playClick = (volume = 0.55) => {
   if (!unlocked) return;
-  if (reduceMotion()) return;
+
   const pool = getClickPool();
   if (!pool) {
     // Synth fallback
@@ -216,7 +216,7 @@ export const playWrong = () => {
 /** Rising arpeggio for level up. */
 export const playLevelUp = () => {
   if (!unlocked) return;
-  if (reduceMotion()) return;
+
   const notes = [523, 659, 784, 1047];
   notes.forEach((f, i) =>
     setTimeout(() => playPop({ freq: f, endFreq: f * 1.05, duration: 0.18, volume: 0.18, type: "triangle" }), i * 90),
