@@ -902,7 +902,7 @@ const DragOrder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: "d
       <HintButton hints={step.hints} />
       {!checked ? (
         <Button onClick={handleCheck} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-          Check mijn volgorde
+          Klaar, controleer mijn volgorde
         </Button>
       ) : (
         <>
@@ -1123,7 +1123,7 @@ const PromptBuilder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind
 
       {!checked ? (
         <Button onClick={handleCheck} disabled={!allPicked} className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft">
-          Check mijn prompt
+          Klaar, kijk mijn prompt na
         </Button>
       ) : (
         <>
@@ -1276,7 +1276,7 @@ const SortBuckets = ({ step, onDone }: { step: Extract<InteractiveStep, { kind: 
         disabled={!allPlaced}
         className="mt-4 w-full h-14 rounded-full font-display bg-primary shadow-soft"
       >
-        {allPlaced ? (allCorrect ? "Perfect! Verder →" : "Verder →") : "Tik elk item aan"}
+        {allPlaced ? (allCorrect ? "Helemaal goed! Verder →" : "Verder →") : "Tik elk item aan"}
       </Button>
     </section>
   );
