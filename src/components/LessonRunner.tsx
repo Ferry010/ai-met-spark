@@ -127,7 +127,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   useEffect(() => {
     const messages: Partial<Record<Step, string>> = {
       theoryIntro: "Lees rustig mee, ik leg het zo nog uit.",
-      fact: "Wist je dit al? Cool, hè?",
+      fact: "Wist je dit al? Best gek hè?",
       sparkMiddle: "Let goed op, dit is belangrijk!",
       theoryDeep: "Bijna door de uitleg.",
       interactive: "Tijd om zelf te oefenen!",
@@ -207,7 +207,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       playCorrect();
       if (newCombo >= 2) playCombo(newCombo);
       confetti({ particleCount: 60 + newCombo * 20, spread: 60, origin: { y: 0.5 } });
-      setTeacherMsg(newCombo >= 3 ? `Wow! ${newCombo} op rij!` : "Yes, goed!");
+      setTeacherMsg(newCombo >= 3 ? `Wauw! ${newCombo} op rij!` : "Goed zo!");
     } else {
       setCombo(0);
       playWrong();
@@ -418,7 +418,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
               </div>
               <div className="relative">
                 <h2 className="font-display text-3xl sm:text-4xl text-[hsl(30_60%_18%)] drop-shadow">
-                  {stars === 3 ? "Hoera! Helemaal top!" : "Yes, geslaagd!"}
+                  {stars === 3 ? "Hoera! Helemaal top!" : "Hoera, geslaagd!"}
                 </h2>
                 <div className="flex justify-center gap-1.5 mt-3">
                   {Array.from({ length: 3 }).map((_, i) => (
@@ -1068,9 +1068,9 @@ const PromptBuilder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind
 
   const previewText = picked.map((p, i) => (p !== null ? step.slots[i].options[p!].text : "...")).join(", ");
   const scoreLabel =
-    strongCount === totalSlots ? "Topprompt" :
+    strongCount === totalSlots ? "Toppertje" :
     strongCount === totalSlots - 1 ? "Bijna top" :
-    strongCount === 0 ? "Vage prompt" : "Middelmatig";
+    strongCount === 0 ? "Nog wat vaag" : "Kan beter";
 
   return (
     <section className="rounded-3xl bg-card border border-border p-5 shadow-soft sm:p-6">
@@ -1133,7 +1133,7 @@ const PromptBuilder = ({ step, onDone }: { step: Extract<InteractiveStep, { kind
               isPerfect ? "bg-success/10 border-success" : "bg-muted/60 border-border",
             )}
           >
-            <strong className="font-display">{isPerfect ? "Topprompt. " : "Goeie poging. "}</strong>
+            <strong className="font-display">{isPerfect ? "Toppertje! " : "Goeie poging. "}</strong>
             {step.explanation}
           </div>
           {!isPerfect && (

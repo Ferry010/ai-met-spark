@@ -85,7 +85,7 @@ export const GameHud = ({
                 )}
                 style={{ textShadow: "0 1px 0 hsl(48 100% 92%)" }}
               >
-                <GameGlyph name="sparkle" size={12} /> Fever ×{comboMultiplier}
+                <GameGlyph name="sparkle" size={12} /> Reeks ×{comboMultiplier}
               </motion.span>
             )}
           </AnimatePresence>
@@ -123,7 +123,7 @@ export const LevelUpOverlay = ({ level, onClose }: LevelUpOverlayProps) => (
           className="rounded-3xl border-4 border-foreground/85 bg-gradient-cosmic text-primary-foreground px-8 py-10 text-center shadow-glow max-w-sm mx-4"
         >
           <div className="mx-auto mb-3 inline-flex items-center gap-1 rounded-full bg-secondary/95 text-secondary-foreground px-3 py-1 font-display text-xs uppercase tracking-wider">
-            <GameGlyph name="star" size={14} /> Level up
+            <GameGlyph name="star" size={14} /> Niveau omhoog
           </div>
           <h2 className="font-display text-4xl mb-1">Niveau {level}!</h2>
           <p className="text-primary-foreground/90 font-body">
