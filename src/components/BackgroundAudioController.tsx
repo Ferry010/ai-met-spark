@@ -45,6 +45,9 @@ export const BackgroundAudioController = () => {
     ambient.loop = true;
     ambient.preload = "auto";
     ambient.volume = settings.volume;
+    // iOS Safari: keep inline so autoplay/resume on gesture works without fullscreen.
+    (ambient as any).playsInline = true;
+    ambient.setAttribute("playsinline", "");
     ambientRef.current = ambient;
 
     const lesson = new Audio(LESSON_MUSIC_URL);
@@ -52,6 +55,8 @@ export const BackgroundAudioController = () => {
     lesson.preload = "auto";
     // Lesson music sits a touch louder than ambient since it's the focus track.
     lesson.volume = Math.min(1, settings.volume * 1.4);
+    (lesson as any).playsInline = true;
+    lesson.setAttribute("playsinline", "");
     lessonRef.current = lesson;
 
     return () => {
