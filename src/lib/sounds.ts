@@ -24,14 +24,46 @@ const getCtx = (): AudioContext | null => {
 /** Call from any user-gesture handler (click/tap/keydown) to enable audio. */
 export const unlockAudio = () => {
   const c = getCtx();
-  if (!c) return;
-  if (c.state === "suspended") c.resume().catch(() => {});
+  if (c) {
+    if (c.state === "suspended") c.resume().catch(() => {});
+    // iOS WebAudio fully wakes only after playing something inside the gesture.
+    try {
+      const buf = c.createBuffer(1, 1, 22050);
+      const src = c.createBufferSource();
+      src.buffer = buf;
+      src.connect(c.destination);
+      src.start(0);
+    } catch {}
+  }
+  // Prime the HTMLAudio pool too — iOS Safari requires the first play()
+  // for each <audio> element to happen inside a user gesture.
+  const pool = getClickPool();
+  if (pool) {
+    pool.forEach((a) => {
+      try {
+        a.muted = true;
+        const p = a.play();
+        if (p && typeof p.then === "function") {
+          p.then(() => {
+            a.pause();
+            a.currentTime = 0;
+            a.muted = false;
+          }).catch(() => {
+            a.muted = false;
+          });
+        } else {
+          a.pause();
+          a.muted = false;
+        }
+      } catch {}
+    });
+  }
   unlocked = true;
 };
 
-const reduceMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+// We intentionally do NOT gate sound on prefers-reduced-motion.
+// Reduce Motion is about visual motion, not audio, and on iOS many users
+// leave it on by default which would silence the entire app.
 
 interface PopOptions {
   /** Starting frequency in Hz */
