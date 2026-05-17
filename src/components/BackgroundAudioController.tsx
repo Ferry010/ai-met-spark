@@ -30,12 +30,14 @@ export const BackgroundAudioController = () => {
     volume: getBackgroundAudioVolume(),
   });
 
+  const hasAccess = !!user || isDevAdminBypass();
+
   const mode: Mode = useMemo(() => {
-    if (!user) return "off";
+    if (!hasAccess) return "off";
     if (matchesPath(location.pathname, LEARNING_PATHS)) return "lesson";
     if (matchesPath(location.pathname, PLAYABLE_PATHS)) return "ambient";
     return "off";
-  }, [location.pathname, user]);
+  }, [location.pathname, hasAccess]);
 
   // Create both audio elements once.
   useEffect(() => {
