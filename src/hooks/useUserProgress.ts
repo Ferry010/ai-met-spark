@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { isDevAdminBypass } from "@/lib/devBypass";
 
 export interface ProgressRow {
   lesson_id: string;
@@ -8,18 +9,36 @@ export interface ProgressRow {
   completed_at: string;
 }
 
-const key = (uid?: string) => ["user-progress", uid ?? "anon"] as const;
+const key = (uid?: string) => ["user-progress", uid ?? "bypass"] as const;
+const LOCAL_KEY = "spark.bypass.progress";
+
+const readLocal = (): ProgressRow[] => {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(LOCAL_KEY);
+    return raw ? (JSON.parse(raw) as ProgressRow[]) : [];
+  } catch {
+    return [];
+  }
+};
+
+const writeLocal = (rows: ProgressRow[]) => {
+  try {
+    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(rows));
+  } catch {}
+};
 
 export const useUserProgress = () => {
   const { user } = useAuth();
   const qc = useQueryClient();
+  const bypass = !user && isDevAdminBypass();
 
   const query = useQuery({
     queryKey: key(user?.id),
-    enabled: !!user,
+    enabled: !!user || bypass,
     staleTime: 30_000,
     queryFn: async (): Promise<ProgressRow[]> => {
-      if (!user) return [];
+      if (!user) return readLocal();
       const { data, error } = await supabase
         .from("user_progress")
         .select("lesson_id, stars, completed_at")
@@ -34,7 +53,14 @@ export const useUserProgress = () => {
 
   const finishLesson = useMutation({
     mutationFn: async ({ lessonId, stars }: { lessonId: string; stars: number }) => {
-      if (!user) throw new Error("not-authenticated");
+      if (!user) {
+        if (!bypass) throw new Error("not-authenticated");
+        const current = readLocal();
+        const next = current.filter((r) => r.lesson_id !== lessonId);
+        next.push({ lesson_id: lessonId, stars, completed_at: new Date().toISOString() });
+        writeLocal(next);
+        return;
+      }
       const { error } = await supabase
         .from("user_progress")
         .upsert(
@@ -48,7 +74,11 @@ export const useUserProgress = () => {
 
   const resetProgress = useMutation({
     mutationFn: async () => {
-      if (!user) throw new Error("not-authenticated");
+      if (!user) {
+        if (!bypass) throw new Error("not-authenticated");
+        writeLocal([]);
+        return;
+      }
       await supabase.from("user_progress").delete().eq("user_id", user.id);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: key(user?.id) }),
