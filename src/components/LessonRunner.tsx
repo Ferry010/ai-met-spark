@@ -217,7 +217,15 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
 
   const currentIndex = stepOrder.indexOf(step);
   const showProgress = step !== "intro" && step !== "done";
-  const dockHidden = step === "intro" || step === "done";
+  // Hide the persistent Spark dock whenever a step already shows Spark inline,
+  // so we never have two Sparks on screen at the same time.
+  const dockHidden =
+    step === "intro" ||
+    step === "fact" ||
+    step === "sparkMiddle" ||
+    step === "theoryIntro" ||
+    step === "theoryDeep" ||
+    step === "done";
 
   return (
     <>
