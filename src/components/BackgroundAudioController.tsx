@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { isDevAdminBypass } from "@/lib/devBypass";
 import orbitClassroomAudio from "@/assets/Orbit_Classroom.mp3";
 import {
   BACKGROUND_AUDIO_SETTINGS_EVENT,
@@ -29,12 +30,14 @@ export const BackgroundAudioController = () => {
     volume: getBackgroundAudioVolume(),
   });
 
+  const hasAccess = !!user || isDevAdminBypass();
+
   const mode: Mode = useMemo(() => {
-    if (!user) return "off";
+    if (!hasAccess) return "off";
     if (matchesPath(location.pathname, LEARNING_PATHS)) return "lesson";
     if (matchesPath(location.pathname, PLAYABLE_PATHS)) return "ambient";
     return "off";
-  }, [location.pathname, user]);
+  }, [location.pathname, hasAccess]);
 
   // Create both audio elements once.
   useEffect(() => {
@@ -42,6 +45,9 @@ export const BackgroundAudioController = () => {
     ambient.loop = true;
     ambient.preload = "auto";
     ambient.volume = settings.volume;
+    // iOS Safari: keep inline so autoplay/resume on gesture works without fullscreen.
+    (ambient as any).playsInline = true;
+    ambient.setAttribute("playsinline", "");
     ambientRef.current = ambient;
 
     const lesson = new Audio(LESSON_MUSIC_URL);
@@ -49,6 +55,8 @@ export const BackgroundAudioController = () => {
     lesson.preload = "auto";
     // Lesson music sits a touch louder than ambient since it's the focus track.
     lesson.volume = Math.min(1, settings.volume * 1.4);
+    (lesson as any).playsInline = true;
+    lesson.setAttribute("playsinline", "");
     lessonRef.current = lesson;
 
     return () => {
