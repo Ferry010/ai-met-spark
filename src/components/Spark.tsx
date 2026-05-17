@@ -38,7 +38,7 @@ export const Spark = ({ mood = "default", size = 160, className, animate = true,
   const hasGlow = mood === "levelup";
 
   const wrapperClass = cn(
-    animate && "animate-float",
+    animate && (isCheering ? "" : isHappy ? "animate-spark-wiggle" : "animate-float"),
     mood === "oops" && "animate-shake",
     mood === "cheering" && "animate-spark-cheer",
     mood === "levelup" && "animate-spark-glow",
