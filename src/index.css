@@ -166,10 +166,21 @@
 .animate-shake { animation: shake 0.4s ease-in-out; }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%, 100% { transform: translateY(0) rotate(-1.5deg) scale(1); }
+  25%      { transform: translateY(-6px) rotate(1deg) scale(1.02); }
+  50%      { transform: translateY(-10px) rotate(2deg) scale(1.03); }
+  75%      { transform: translateY(-4px) rotate(-1deg) scale(1.01); }
 }
-.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-float { animation: float 2.6s ease-in-out infinite; transform-origin: 50% 60%; }
+
+@keyframes spark-wiggle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  20%      { transform: translateY(-3px) rotate(-4deg); }
+  40%      { transform: translateY(-8px) rotate(3deg); }
+  60%      { transform: translateY(-6px) rotate(-3deg); }
+  80%      { transform: translateY(-2px) rotate(2deg); }
+}
+.animate-spark-wiggle { animation: spark-wiggle 1.8s ease-in-out infinite; transform-origin: 50% 65%; }
 
 @keyframes pop-in {
   0% { transform: scale(0.6); opacity: 0; }
