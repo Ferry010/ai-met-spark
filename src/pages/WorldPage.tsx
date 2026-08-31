@@ -63,7 +63,7 @@ export const WorldPage = () => {
     <div className="min-h-screen bg-background">
       <AppHeader />
       <AdventureBackdrop theme={WORLD_THEME[world.pillar] ?? "sky"} className="min-h-[calc(100vh-3.5rem)]">
-        <main className="container py-6 md:py-8 max-w-2xl">
+        <main className="container py-6 md:py-8 max-w-md">
           <Link to="/dashboard" className="inline-flex items-center gap-1 text-foreground/70 hover:text-foreground mb-6 font-display">
             <ChevronLeft className="h-4 w-4" /> Terug naar kaart
           </Link>

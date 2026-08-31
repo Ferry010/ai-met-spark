@@ -60,10 +60,10 @@ export const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <AppHeader />
       <AdventureBackdrop theme="sky" className="min-h-[calc(100vh-3.5rem)]">
-        <main className="container py-6 md:py-8 max-w-5xl">
+        <main className="container py-6 md:py-8 max-w-md">
           {/* Greeting + scoreboard */}
-          <div className="grid sm:grid-cols-[auto_1fr] gap-5 items-center mb-8">
-            <div className="flex items-center gap-3">
+          <div className="grid gap-5 mb-8">
+            <div className="flex items-center justify-center gap-3">
               <Spark size={96} mood={allDone ? "celebrating" : "happy"} waving />
               <div className="relative max-w-[200px] rounded-2xl bg-white border-2 border-foreground/10 px-3 py-2 shadow-pop">
                 <div className="text-[11px] uppercase tracking-wider font-display text-primary">Spark zegt</div>
@@ -90,9 +90,9 @@ export const Dashboard = () => {
               Kies je avontuur
             </h2>
 
-            {/* Dashed connecting path (desktop) */}
+            {/* Dashed connecting path (was for the old 3-across desktop layout) */}
             <svg
-              className="hidden md:block absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none"
+              className="hidden"
               height="80"
               viewBox="0 0 800 80"
               preserveAspectRatio="none"
@@ -110,7 +110,7 @@ export const Dashboard = () => {
               />
             </svg>
 
-            <div className="relative grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 place-items-center">
+            <div className="relative grid grid-cols-1 gap-5 place-items-center">
               {worldProgress.map((w, idx) => (
                 <IslandTile
                   key={w.id}
@@ -137,7 +137,7 @@ export const Dashboard = () => {
               </span>
             </div>
             <div className="rounded-3xl bg-white/70 backdrop-blur-sm border-2 border-foreground/10 p-4 sm:p-5 shadow-soft">
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-11 gap-3">
+              <div className="grid grid-cols-4 gap-3">
                 {BADGES.map((b) => {
                   const earned = b.earned(ctx);
                   const initial = b.name.trim().charAt(0).toUpperCase();
