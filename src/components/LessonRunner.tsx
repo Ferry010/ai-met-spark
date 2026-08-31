@@ -277,10 +277,10 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
-          initial={{ opacity: 0, x: 24 }}
+          initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -24 }}
-          transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+          exit={{ opacity: 0, x: -10 }}
+          transition={{ duration: 0.16, ease: [0.2, 0.8, 0.2, 1] }}
         >
           {step === "intro" && (
             <LessonKickoff lesson={lesson} onStart={() => goNext("intro")} />

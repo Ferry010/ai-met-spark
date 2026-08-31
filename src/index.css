@@ -183,11 +183,11 @@
 .animate-spark-wiggle { animation: spark-wiggle 1.8s ease-in-out infinite; transform-origin: 50% 65%; }
 
 @keyframes pop-in {
-  0% { transform: scale(0.6); opacity: 0; }
-  60% { transform: scale(1.08); }
+  0% { transform: scale(0.85); opacity: 0; }
+  60% { transform: scale(1.03); }
   100% { transform: scale(1); opacity: 1; }
 }
-.animate-pop-in { animation: pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.animate-pop-in { animation: pop-in 0.26s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
 @keyframes blink {
   0%, 92%, 100% { transform: scaleY(1); }
