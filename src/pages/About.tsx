@@ -105,7 +105,7 @@ const About = () => {
               {t("about.ctaSubtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/auth?mode=signup">
+              <Link to="/dashboard">
                 <Button
                   size="lg"
                   className="font-display rounded-full px-6 h-12 text-base bg-primary hover:bg-primary/90 shadow-soft w-full sm:w-auto"

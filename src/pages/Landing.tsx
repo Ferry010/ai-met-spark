@@ -148,7 +148,7 @@ export const Landing = () => {
               {t("landing.heroSubtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-4">
-              <Link to="/auth?mode=signup">
+              <Link to="/dashboard">
                 <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full text-sm sm:text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
                   🚀 {t("landing.ctaPrimary")}
                 </Button>
@@ -309,7 +309,7 @@ export const Landing = () => {
               ))}
             </ul>
             <p className="text-sm text-muted-foreground italic mb-6">{t("landing.freeAccess.noPay")}</p>
-            <Link to="/auth?mode=signup">
+            <Link to="/dashboard">
               <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display text-sm sm:text-base bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop">
                 {t("landing.freeAccess.cta")}
               </Button>
@@ -370,7 +370,7 @@ export const Landing = () => {
           <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mb-4">{t("landing.finalCta.title")}</h2>
           <p className="text-white/90 text-base sm:text-lg mb-8">{t("landing.finalCta.subtitle")}</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/auth?mode=signup">
+            <Link to="/dashboard">
               <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display bg-white text-primary hover:bg-white/90 shadow-pop text-sm sm:text-base">
                 🚀 {t("landing.finalCta.cta")}
               </Button>

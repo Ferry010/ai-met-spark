@@ -27,18 +27,40 @@ const DEFAULT: GameStats = {
   last_played_date: null,
 };
 
-const key = (uid?: string) => ["user-stats", uid ?? "anon"] as const;
+const key = (uid?: string) => ["user-stats", uid ?? "local"] as const;
+const LOCAL_KEY = "spark.local.stats";
 
+const readLocal = (): GameStats => {
+  if (typeof window === "undefined") return { ...DEFAULT };
+  try {
+    const raw = window.localStorage.getItem(LOCAL_KEY);
+    return raw ? { ...DEFAULT, ...(JSON.parse(raw) as Partial<GameStats>) } : { ...DEFAULT };
+  } catch {
+    return { ...DEFAULT };
+  }
+};
+
+const writeLocal = (stats: GameStats) => {
+  try {
+    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(stats));
+  } catch {}
+};
+
+/**
+ * XP / level / streak store.
+ *  - Anonymous kids (no login): stored in the browser via localStorage.
+ *  - Logged-in users (optional): synced to Supabase.
+ */
 export const useGameStats = () => {
   const { user } = useAuth();
   const qc = useQueryClient();
 
   const query = useQuery({
     queryKey: key(user?.id),
-    enabled: !!user,
+    enabled: true,
     staleTime: 30_000,
     queryFn: async (): Promise<GameStats> => {
-      if (!user) return DEFAULT;
+      if (!user) return readLocal();
       const { data } = await (supabase as any)
         .from("user_stats")
         .select("user_id, xp, level, streak_days, longest_combo, last_played_date")
@@ -60,7 +82,6 @@ export const useGameStats = () => {
       amount: number;
       combo?: number;
     }): Promise<{ leveledUp: boolean; newLevel: number; newXp: number }> => {
-      if (!user) throw new Error("not-authenticated");
       const today = todayISO();
       const sameDay = isSameDay(stats.last_played_date);
       const continued = isStreakContinuation(stats.last_played_date);
@@ -74,6 +95,18 @@ export const useGameStats = () => {
       const newLevel = levelFromXp(newXp);
       const leveledUp = newLevel > stats.level;
       const longestCombo = Math.max(stats.longest_combo, combo ?? 0);
+
+      if (!user) {
+        writeLocal({
+          user_id: "",
+          xp: newXp,
+          level: newLevel,
+          streak_days: newStreak,
+          longest_combo: longestCombo,
+          last_played_date: today,
+        });
+        return { leveledUp, newLevel, newXp };
+      }
 
       const { error } = await (supabase as any)
         .from("user_stats")
@@ -96,7 +129,10 @@ export const useGameStats = () => {
 
   const reset = useMutation({
     mutationFn: async () => {
-      if (!user) return;
+      if (!user) {
+        writeLocal({ ...DEFAULT });
+        return;
+      }
       await (supabase as any).from("user_stats").delete().eq("user_id", user.id);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: key(user?.id) }),

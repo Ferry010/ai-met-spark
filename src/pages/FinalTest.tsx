@@ -25,7 +25,11 @@ export const FinalTest = () => {
   const questions = useMemo(() => FINAL_TEST_QUESTIONS, []);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      // Anonymous kids: no server-side attempt history / cooldown.
+      setLoading(false);
+      return;
+    }
     supabase
       .from("final_test_attempts")
       .select("*")

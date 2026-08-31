@@ -14,12 +14,33 @@ const GOLD_RGB: [number, number, number] = [212, 175, 55];
 const INDIGO_RGB: [number, number, number] = [29, 27, 71];
 const INDIGO_LIGHT_RGB: [number, number, number] = [60, 47, 132];
 
+const LOCAL_NAME_KEY = "spark.local.name";
+
 export const Certificate = () => {
   const { user, profile } = useAuth();
   const { toast } = useToast();
   const [score, setScore] = useState<number | null>(null);
   const [issued, setIssued] = useState<string | null>(null);
+  const [localName, setLocalName] = useState<string>(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      return window.localStorage.getItem(LOCAL_NAME_KEY) ?? "";
+    } catch {
+      return "";
+    }
+  });
   const generatingRef = useRef(false);
+
+  // Name shown on the diploma: account name if logged in, otherwise the
+  // browser-stored name the child typed in.
+  const displayName = profile?.first_name || localName.trim() || "Smart Kid";
+
+  const saveLocalName = (v: string) => {
+    setLocalName(v);
+    try {
+      window.localStorage.setItem(LOCAL_NAME_KEY, v);
+    } catch {}
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -99,11 +120,11 @@ export const Certificate = () => {
     doc.setFont("times", "italic");
     doc.setFontSize(60);
     doc.setTextColor(...GOLD_RGB);
-    doc.text(profile?.first_name ?? "Smart Kid", w / 2, 260, { align: "center" });
+    doc.text(displayName, w / 2, 260, { align: "center" });
 
     // Underline under name
     doc.setLineWidth(0.6);
-    const nameW = Math.min(360, doc.getTextWidth(profile?.first_name ?? "Smart Kid") + 40);
+    const nameW = Math.min(360, doc.getTextWidth(displayName) + 40);
     doc.line(w / 2 - nameW / 2, 274, w / 2 + nameW / 2, 274);
 
     // Body
@@ -151,25 +172,29 @@ export const Certificate = () => {
   };
 
   const downloadPdf = async () => {
-    if (generatingRef.current || !user) return;
+    if (generatingRef.current) return;
     generatingRef.current = true;
     try {
       const doc = buildPdf();
-      doc.save(`AI-Smart-Kid-${profile?.first_name ?? "diploma"}.pdf`);
-      const blob = doc.output("blob");
-      const path = `${user.id}/diploma.pdf`;
-      const { error } = await supabase.storage.from("certificates").upload(path, blob, {
-        upsert: true,
-        contentType: "application/pdf",
-      });
-      if (!error) {
-        const { data } = await supabase.rpc("attach_certificate_pdf", { _path: path });
-        if (data) {
-          setIssued(data.issued_at);
-          setScore(data.score);
+      doc.save(`AI-Smart-Kid-${displayName}.pdf`);
+
+      // Logged-in users also get a copy saved to their account.
+      if (user) {
+        const blob = doc.output("blob");
+        const path = `${user.id}/diploma.pdf`;
+        const { error } = await supabase.storage.from("certificates").upload(path, blob, {
+          upsert: true,
+          contentType: "application/pdf",
+        });
+        if (!error) {
+          const { data } = await supabase.rpc("attach_certificate_pdf", { _path: path });
+          if (data) {
+            setIssued(data.issued_at);
+            setScore(data.score);
+          }
         }
       }
-      toast({ title: "Gedownload!", description: "Opgeslagen op je apparaat en in je account." });
+      toast({ title: "Gedownload!", description: "Opgeslagen op je apparaat 🎉" });
     } finally {
       generatingRef.current = false;
     }
@@ -225,7 +250,7 @@ export const Certificate = () => {
                 borderBottom: `1px solid ${GOLD}66`,
               }}
             >
-              {profile?.first_name ?? "Smart Kid"}
+              {displayName}
             </div>
 
             <p className="mt-5 sm:mt-6 max-w-md mx-auto leading-snug text-sm sm:text-base">
@@ -257,6 +282,23 @@ export const Certificate = () => {
             </div>
           </div>
         </div>
+
+        {!user && (
+          <div className="mt-6 max-w-xs mx-auto text-center">
+            <label htmlFor="cert-name" className="block font-display text-sm text-muted-foreground mb-1">
+              Wat is je naam? (komt op je diploma)
+            </label>
+            <input
+              id="cert-name"
+              type="text"
+              value={localName}
+              onChange={(e) => saveLocalName(e.target.value)}
+              placeholder="Jouw naam"
+              maxLength={24}
+              className="w-full rounded-full border-2 border-border bg-background px-4 py-2 text-center font-display focus:border-primary focus:outline-none"
+            />
+          </div>
+        )}
 
         <div className="mt-6 text-center">
           <Button onClick={downloadPdf} className="h-14 px-8 rounded-full font-display bg-primary shadow-pop gap-2">

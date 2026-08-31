@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { isDevAdminBypass } from "@/lib/devBypass";
 
 export interface ProgressRow {
   lesson_id: string;
@@ -9,8 +8,8 @@ export interface ProgressRow {
   completed_at: string;
 }
 
-const key = (uid?: string) => ["user-progress", uid ?? "bypass"] as const;
-const LOCAL_KEY = "spark.bypass.progress";
+const key = (uid?: string) => ["user-progress", uid ?? "local"] as const;
+const LOCAL_KEY = "spark.local.progress";
 
 const readLocal = (): ProgressRow[] => {
   if (typeof window === "undefined") return [];
@@ -28,14 +27,19 @@ const writeLocal = (rows: ProgressRow[]) => {
   } catch {}
 };
 
+/**
+ * Progress store.
+ *  - Anonymous kids (no login): stored in the browser via localStorage.
+ *  - Logged-in users (optional teacher/school accounts): synced to Supabase.
+ */
 export const useUserProgress = () => {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const bypass = !user && isDevAdminBypass();
 
   const query = useQuery({
     queryKey: key(user?.id),
-    enabled: !!user || bypass,
+    // Always enabled: anonymous reads come from localStorage.
+    enabled: true,
     staleTime: 30_000,
     queryFn: async (): Promise<ProgressRow[]> => {
       if (!user) return readLocal();
@@ -54,7 +58,6 @@ export const useUserProgress = () => {
   const finishLesson = useMutation({
     mutationFn: async ({ lessonId, stars }: { lessonId: string; stars: number }) => {
       if (!user) {
-        if (!bypass) throw new Error("not-authenticated");
         const current = readLocal();
         const next = current.filter((r) => r.lesson_id !== lessonId);
         next.push({ lesson_id: lessonId, stars, completed_at: new Date().toISOString() });
@@ -75,7 +78,6 @@ export const useUserProgress = () => {
   const resetProgress = useMutation({
     mutationFn: async () => {
       if (!user) {
-        if (!bypass) throw new Error("not-authenticated");
         writeLocal([]);
         return;
       }

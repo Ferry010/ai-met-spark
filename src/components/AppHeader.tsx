@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameStats } from "@/hooks/useGameStats";
+import { useUserProgress } from "@/hooks/useUserProgress";
 import { Spark } from "./Spark";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,12 +12,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, GraduationCap, ShieldCheck } from "lucide-react";
+import { LogOut, Settings, GraduationCap, ShieldCheck, RotateCcw, Home } from "lucide-react";
 import { GameGlyph } from "@/components/game/GameGlyph";
 
 export const AppHeader = () => {
   const { profile, isTeacher, isAdmin, user } = useAuth();
-  const { stats, progress } = useGameStats();
+  const { stats, progress, reset: resetStats } = useGameStats();
+  const { resetProgress } = useUserProgress();
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -24,7 +26,14 @@ export const AppHeader = () => {
     navigate("/");
   };
 
-  const showStats = !!user && !isTeacher;
+  const startOver = async () => {
+    if (!window.confirm("Wil je opnieuw beginnen? Je sterren en punten op dit apparaat worden gewist.")) return;
+    await Promise.all([resetProgress(), resetStats()]);
+    navigate("/dashboard");
+  };
+
+  // Show the game stats for everyone playing (not for teachers).
+  const showStats = !isTeacher;
 
   return (
     <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -50,35 +59,57 @@ export const AppHeader = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="rounded-full font-display gap-2 h-10 sm:h-11 px-2 sm:px-3">
                 <span className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
-                  {profile?.first_name?.charAt(0).toUpperCase() ?? "?"}
+                  {user ? profile?.first_name?.charAt(0).toUpperCase() ?? "?" : "☰"}
                 </span>
-                <span className="hidden sm:inline max-w-[100px] truncate">{profile?.first_name}</span>
+                {user && <span className="hidden sm:inline max-w-[100px] truncate">{profile?.first_name}</span>}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="rounded-2xl w-52">
-              {isTeacher && (
-                <DropdownMenuItem asChild className="rounded-xl">
-                  <Link to="/teacher" className="cursor-pointer">
-                    <GraduationCap className="h-4 w-4 mr-2" /> Dashboard leerkracht
-                  </Link>
-                </DropdownMenuItem>
-              )}
-              {isAdmin && (
-                <DropdownMenuItem asChild className="rounded-xl">
-                  <Link to="/admin/lessons" className="cursor-pointer">
-                    <ShieldCheck className="h-4 w-4 mr-2" /> Beheer lessen
-                  </Link>
-                </DropdownMenuItem>
-              )}
               <DropdownMenuItem asChild className="rounded-xl">
-                <Link to="/account" className="cursor-pointer">
-                  <Settings className="h-4 w-4 mr-2" /> Accountinstellingen
+                <Link to="/dashboard" className="cursor-pointer">
+                  <Home className="h-4 w-4 mr-2" /> Naar de kaart
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout} className="rounded-xl cursor-pointer">
-                <LogOut className="h-4 w-4 mr-2" /> Uitloggen
-              </DropdownMenuItem>
+
+              {user ? (
+                <>
+                  {isTeacher && (
+                    <DropdownMenuItem asChild className="rounded-xl">
+                      <Link to="/teacher" className="cursor-pointer">
+                        <GraduationCap className="h-4 w-4 mr-2" /> Dashboard leerkracht
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  {isAdmin && (
+                    <DropdownMenuItem asChild className="rounded-xl">
+                      <Link to="/admin/lessons" className="cursor-pointer">
+                        <ShieldCheck className="h-4 w-4 mr-2" /> Beheer lessen
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem asChild className="rounded-xl">
+                    <Link to="/account" className="cursor-pointer">
+                      <Settings className="h-4 w-4 mr-2" /> Accountinstellingen
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout} className="rounded-xl cursor-pointer">
+                    <LogOut className="h-4 w-4 mr-2" /> Uitloggen
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem onClick={startOver} className="rounded-xl cursor-pointer">
+                    <RotateCcw className="h-4 w-4 mr-2" /> Opnieuw beginnen
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild className="rounded-xl">
+                    <Link to="/teacher/login" className="cursor-pointer">
+                      <GraduationCap className="h-4 w-4 mr-2" /> Voor leerkrachten
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -56,46 +56,12 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/world/:worldId"
-            element={
-              <ProtectedRoute>
-                <WorldPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/lesson/:lessonId"
-            element={
-              <ProtectedRoute>
-                <LessonPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/final-test"
-            element={
-              <ProtectedRoute>
-                <FinalTest />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/certificate"
-            element={
-              <ProtectedRoute>
-                <Certificate />
-              </ProtectedRoute>
-            }
-          />
+          {/* Kid-facing routes are open — no login required. Progress lives in the browser. */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/world/:worldId" element={<WorldPage />} />
+          <Route path="/lesson/:lessonId" element={<LessonPage />} />
+          <Route path="/final-test" element={<FinalTest />} />
+          <Route path="/certificate" element={<Certificate />} />
           <Route
             path="/account"
             element={
