@@ -64,7 +64,7 @@ export const Scoreboard = ({ level, xp, pct, xpToNext, streak, longestCombo }: S
 
       {/* Mobile streak row */}
       <div className="sm:hidden mt-3 flex gap-2">
-        <Pill icon={<GameGlyph name="flame" size={14} />} label={`${streak} dagen`} tint="accent" />
+        <Pill icon={<GameGlyph name="flame" size={14} />} label={`${streak} ${streak === 1 ? "dag" : "dagen"}`} tint="accent" />
         <Pill icon={<GameGlyph name="gem" size={14} />} label={`combo x${longestCombo}`} tint="gold" />
       </div>
     </div>
