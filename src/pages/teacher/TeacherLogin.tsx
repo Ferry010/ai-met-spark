@@ -41,13 +41,13 @@ const TeacherLogin = () => {
                 variant="outline"
                 className="w-full h-11 border-classroom-border text-classroom-dark rounded-lg"
               >
-                <Link to="/teacher">Bekijk demo dashboard</Link>
+                <Link to="/teacher/start">Nieuwe klas beginnen</Link>
               </Button>
             </div>
 
             <p className="text-sm text-classroom-muted mt-6 text-center">
-              Nog geen account?{" "}
-              <Link to="/schools/contact" className="text-classroom-teal font-medium hover:underline">
+              Nog geen klas?{" "}
+              <Link to="/teacher/start" className="text-classroom-teal font-medium hover:underline">
                 Start gratis met je klas
               </Link>
             </p>

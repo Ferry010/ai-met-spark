@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, LogOut, Settings, GraduationCap } from "lucide-react";
-import { teacher } from "@/data/classroomMock";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { useClassroom } from "@/hooks/useClassroom";
 
 export const TopBar = () => {
   const navigate = useNavigate();
-  const initial = teacher.firstName.charAt(0);
+  const { profile } = useAuth();
+  const { class: myClass } = useClassroom();
+  const name = profile?.first_name || "Leerkracht";
+  const initial = name.charAt(0).toUpperCase();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -35,9 +39,9 @@ export const TopBar = () => {
           <DropdownMenuTrigger className="flex items-center gap-3 rounded-lg px-2 py-1.5 hover:bg-classroom-bg transition-colors">
             <div className="hidden sm:block text-right">
               <div className="text-sm font-medium text-classroom-dark leading-tight">
-                {teacher.firstName}
+                {name}
               </div>
-              <div className="text-xs text-classroom-muted leading-tight">{teacher.school}</div>
+              <div className="text-xs text-classroom-muted leading-tight">{myClass?.class_name ?? ""}</div>
             </div>
             <div className="grid place-items-center h-9 w-9 rounded-full bg-classroom-amber/20 text-classroom-amber font-semibold">
               {initial}

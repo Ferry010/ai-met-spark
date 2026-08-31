@@ -26,6 +26,7 @@ import FinalTest from "./pages/FinalTest.tsx";
 import Certificate from "./pages/Certificate.tsx";
 import Account from "./pages/Account.tsx";
 import TeacherLogin from "./pages/teacher/TeacherLogin.tsx";
+import TeacherStart from "./pages/teacher/TeacherStart.tsx";
 import ClassroomDashboard from "./pages/teacher/ClassroomDashboard.tsx";
 import WorldDetail from "./pages/teacher/WorldDetail.tsx";
 import LessonDetail from "./pages/teacher/LessonDetail.tsx";
@@ -56,12 +57,12 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          {/* Kid-facing routes are open — no login required. Progress lives in the browser. */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/world/:worldId" element={<WorldPage />} />
-          <Route path="/lesson/:lessonId" element={<LessonPage />} />
-          <Route path="/final-test" element={<FinalTest />} />
-          <Route path="/certificate" element={<Certificate />} />
+          {/* Kid-facing routes require an account. */}
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/world/:worldId" element={<ProtectedRoute><WorldPage /></ProtectedRoute>} />
+          <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
+          <Route path="/final-test" element={<ProtectedRoute><FinalTest /></ProtectedRoute>} />
+          <Route path="/certificate" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
           <Route
             path="/account"
             element={
@@ -71,6 +72,7 @@ const App = () => (
             }
           />
           <Route path="/teacher/login" element={<TeacherLogin />} />
+          <Route path="/teacher/start" element={<TeacherStart />} />
           <Route
             path="/teacher"
             element={

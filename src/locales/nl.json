@@ -31,7 +31,7 @@
     "ctaPrimary": "Begin hier",
     "ctaSecondary": "Inloggen",
     "trustChips": {
-      "gdpr": "Geen account nodig",
+      "gdpr": "AVG-veilig",
       "noChat": "Geen AI-chat voor kids",
       "parents": "Geliefd bij ouders"
     },
@@ -146,8 +146,8 @@
           "desc": "Elke les is geschreven en gecheckt door professionele AI-trainers en ouders. Geen automatische opvulling door AI."
         },
         "privacy": {
-          "title": "Niets opgeslagen, niets getrackt",
-          "desc": "Geen account, geen inlog. De voortgang van je kind wordt alleen in de browser bewaard. Wij slaan niks op een server op en volgen niemand."
+          "title": "Privacy voorop",
+          "desc": "Een account bewaart alleen een voornaam, leeftijd en e-mail van de ouder. Geen tracking, geen advertenties, en we verkopen nooit data."
         },
         "devices": {
           "title": "Werkt op elk apparaat",
@@ -159,7 +159,7 @@
         },
         "refund": {
           "title": "Vrij toegankelijk",
-          "desc": "Alle lessen zijn gratis. Geen account nodig — gewoon openen en beginnen."
+          "desc": "Alle lessen zijn gratis. Maak een gratis account en begin meteen."
         }
       }
     },
@@ -205,7 +205,7 @@
       "items": [
         {
           "q": "Is er een betaalmuur?",
-          "a": "Nee. Elke wereld, les, quiz en het diploma staan meteen open. Je hoeft niet eens een account te maken."
+          "a": "Nee. Elke wereld, les, quiz en het diploma staan meteen open zodra je een gratis account maakt."
         },
         {
           "q": "Is dit een proefperiode die afloopt?",
@@ -278,7 +278,7 @@
         "Alle 24 met de hand gemaakte lessen",
         "3 superkracht-werelden",
         "Persoonlijke diploma's",
-        "Niets opgeslagen of getrackt",
+        "AVG- en COPPA-vriendelijk",
         "Geen AI-chat voor kids",
         "Werkt op elk apparaat"
       ]
@@ -292,11 +292,11 @@
         },
         {
           "q": "Is dit veilig voor mijn kind?",
-          "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. Er is geen account en we bewaren geen persoonlijke gegevens."
+          "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. We bewaren alleen een voornaam, leeftijd en de e-mail van de ouder."
         },
         {
           "q": "Is de data van mijn kind privé?",
-          "a": "Ja, volledig. Er is geen account nodig. We slaan niets op onze servers op en volgen je kind niet. De voortgang wordt alleen in de browser op dit apparaat bewaard. We verkopen nooit data en trainen er geen AI mee."
+          "a": "Ja. We bewaren alleen een voornaam, leeftijd en de e-mail van de ouder, plus de lesvoortgang. We volgen je kind niet, tonen geen advertenties, verkopen nooit data en trainen er geen AI mee."
         },
         {
           "q": "Voor welke leeftijd is het?",
@@ -311,8 +311,8 @@
           "a": "Ja. Kids kunnen op elk moment wisselen tussen Nederlands, Engels en Spaans in de app."
         },
         {
-          "q": "Waar wordt de voortgang bewaard, en hoe wis ik die?",
-          "a": "Alleen in de browser van je kind, op dat ene apparaat. Wil je alles wissen? Kies 'Opnieuw beginnen' in het menu, of wis de browsergegevens. Wij hebben niets om te verwijderen."
+          "q": "Hoe verwijder ik de gegevens van mijn kind?",
+          "a": "Mail ons of gebruik de accountinstellingen — we wissen het account en alle gegevens, geen vragen gesteld."
         }
       ]
     },
@@ -367,7 +367,7 @@
     "pullQuote": "Deze kennis mag geen luxe zijn. Daarom is AI met Spark gratis, voor elk kind.",
     "signature": "- Ferry Hoes",
     "ctaTitle": "Klaar om kennis te maken met Spark?",
-    "ctaSubtitle": "Helemaal gratis en zonder account. Laat je kind meteen beginnen aan het avontuur.",
+    "ctaSubtitle": "Maak een gratis account en laat je kind meteen beginnen aan het avontuur.",
     "ctaSecondary": "Terug naar home",
     "ctaMicro": "Gratis nu en gratis blijvend. Geen proefperiode."
   },
@@ -380,7 +380,7 @@
     "rights": "Alle rechten voorbehouden."
   },
   "cookies": {
-    "message": "We volgen je niet en tonen geen advertenties. De voortgang wordt alleen in deze browser bewaard, op dit apparaat.",
+    "message": "We gebruiken alleen cookies die nodig zijn om in te loggen en de app te laten werken. Geen tracking, geen advertenties.",
     "accept": "Oké, begrepen"
   }
 }

@@ -9,42 +9,38 @@ export const Privacy = () => (
       <p className="text-muted-foreground mb-4">Laatst bijgewerkt: {new Date().toLocaleDateString("nl-NL")}</p>
 
       <p>
-        AI met Spark is gemaakt voor kinderen. Daarom houden we het zo simpel en veilig mogelijk:
-        <strong> je hebt geen account nodig en we verzamelen geen persoonlijke gegevens.</strong>
+        AI met Spark is gemaakt voor kinderen. We verzamelen zo min mogelijk: alleen wat nodig is om
+        een account te laten werken en de voortgang te bewaren.
       </p>
 
       <h2 className="font-display text-2xl mt-8 mb-3">Wat we bewaren</h2>
-      <p>
-        De voortgang van je kind — welke lessen af zijn, sterren, punten en de streak — wordt
-        <strong> alleen in de browser van dit apparaat bewaard</strong> (via <em>localStorage</em>).
-        Die informatie blijft op het apparaat en wordt nooit naar ons of naar iemand anders verstuurd.
-      </p>
-      <p>
-        Vul je kind een naam in voor op het diploma? Ook die naam blijft alleen in de browser en wordt
-        alleen gebruikt om het diploma te maken.
-      </p>
+      <ul className="list-disc pl-6 space-y-1">
+        <li>Voornaam van het kind (geen achternaam)</li>
+        <li>Leeftijd</li>
+        <li>E-mail van de ouder (voor het diploma en accountherstel)</li>
+        <li>Een inlog-e-mail en wachtwoord voor het account</li>
+        <li>Lesvoortgang, sterren en quizscores</li>
+      </ul>
 
       <h2 className="font-display text-2xl mt-8 mb-3">Wat we nooit doen</h2>
       <ul className="list-disc pl-6 space-y-1">
-        <li>Een account of inlog vragen</li>
-        <li>Persoonlijke gegevens opslaan op een server</li>
         <li>Kinderen volgen of tracken</li>
         <li>Advertenties tonen</li>
         <li>Data verkopen of gebruiken om AI te trainen</li>
         <li>Vrij chatten met een AI toestaan</li>
       </ul>
 
-      <h2 className="font-display text-2xl mt-8 mb-3">Voortgang wissen</h2>
+      <h2 className="font-display text-2xl mt-8 mb-3">Leerkrachten en klassen</h2>
       <p>
-        Alles staat op het apparaat, dus jij hebt de controle. Kies <strong>"Opnieuw beginnen"</strong> in
-        het menu, of wis de browsergegevens van je kind. Daarmee is de voortgang weg. Wij hebben niets
-        om te verwijderen, want wij bewaren niets.
+        Sluit een kind zich met een klassencode aan bij een klas? Dan kan alleen de eigen leerkracht van
+        die klas de voortgang van dat kind zien — niemand anders. Een leerkracht ziet nooit kinderen uit
+        andere klassen.
       </p>
 
-      <h2 className="font-display text-2xl mt-8 mb-3">Scholen</h2>
+      <h2 className="font-display text-2xl mt-8 mb-3">Je gegevens verwijderen</h2>
       <p>
-        Werkt een school met een eigen leerkrachten-omgeving? Dan gelden aparte afspraken die we
-        rechtstreeks met de school maken. Neem daarvoor contact met ons op.
+        Je kunt op elk moment vragen om het account en alle gegevens te verwijderen, via de
+        accountinstellingen of door ons te mailen. We wissen het dan volledig, geen vragen gesteld.
       </p>
 
       <h2 className="font-display text-2xl mt-8 mb-3">Vragen?</h2>

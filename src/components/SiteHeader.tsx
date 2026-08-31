@@ -15,7 +15,12 @@ export const SiteHeader = () => {
           </span>
         </Link>
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-          <Link to="/dashboard">
+          <Link to="/auth" className="hidden sm:inline-flex">
+            <Button variant="ghost" className="font-display">
+              {t("common.login")}
+            </Button>
+          </Link>
+          <Link to="/auth?mode=signup">
             <Button className="font-display rounded-full px-4 sm:px-5 h-10 sm:h-11 text-sm sm:text-base bg-primary hover:bg-primary/90 shadow-soft">
               {t("common.tryFree")} →
             </Button>

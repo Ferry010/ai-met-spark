@@ -1,4 +1,4 @@
-project_id = "kqlytfyvlosnhbszkesd"
+project_id = "gskowgbiowxgdvmlitzp"
 
 [functions.generate-lesson-audio]
 verify_jwt = false
