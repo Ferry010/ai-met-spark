@@ -31,7 +31,7 @@
     "ctaPrimary": "Begin hier",
     "ctaSecondary": "Inloggen",
     "trustChips": {
-      "gdpr": "AVG-veilig",
+      "gdpr": "Geen account nodig",
       "noChat": "Geen AI-chat voor kids",
       "parents": "Geliefd bij ouders"
     },
@@ -145,8 +145,8 @@
           "desc": "Elke les is geschreven en gecheckt door professionele AI-trainers en ouders. Geen automatische opvulling door AI."
         },
         "privacy": {
-          "title": "AVG- en COPPA-vriendelijk",
-          "desc": "We bewaren een voornaam, leeftijd en oudermail. Meer niet. We verkopen nooit data."
+          "title": "Niets opgeslagen, niets getrackt",
+          "desc": "Geen account, geen inlog. De voortgang van je kind wordt alleen in de browser bewaard. Wij slaan niks op een server op en volgen niemand."
         },
         "devices": {
           "title": "Werkt op elk apparaat",
@@ -158,7 +158,7 @@
         },
         "refund": {
           "title": "Vrij toegankelijk",
-          "desc": "Alle studentlessen zijn nu gratis beschikbaar. Gewoon aanmelden en beginnen."
+          "desc": "Alle lessen zijn gratis. Geen account nodig — gewoon openen en beginnen."
         }
       }
     },
@@ -190,7 +190,7 @@
     },
     "finalCta": {
       "title": "Klaar om een AI Smart Kid op te voeden?",
-      "subtitle": "Alle lessen zijn gratis beschikbaar. Maak een account en begin meteen.",
+      "subtitle": "Alle lessen zijn gratis. Geen account nodig — begin meteen.",
       "cta": "Start het avontuur",
       "secondary": "Voor scholen"
     },
@@ -204,11 +204,11 @@
       "items": [
         {
           "q": "Is er een betaalmuur?",
-          "a": "Nee. Elke wereld, les, quiz en het diploma staan direct open zodra je een account maakt."
+          "a": "Nee. Elke wereld, les, quiz en het diploma staan meteen open. Je hoeft niet eens een account te maken."
         },
         {
           "q": "Is dit een proefperiode die afloopt?",
-          "a": "Nee. Er is geen proefperiode en geen aftellende timer. Je account blijft voor altijd gratis."
+          "a": "Nee. Er is geen proefperiode en geen aftellende timer. Alles blijft voor altijd gratis."
         },
         {
           "q": "Gaan jullie later geld vragen?",
@@ -216,7 +216,7 @@
         },
         {
           "q": "En nieuwe lessen?",
-          "a": "Nieuwe lessen komen automatisch in je account. Ook gratis, altijd."
+          "a": "Nieuwe lessen komen er automatisch bij. Ook gratis, altijd."
         }
       ]
     },
@@ -277,7 +277,7 @@
         "Alle 24 met de hand gemaakte lessen",
         "3 superkracht-werelden",
         "Persoonlijke diploma's",
-        "AVG- en COPPA-vriendelijk",
+        "Niets opgeslagen of getrackt",
         "Geen AI-chat voor kids",
         "Werkt op elk apparaat"
       ]
@@ -291,11 +291,11 @@
         },
         {
           "q": "Is dit veilig voor mijn kind?",
-          "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. We bewaren alleen een voornaam, leeftijd en oudermail."
+          "a": "Ja. Kids typen nooit naar een AI. Alle content is met de hand geschreven en gecheckt. Er is geen account en we bewaren geen persoonlijke gegevens."
         },
         {
           "q": "Is de data van mijn kind privé?",
-          "a": "Ja. We zijn AVG- en COPPA-vriendelijk. We verkopen nooit data en gebruiken het nooit om AI-modellen te trainen."
+          "a": "Ja, volledig. Er is geen account nodig. We slaan niets op onze servers op en volgen je kind niet. De voortgang wordt alleen in de browser op dit apparaat bewaard. We verkopen nooit data en trainen er geen AI mee."
         },
         {
           "q": "Voor welke leeftijd is het?",
@@ -307,11 +307,11 @@
         },
         {
           "q": "Kan ik de taal later wisselen?",
-          "a": "Ja. Kids kunnen op elk moment wisselen tussen Nederlands, Engels en Spaans vanuit hun account."
+          "a": "Ja. Kids kunnen op elk moment wisselen tussen Nederlands, Engels en Spaans in de app."
         },
         {
-          "q": "Hoe verwijder ik de data van mijn kind?",
-          "a": "Mail ons en we wissen het account en alle data binnen 7 dagen, geen vragen gesteld."
+          "q": "Waar wordt de voortgang bewaard, en hoe wis ik die?",
+          "a": "Alleen in de browser van je kind, op dat ene apparaat. Wil je alles wissen? Kies 'Opnieuw beginnen' in het menu, of wis de browsergegevens. Wij hebben niets om te verwijderen."
         }
       ]
     },
@@ -379,7 +379,7 @@
     "rights": "Alle rechten voorbehouden."
   },
   "cookies": {
-    "message": "We gebruiken een paar cookies om de app te laten werken. Geen tracking, geen advertenties.",
+    "message": "We volgen je niet en tonen geen advertenties. De voortgang wordt alleen in deze browser bewaard, op dit apparaat.",
     "accept": "Oké, begrepen"
   }
 }
