@@ -5,7 +5,7 @@
     "login": "Inloggen",
     "signup": "Aanmelden",
     "logout": "Uitloggen",
-    "tryFree": "Maak gratis account",
+    "tryFree": "Begin hier · gratis",
     "continue": "Verder",
     "next": "Volgende",
     "back": "Terug",
@@ -28,7 +28,7 @@
     "heroSubtitle": "Een leuk avontuur dat kids leert AI veilig te gebruiken, slimmere vragen te stellen en onstuitbare leerlingen te worden. Gemaakt voor 9 tot 11 jaar.",
     "heroSparkLine": "Hoi, ik ben Spark. Ik ben je AI-gids!",
     "heroMicroCopy": "Alle lessen zijn gratis. Gratis nu en gratis blijvend. Geen proefperiode.",
-    "ctaPrimary": "Maak gratis account",
+    "ctaPrimary": "Begin hier",
     "ctaSecondary": "Inloggen",
     "trustChips": {
       "gdpr": "AVG-veilig",
@@ -169,8 +169,8 @@
     "pricingTeaser": {
       "eyebrow": "Volledig gratis",
       "title": "Alles staat open voor elke leerling.",
-      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
-      "cta": "Maak gratis account",
+      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Begin meteen en ga direct door alle werelden en lessen.",
+      "cta": "Begin hier",
       "badge": "Gratis",
       "badgeCaption": "alle lessen · altijd",
       "features": [
@@ -223,8 +223,8 @@
     "freeAccess": {
       "eyebrow": "Volledig gratis",
       "title": "Alles staat open voor elke leerling.",
-      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Meld je aan en ga direct door alle werelden en lessen.",
-      "cta": "Maak gratis account",
+      "subtitle": "Geen betaalmuur, geen proefperiode en geen verrassingen. Begin meteen en ga direct door alle werelden en lessen.",
+      "cta": "Begin hier",
       "badge": "Gratis",
       "badgeCaption": "alle lessen · altijd",
       "features": [
@@ -252,7 +252,7 @@
         "Werkt op mobiel, tablet en laptop",
         "Nieuwe lesupdates automatisch beschikbaar"
       ],
-      "cta": "Maak gratis account"
+      "cta": "Begin hier"
     },
     "schools": {
       "name": "Scholen",
@@ -326,7 +326,7 @@
         "Werkt op mobiel, tablet en laptop",
         "Nieuwe lesupdates automatisch beschikbaar"
       ],
-      "cta": "Maak gratis account"
+      "cta": "Begin hier"
     }
   },
   "schoolForm": {
@@ -366,7 +366,7 @@
     "pullQuote": "Deze kennis mag geen luxe zijn. Daarom is AI met Spark gratis, voor elk kind.",
     "signature": "- Ferry Hoes",
     "ctaTitle": "Klaar om kennis te maken met Spark?",
-    "ctaSubtitle": "Maak gratis een account en laat je kind beginnen aan het avontuur.",
+    "ctaSubtitle": "Helemaal gratis en zonder account. Laat je kind meteen beginnen aan het avontuur.",
     "ctaSecondary": "Terug naar home",
     "ctaMicro": "Gratis nu en gratis blijvend. Geen proefperiode."
   },
