@@ -11,6 +11,8 @@ import { GameGlyph } from "@/components/game/GameGlyph";
 import { cn } from "@/lib/utils";
 import { unlockAudio, playSparkEntry, playBubblePop, playCorrect, playWrong, playLevelUp, playCombo, playClick } from "@/lib/sounds";
 import { renderRichText, estimateReadSeconds } from "@/lib/markdown";
+import { normalizeTtsText, normalizeTtsSummary } from "@/lib/tts";
+import { cancelSpeech } from "@/lib/speech";
 import { SparkVoiceButton } from "@/components/SparkVoiceButton";
 import { useSparkVoice } from "@/hooks/useSparkVoice";
 import { useGameStats } from "@/hooks/useGameStats";
@@ -96,6 +98,11 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
   useEffect(() => {
     if (jumpToStep) setStep(jumpToStep);
   }, [jumpToStep]);
+
+  // Stop any read-aloud immediately when moving between steps or leaving.
+  useEffect(() => {
+    return () => cancelSpeech();
+  }, [step]);
 
   // Pass threshold: need at least 2/3 of the quiz correct to complete the lesson.
   const passThreshold = useMemo(
@@ -299,7 +306,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
           {step === "fact" && (
             <section className="relative rounded-3xl bg-card border-2 border-primary p-5 text-center shadow-pop animate-pop-in sm:p-8">
               <div className="absolute top-4 right-4">
-                <SparkVoiceButton lessonId={lesson.id} step="fact" variant="compact" />
+                <SparkVoiceButton lessonId={lesson.id} step="fact" text={normalizeTtsText(lesson.fact)} variant="compact" />
               </div>
               <div className="flex justify-center mb-3">
                 <Spark size={72} mood="hinting" />
@@ -321,7 +328,7 @@ export const LessonRunner = ({ lesson, onComplete, preview, renderDoneCta, jumpT
                 <div className="flex-1 rounded-2xl bg-background/95 text-foreground p-5 shadow-soft">
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
-                    <SparkVoiceButton lessonId={lesson.id} step="sparkMiddle" variant="compact" />
+                    <SparkVoiceButton lessonId={lesson.id} step="sparkMiddle" text={normalizeTtsText(lesson.sparkMiddle!)} variant="compact" />
                   </div>
                   <div className="font-body">{renderRichText(lesson.sparkMiddle!)}</div>
                 </div>
@@ -637,7 +644,10 @@ const LessonKickoff = ({ lesson, onStart }: { lesson: Lesson; onStart: () => voi
       <div className="min-h-[120px] mt-2 flex flex-col items-center justify-start">
         {showBubble && (
           <div className="animate-bubble-pop mx-auto max-w-md rounded-2xl bg-background/95 text-foreground p-4 text-left shadow-soft">
-            <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+            <div className="flex items-center justify-between gap-2">
+              <div className="text-xs uppercase tracking-wider text-primary font-display">Spark zegt</div>
+              <SparkVoiceButton lessonId={lesson.id} step="intro" text={normalizeTtsText(text)} variant="compact" />
+            </div>
             <TypewriterText text={text} speed={KICKOFF_TYPING_SPEED} />
           </div>
         )}
@@ -677,7 +687,7 @@ const TheoryCard = ({
         <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-primary">
           <span className="inline-block h-2 w-2 rounded-full bg-primary" /> {eyebrow}
         </div>
-        <SparkVoiceButton lessonId={lessonId} step={step} variant="compact" />
+        <SparkVoiceButton lessonId={lessonId} step={step} text={normalizeTtsText(text)} variant="default" />
       </div>
       <div className="flex gap-5 items-start">
         <div className="hidden sm:block shrink-0 sticky top-4">
@@ -703,7 +713,7 @@ const SummaryCard = ({ bullets, lessonId, onNext }: { bullets: string[]; lessonI
       <div className="flex items-center gap-2 text-xs font-display uppercase tracking-wider text-success">
         <span className="inline-block h-2 w-2 rounded-full bg-success" /> Onthoud dit
       </div>
-      <SparkVoiceButton lessonId={lessonId} step="summary" variant="compact" />
+      <SparkVoiceButton lessonId={lessonId} step="summary" text={normalizeTtsSummary(bullets)} variant="default" />
     </div>
     <h3 className="font-display text-xl mb-2">Samenvatting</h3>
     <p className="text-sm text-muted-foreground mb-5">Dit is wat je moet onthouden:</p>
