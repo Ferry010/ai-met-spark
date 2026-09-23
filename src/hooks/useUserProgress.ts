@@ -56,13 +56,15 @@ export const useUserProgress = () => {
   const completed = new Set(rows.map((r) => r.lesson_id));
 
   const finishLesson = useMutation({
-    mutationFn: async ({ lessonId, stars }: { lessonId: string; stars: number }) => {
+    mutationFn: async ({ lessonId, stars: earned }: { lessonId: string; stars: number }) => {
+      // Replaying a mission can only improve your stars, never lower them.
+      const stars = Math.max(earned, rows.find((r) => r.lesson_id === lessonId)?.stars ?? 0);
       if (!user) {
         const current = readLocal();
         const next = current.filter((r) => r.lesson_id !== lessonId);
         next.push({ lesson_id: lessonId, stars, completed_at: new Date().toISOString() });
         writeLocal(next);
-        return;
+        return { lessonId, stars };
       }
       const { error } = await supabase
         .from("user_progress")
@@ -71,8 +73,16 @@ export const useUserProgress = () => {
           { onConflict: "user_id,lesson_id" },
         );
       if (error) throw error;
+      return { lessonId, stars };
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: key(user?.id) }),
+    onSuccess: (_data, { lessonId, stars: earned }) => {
+      // Update the cache right away so the next mission unlocks instantly.
+      qc.setQueryData<ProgressRow[]>(key(user?.id), (prev = []) => {
+        const stars = Math.max(earned, prev.find((r) => r.lesson_id === lessonId)?.stars ?? 0);
+        return [...prev.filter((r) => r.lesson_id !== lessonId), { lesson_id: lessonId, stars, completed_at: new Date().toISOString() }];
+      });
+      qc.invalidateQueries({ queryKey: key(user?.id) });
+    },
   });
 
   const resetProgress = useMutation({

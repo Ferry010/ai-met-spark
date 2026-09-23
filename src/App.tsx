@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useParams } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,7 +21,7 @@ import ForgotPassword from "./pages/ForgotPassword.tsx";
 import ResetPassword from "./pages/ResetPassword.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import WorldPage from "./pages/WorldPage.tsx";
-import LessonPage from "./pages/LessonPage.tsx";
+import MissionPage from "./pages/MissionPage.tsx";
 import FinalTest from "./pages/FinalTest.tsx";
 import Certificate from "./pages/Certificate.tsx";
 import Account from "./pages/Account.tsx";
@@ -38,6 +38,12 @@ import SchoolPreview from "./pages/admin/SchoolPreview.tsx";
 import LessonAudio from "./pages/admin/LessonAudio.tsx";
 
 const queryClient = new QueryClient();
+
+// Old /lesson/:id links from v1 go to the mission with the same id.
+const LegacyLessonRedirect = () => {
+  const { lessonId } = useParams();
+  return <Navigate to={`/mission/${lessonId}`} replace />;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -60,7 +66,8 @@ const App = () => (
           {/* Kid-facing routes require an account. */}
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/world/:worldId" element={<ProtectedRoute><WorldPage /></ProtectedRoute>} />
-          <Route path="/lesson/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
+          <Route path="/mission/:missionId" element={<ProtectedRoute><MissionPage /></ProtectedRoute>} />
+          <Route path="/lesson/:lessonId" element={<LegacyLessonRedirect />} />
           <Route path="/final-test" element={<ProtectedRoute><FinalTest /></ProtectedRoute>} />
           <Route path="/certificate" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
           <Route
