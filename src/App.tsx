@@ -5,13 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { AdminViewSwitcher } from "@/components/AdminViewSwitcher";
 import { BackgroundAudioController } from "@/components/BackgroundAudioController";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
-
-import Landing from "./pages/Landing.tsx";
-import Pricing from "./pages/Pricing.tsx";
 import SchoolContact from "./pages/SchoolContact.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import Terms from "./pages/Terms.tsx";
@@ -28,14 +24,8 @@ import Account from "./pages/Account.tsx";
 import TeacherLogin from "./pages/teacher/TeacherLogin.tsx";
 import TeacherStart from "./pages/teacher/TeacherStart.tsx";
 import ClassroomDashboard from "./pages/teacher/ClassroomDashboard.tsx";
-import WorldDetail from "./pages/teacher/WorldDetail.tsx";
-import LessonDetail from "./pages/teacher/LessonDetail.tsx";
 import ClassSettings from "./pages/teacher/ClassSettings.tsx";
-import LessonDemo from "./pages/teacher/LessonDemo.tsx";
-import AdminLessons from "./pages/AdminLessons.tsx";
-import ParentPreview from "./pages/admin/ParentPreview.tsx";
-import SchoolPreview from "./pages/admin/SchoolPreview.tsx";
-import LessonAudio from "./pages/admin/LessonAudio.tsx";
+import MissionPreview from "./pages/teacher/MissionPreview.tsx";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +35,9 @@ const LegacyLessonRedirect = () => {
   return <Navigate to={`/mission/${lessonId}`} replace />;
 };
 
+const kid = (el: JSX.Element) => <ProtectedRoute>{el}</ProtectedRoute>;
+const teacher = (el: JSX.Element) => <ProtectedRoute requireRole="teacher">{el}</ProtectedRoute>;
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -53,9 +46,8 @@ const App = () => (
       <BrowserRouter>
         <BackgroundAudioController />
         <Routes>
+          {/* Public */}
           <Route path="/" element={<Index />} />
-          
-          <Route path="/pricing" element={<Pricing />} />
           <Route path="/schools/contact" element={<SchoolContact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
@@ -63,100 +55,27 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          {/* Kid-facing routes require an account. */}
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/world/:worldId" element={<ProtectedRoute><WorldPage /></ProtectedRoute>} />
-          <Route path="/mission/:missionId" element={<ProtectedRoute><MissionPage /></ProtectedRoute>} />
+          <Route path="/pricing" element={<Navigate to="/" replace />} />
+
+          {/* Kids (account required) */}
+          <Route path="/dashboard" element={kid(<Dashboard />)} />
+          <Route path="/world/:worldId" element={kid(<WorldPage />)} />
+          <Route path="/mission/:missionId" element={kid(<MissionPage />)} />
           <Route path="/lesson/:lessonId" element={<LegacyLessonRedirect />} />
-          <Route path="/final-test" element={<ProtectedRoute><FinalTest /></ProtectedRoute>} />
-          <Route path="/certificate" element={<ProtectedRoute><Certificate /></ProtectedRoute>} />
-          <Route
-            path="/account"
-            element={
-              <ProtectedRoute>
-                <Account />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/final-test" element={kid(<FinalTest />)} />
+          <Route path="/certificate" element={kid(<Certificate />)} />
+          <Route path="/account" element={kid(<Account />)} />
+
+          {/* Teachers */}
           <Route path="/teacher/login" element={<TeacherLogin />} />
           <Route path="/teacher/start" element={<TeacherStart />} />
-          <Route
-            path="/teacher"
-            element={
-              <ProtectedRoute requireRole="teacher">
-                <ClassroomDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/teacher/world/:id"
-            element={
-              <ProtectedRoute requireRole="teacher">
-                <WorldDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/teacher/world/:worldId/lesson/:lessonId"
-            element={
-              <ProtectedRoute requireRole="teacher">
-                <LessonDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/teacher/class/settings"
-            element={
-              <ProtectedRoute requireRole="teacher">
-                <ClassSettings />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/teacher/demo"
-            element={
-              <ProtectedRoute requireRole="teacher">
-                <LessonDemo />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/lessons"
-            element={
-              <ProtectedRoute requireRole="admin">
-                <AdminLessons />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/preview/parent"
-            element={
-              <ProtectedRoute requireRole="admin">
-                <ParentPreview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/preview/school"
-            element={
-              <ProtectedRoute requireRole="admin">
-                <SchoolPreview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/audio"
-            element={
-              <ProtectedRoute requireRole="admin">
-                <LessonAudio />
-              </ProtectedRoute>
-            }
-          />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/teacher" element={teacher(<ClassroomDashboard />)} />
+          <Route path="/teacher/class/settings" element={teacher(<ClassSettings />)} />
+          <Route path="/teacher/preview/:missionId" element={teacher(<MissionPreview />)} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <CookieBanner />
-        <AdminViewSwitcher />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

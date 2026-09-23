@@ -149,9 +149,9 @@
   .press-danger { --depth-color: hsl(var(--destructive-dark)); }
   .press-secondary { --depth-color: hsl(var(--secondary-dark)); }
   .press-accent { --depth-color: hsl(var(--accent-dark)); }
-  .press-safe { --depth-color: hsl(var(--safe-dark)); }
-  .press-smart { --depth-color: hsl(var(--smart-dark)); }
-  .press-stronger { --depth-color: hsl(var(--stronger-dark)); }
+  .press-safe { --depth-color: hsl(var(--safe-dark)); --pulse-color: hsl(var(--safe) / 0.45); }
+  .press-smart { --depth-color: hsl(var(--smart-dark)); --pulse-color: hsl(var(--smart) / 0.5); }
+  .press-stronger { --depth-color: hsl(var(--stronger-dark)); --pulse-color: hsl(var(--stronger) / 0.45); }
 
   /* Flat card with a crisp edge. */
   .tile {
@@ -229,8 +229,8 @@
 .animate-sheet-up { animation: sheet-up 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
 @keyframes node-pulse {
-  0%, 100% { box-shadow: 0 4px 0 0 var(--depth-color), 0 0 0 0 hsl(var(--primary) / 0.35); }
-  50% { box-shadow: 0 4px 0 0 var(--depth-color), 0 0 0 12px hsl(var(--primary) / 0); }
+  0%, 100% { box-shadow: 0 4px 0 0 var(--depth-color), 0 0 0 0 var(--pulse-color, hsl(var(--primary) / 0.35)); }
+  50% { box-shadow: 0 4px 0 0 var(--depth-color), 0 0 0 14px transparent; }
 }
 .animate-node-pulse { animation: node-pulse 1.8s ease-out infinite; }
 

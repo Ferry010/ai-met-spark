@@ -1,326 +1,180 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import jsPDF from "jspdf";
-import "@fontsource/caveat/700.css";
+import { Download, ChevronLeft, Shield, Compass, Rocket } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useFinalTest } from "@/hooks/useFinalTest";
 import { supabase } from "@/integrations/supabase/client";
 import { AppHeader } from "@/components/AppHeader";
+import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Download, ChevronLeft, Star } from "lucide-react";
+import { ALL_MISSIONS } from "@/content/missions";
 
-const GOLD = "#D4AF37";
-const GOLD_RGB: [number, number, number] = [212, 175, 55];
-const INDIGO_RGB: [number, number, number] = [29, 27, 71];
-const INDIGO_LIGHT_RGB: [number, number, number] = [60, 47, 132];
-
-const LOCAL_NAME_KEY = "spark.local.name";
+// Brand colors for the PDF (jsPDF needs RGB).
+const INK: [number, number, number] = [26, 23, 51];
+const VIOLET: [number, number, number] = [107, 79, 240];
+const WORLD_RGB: [number, number, number][] = [
+  [26, 143, 234],
+  [255, 194, 26],
+  [240, 67, 107],
+];
+const WORLD_BADGES = [
+  { name: "Schild van Veilig", icon: Shield, cls: "bg-safe text-safe-foreground" },
+  { name: "Kompas van Slim", icon: Compass, cls: "bg-smart text-smart-foreground" },
+  { name: "Ster van Sterker", icon: Rocket, cls: "bg-stronger text-stronger-foreground" },
+];
 
 export const Certificate = () => {
   const { user, profile } = useAuth();
+  const final = useFinalTest();
   const { toast } = useToast();
-  const [score, setScore] = useState<number | null>(null);
   const [issued, setIssued] = useState<string | null>(null);
-  const [localName, setLocalName] = useState<string>(() => {
-    if (typeof window === "undefined") return "";
-    try {
-      return window.localStorage.getItem(LOCAL_NAME_KEY) ?? "";
-    } catch {
-      return "";
-    }
-  });
-  const generatingRef = useRef(false);
+  const busy = useRef(false);
 
-  // Name shown on the diploma: account name if logged in, otherwise the
-  // browser-stored name the child typed in.
-  const displayName = profile?.first_name || localName.trim() || "Smart Kid";
+  const name = profile?.first_name || "AI Smart Kid";
+  const score = final.bestScore;
+  const date = new Date(issued ?? Date.now()).toLocaleDateString("nl-NL", { year: "numeric", month: "long", day: "numeric" });
 
-  const saveLocalName = (v: string) => {
-    setLocalName(v);
-    try {
-      window.localStorage.setItem(LOCAL_NAME_KEY, v);
-    } catch {}
-  };
-
+  // Record the certificate server-side once (keeps the first issue date).
   useEffect(() => {
-    if (!user) return;
-    Promise.all([
-      supabase.from("final_test_attempts").select("score").eq("user_id", user.id).eq("passed", true).order("attempted_at", { ascending: false }).limit(1).maybeSingle(),
-      supabase.from("certificates").select("*").eq("user_id", user.id).maybeSingle(),
-    ]).then(([{ data: attempt }, { data: cert }]) => {
-      if (attempt) setScore(attempt.score);
-      if (cert) setIssued(cert.issued_at);
-      else if (attempt && user && profile) {
-        supabase.rpc("create_or_refresh_certificate").then(({ data, error }) => {
-          if (!error && data) {
-            setIssued(data.issued_at);
-            setScore(data.score);
-          }
-        });
-      }
+    if (!user || !final.passed) return;
+    supabase.rpc("create_or_refresh_certificate").then(({ data }) => {
+      if (data?.issued_at) setIssued(data.issued_at);
     });
-  }, [user, profile]);
+  }, [user, final.passed]);
+
+  if (!final.isLoading && !final.passed) return <Navigate to="/final-test" replace />;
 
   const buildPdf = () => {
     const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
     const w = doc.internal.pageSize.getWidth();
     const h = doc.internal.pageSize.getHeight();
 
-    // Background — indigo gradient (faked with two layers)
-    doc.setFillColor(...INDIGO_RGB);
+    doc.setFillColor(255, 255, 255);
     doc.rect(0, 0, w, h, "F");
-    doc.setFillColor(...INDIGO_LIGHT_RGB);
-    doc.rect(0, 0, w, h * 0.55, "F");
-
-    // Decorative gold border (double line)
-    doc.setDrawColor(...GOLD_RGB);
-    doc.setLineWidth(4);
-    doc.roundedRect(28, 28, w - 56, h - 56, 14, 14);
-    doc.setLineWidth(1);
-    doc.roundedRect(40, 40, w - 80, h - 80, 10, 10);
-
-    // Corner ornaments
-    const corner = (cx: number, cy: number, sx: number, sy: number) => {
-      doc.setLineWidth(1.2);
-      doc.line(cx, cy, cx + 22 * sx, cy);
-      doc.line(cx, cy, cx, cy + 22 * sy);
-      doc.circle(cx + 4 * sx, cy + 4 * sy, 2, "S");
-    };
-    corner(48, 48, 1, 1);
-    corner(w - 48, 48, -1, 1);
-    corner(48, h - 48, 1, -1);
-    corner(w - 48, h - 48, -1, -1);
-
-    // Title block
-    doc.setTextColor(...GOLD_RGB);
-    doc.setFont("times", "bold");
-    doc.setFontSize(54);
-    doc.text("DIPLOMA", w / 2, 110, { align: "center" });
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(14);
-    doc.setCharSpace(6);
-    doc.text("AI SMART KID", w / 2, 138, { align: "center" });
-    doc.setCharSpace(0);
-
-    // Decorative star line
-    doc.setDrawColor(...GOLD_RGB);
-    doc.setLineWidth(0.8);
-    doc.line(w / 2 - 80, 152, w / 2 - 14, 152);
-    doc.line(w / 2 + 14, 152, w / 2 + 80, 152);
-    doc.setFontSize(16);
-    doc.text("★", w / 2, 156, { align: "center" });
-
-    // "Hierbij verklaren wij"
-    doc.setFontSize(13);
-    doc.setTextColor(230, 224, 200);
-    doc.text("Hierbij verklaren wij dat", w / 2, 195, { align: "center" });
-
-    // Name (script-feel via large oblique). jsPDF only ships standard fonts.
-    doc.setFont("times", "italic");
-    doc.setFontSize(60);
-    doc.setTextColor(...GOLD_RGB);
-    doc.text(displayName, w / 2, 260, { align: "center" });
-
-    // Underline under name
-    doc.setLineWidth(0.6);
-    const nameW = Math.min(360, doc.getTextWidth(displayName) + 40);
-    doc.line(w / 2 - nameW / 2, 274, w / 2 + nameW / 2, 274);
-
-    // Body
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(13);
-    doc.setTextColor(245, 240, 220);
-    doc.text("heeft alle 24 lessen en de eindbaas-test gehaald", w / 2, 305, { align: "center" });
-    doc.text("en is officieel een AI Smart Kid.", w / 2, 322, { align: "center" });
-
-    // Three world badges
-    const badgeY = 388;
-    const badges: { emoji: string; name: string; sub: string }[] = [
-      { emoji: "🛡️", name: "Schild van", sub: "Waakzaamheid" },
-      { emoji: "🧭", name: "Kompas van", sub: "Helderheid" },
-      { emoji: "⭐", name: "Ster van", sub: "Meesterschap" },
-    ];
-    const gap = 180;
-    badges.forEach((b, i) => {
-      const cx = w / 2 - gap + i * gap;
-      doc.setDrawColor(...GOLD_RGB);
-      doc.setLineWidth(1.2);
-      doc.circle(cx, badgeY, 28, "S");
-      doc.setFontSize(28);
-      doc.text(b.emoji, cx, badgeY + 9, { align: "center" });
-      doc.setFontSize(10);
-      doc.setTextColor(...GOLD_RGB);
-      doc.text(b.name, cx, badgeY + 50, { align: "center" });
-      doc.text(b.sub, cx, badgeY + 64, { align: "center" });
+    doc.setFillColor(...VIOLET);
+    doc.rect(0, 0, w, 150, "F");
+    // world color stripe
+    WORLD_RGB.forEach((c, i) => {
+      doc.setFillColor(...c);
+      doc.rect((w / 3) * i, 150, w / 3, 10, "F");
     });
 
-    // Footer info
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(46);
+    doc.text("Diploma", w / 2, 88, { align: "center" });
     doc.setFont("helvetica", "normal");
+    doc.setFontSize(14);
+    doc.text("AI SMART KID", w / 2, 116, { align: "center", charSpace: 4 });
+
+    doc.setTextColor(...INK);
+    doc.setFontSize(15);
+    doc.text("Hierbij verklaren wij dat", w / 2, 220, { align: "center" });
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(48);
+    doc.text(name, w / 2, 280, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(15);
+    doc.text(`alle ${ALL_MISSIONS.length} missies en de eindtoets heeft gehaald`, w / 2, 318, { align: "center" });
+    doc.text("en weet hoe je AI veilig, slim en sterk gebruikt.", w / 2, 340, { align: "center" });
+
+    const names = WORLD_BADGES.map((b) => b.name);
+    names.forEach((n, i) => {
+      const cx = w / 2 + (i - 1) * 190;
+      doc.setFillColor(...WORLD_RGB[i]);
+      doc.circle(cx, 400, 16, "F");
+      doc.setFontSize(12);
+      doc.setTextColor(...INK);
+      doc.text(n, cx, 432, { align: "center" });
+    });
+
     doc.setFontSize(11);
-    doc.setTextColor(220, 214, 190);
-    const date = new Date(issued ?? Date.now()).toLocaleDateString("nl-NL", { year: "numeric", month: "long", day: "numeric" });
-    doc.text(`Score: ${score ?? "·"} / 12`, w / 2 - 120, h - 70, { align: "center" });
-    doc.text(`Uitgegeven: ${date}`, w / 2 + 120, h - 70, { align: "center" });
-
-    doc.setFont("times", "italic");
-    doc.setFontSize(13);
-    doc.setTextColor(...GOLD_RGB);
+    doc.setTextColor(90, 88, 110);
+    doc.text(`Score eindtoets: ${score ?? "-"}/10`, 60, h - 50);
+    doc.text(`Uitgegeven: ${date}`, w - 60, h - 50, { align: "right" });
+    doc.setTextColor(...VIOLET);
+    doc.setFont("helvetica", "bold");
     doc.text("AI met Spark", w / 2, h - 50, { align: "center" });
-
     return doc;
   };
 
-  const downloadPdf = async () => {
-    if (generatingRef.current) return;
-    generatingRef.current = true;
+  const download = async () => {
+    if (busy.current) return;
+    busy.current = true;
     try {
       const doc = buildPdf();
-      doc.save(`AI-Smart-Kid-${displayName}.pdf`);
-
-      // Logged-in users also get a copy saved to their account.
+      doc.save(`Diploma-AI-met-Spark-${name}.pdf`);
       if (user) {
-        const blob = doc.output("blob");
         const path = `${user.id}/diploma.pdf`;
-        const { error } = await supabase.storage.from("certificates").upload(path, blob, {
-          upsert: true,
-          contentType: "application/pdf",
-        });
-        if (!error) {
-          const { data } = await supabase.rpc("attach_certificate_pdf", { _path: path });
-          if (data) {
-            setIssued(data.issued_at);
-            setScore(data.score);
-          }
-        }
+        const { error } = await supabase.storage.from("certificates").upload(path, doc.output("blob"), { upsert: true, contentType: "application/pdf" });
+        if (!error) await supabase.rpc("attach_certificate_pdf", { _path: path });
       }
-      toast({ title: "Gedownload!", description: "Opgeslagen op je apparaat 🎉" });
+      toast({ title: "Diploma gedownload" });
     } finally {
-      generatingRef.current = false;
+      busy.current = false;
     }
   };
-
-  const date = new Date(issued ?? Date.now()).toLocaleDateString("nl-NL", { year: "numeric", month: "long", day: "numeric" });
 
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <main className="container py-8 max-w-3xl">
-        <Link to="/dashboard" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground mb-4 font-display">
-          <ChevronLeft className="h-4 w-4" /> Dashboard
+      <main className="mx-auto max-w-3xl px-4 py-8">
+        <Link to="/dashboard" className="mb-4 inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground">
+          <ChevronLeft className="h-4 w-4" /> Mijn missies
         </Link>
 
-        {/* Diploma — screen version with 3D tilt + gold border */}
-        <div className="diploma-tilt-wrap mx-auto" style={{ perspective: "1500px" }}>
-          <div
-            className="diploma-card relative rounded-3xl p-5 sm:p-8 md:p-12 text-center shadow-pop overflow-hidden transition-transform duration-500"
-            style={{
-              background:
-                "linear-gradient(135deg, hsl(248 60% 14%) 0%, hsl(260 55% 22%) 50%, hsl(248 60% 12%) 100%)",
-              border: `2px solid ${GOLD}`,
-              boxShadow: `inset 0 0 0 8px hsl(248 60% 10%), inset 0 0 0 9px ${GOLD}55, 0 30px 80px -20px hsla(248,60%,10%,0.6)`,
-              color: "#F5EFD8",
-            }}
-          >
-            {/* Glint */}
-            <span aria-hidden className="absolute inset-0 pointer-events-none diploma-glint" />
-
-            {/* Top mark */}
-            <div className="flex items-center justify-center gap-3 mb-3 text-[var(--diploma-gold)]" style={{ color: GOLD }}>
-              <span className="h-px w-10 sm:w-16 bg-[currentColor] opacity-60" />
-              <Star className="h-5 w-5 fill-current" />
-              <span className="h-px w-10 sm:w-16 bg-[currentColor] opacity-60" />
+        <div className="tile overflow-hidden">
+          <div className="bg-primary px-6 py-8 text-center text-primary-foreground sm:py-10">
+            <div className="mx-auto mb-3 w-fit rounded-full bg-background/15 p-2">
+              <Spark size={72} mood="celebrating" />
             </div>
+            <h1 className="text-5xl sm:text-6xl">Diploma</h1>
+            <p className="mt-1 text-sm font-semibold tracking-[0.3em] opacity-90">AI SMART KID</p>
+          </div>
+          <div className="grid grid-cols-3" aria-hidden>
+            <span className="h-2 bg-safe" />
+            <span className="h-2 bg-smart" />
+            <span className="h-2 bg-stronger" />
+          </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-wide" style={{ color: GOLD, fontFamily: "'Times New Roman', serif", letterSpacing: "0.1em" }}>
-              DIPLOMA
-            </h1>
-            <p className="mt-1 text-[10px] sm:text-xs md:text-sm tracking-[0.4em] opacity-80">AI · SMART · KID</p>
-
-            <p className="mt-6 sm:mt-8 text-sm opacity-80">Hierbij verklaren wij dat</p>
-
-            <div
-              className="mt-3 mx-auto w-fit px-4 sm:px-6 py-2 max-w-full"
-              style={{
-                fontFamily: "'Caveat', 'Brush Script MT', cursive",
-                fontWeight: 700,
-                fontSize: "clamp(2.5rem, 12vw, 5rem)",
-                lineHeight: 1,
-                color: GOLD,
-                borderBottom: `1px solid ${GOLD}66`,
-              }}
-            >
-              {displayName}
-            </div>
-
-            <p className="mt-5 sm:mt-6 max-w-md mx-auto leading-snug text-sm sm:text-base">
-              heeft alle <strong>24 lessen</strong> en de <strong>eindbaas-test</strong> gehaald
-              en is officieel een <em>AI Smart Kid</em>.
+          <div className="px-6 py-8 text-center sm:px-10">
+            <p className="text-muted-foreground">Hierbij verklaren wij dat</p>
+            <p className="my-2 font-display text-5xl sm:text-6xl">{name}</p>
+            <p className="mx-auto max-w-md text-lg">
+              alle {ALL_MISSIONS.length} missies en de eindtoets heeft gehaald, en weet hoe je AI veilig, slim en sterk gebruikt.
             </p>
 
-            {/* 3 world badges */}
-            <div className="mt-6 sm:mt-8 grid grid-cols-3 gap-2 sm:gap-3 max-w-xl mx-auto">
-              {[
-                { emoji: "🛡️", name: "Schild van Waakzaamheid" },
-                { emoji: "🧭", name: "Kompas van Helderheid" },
-                { emoji: "⭐", name: "Ster van Meesterschap" },
-              ].map((b) => (
-                <div
-                  key={b.name}
-                  className="rounded-2xl px-2 py-3 sm:px-3 sm:py-4 text-center"
-                  style={{ border: `1px solid ${GOLD}55`, background: "rgba(255,255,255,0.04)" }}
-                >
-                  <div className="text-2xl sm:text-3xl">{b.emoji}</div>
-                  <div className="text-[10px] sm:text-[11px] mt-1 leading-tight" style={{ color: GOLD }}>{b.name}</div>
+            <div className="mx-auto mt-8 grid max-w-lg grid-cols-3 gap-3">
+              {WORLD_BADGES.map((b) => (
+                <div key={b.name} className="flex flex-col items-center gap-2">
+                  <span className={`grid h-14 w-14 place-items-center rounded-full ${b.cls}`}>
+                    <b.icon className="h-7 w-7" />
+                  </span>
+                  <span className="text-xs font-medium leading-tight">{b.name}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-4 text-xs sm:text-sm opacity-80 max-w-md mx-auto">
-              <div>Score: <strong>{score ?? "·"} / 12</strong></div>
-              <div>Uitgegeven: <strong>{date}</strong></div>
+            <div className="mt-8 flex justify-center gap-8 text-sm text-muted-foreground">
+              <span>
+                Score: <strong className="text-foreground">{score ?? "–"}/10</strong>
+              </span>
+              <span>
+                Uitgegeven: <strong className="text-foreground">{date}</strong>
+              </span>
             </div>
           </div>
         </div>
 
-        {!user && (
-          <div className="mt-6 max-w-xs mx-auto text-center">
-            <label htmlFor="cert-name" className="block font-display text-sm text-muted-foreground mb-1">
-              Wat is je naam? (komt op je diploma)
-            </label>
-            <input
-              id="cert-name"
-              type="text"
-              value={localName}
-              onChange={(e) => saveLocalName(e.target.value)}
-              placeholder="Jouw naam"
-              maxLength={24}
-              className="w-full rounded-full border-2 border-border bg-background px-4 py-2 text-center font-display focus:border-primary focus:outline-none"
-            />
-          </div>
-        )}
-
         <div className="mt-6 text-center">
-          <Button onClick={downloadPdf} className="h-14 px-8 rounded-full font-display bg-primary shadow-pop gap-2">
-            <Download className="h-5 w-5" /> Download PDF
+          <Button size="lg" onClick={download}>
+            <Download className="h-5 w-5" /> Download als PDF
           </Button>
-          <p className="mt-3 text-xs text-muted-foreground">Laat het aan je ouder of leerkracht zien 🎉</p>
+          <p className="mt-3 text-sm text-muted-foreground">Laat het zien aan je ouder of juf!</p>
         </div>
       </main>
-
-      <style>{`
-        @keyframes diploma-glint {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(120%); }
-        }
-        .diploma-glint {
-          background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
-          animation: diploma-glint 4s ease-in-out infinite;
-        }
-        @media (hover: hover) and (pointer: fine) {
-          .diploma-card:hover { transform: rotateY(-2deg) rotateX(2deg); }
-        }
-      `}</style>
     </div>
   );
 };

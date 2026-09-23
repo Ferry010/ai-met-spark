@@ -1,167 +1,123 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { ChevronLeft, Lock, Star, Crown, Check } from "lucide-react";
+import { getWorld } from "@/content/missions";
+import { useUserProgress } from "@/hooks/useUserProgress";
 import { AppHeader } from "@/components/AppHeader";
 import { Spark } from "@/components/Spark";
-import { Button } from "@/components/ui/button";
-import { getWorld } from "@/content/lessons";
-import { ChevronLeft } from "lucide-react";
-import { useUserProgress } from "@/hooks/useUserProgress";
-import { AdventureBackdrop } from "@/components/game/AdventureBackdrop";
-import { LevelNode } from "@/components/game/LevelNode";
+import { PILLAR_THEME } from "@/lib/pillars";
+import { isMissionUnlocked, isWorldUnlocked } from "@/lib/progress";
+import { cn } from "@/lib/utils";
 
-const WORLD_THEME: Record<string, "ocean" | "sun" | "lava"> = {
-  safe: "ocean",
-  smart: "sun",
-  stronger: "lava",
-};
+// Horizontal offsets that make the path zig-zag.
+const OFFSETS = [0, 56, 84, 56, 0, -56];
 
 export const WorldPage = () => {
-  const params = useParams<{ worldId?: string; id?: string }>();
-  const worldId = params.worldId ?? params.id;
+  const { worldId } = useParams<{ worldId: string }>();
   const navigate = useNavigate();
-  const { completed, rows } = useUserProgress();
-  const baseWorld = getWorld(Number(worldId));
-  const [overrides, setOverrides] = useState<Record<string, { title?: string | null }>>({});
+  const world = getWorld(Number(worldId));
+  const { rows, completed, isLoading } = useUserProgress();
 
-  useEffect(() => {
-    supabase
-      .from("lesson_overrides")
-      .select("lesson_id, title")
-      .then(({ data }) => {
-        const map: Record<string, { title?: string | null }> = {};
-        (data ?? []).forEach((o: any) => (map[o.lesson_id] = { title: o.title }));
-        setOverrides(map);
-      });
-  }, []);
+  if (!world) return <Navigate to="/dashboard" replace />;
+  if (!isLoading && !isWorldUnlocked(world.id, completed)) return <Navigate to="/dashboard" replace />;
 
-  const world = baseWorld
-    ? {
-        ...baseWorld,
-        lessons: baseWorld.lessons.map((l) => ({
-          ...l,
-          title: overrides[l.id]?.title?.trim() || l.title,
-        })),
-      }
-    : undefined;
-
-  if (!world) {
-    return (
-      <div className="min-h-screen bg-background">
-        <AppHeader />
-        <main className="container py-12 text-center">
-          <h1 className="font-display text-3xl">Wereld niet gevonden</h1>
-          <Link to="/dashboard"><Button className="mt-4 rounded-full font-display">Terug naar start</Button></Link>
-        </main>
-      </div>
-    );
-  }
-
-  const starsByLesson = new Map(rows.map((r: any) => [r.lesson_id, r.stars ?? 0]));
+  const theme = PILLAR_THEME[world.pillar];
+  const stars = new Map(rows.map((r) => [r.lesson_id, r.stars ?? 0]));
+  const done = world.missions.filter((m) => completed.has(m.id)).length;
+  const currentId = world.missions.find((m) => !completed.has(m.id))?.id;
 
   return (
     <div className="min-h-screen bg-background">
       <AppHeader />
-      <AdventureBackdrop theme={WORLD_THEME[world.pillar] ?? "sky"} className="min-h-[calc(100vh-3.5rem)]">
-        <main className="container py-6 md:py-8 max-w-md">
-          <Link to="/dashboard" className="inline-flex items-center gap-1 text-foreground/70 hover:text-foreground mb-6 font-display">
-            <ChevronLeft className="h-4 w-4" /> Terug naar kaart
+      <div className={cn(theme.solid)}>
+        <div className="mx-auto max-w-2xl px-4 pb-8 pt-4">
+          <Link to="/dashboard" className="mb-4 inline-flex items-center gap-1 text-sm font-medium opacity-90 hover:opacity-100">
+            <ChevronLeft className="h-4 w-4" /> Alle werelden
           </Link>
-
-          {/* World banner */}
-          <div className="relative mb-10 text-center">
-            <div className="inline-block rounded-full bg-foreground text-background font-display text-xs px-3 py-1 mb-2">
-              WERELD {world.id}
+          <div className="flex items-center gap-4">
+            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-background/20 text-4xl" aria-hidden>
+              {world.emoji}
+            </span>
+            <div>
+              <div className="text-sm font-semibold opacity-90">Wereld {world.id}</div>
+              <h1 className="text-4xl leading-none">{world.name}</h1>
+              <p className="mt-1 opacity-90">{world.tagline}</p>
             </div>
-            <h1 className="font-display text-3xl sm:text-4xl text-foreground drop-shadow-sm">
-              {world.name}
-            </h1>
-            <p className="font-body text-foreground/70 mt-1">{world.tagline}</p>
           </div>
+          <div className="mt-5 flex items-center gap-3">
+            <div className="h-3 flex-1 overflow-hidden rounded-full bg-background/25">
+              <div className="h-full rounded-full bg-background" style={{ width: `${(done / world.missions.length) * 100}%` }} />
+            </div>
+            <span className="text-sm font-semibold">
+              {done}/{world.missions.length} missies
+            </span>
+          </div>
+        </div>
+      </div>
 
-          {/* Winding level path */}
-          <div className="relative mx-auto" style={{ maxWidth: 520 }}>
-            {/* SVG winding path behind nodes */}
-            <svg
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              preserveAspectRatio="none"
-              viewBox="0 0 100 1000"
-              aria-hidden
-            >
-              <path
-                d={generateWindingPath(world.lessons.length)}
-                stroke="hsl(var(--foreground) / 0.25)"
-                strokeWidth="1.2"
-                strokeDasharray="2 3"
-                fill="none"
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
-
-            <ol className="relative space-y-8 sm:space-y-10 py-4">
-              {world.lessons.map((lesson, idx) => {
-                const isDone = completed.has(lesson.id);
-                const prevDone = idx === 0 || completed.has(world.lessons[idx - 1].id);
-                const isNext = !isDone && prevDone;
-                const state: "done" | "next" | "locked" | "future" = isDone
-                  ? "done"
-                  : isNext
-                  ? "next"
-                  : "locked";
-                const side = idx % 2 === 0 ? "left" : "right";
-                return (
-                  <li
-                    key={lesson.id}
-                    className={side === "left" ? "flex justify-start pl-2 sm:pl-6" : "flex justify-end pr-2 sm:pr-6"}
-                  >
-                    <LevelNode
-                      index={idx}
-                      number={idx + 1}
-                      
-                      title={lesson.title}
-                      state={state}
-                      pillar={world.pillar}
-                      side={side}
-                      stars={starsByLesson.get(lesson.id)}
-                      onClick={() => navigate(`/lesson/${lesson.id}`)}
+      <main className="mx-auto max-w-2xl px-4 py-10">
+        <ol className="flex flex-col items-center gap-6">
+          {world.missions.map((m, i) => {
+            const isDone = completed.has(m.id);
+            const unlocked = isMissionUnlocked(m, completed);
+            const isCurrent = m.id === currentId;
+            const s = stars.get(m.id) ?? 0;
+            return (
+              <li key={m.id} className="flex flex-col items-center" style={{ transform: `translateX(${OFFSETS[i % OFFSETS.length]}px)` }}>
+                {isCurrent && (
+                  <span className={cn("mb-2 rounded-xl border-2 bg-card px-3 py-1 font-display text-sm", theme.border, theme.text)}>
+                    Start
+                  </span>
+                )}
+                <button
+                  type="button"
+                  disabled={!unlocked}
+                  onClick={() => navigate(`/mission/${m.id}`)}
+                  aria-label={`Missie ${m.id}: ${m.title}${isDone ? `, ${s} sterren` : unlocked ? "" : ", op slot"}`}
+                  className={cn(
+                    "press relative grid place-items-center rounded-full text-3xl",
+                    m.boss ? "h-24 w-24" : "h-20 w-20",
+                    unlocked ? cn(theme.solid, theme.press) : "bg-muted text-muted-foreground",
+                    isCurrent && "animate-node-pulse",
+                  )}
+                >
+                  {!unlocked ? (
+                    <Lock className="h-7 w-7" />
+                  ) : isDone && !m.boss ? (
+                    <Check className="h-9 w-9" strokeWidth={3} />
+                  ) : m.boss ? (
+                    <Crown className="h-10 w-10" />
+                  ) : (
+                    <span aria-hidden>{m.emoji}</span>
+                  )}
+                </button>
+                <div className="mt-2 flex gap-0.5" aria-hidden>
+                  {[1, 2, 3].map((n) => (
+                    <Star
+                      key={n}
+                      className={cn("h-4 w-4", n <= s ? "fill-secondary text-secondary-dark" : "fill-muted text-border-strong")}
                     />
-                  </li>
-                );
-              })}
-            </ol>
-
-            {/* World boss flag at bottom */}
-            <div className="text-center mt-12">
-              <div className="inline-flex flex-col items-center">
-                <Spark
-                  size={88}
-                  mood={world.lessons.every((l) => completed.has(l.id)) ? "celebrating" : "happy"}
-                />
-                <div className="mt-2 px-3 py-1 rounded-md border-2 border-[hsl(36_60%_28%)] bg-gradient-to-b from-[hsl(48_100%_72%)] to-[hsl(36_100%_45%)] font-display text-xs uppercase tracking-wider text-[hsl(30_60%_18%)] shadow-pop">
-                  Einde wereld
+                  ))}
                 </div>
-              </div>
+                <div className={cn("mt-1 max-w-[180px] text-center text-sm font-medium leading-tight", !unlocked && "text-muted-foreground")}>
+                  {m.title}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        {done === world.missions.length && (
+          <div className="tile mt-10 flex items-center gap-4 p-5">
+            <Spark size={64} mood="celebrating" className="shrink-0" />
+            <div className="flex-1">
+              <div className="font-display text-xl">Wereld {world.name} uitgespeeld!</div>
+              <p className="text-sm text-muted-foreground">Je hebt de badge "{world.badgeName}" verdiend.</p>
             </div>
           </div>
-        </main>
-      </AdventureBackdrop>
+        )}
+      </main>
     </div>
   );
 };
-
-/** Generates a gentle winding path that snakes top-to-bottom. */
-function generateWindingPath(lessonCount: number): string {
-  const total = Math.max(2, lessonCount);
-  const stepY = 1000 / total;
-  let d = `M 50 20`;
-  for (let i = 1; i <= total; i++) {
-    const y = i * stepY;
-    const x = i % 2 === 0 ? 25 : 75;
-    const cx1 = i % 2 === 0 ? 80 : 20;
-    const cy1 = y - stepY * 0.5;
-    d += ` Q ${cx1} ${cy1} ${x} ${y}`;
-  }
-  return d;
-}
 
 export default WorldPage;

@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { ALL_LESSONS } from "@/content/lessons";
+import { ALL_MISSIONS } from "@/content/missions";
 
-const ORDERED_LESSON_IDS = ALL_LESSONS.map((l) => l.id);
+const ORDERED_LESSON_IDS = ALL_MISSIONS.map((l) => l.id);
 const TOTAL_LESSONS = ORDERED_LESSON_IDS.length;
 
 export interface TeacherClass {

@@ -1,131 +1,38 @@
 import { Award, Trophy, Star, Flame, Sparkles, Rocket, Crown, Target, Medal, Compass, Shield } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { WORLDS, ALL_LESSONS } from "@/content/lessons";
+import { ALL_MISSIONS, WORLDS } from "@/content/missions";
+
+export interface BadgeContext {
+  completed: Set<string>;
+  /** Best stars per mission id. */
+  stars: Map<string, number>;
+  finalPassed: boolean;
+}
 
 export interface Badge {
   id: string;
   name: string;
   description: string;
   icon: LucideIcon;
-  emoji: string;
+  /** Classes for the earned state (flat fill + readable text). */
+  tone: string;
   earned: (ctx: BadgeContext) => boolean;
-  /** Optional tone class to color the earned card */
-  tone?: "primary" | "secondary" | "accent" | "success";
 }
 
-export interface BadgeContext {
-  completed: Set<string>;
-  finalPassed: boolean;
-}
-
-const TOTAL = ALL_LESSONS.length; // 24
+const TOTAL = ALL_MISSIONS.length;
+const totalStars = (ctx: BadgeContext) => [...ctx.stars.values()].reduce((a, b) => a + b, 0);
+const worldDone = (i: number) => (ctx: BadgeContext) => WORLDS[i].missions.every((m) => ctx.completed.has(m.id));
 
 export const BADGES: Badge[] = [
-  {
-    id: "first-step",
-    name: "Eerste stap",
-    description: "Je eerste les afgemaakt!",
-    icon: Sparkles,
-    emoji: "✨",
-    tone: "primary",
-    earned: ({ completed }) => completed.size >= 1,
-  },
-  {
-    id: "streak-3",
-    name: "Op stoom",
-    description: "3 lessen gedaan",
-    icon: Flame,
-    emoji: "🔥",
-    tone: "accent",
-    earned: ({ completed }) => completed.size >= 3,
-  },
-  {
-    id: "halfway-world-1",
-    name: "Halverwege Wereld 1",
-    description: "4 lessen in Wereld 1",
-    icon: Target,
-    emoji: "🎯",
-    tone: "primary",
-    earned: ({ completed }) => WORLDS[0].lessons.slice(0, 4).every((l) => completed.has(l.id)),
-  },
-  {
-    id: "world-1",
-    name: "Schild van Waakzaamheid",
-    description: "Wereld 1 (VEILIG) helemaal uitgespeeld",
-    icon: Shield,
-    emoji: "🛡️",
-    tone: "primary",
-    earned: ({ completed }) => WORLDS[0].lessons.every((l) => completed.has(l.id)),
-  },
-  {
-    id: "world-2",
-    name: "Kompas van Helderheid",
-    description: "Wereld 2 (SLIM) helemaal uitgespeeld",
-    icon: Compass,
-    emoji: "🧭",
-    tone: "secondary",
-    earned: ({ completed }) => WORLDS[1].lessons.every((l) => completed.has(l.id)),
-  },
-  {
-    id: "world-3",
-    name: "Ster van Meesterschap",
-    description: "Wereld 3 (STERKER) helemaal uitgespeeld",
-    icon: Star,
-    emoji: "⭐",
-    tone: "accent",
-    earned: ({ completed }) => WORLDS[2].lessons.every((l) => completed.has(l.id)),
-  },
-  {
-    id: "halfway",
-    name: "Halverwege!",
-    description: "12 lessen afgemaakt",
-    icon: Rocket,
-    emoji: "🚀",
-    tone: "secondary",
-    earned: ({ completed }) => completed.size >= Math.floor(TOTAL / 2),
-  },
-  {
-    id: "twenty",
-    name: "Bijna daar",
-    description: `20 van de ${TOTAL} lessen`,
-    icon: Trophy,
-    emoji: "🏆",
-    tone: "secondary",
-    earned: ({ completed }) => completed.size >= 20,
-  },
-  {
-    id: "all-lessons",
-    name: "Lesheld",
-    description: `Alle ${TOTAL} lessen afgemaakt`,
-    icon: Award,
-    emoji: "📚",
-    tone: "primary",
-    earned: ({ completed }) => completed.size >= TOTAL,
-  },
-  {
-    id: "exam-pass",
-    name: "Geslaagd",
-    description: "Eindbaas-test gehaald",
-    icon: Medal,
-    emoji: "🥇",
-    tone: "success",
-    earned: ({ finalPassed }) => finalPassed,
-  },
-  {
-    id: "smart-kid",
-    name: "AI Smart Kid",
-    description: "Alles + eindbaas-test gehaald",
-    icon: Crown,
-    emoji: "👑",
-    tone: "success",
-    earned: ({ completed, finalPassed }) =>
-      completed.size >= TOTAL && finalPassed,
-  },
+  { id: "first", name: "Eerste missie", description: "Je eerste missie gehaald", icon: Sparkles, tone: "bg-primary text-primary-foreground", earned: (c) => c.completed.size >= 1 },
+  { id: "three", name: "Op stoom", description: "3 missies gehaald", icon: Flame, tone: "bg-accent text-accent-foreground", earned: (c) => c.completed.size >= 3 },
+  { id: "perfect", name: "Perfect!", description: "Een missie met 3 sterren", icon: Star, tone: "bg-secondary text-secondary-foreground", earned: (c) => [...c.stars.values()].some((s) => s >= 3) },
+  { id: "world-1", name: "Schild van Veilig", description: "Wereld Veilig uitgespeeld", icon: Shield, tone: "bg-safe text-safe-foreground", earned: worldDone(0) },
+  { id: "world-2", name: "Kompas van Slim", description: "Wereld Slim uitgespeeld", icon: Compass, tone: "bg-smart text-smart-foreground", earned: worldDone(1) },
+  { id: "world-3", name: "Ster van Sterker", description: "Wereld Sterker uitgespeeld", icon: Rocket, tone: "bg-stronger text-stronger-foreground", earned: worldDone(2) },
+  { id: "halfway", name: "Halverwege", description: `${Math.ceil(TOTAL / 2)} missies gehaald`, icon: Target, tone: "bg-primary text-primary-foreground", earned: (c) => c.completed.size >= Math.ceil(TOTAL / 2) },
+  { id: "stars-30", name: "Sterrenjager", description: "30 sterren verzameld", icon: Trophy, tone: "bg-secondary text-secondary-foreground", earned: (c) => totalStars(c) >= 30 },
+  { id: "all", name: "Missieheld", description: `Alle ${TOTAL} missies gehaald`, icon: Award, tone: "bg-primary text-primary-foreground", earned: (c) => c.completed.size >= TOTAL },
+  { id: "exam", name: "Geslaagd", description: "De eindtoets gehaald", icon: Medal, tone: "bg-success text-success-foreground", earned: (c) => c.finalPassed },
+  { id: "pro", name: "AI Pro", description: "Alles gehaald, plus de eindtoets", icon: Crown, tone: "bg-foreground text-background", earned: (c) => c.completed.size >= TOTAL && c.finalPassed },
 ];
-
-export const TONE_BG: Record<NonNullable<Badge["tone"]>, string> = {
-  primary: "bg-gradient-sky text-primary-foreground",
-  secondary: "bg-gradient-sunshine text-secondary-foreground",
-  accent: "bg-gradient-coral text-accent-foreground",
-  success: "bg-success text-success-foreground",
-};
