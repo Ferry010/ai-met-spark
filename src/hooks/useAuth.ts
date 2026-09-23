@@ -5,6 +5,7 @@ import type { Session, User } from "@supabase/supabase-js";
 export interface Profile {
   id: string;
   first_name: string;
+  username: string | null;
   age: number | null;
   parent_email: string | null;
   language: "en" | "nl" | "es";
@@ -47,7 +48,7 @@ export const useAuth = () => {
     const [{ data: p }, { data: r }] = await Promise.all([
       supabase
         .from("profiles")
-        .select("id, first_name, age, parent_email, language, school_id")
+        .select("id, first_name, username, age, parent_email, language, school_id")
         .eq("id", uid)
         .maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", uid),

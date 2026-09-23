@@ -31,7 +31,7 @@ export const TopBar = () => {
             <GraduationCap className="h-4 w-4" />
           </span>
           <span className="font-fraunces text-lg font-semibold text-classroom-teal">
-            AI Smart Classroom
+            Spark voor leerkrachten
           </span>
         </Link>
 

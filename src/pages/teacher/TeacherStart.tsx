@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GraduationCap, Copy, Check, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const TeacherStart = () => {
   const { user, loading, refreshProfile } = useAuth();
-  const { class: myClass, createClass, isCreating } = useClassroom();
+  const { class: myClass, createFirstClass, isCreating } = useClassroom();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -19,13 +19,6 @@ const TeacherStart = () => {
   const [busy, setBusy] = useState(false);
   const [className, setClassName] = useState("");
   const [copied, setCopied] = useState(false);
-
-  // Once a teacher already has a class, send them to the dashboard.
-  useEffect(() => {
-    if (myClass?.class_code) {
-      // stay on this page to show the code; they click through
-    }
-  }, [myClass]);
 
   const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,7 +60,7 @@ const TeacherStart = () => {
     e.preventDefault();
     if (!className.trim()) return;
     try {
-      await createClass(className.trim());
+      await createFirstClass(className.trim());
       // The teacher role was just granted server-side — refresh so route
       // guards (which require the teacher role) see it.
       await refreshProfile();
@@ -93,7 +86,7 @@ const TeacherStart = () => {
           <span className="grid place-items-center h-9 w-9 rounded-lg bg-classroom-teal text-white">
             <GraduationCap className="h-5 w-5" />
           </span>
-          <span className="font-fraunces text-xl font-semibold text-classroom-teal">AI Smart Classroom</span>
+          <span className="font-fraunces text-xl font-semibold text-classroom-teal">Spark voor leerkrachten</span>
         </div>
 
         <div className="rounded-xl border border-classroom-border bg-classroom-surface p-8">

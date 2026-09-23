@@ -13,7 +13,7 @@ const TeacherLogin = () => {
                 <GraduationCap className="h-5 w-5" />
               </span>
               <span className="font-fraunces text-xl font-semibold text-classroom-teal">
-                AI Smart Classroom
+                Spark voor leerkrachten
               </span>
             </div>
             <div className="h-10 w-10 rounded-full bg-classroom-amber/30 grid place-items-center text-classroom-amber text-lg" aria-hidden>
