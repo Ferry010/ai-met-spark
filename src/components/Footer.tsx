@@ -5,22 +5,23 @@ import { Spark } from "./Spark";
 export const Footer = () => {
   const { t } = useTranslation();
   return (
-    <footer className="border-t border-border/60 bg-background/60 backdrop-blur-sm mt-20">
-      <div className="container pt-8 pb-4 text-center">
-        <p className="font-display text-base text-foreground/80">{t("footer.tagline")}</p>
-      </div>
-      <div className="container pb-10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+    <footer className="mt-auto border-t-2 border-border">
+      <div className="container flex flex-col items-center justify-between gap-6 py-10 md:flex-row">
         <div className="flex items-center gap-3">
-          <Spark size={44} animate={false} />
-          <span className="font-display text-lg">{t("common.appName")}</span>
+          <Spark size={40} animate={false} />
+          <div>
+            <div className="font-display text-lg">{t("common.appName")}</div>
+            <div className="text-sm text-muted-foreground">Gratis AI-missies voor kids van 9 tot 12</div>
+          </div>
         </div>
-        <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-muted-foreground">
-          <Link to="/about" className="hover:text-foreground transition-colors">{t("footer.about")}</Link>
-          <Link to="/privacy" className="hover:text-foreground transition-colors">{t("footer.privacy")}</Link>
-          <Link to="/terms" className="hover:text-foreground transition-colors">{t("footer.terms")}</Link>
-          <Link to="/schools/contact" className="hover:text-foreground transition-colors">{t("footer.contact")}</Link>
+        <nav className="flex flex-wrap items-center justify-center gap-5 text-sm text-muted-foreground">
+          <Link to="/about" className="hover:text-foreground">{t("footer.about")}</Link>
+          <Link to="/teacher/start" className="hover:text-foreground">Voor leerkrachten</Link>
+          <Link to="/privacy" className="hover:text-foreground">{t("footer.privacy")}</Link>
+          <Link to="/terms" className="hover:text-foreground">{t("footer.terms")}</Link>
+          <Link to="/schools/contact" className="hover:text-foreground">{t("footer.contact")}</Link>
         </nav>
-        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} · {t("footer.rights")}</p>
+        <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} AI met Spark</p>
       </div>
     </footer>
   );

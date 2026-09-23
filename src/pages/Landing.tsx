@@ -1,386 +1,272 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  ArrowRight,
+  Flame,
+  Zap,
+  X,
+  MessageSquareOff,
+  ShieldCheck,
+  Volume2,
+  Users,
+  Clock,
+  Laptop,
+  Hand,
+  Search,
+  Blocks,
+  ListChecks,
+  MousePointerClick,
+  Sparkles,
+  BookOpen,
+  Gamepad2,
+  Timer,
+  Trophy,
+} from "lucide-react";
 import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-  Shield,
-  Brain,
-  Rocket,
-  Check,
-  Sparkles,
-  ShieldCheck,
-  Heart,
-  MessageSquareOff,
-  PenLine,
-  Lock,
-  Laptop,
-  Clock,
-  Undo2,
-  PlayCircle,
-  HelpCircle,
-  Star,
-  Compass,
-} from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { WORLDS } from "@/content/missions";
+import { PILLAR_THEME } from "@/lib/pillars";
+import { cn } from "@/lib/utils";
 
-const Pillar = ({
-  icon,
-  name,
-  desc,
-  skills,
-  sample,
-  bg,
-  text,
-  skillsLabel,
-}: {
-  icon: React.ReactNode;
-  name: string;
-  desc: string;
-  skills: string[];
-  sample: string;
-  bg: string;
-  text: string;
-  skillsLabel: string;
-}) => (
-  <div className={`rounded-3xl p-6 sm:p-8 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1 ${bg} ${text}`}>
-    <div className="flex items-center gap-3 mb-4">
-      <div className="h-16 w-16 rounded-2xl bg-white/40 flex items-center justify-center shadow-soft ring-2 ring-white/50">
-        {icon}
+type Item = { title: string; desc: string };
+type Game = { name: string; desc: string };
+type Stat = { n: string; label: string };
+type Faq = { q: string; a: string };
+
+const HOW_ICONS = [Sparkles, BookOpen, Gamepad2, Timer, Trophy];
+const GAME_ICONS = [Hand, Search, Blocks, MousePointerClick, ListChecks];
+const PARENT_ICONS = [MessageSquareOff, ShieldCheck, Volume2, Users, Clock, Laptop];
+const STAT_TONES = ["bg-safe text-safe-foreground", "bg-primary text-primary-foreground", "bg-smart text-smart-foreground", "bg-stronger text-stronger-foreground"];
+
+/** A static peek at a real mission screen. */
+const MissionPeek = () => (
+  <div className="relative mx-auto w-full max-w-sm">
+    <div className="tile p-4 shadow-[0_24px_0_-12px_hsl(var(--border))]">
+      <div className="mb-4 flex items-center gap-2">
+        <X className="h-5 w-5 text-muted-foreground" />
+        <div className="h-3 flex-1 overflow-hidden rounded-full bg-muted">
+          <div className="h-full w-3/5 rounded-full bg-safe" />
+        </div>
+        <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 font-display text-xs text-accent-foreground">
+          <Flame className="h-3.5 w-3.5" /> ×3
+        </span>
+        <span className="inline-flex items-center gap-1 rounded-full bg-secondary-soft px-2 py-0.5 font-display text-xs text-secondary-foreground">
+          <Zap className="h-3.5 w-3.5 fill-current" /> 60
+        </span>
+      </div>
+      <div className="mb-1 text-center text-xs font-semibold text-safe-dark">Kaart 3 van 5</div>
+      <div className="mb-4 text-center font-display text-xl">AI of geen AI?</div>
+      <div className="tile mb-4 flex h-32 items-center justify-center rotate-[-2deg] p-4 text-center">
+        <span className="font-display text-xl leading-tight">Een filter dat je gezicht herkent</span>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <span className="press tile flex items-center justify-center gap-2 border-success bg-success-soft py-3 font-display text-sm">
+          <span aria-hidden>🤖</span> AI
+        </span>
+        <span className="press tile flex items-center justify-center gap-2 py-3 font-display text-sm">
+          <span aria-hidden>📦</span> Geen AI
+        </span>
+      </div>
+      <div className="mt-4 flex items-center gap-2 rounded-xl bg-success-soft px-3 py-2 text-sm text-success-dark">
+        <span className="font-display">Goed zo!</span> Het filter leerde hoe gezichten eruitzien.
       </div>
     </div>
-    <h3 className="font-display text-3xl mb-2">{name}</h3>
-    <p className="font-body text-base opacity-95 leading-relaxed mb-4">{desc}</p>
-    <div className="rounded-2xl bg-white/20 p-4 mb-3">
-      <p className="text-xs font-bold uppercase tracking-wide opacity-90 mb-2">{skillsLabel}</p>
-      <ul className="space-y-1.5">
-        {skills.map((s) => (
-          <li key={s} className="flex items-start gap-2 text-sm leading-snug">
-            <Check className="h-4 w-4 mt-0.5 shrink-0" />
-            <span>{s}</span>
-          </li>
-        ))}
-      </ul>
+    <div className="absolute -right-8 -top-10 hidden sm:block">
+      <Spark size={88} mood="happy" waving />
     </div>
-    <p className="text-xs font-semibold opacity-90 italic">{sample}</p>
-  </div>
-);
-
-const TrustChip = ({ icon, label }: { icon: React.ReactNode; label: string }) => (
-  <div className="inline-flex items-center gap-1.5 bg-white/70 backdrop-blur-sm rounded-full px-3 py-1.5 text-xs font-semibold text-foreground shadow-soft">
-    {icon}
-    {label}
-  </div>
-);
-
-const InsideStat = ({ n, label, desc }: { n: string; label: string; desc: string }) => (
-  <div className="rounded-3xl bg-card border border-border p-5 sm:p-6 shadow-soft hover:shadow-pop transition-bounce">
-    <div className="font-display text-4xl sm:text-5xl text-primary mb-1">{n}</div>
-    <div className="font-display text-lg mb-2">{label}</div>
-    <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-  </div>
-);
-
-const HowStep = ({
-  n,
-  icon,
-  title,
-  desc,
-}: {
-  n: number | string;
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) => (
-  <div className="relative rounded-3xl bg-card border border-border p-6 shadow-soft">
-    <div className="absolute -top-3 -left-3 h-9 w-9 rounded-full bg-primary text-primary-foreground font-display text-lg flex items-center justify-center shadow-pop">
-      {n}
-    </div>
-    <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-3">
-      {icon}
-    </div>
-    <h4 className="font-display text-lg mb-1.5">{title}</h4>
-    <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-  </div>
-);
-
-const ParentCard = ({
-  icon,
-  title,
-  desc,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  desc: string;
-}) => (
-  <div className="rounded-3xl bg-card border border-border p-6 shadow-soft hover:shadow-pop transition-bounce hover:-translate-y-1">
-    <div className="h-11 w-11 rounded-xl bg-accent/15 text-accent flex items-center justify-center mb-3">
-      {icon}
-    </div>
-    <h4 className="font-display text-lg mb-1.5">{title}</h4>
-    <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
   </div>
 );
 
 export const Landing = () => {
   const { t } = useTranslation();
-  const teaserFeatures = t("landing.freeAccess.features", { returnObjects: true }) as string[];
-  const freeFaq = t("landing.freeFaq.items", { returnObjects: true }) as { q: string; a: string }[];
+  const stats = t("landing.stats", { returnObjects: true }) as Stat[];
+  const how = t("landing.how", { returnObjects: true }) as Item[];
+  const games = t("landing.games", { returnObjects: true }) as Game[];
+  const parents = t("landing.parents", { returnObjects: true }) as Item[];
+  const faq = t("landing.faq", { returnObjects: true }) as Faq[];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-hero">
-        <div className="container py-10 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
-          <div className="text-center md:text-left">
-            <h1 className="font-display text-3xl sm:text-5xl md:text-6xl leading-tight mb-5">
-              {t("landing.heroTitle")}
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto md:mx-0 mb-6">
-              {t("landing.heroSubtitle")}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start mb-4">
+      <section className="container grid items-center gap-12 py-12 md:grid-cols-2 md:py-20">
+        <div>
+          <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark">
+            <Sparkles className="h-4 w-4" /> {t("landing.badge")}
+          </span>
+          <h1 className="mb-5 text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">{t("landing.title")}</h1>
+          <p className="mb-8 max-w-lg text-lg text-muted-foreground sm:text-xl">{t("landing.subtitle")}</p>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="lg">
               <Link to="/auth?mode=signup">
-                <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full text-sm sm:text-base font-display bg-primary hover:bg-primary/90 shadow-pop">
-                  🚀 {t("landing.ctaPrimary")}
-                </Button>
+                {t("landing.ctaPrimary")} <ArrowRight className="h-5 w-5" />
               </Link>
-            </div>
-            <p className="text-xs text-muted-foreground mb-5">{t("landing.heroMicroCopy")}</p>
-            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <TrustChip icon={<ShieldCheck className="h-3.5 w-3.5 text-success" />} label={t("landing.trustChips.gdpr")} />
-              <TrustChip icon={<MessageSquareOff className="h-3.5 w-3.5 text-primary" />} label={t("landing.trustChips.noChat")} />
-              <TrustChip icon={<Heart className="h-3.5 w-3.5 text-accent" />} label={t("landing.trustChips.parents")} />
-            </div>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link to="/teacher/start">{t("landing.ctaTeacher")}</Link>
+            </Button>
           </div>
-          <div className="flex flex-col items-center">
-            <div className="relative scale-75 sm:scale-90 md:scale-100">
-              <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full scale-110 animate-pulse-slow" aria-hidden />
-              <Sparkles className="absolute -top-2 -left-4 h-6 w-6 text-secondary animate-twinkle" style={{ animationDelay: "0s" }} aria-hidden />
-              <Sparkles className="absolute top-8 -right-6 h-5 w-5 text-accent animate-twinkle" style={{ animationDelay: "0.6s" }} aria-hidden />
-              <Sparkles className="absolute bottom-6 -left-8 h-4 w-4 text-primary animate-twinkle" style={{ animationDelay: "1.1s" }} aria-hidden />
-              <Sparkles className="absolute -bottom-2 right-4 h-5 w-5 text-secondary animate-twinkle" style={{ animationDelay: "1.6s" }} aria-hidden />
-              <Sparkles className="absolute top-1/3 -right-10 h-4 w-4 text-accent animate-twinkle" style={{ animationDelay: "0.3s" }} aria-hidden />
-              <div className="relative">
-                <Spark size={280} mood="happy" />
+          <p className="mt-4 text-sm text-muted-foreground">{t("landing.micro")}</p>
+        </div>
+        <MissionPeek />
+      </section>
+
+      {/* Stats */}
+      <section className="container pb-16">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {stats.map((s, i) => (
+            <div key={s.label} className={cn("rounded-3xl px-5 py-6", STAT_TONES[i % STAT_TONES.length])}>
+              <div className="font-display text-5xl leading-none">{s.n}</div>
+              <div className="mt-1 font-medium opacity-90">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Worlds */}
+      <section className="container pb-20">
+        <h2 className="mb-2 text-4xl sm:text-5xl">{t("landing.worldsTitle")}</h2>
+        <p className="mb-8 max-w-xl text-lg text-muted-foreground">{t("landing.worldsSubtitle")}</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          {WORLDS.map((w) => {
+            const theme = PILLAR_THEME[w.pillar];
+            return (
+              <div key={w.id} className="tile overflow-hidden">
+                <div className={cn("p-6", theme.solid)}>
+                  <div className="mb-3 text-4xl" aria-hidden>
+                    {w.emoji}
+                  </div>
+                  <div className="text-sm font-semibold opacity-90">Wereld {w.id}</div>
+                  <div className="font-display text-3xl">{w.name}</div>
+                  <div className="opacity-90">{w.tagline}</div>
+                </div>
+                <ul className="flex flex-wrap gap-2 p-5">
+                  {w.missions.map((m) => (
+                    <li key={m.id} className={cn("rounded-full px-3 py-1 text-sm", theme.soft)}>
+                      {m.title}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-            <div className="mt-4 inline-block bg-white/80 rounded-2xl px-4 py-2 shadow-soft text-sm font-semibold text-foreground animate-fade-in hover:-rotate-1 transition-transform">
-              {t("landing.heroSparkLine")}
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="container py-12 sm:py-16 md:py-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-sm font-bold uppercase tracking-wider text-accent mb-3">{t("landing.problem.eyebrow")}</p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-8">{t("landing.problem.title")}</h2>
-          <div className="grid md:grid-cols-3 gap-6 text-left">
-            <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p1")}</p>
-            <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p2")}</p>
-            <p className="text-base text-muted-foreground leading-relaxed">{t("landing.problem.p3")}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* What's inside */}
-      <section className="container pb-12 sm:pb-16 md:pb-20">
-        <div className="text-center mb-10">
-          <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.inside.eyebrow")}</p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl">{t("landing.inside.title")}</h2>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <InsideStat n={t("landing.inside.items.worlds.n")} label={t("landing.inside.items.worlds.label")} desc={t("landing.inside.items.worlds.desc")} />
-          <InsideStat n={t("landing.inside.items.lessons.n")} label={t("landing.inside.items.lessons.label")} desc={t("landing.inside.items.lessons.desc")} />
-          <InsideStat n={t("landing.inside.items.quizzes.n")} label={t("landing.inside.items.quizzes.label")} desc={t("landing.inside.items.quizzes.desc")} />
-          <InsideStat n={t("landing.inside.items.certificate.n")} label={t("landing.inside.items.certificate.label")} desc={t("landing.inside.items.certificate.desc")} />
-        </div>
-      </section>
-
-      {/* Pillars */}
-      <section className="container pb-12 sm:pb-16 md:pb-20">
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-center mb-3">
-          {t("landing.pillars.title")}
-        </h2>
-        <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
-          {t("landing.pillars.subtitle")}
-        </p>
-        <div className="grid md:grid-cols-3 gap-5">
-          <Pillar
-            icon={<Shield className="h-9 w-9 text-white" strokeWidth={2.5} />}
-            name={t("landing.pillars.safe.name")}
-            desc={t("landing.pillars.safe.desc")}
-            skills={t("landing.pillars.safe.skills", { returnObjects: true }) as string[]}
-            sample={t("landing.pillars.safe.sample")}
-            bg="bg-gradient-sky"
-            text="text-primary-foreground"
-            skillsLabel={t("landing.pillars.skillsLabel")}
-          />
-          <Pillar
-            icon={<Brain className="h-9 w-9 text-secondary-foreground" strokeWidth={2.5} />}
-            name={t("landing.pillars.smart.name")}
-            desc={t("landing.pillars.smart.desc")}
-            skills={t("landing.pillars.smart.skills", { returnObjects: true }) as string[]}
-            sample={t("landing.pillars.smart.sample")}
-            bg="bg-gradient-sunshine"
-            text="text-secondary-foreground"
-            skillsLabel={t("landing.pillars.skillsLabel")}
-          />
-          <Pillar
-            icon={<Rocket className="h-9 w-9 text-white" strokeWidth={2.5} />}
-            name={t("landing.pillars.stronger.name")}
-            desc={t("landing.pillars.stronger.desc")}
-            skills={t("landing.pillars.stronger.skills", { returnObjects: true }) as string[]}
-            sample={t("landing.pillars.stronger.sample")}
-            bg="bg-gradient-coral"
-            text="text-accent-foreground"
-            skillsLabel={t("landing.pillars.skillsLabel")}
-          />
-        </div>
-      </section>
-
-      {/* How a lesson works */}
-      <section className="container pb-12 sm:pb-16 md:pb-20">
-        <div className="text-center mb-10">
-          <p className="text-sm font-bold uppercase tracking-wider text-accent mb-3">{t("landing.how.eyebrow")}</p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.how.title")}</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">{t("landing.how.subtitle")}</p>
-        </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-          <HowStep n={1} icon={<Sparkles className="h-6 w-6" />} title={t("landing.how.steps.meet.title")} desc={t("landing.how.steps.meet.desc")} />
-          <HowStep n={2} icon={<Compass className="h-6 w-6" />} title={t("landing.how.steps.discover.title")} desc={t("landing.how.steps.discover.desc")} />
-          <HowStep n={3} icon={<PlayCircle className="h-6 w-6" />} title={t("landing.how.steps.play.title")} desc={t("landing.how.steps.play.desc")} />
-          <HowStep n={4} icon={<HelpCircle className="h-6 w-6" />} title={t("landing.how.steps.quiz.title")} desc={t("landing.how.steps.quiz.desc")} />
-          <HowStep n={5} icon={<Star className="h-6 w-6" />} title={t("landing.how.steps.star.title")} desc={t("landing.how.steps.star.desc")} />
-        </div>
-      </section>
-
-      {/* Why parents */}
-      <section className="container pb-12 sm:pb-16 md:pb-20">
-        <div className="text-center mb-10">
-          <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.whyParents.eyebrow")}</p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl max-w-3xl mx-auto">{t("landing.whyParents.title")}</h2>
-        </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <ParentCard icon={<MessageSquareOff className="h-5 w-5" />} title={t("landing.whyParents.items.noChat.title")} desc={t("landing.whyParents.items.noChat.desc")} />
-          <ParentCard icon={<PenLine className="h-5 w-5" />} title={t("landing.whyParents.items.educators.title")} desc={t("landing.whyParents.items.educators.desc")} />
-          <ParentCard icon={<Lock className="h-5 w-5" />} title={t("landing.whyParents.items.privacy.title")} desc={t("landing.whyParents.items.privacy.desc")} />
-          <ParentCard icon={<Laptop className="h-5 w-5" />} title={t("landing.whyParents.items.devices.title")} desc={t("landing.whyParents.items.devices.desc")} />
-          <ParentCard icon={<Clock className="h-5 w-5" />} title={t("landing.whyParents.items.time.title")} desc={t("landing.whyParents.items.time.desc")} />
-          <ParentCard icon={<Undo2 className="h-5 w-5" />} title={t("landing.whyParents.items.refund.title")} desc={t("landing.whyParents.items.refund.desc")} />
-        </div>
-      </section>
-
-      {/* Quote */}
-      <section className="container pb-12 sm:pb-16 md:pb-20">
-        <div className="max-w-3xl mx-auto rounded-3xl bg-gradient-sunshine p-6 sm:p-10 md:p-14 shadow-pop text-center">
-          <div className="font-display text-xl sm:text-3xl md:text-4xl text-secondary-foreground leading-tight mb-4">
-            "{t("landing.quote.text")}"
-          </div>
-          <p className="text-secondary-foreground/80 font-semibold">{t("landing.quote.byline")}</p>
-        </div>
-      </section>
-
-      {/* Free access */}
-      <section className="container">
-        <div className="rounded-3xl bg-card border border-border shadow-pop p-6 sm:p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("landing.freeAccess.eyebrow")}</p>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-3">{t("landing.freeAccess.title")}</h2>
-            <p className="text-muted-foreground mb-6">{t("landing.freeAccess.subtitle")}</p>
-            <ul className="space-y-2 mb-6">
-              {teaserFeatures.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-foreground">
-                  <span className="h-6 w-6 rounded-full bg-success/20 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="h-4 w-4 text-success" />
-                  </span>
-                  <span>{f}</span>
+      {/* How a mission works */}
+      <section className="bg-foreground py-20 text-background">
+        <div className="container">
+          <h2 className="mb-2 text-4xl text-background sm:text-5xl">{t("landing.howTitle")}</h2>
+          <p className="mb-10 max-w-xl text-lg opacity-80">{t("landing.howSubtitle")}</p>
+          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {how.map((step, i) => {
+              const Icon = HOW_ICONS[i];
+              return (
+                <li key={step.title} className="rounded-3xl bg-background/10 p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-primary text-primary-foreground">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="font-display text-2xl opacity-40">{i + 1}</span>
+                  </div>
+                  <div className="font-display text-xl">{step.title}</div>
+                  <p className="mt-1 text-sm opacity-80">{step.desc}</p>
                 </li>
-              ))}
-            </ul>
-            <p className="text-sm text-muted-foreground italic mb-6">{t("landing.freeAccess.noPay")}</p>
-            <Link to="/auth?mode=signup">
-              <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display text-sm sm:text-base bg-accent hover:bg-accent/90 text-accent-foreground shadow-pop">
-                {t("landing.freeAccess.cta")}
-              </Button>
-            </Link>
-          </div>
-          <div className="text-center">
-            <div className="inline-block rounded-3xl bg-gradient-sunshine p-6 sm:p-8 shadow-soft">
-              <div className="font-display text-5xl sm:text-6xl text-secondary-foreground">{t("landing.freeAccess.badge")}</div>
-              <p className="mt-2 text-sm font-semibold text-secondary-foreground/80">{t("landing.freeAccess.badgeCaption")}</p>
-          </div>
-          </div>
+              );
+            })}
+          </ol>
         </div>
       </section>
 
-      {/* Free FAQ — no paywall reassurance */}
-      <section className="container py-12 sm:py-16 md:py-20">
-        <div className="max-w-3xl mx-auto text-center mb-8">
-          <p className="text-sm font-bold uppercase tracking-wider text-success mb-3">{t("landing.freeFaq.eyebrow")}</p>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl">{t("landing.freeFaq.title")}</h2>
+      {/* Games */}
+      <section className="container py-20">
+        <h2 className="mb-8 text-4xl sm:text-5xl">{t("landing.gamesTitle")}</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {games.map((g, i) => {
+            const Icon = GAME_ICONS[i];
+            return (
+              <div key={g.name} className="tile p-5">
+                <span className="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary-dark">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <div className="font-display text-xl">{g.name}</div>
+                <p className="mt-1 text-sm text-muted-foreground">{g.desc}</p>
+              </div>
+            );
+          })}
         </div>
-        <Accordion
-          type="single"
-          collapsible
-          className="max-w-3xl mx-auto rounded-2xl bg-card border border-border shadow-soft px-4 sm:px-6"
-        >
-          {freeFaq.map((item, i) => (
-            <AccordionItem key={i} value={`free-faq-${i}`} className="border-b last:border-b-0 border-border/60">
-              <AccordionTrigger className="font-display text-base sm:text-lg text-left">
-                {item.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                {item.a}
-              </AccordionContent>
+      </section>
+
+      {/* Parents */}
+      <section className="container pb-20">
+        <h2 className="mb-8 max-w-3xl text-4xl sm:text-5xl">{t("landing.parentsTitle")}</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {parents.map((p, i) => {
+            const Icon = PARENT_ICONS[i];
+            return (
+              <div key={p.title} className="flex gap-4 rounded-3xl bg-muted p-5">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-card text-foreground">
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="font-display text-lg">{p.title}</div>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{p.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Schools */}
+      <section className="container pb-20">
+        <div className="grid items-center gap-8 rounded-[2rem] bg-primary p-8 text-primary-foreground md:grid-cols-[1fr_auto] md:p-12">
+          <div>
+            <div className="mb-2 text-sm font-semibold opacity-90">{t("landing.schoolsEyebrow")}</div>
+            <h2 className="mb-3 text-4xl text-primary-foreground sm:text-5xl">{t("landing.schoolsTitle")}</h2>
+            <p className="max-w-2xl text-lg opacity-90">{t("landing.schoolsDesc")}</p>
+          </div>
+          <Button
+            asChild
+            size="lg"
+            className="bg-background text-foreground hover:bg-background/90"
+            style={{ ["--depth-color" as string]: "hsl(var(--primary-dark))" }}
+          >
+            <Link to="/teacher/start">
+              {t("landing.schoolsCta")} <ArrowRight className="h-5 w-5" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="container pb-20">
+        <h2 className="mb-6 text-4xl sm:text-5xl">{t("landing.faqTitle")}</h2>
+        <Accordion type="single" collapsible className="tile max-w-3xl px-5">
+          {faq.map((f, i) => (
+            <AccordionItem key={f.q} value={`faq-${i}`} className="border-border last:border-b-0">
+              <AccordionTrigger className="text-left font-display text-lg hover:no-underline">{f.q}</AccordionTrigger>
+              <AccordionContent className="text-base text-muted-foreground">{f.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
       </section>
 
-      {/* Schools */}
-      <section className="container py-12 sm:py-16 md:py-20">
-        <div className="rounded-3xl bg-gradient-sky text-primary-foreground p-6 sm:p-10 md:p-12 shadow-pop flex flex-col md:flex-row items-center gap-6 justify-between">
-          <div className="text-center md:text-left">
-            <p className="text-sm font-bold uppercase tracking-wider text-primary-foreground/80 mb-2">{t("landing.schools.eyebrow")}</p>
-            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl mb-2">{t("landing.schools.title")}</h2>
-            <p className="text-primary-foreground/90 max-w-xl">{t("landing.schools.desc")}</p>
-          </div>
-          <Link to="/schools/contact" className="shrink-0">
-            <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display text-sm sm:text-base bg-white text-primary hover:bg-white/90 shadow-pop">
-              {t("landing.schools.cta")} →
-            </Button>
-          </Link>
-        </div>
-      </section>
-
       {/* Final CTA */}
-      <section className="container pb-12 sm:pb-16 md:pb-20">
-        <div className="rounded-3xl bg-gradient-sky text-white p-6 sm:p-10 md:p-16 shadow-pop text-center">
-          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mb-4">{t("landing.finalCta.title")}</h2>
-          <p className="text-white/90 text-base sm:text-lg mb-8">{t("landing.finalCta.subtitle")}</p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+      <section className="container pb-20">
+        <div className="flex flex-col items-center rounded-[2rem] bg-secondary px-6 py-14 text-center text-secondary-foreground">
+          <Spark size={96} mood="happy" waving />
+          <h2 className="mt-4 text-4xl text-secondary-foreground sm:text-5xl">{t("landing.finalTitle")}</h2>
+          <p className="mb-8 mt-2 text-lg opacity-90">{t("landing.finalSubtitle")}</p>
+          <Button asChild size="lg">
             <Link to="/auth?mode=signup">
-              <Button className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display bg-white text-primary hover:bg-white/90 shadow-pop text-sm sm:text-base">
-                🚀 {t("landing.finalCta.cta")}
-              </Button>
+              {t("landing.finalCta")} <ArrowRight className="h-5 w-5" />
             </Link>
-            <Link to="/schools/contact">
-              <Button variant="outline" className="h-12 px-6 sm:h-14 sm:px-8 rounded-full font-display border-2 border-white text-white hover:bg-white/10 bg-transparent text-sm sm:text-base">
-                {t("landing.finalCta.secondary")}
-              </Button>
-            </Link>
-          </div>
+          </Button>
         </div>
       </section>
 
