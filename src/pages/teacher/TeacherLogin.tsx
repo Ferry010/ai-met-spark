@@ -48,7 +48,7 @@ const TeacherLogin = () => {
             <p className="text-sm text-classroom-muted mt-6 text-center">
               Nog geen klas?{" "}
               <Link to="/teacher/start" className="text-classroom-teal font-medium hover:underline">
-                Start gratis met je klas
+                Maak je klas aan
               </Link>
             </p>
           </div>
@@ -56,7 +56,7 @@ const TeacherLogin = () => {
       </main>
       <footer className="py-6 text-center text-sm text-classroom-muted flex items-center justify-center gap-2">
         <ShieldCheck className="h-4 w-4 text-classroom-success" />
-        Veilig voor AVG en kerndoelen 2027 ✓
+        Altijd gratis · geen reclame · geen tracking
       </footer>
     </div>
   );

@@ -98,7 +98,7 @@ const TeacherStart = () => {
               </h1>
               <p className="text-classroom-muted text-sm mb-6">
                 {mode === "signup"
-                  ? "Maak een gratis leerkracht-account. Daarna krijg je meteen een klassencode om te delen."
+                  ? "Maak een leerkracht-account. Altijd gratis, ook voor je hele school. Daarna krijg je meteen een klassencode om te delen."
                   : "Log in om je klas te beheren."}
               </p>
               <form onSubmit={handleAuth} className="space-y-4">

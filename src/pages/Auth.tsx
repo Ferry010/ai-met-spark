@@ -38,7 +38,7 @@ export const Auth = () => {
         <div>
           <Spark size={140} mood="happy" waving />
           <h1 className="mt-6 text-5xl leading-[0.95] text-primary-foreground">Word slim met AI.</h1>
-          <p className="mt-4 max-w-md text-lg opacity-90">18 korte missies vol mini-games. Gratis, zonder reclame en zonder chat met een echte AI.</p>
+          <p className="mt-4 max-w-md text-lg opacity-90">18 korte missies vol mini-games. Altijd gratis, zonder reclame en zonder chat met een echte AI.</p>
         </div>
         <p className="text-sm opacity-80">Voor kids van 9 tot 12 jaar</p>
       </aside>

@@ -11,7 +11,7 @@ export const Footer = () => {
           <Spark size={40} animate={false} />
           <div>
             <div className="font-display text-lg">{t("common.appName")}</div>
-            <div className="text-sm text-muted-foreground">Gratis AI-missies voor kids van 9 tot 12</div>
+            <div className="text-sm text-muted-foreground">{t("footer.tagline")}</div>
           </div>
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-5 text-sm text-muted-foreground">
@@ -19,7 +19,7 @@ export const Footer = () => {
           <Link to="/teacher/start" className="hover:text-foreground">Voor leerkrachten</Link>
           <Link to="/privacy" className="hover:text-foreground">{t("footer.privacy")}</Link>
           <Link to="/terms" className="hover:text-foreground">{t("footer.terms")}</Link>
-          <Link to="/schools/contact" className="hover:text-foreground">{t("footer.contact")}</Link>
+          <Link to="/contact" className="hover:text-foreground">{t("footer.contact")}</Link>
         </nav>
         <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} AI met Spark</p>
       </div>

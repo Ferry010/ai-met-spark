@@ -111,7 +111,7 @@ const W1: Mission[] = [
     goal: "Ontdek wat AI is, en wat niet.",
     cards: [
       { icon: "🧩", title: "Patronen spotten", text: "AI leert van heel veel voorbeelden. Zo leert het bijvoorbeeld hoe een kat eruitziet." },
-      { icon: "🎲", title: "Slim gokken", text: "AI weet niks zeker. Het doet een hele goede gok op basis van wat het zag." },
+      { icon: "🎲", title: "Slim gokken", text: "AI weet niks zeker. Het doet een heel goede gok op basis van wat het zag." },
       { icon: "🫥", title: "Geen gevoelens", text: "AI kan praten als een mens, maar voelt niks. Het is een computerprogramma." },
     ],
     games: [
@@ -234,7 +234,7 @@ const W1: Mission[] = [
       },
     ],
     quick: [
-      { statement: "Een video kan er echt uitzien en toch nep zijn.", answer: true, why: "Ja. AI kan hele echte nepvideo's maken." },
+      { statement: "Een video kan er echt uitzien en toch nep zijn.", answer: true, why: "Ja. AI kan heel echte nepvideo's maken." },
       { statement: "Als het de stem van je moeder is, is het altijd echt.", answer: false, why: "Nee. AI kan stemmen nadoen. Check het altijd." },
       { statement: "Haast en geheimen zijn alarmbellen.", answer: true, why: "Precies. Stop dan en vraag een volwassene." },
     ],
@@ -405,7 +405,7 @@ const W2: Mission[] = [
         cards: [
           { text: "Hoeveel poten heeft een spin?", side: "left", why: "Dit staat heel vaak online. Grote kans dat het klopt." },
           { text: "Wat heeft mijn juf gisteren gegeten?", side: "right", why: "Dat kan AI niet weten. Dan verzint het iets." },
-          { text: "Wie won de wedstrijd van gisteravond?", side: "right", why: "Heel nieuw nieuws weet AI vaak niet. Check het." },
+          { text: "Wie won de wedstrijd van gisteravond?", side: "right", why: "Het nieuwste nieuws weet AI vaak niet. Check het." },
           { text: "Welke kleur heeft een rijpe banaan?", side: "left", why: "Een bekend feitje. Grote kans dat het klopt." },
           { text: "Een oud boek over jouw dorp", side: "right", why: "Hier verzint AI soms titels die niet bestaan." },
         ],
@@ -667,7 +667,7 @@ const W3: Mission[] = [
     hook: "Je hebt een werkstuk. AI kan het in vijf seconden voor je schrijven. Top? Of toch niet? Jouw brein wil ook trainen!",
     goal: "Ontdek wanneer AI je slimmer maakt.",
     cards: [
-      { icon: "🏋️", title: "Brein is een spier", text: "Je leert door zelf na te denken. Als AI alles doet, traint je brein niet." },
+      { icon: "🏋️", title: "Train je brein", text: "Je leert door zelf na te denken. Als AI alles doet, traint je brein niet." },
       { icon: "🧭", title: "Coach, geen vervanger", text: "Laat AI uitleggen of tips geven. Het werk doe je zelf." },
       { icon: "🤝", title: "Eerlijk zijn", text: "Heb je AI gebruikt? Vertel het je juf of meester. Dat is eerlijk." },
     ],
@@ -812,7 +812,7 @@ const W3: Mission[] = [
         question: "Mag je die inleveren als jouw tekening?",
         options: [
           { text: "Ja, want jij hebt de vraag voor AI bedacht", why: "De vraag is van jou, de tekening niet. Dat is niet eerlijk." },
-          { text: "Nee, tenzij AI mag en je het zegt", correct: true, why: "Precies. Eerlijk zijn en de regels volgen." },
+          { text: "Alleen als AI mag en je het eerlijk zegt", correct: true, why: "Precies. Eerlijk zijn en de regels volgen." },
           { text: "Ja, niemand ziet het verschil", why: "Ook als niemand het ziet: eerlijk zijn blijft belangrijk." },
         ],
       },

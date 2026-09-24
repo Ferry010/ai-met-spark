@@ -5,7 +5,7 @@
     "login": "Inloggen",
     "signup": "Aanmelden",
     "logout": "Uitloggen",
-    "tryFree": "Begin gratis",
+    "tryFree": "Account maken",
     "continue": "Verder",
     "next": "Volgende",
     "back": "Terug",
@@ -16,12 +16,12 @@
     "no": "Nee"
   },
   "landing": {
-    "badge": "Gratis · voor kids van 9 tot 12",
+    "badge": "Altijd gratis · AI-school voor kids van 9 tot 12",
     "title": "Word slim met AI. Speel je door 18 missies.",
     "subtitle": "Korte missies vol mini-games waarin kids leren hoe AI werkt, wanneer je het kunt vertrouwen en hoe je het veilig gebruikt.",
-    "ctaPrimary": "Begin gratis",
+    "ctaPrimary": "Start je eerste missie",
     "ctaTeacher": "Voor leerkrachten",
-    "micro": "Gratis, voor altijd. Geen reclame. Geen AI-chat.",
+    "micro": "100% gratis, voor altijd. Geen proefperiode, geen abonnement, geen reclame.",
     "stats": [
       {
         "n": "3",
@@ -36,8 +36,8 @@
         "label": "mini-games"
       },
       {
-        "n": "1",
-        "label": "diploma"
+        "n": "€0",
+        "label": "voor altijd"
       }
     ],
     "worldsTitle": "Drie werelden, drie superkrachten",
@@ -118,13 +118,17 @@
     ],
     "schoolsEyebrow": "Voor leerkrachten",
     "schoolsTitle": "Volg de voortgang van je klas",
-    "schoolsDesc": "Maak gratis een klas aan en deel de klassencode. Je ziet per leerling welke missies af zijn, hoeveel sterren ze haalden en wie hulp kan gebruiken. Alleen jouw klas, niemand anders.",
-    "schoolsCta": "Start gratis met je klas",
+    "schoolsDesc": "Ook voor scholen helemaal gratis: geen licentie, geen offerte. Maak een klas aan en deel de klassencode. Je ziet per leerling welke missies af zijn, hoeveel sterren ze haalden en wie hulp kan gebruiken. Alleen jouw klas, niemand anders.",
+    "schoolsCta": "Maak je klas aan",
     "faqTitle": "Veelgestelde vragen",
     "faq": [
       {
         "q": "Is het echt gratis?",
-        "a": "Ja. Alle missies, games en het diploma zijn gratis, nu en later. Geen proefperiode, geen reclame."
+        "a": "Ja, en dat blijft zo. Alle missies, games en het diploma zijn gratis, voor kinderen, ouders en scholen. Er is geen proefperiode, geen betaalde versie en geen reclame."
+      },
+      {
+        "q": "Hoe kan het gratis zijn?",
+        "a": "Ferry Hoes heeft AI met Spark gemaakt omdat hij wil dat elk kind leert omgaan met AI, hoe groot de portemonnee thuis ook is. Er zit geen reclame in en we verkopen geen gegevens. Het hele verhaal lees je bij Over Spark."
       },
       {
         "q": "Voor welke leeftijd is het?",
@@ -144,22 +148,27 @@
       }
     ],
     "finalTitle": "Klaar voor je eerste missie?",
-    "finalSubtitle": "Het duurt 3 minuten. Spark wacht op je.",
-    "finalCta": "Begin gratis"
+    "finalSubtitle": "Het duurt 3 minuten en het kost niks. Spark wacht op je.",
+    "finalCta": "Start je eerste missie",
+    "freeTitle": "Altijd gratis. Echt.",
+    "freeDesc": "Geen proefperiode die afloopt, geen betaalde versie en geen reclame. Alle missies, games en het diploma zijn gratis voor elk kind, elke ouder en elke school.",
+    "freePoints": [
+      "Voor kinderen en ouders",
+      "Voor leerkrachten en hele scholen",
+      "Geen reclame, geen verkoop van gegevens"
+    ]
   },
   "schoolForm": {
-    "title": "Breng AI met Spark naar je school",
-    "subtitle": "Vertel ons kort over je school en we reageren binnen 1 werkdag.",
+    "title": "Contact",
+    "subtitle": "Een vraag, een idee of een foutje gevonden? Laat het ons weten. We reageren meestal binnen een paar werkdagen.",
     "fields": {
       "name": "Je naam",
-      "school": "Naam van de school",
-      "country": "Land",
-      "seats": "Hoeveel leerlingen?",
-      "email": "Je e-mail",
-      "message": "Iets anders? (optioneel)"
+      "email": "Je e-mailadres",
+      "school": "School of organisatie (optioneel)",
+      "message": "Je bericht"
     },
-    "submit": "Verstuur aanvraag",
-    "success": "Bedankt! We nemen snel contact op.",
+    "submit": "Verstuur bericht",
+    "success": "Bedankt! We hebben je bericht ontvangen.",
     "error": "Er ging iets mis. Probeer het opnieuw."
   },
   "about": {
@@ -167,7 +176,7 @@
     "title": "Spark is gratis en dat is niet zonder reden",
     "subtitle": "Het verhaal van een vader die voor zijn eigen kinderen iets zocht, en het zelf bouwde.",
     "chips": [
-      "Gratis",
+      "Altijd gratis",
       "Voor elk kind",
       "Gemaakt door een vader"
     ],
@@ -188,12 +197,12 @@
     "pullQuote": "Deze kennis mag geen luxe zijn. Daarom is AI met Spark gratis, voor elk kind.",
     "signature": "- Ferry Hoes",
     "ctaTitle": "Klaar om kennis te maken met Spark?",
-    "ctaSubtitle": "Maak een gratis account en laat je kind meteen beginnen aan het avontuur.",
+    "ctaSubtitle": "Maak een account en laat je kind meteen beginnen aan het avontuur. Het is en blijft gratis.",
     "ctaSecondary": "Terug naar home",
-    "ctaMicro": "Gratis nu en gratis blijvend. Geen proefperiode."
+    "ctaMicro": "Altijd gratis, voor elk kind en elke school. Geen proefperiode, geen abonnement, geen reclame."
   },
   "footer": {
-    "tagline": "We helpen de eerste generatie AI-slimme kids opgroeien.",
+    "tagline": "Altijd gratis AI-missies voor kids van 9 tot 12",
     "privacy": "Privacy",
     "terms": "Voorwaarden",
     "contact": "Contact",

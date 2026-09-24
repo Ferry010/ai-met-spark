@@ -36,7 +36,7 @@ export const Dashboard = () => {
           <div>
             <h1 className="text-3xl sm:text-4xl">Hé{name ? ` ${name}` : ""}!</h1>
             <p className="text-muted-foreground">
-              {next ? "Klaar voor je volgende missie?" : final.passed ? "Je bent een echte AI Pro." : "Nog één stap: de eindtoets!"}
+              {next ? "Klaar voor je volgende missie?" : final.passed ? "Je bent een echte AI Smart Kid." : "Nog één stap: de eindtoets!"}
             </p>
           </div>
         </div>

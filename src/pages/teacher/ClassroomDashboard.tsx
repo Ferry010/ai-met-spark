@@ -374,7 +374,7 @@ const ResetPasswordDialog = ({
           <div className="flex gap-2">
             <Input value={password} onChange={(e) => setPassword(e.target.value)} className="h-12 rounded-xl font-mono text-lg" />
             <Button variant="outline" onClick={() => setPassword(kidPassword())}>
-              Nieuw idee
+              Ander wachtwoord
             </Button>
           </div>
         )}

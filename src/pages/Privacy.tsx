@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
 
@@ -6,7 +7,7 @@ export const Privacy = () => (
     <SiteHeader />
     <article className="container max-w-3xl py-12">
       <h1 className="mb-2 text-5xl">Privacy</h1>
-      <p className="mb-8 text-muted-foreground">Laatst bijgewerkt: {new Date().toLocaleDateString("nl-NL")}</p>
+      <p className="mb-8 text-muted-foreground">Laatst bijgewerkt: 24 september 2026</p>
 
       <div className="space-y-8 text-[17px] leading-relaxed">
         <p>
@@ -56,7 +57,11 @@ export const Privacy = () => (
           <h2 className="mb-3 text-2xl">Je gegevens verwijderen</h2>
           <p>
             In de accountinstellingen kun je alle voortgang wissen of het hele account verwijderen. Dan wissen we alles direct en
-            definitief. Liever per mail? Neem contact met ons op.
+            definitief. Lukt dat niet?{" "}
+            <Link to="/contact" className="font-medium text-primary underline underline-offset-4">
+              Neem contact met ons op
+            </Link>
+            .
           </p>
         </section>
       </div>

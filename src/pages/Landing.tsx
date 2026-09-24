@@ -21,6 +21,7 @@ import {
   Gamepad2,
   Timer,
   Trophy,
+  Check,
 } from "lucide-react";
 import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,7 @@ export const Landing = () => {
   const games = t("landing.games", { returnObjects: true }) as Game[];
   const parents = t("landing.parents", { returnObjects: true }) as Item[];
   const faq = t("landing.faq", { returnObjects: true }) as Faq[];
+  const freePoints = t("landing.freePoints", { returnObjects: true }) as string[];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -219,6 +221,26 @@ export const Landing = () => {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Always free */}
+      <section className="container pb-20">
+        <div className="grid items-center gap-8 rounded-[2rem] bg-success-soft p-8 md:grid-cols-[auto_1fr] md:p-12">
+          <div className="font-display text-7xl leading-none text-success-dark sm:text-8xl" aria-hidden>
+            €0
+          </div>
+          <div>
+            <h2 className="mb-3 text-4xl sm:text-5xl">{t("landing.freeTitle")}</h2>
+            <p className="mb-5 max-w-2xl text-lg text-muted-foreground">{t("landing.freeDesc")}</p>
+            <ul className="flex flex-wrap gap-2">
+              {freePoints.map((point) => (
+                <li key={point} className="inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 font-medium">
+                  <Check className="h-4 w-4 text-success-dark" strokeWidth={3} /> {point}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 

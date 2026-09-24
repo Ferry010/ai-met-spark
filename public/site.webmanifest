@@ -1,0 +1,12 @@
+{
+  "name": "AI Met Spark | AI school voor kids",
+  "short_name": "AI Met Spark",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#6C4BF1",
+  "background_color": "#F8F8FC",
+  "display": "standalone",
+  "start_url": "/"
+}

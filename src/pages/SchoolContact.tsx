@@ -12,13 +12,17 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
-  name: z.string().trim().min(1, "Required").max(100),
-  school: z.string().trim().min(1, "Required").max(150),
-  country: z.string().trim().min(1, "Required").max(80),
-  seats: z.coerce.number().int().min(1).max(100000),
-  email: z.string().trim().email("Invalid email").max(255),
-  message: z.string().trim().max(1000).optional().or(z.literal("")),
+  name: z.string().trim().min(1, "Vul je naam in.").max(100),
+  email: z.string().trim().email("Dat e-mailadres klopt niet.").max(255),
+  school: z.string().trim().max(150),
+  message: z.string().trim().min(1, "Schrijf je bericht.").max(1000),
 });
+
+const FIELDS = [
+  { id: "name", type: "text", required: true },
+  { id: "email", type: "email", required: true },
+  { id: "school", type: "text", required: false },
+] as const;
 
 export const SchoolContact = () => {
   const { t } = useTranslation();
@@ -30,76 +34,67 @@ export const SchoolContact = () => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const parsed = schema.safeParse({
-      name: form.get("name"),
-      school: form.get("school"),
-      country: form.get("country"),
-      seats: form.get("seats"),
-      email: form.get("email"),
+      name: form.get("name") ?? "",
+      email: form.get("email") ?? "",
+      school: form.get("school") ?? "",
       message: form.get("message") ?? "",
     });
     if (!parsed.success) {
-      toast({ title: "Please check the form", description: parsed.error.errors[0]?.message, variant: "destructive" });
+      toast({ title: "Check het formulier even", description: parsed.error.errors[0]?.message, variant: "destructive" });
       return;
     }
     setSubmitting(true);
+    // The inquiries table still has school/country/seats columns from the old school form.
     const { error } = await supabase.from("school_inquiries").insert({
       name: parsed.data.name,
-      school: parsed.data.school,
-      country: parsed.data.country,
-      seats: parsed.data.seats,
       email: parsed.data.email,
-      message: parsed.data.message || null,
+      school: parsed.data.school || "-",
+      country: "NL",
+      seats: 1,
+      message: parsed.data.message,
     });
     setSubmitting(false);
     if (error) {
-      toast({ title: "Could not send", description: error.message, variant: "destructive" });
+      toast({ title: t("schoolForm.error"), variant: "destructive" });
       return;
     }
     setDone(true);
-    toast({ title: t("schoolForm.success") });
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
-      <section className="container py-8 sm:py-12 max-w-2xl">
-        <div className="text-center mb-8">
-          <div className="scale-75 sm:scale-100 inline-block">
-            <Spark size={120} mood="happy" />
-          </div>
-          <h1 className="font-display text-2xl sm:text-3xl md:text-4xl mt-4">{t("schoolForm.title")}</h1>
-          <p className="text-muted-foreground mt-2">{t("schoolForm.subtitle")}</p>
+      <section className="container max-w-2xl py-8 sm:py-12">
+        <div className="mb-8 text-center">
+          <Spark size={96} mood="happy" />
+          <h1 className="mt-4 text-4xl sm:text-5xl">{t("schoolForm.title")}</h1>
+          <p className="mt-2 text-muted-foreground">{t("schoolForm.subtitle")}</p>
         </div>
 
         {done ? (
-          <div className="rounded-3xl bg-success/10 border border-success/30 p-8 text-center">
-            <span className="text-5xl" aria-hidden>🎉</span>
-            <p className="font-display text-2xl mt-3">{t("schoolForm.success")}</p>
+          <div className="tile border-success bg-success-soft p-8 text-center">
+            <span className="text-5xl" aria-hidden>
+              🎉
+            </span>
+            <p className="mt-3 font-display text-2xl">{t("schoolForm.success")}</p>
           </div>
         ) : (
-          <form onSubmit={onSubmit} className="rounded-3xl bg-card border border-border shadow-soft p-6 sm:p-8 space-y-5">
-            {(["name", "school", "country", "seats", "email"] as const).map((field) => (
-              <div key={field} className="space-y-2">
-                <Label htmlFor={field} className="font-display">{t(`schoolForm.fields.${field}`)}</Label>
-                <Input
-                  id={field}
-                  name={field}
-                  type={field === "email" ? "email" : field === "seats" ? "number" : "text"}
-                  required
-                  min={field === "seats" ? 1 : undefined}
-                  className="h-12 rounded-xl"
-                />
+          <form onSubmit={onSubmit} className="tile space-y-5 p-6 sm:p-8">
+            {FIELDS.map((f) => (
+              <div key={f.id} className="space-y-2">
+                <Label htmlFor={f.id} className="font-display">
+                  {t(`schoolForm.fields.${f.id}`)}
+                </Label>
+                <Input id={f.id} name={f.id} type={f.type} required={f.required} className="h-12 rounded-xl" />
               </div>
             ))}
             <div className="space-y-2">
-              <Label htmlFor="message" className="font-display">{t("schoolForm.fields.message")}</Label>
-              <Textarea id="message" name="message" rows={4} maxLength={1000} className="rounded-xl" />
+              <Label htmlFor="message" className="font-display">
+                {t("schoolForm.fields.message")}
+              </Label>
+              <Textarea id="message" name="message" rows={5} maxLength={1000} required className="rounded-xl" />
             </div>
-            <Button
-              type="submit"
-              disabled={submitting}
-              className="w-full h-14 rounded-full font-display text-base bg-primary hover:bg-primary/90 shadow-soft"
-            >
+            <Button type="submit" size="lg" disabled={submitting} className="w-full">
               {submitting ? t("common.loading") : t("schoolForm.submit")}
             </Button>
           </form>
