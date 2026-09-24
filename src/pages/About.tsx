@@ -4,13 +4,13 @@ import { Spark } from "@/components/Spark";
 import { Button } from "@/components/ui/button";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
-import { Gift, Users, Heart as HeartIcon, Heart, Sparkles, Quote } from "lucide-react";
+import { Gift, Ban, MessageSquareOff, Heart, Sparkles, Quote } from "lucide-react";
 
 const About = () => {
   const { t } = useTranslation();
   const paragraphs = t("about.paragraphs", { returnObjects: true }) as string[];
   const chips = t("about.chips", { returnObjects: true }) as string[];
-  const chipIcons = [Gift, Users, HeartIcon];
+  const chipIcons = [Gift, Ban, MessageSquareOff];
 
   return (
     <div className="min-h-screen bg-background">

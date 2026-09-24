@@ -80,7 +80,7 @@ export const SchoolSignup = () => {
           <span className="mb-4 inline-flex rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark">
             Voor scholen · altijd gratis
           </span>
-          <h1 className="mb-4 text-5xl leading-[0.95]">Doe mee met je school</h1>
+          <h1 className="mb-4 text-5xl leading-[0.95]">Breng AI met Spark naar je klas</h1>
           <p className="mb-8 text-lg text-muted-foreground">
             Met AI met Spark volg je als leerkracht de voortgang van je klas. Omdat je dan gegevens van kinderen ziet, sluiten we elke
             school zelf aan. Zo weten we zeker dat alleen echte leerkrachten meekijken.
