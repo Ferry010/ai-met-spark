@@ -64,23 +64,51 @@ const Trail = ({ pts, color }: { pts: Pt[]; color: string }) => {
   return <path d={d} fill="none" stroke={color} strokeWidth={5} strokeLinecap="round" strokeDasharray="0.1 11" />;
 };
 
-const Stop = ({ at: [x, y], n, fill, depth, text }: { at: Pt; n: number; fill: string; depth: string; text: string }) => (
+/** How far a kid got at a stop on the trail. */
+export type StopState = "open" | "done" | "current";
+
+const GOLD = "hsl(var(--secondary))";
+const GOLD_DARK = "hsl(var(--secondary-dark))";
+const GOLD_INK = "hsl(var(--secondary-foreground))";
+
+const Stop = ({ at: [x, y], n, fill, depth, text, state = "open" }: { at: Pt; n: number; fill: string; depth: string; text: string; state?: StopState }) => {
+  if (state === "done") {
+    return (
+      <g>
+        <circle cx={x} cy={y + 3} r={13} fill={GOLD_DARK} />
+        <circle cx={x} cy={y} r={13} fill={GOLD} />
+        <path d={`M${x - 5.5} ${y + 0.5} l3.8 3.8 l7.2 -7.6`} stroke={GOLD_INK} strokeWidth={3} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
+    );
+  }
+  return (
+    <g>
+      {state === "current" && (
+        <>
+          <circle cx={x} cy={y} r={21} fill="none" stroke={GOLD} strokeWidth={4} />
+          <circle cx={x} cy={y} r={28} fill="none" stroke={GOLD} strokeOpacity={0.35} strokeWidth={3} />
+        </>
+      )}
+      <circle cx={x} cy={y + 3} r={13} fill={depth} />
+      <circle cx={x} cy={y} r={13} fill={fill} />
+      <text x={x} y={y + 4.5} textAnchor="middle" fontFamily="Bricolage Grotesque, sans-serif" fontWeight={800} fontSize={13} fill={text}>
+        {n}
+      </text>
+    </g>
+  );
+};
+
+const Boss = ({ at: [x, y], state = "open" }: { at: Pt; state?: StopState }) => (
   <g>
-    <circle cx={x} cy={y + 3} r={13} fill={depth} />
-    <circle cx={x} cy={y} r={13} fill={fill} />
-    <text x={x} y={y + 4.5} textAnchor="middle" fontFamily="Bricolage Grotesque, sans-serif" fontWeight={800} fontSize={13} fill={text}>
-      {n}
-    </text>
+    {state === "current" && <circle cx={x} cy={y} r={28} fill="none" stroke={GOLD} strokeWidth={4} />}
+    <circle cx={x} cy={y + 4} r={20} fill="#000" fillOpacity={0.3} />
+    <circle cx={x} cy={y} r={20} fill={state === "done" ? GOLD : INK} />
+    <path d={CROWN} fill={state === "done" ? GOLD_INK : GOLD} transform={`translate(${x - 11.5} ${y - 8}) scale(0.9)`} />
   </g>
 );
 
-const Boss = ({ at: [x, y] }: { at: Pt }) => (
-  <g>
-    <circle cx={x} cy={y + 4} r={20} fill="#000" fillOpacity={0.3} />
-    <circle cx={x} cy={y} r={20} fill={INK} />
-    <path d={CROWN} fill="hsl(var(--secondary))" transform={`translate(${x - 11.5} ${y - 8}) scale(0.9)`} />
-  </g>
-);
+type SceneProps = { states: StopState[] };
+const OPEN: StopState[] = ["open", "open", "open", "open", "open", "open"];
 
 const Stars = ({ pts }: { pts: [number, number, number][] }) => (
   <>
@@ -146,7 +174,7 @@ const MOUNTAIN: Pt[] = [
   [176, 200],
 ];
 
-const CastleScene = () => {
+const CastleScene = ({ states }: SceneProps) => {
   const k = COLORS.safe;
   return (
     <>
@@ -177,14 +205,14 @@ const CastleScene = () => {
       <path d="M0 316 C90 296 220 312 352 298 V440 H0 Z" fill={k.d} />
       <Trail pts={GROUND} color={k.s} />
       {GROUND.slice(0, 5).map((p, i) => (
-        <Stop key={i} at={p} n={i + 1} fill="#fff" depth={k.deep} text={k.d} />
+        <Stop key={i} at={p} n={i + 1} fill="#fff" depth={k.deep} text={k.d} state={states[i]} />
       ))}
-      <Boss at={GROUND[5]} />
+      <Boss at={GROUND[5]} state={states[5]} />
     </>
   );
 };
 
-const LighthouseScene = () => {
+const LighthouseScene = ({ states }: SceneProps) => {
   const k = COLORS.smart;
   return (
     <>
@@ -209,14 +237,14 @@ const LighthouseScene = () => {
       <path d="M0 316 C90 296 220 312 352 298 V440 H0 Z" fill={k.s} />
       <Trail pts={GROUND} color={k.d} />
       {GROUND.slice(0, 5).map((p, i) => (
-        <Stop key={i} at={p} n={i + 1} fill={k.c} depth={k.d} text={k.fg} />
+        <Stop key={i} at={p} n={i + 1} fill={k.c} depth={k.d} text={k.fg} state={states[i]} />
       ))}
-      <Boss at={GROUND[5]} />
+      <Boss at={GROUND[5]} state={states[5]} />
     </>
   );
 };
 
-const MountainScene = () => {
+const MountainScene = ({ states }: SceneProps) => {
   const k = COLORS.stronger;
   return (
     <>
@@ -232,14 +260,14 @@ const MountainScene = () => {
       </g>
       <Trail pts={MOUNTAIN} color={k.s} />
       {MOUNTAIN.slice(0, 5).map((p, i) => (
-        <Stop key={i} at={p} n={i + 1} fill="#fff" depth={k.deep} text={k.d} />
+        <Stop key={i} at={p} n={i + 1} fill="#fff" depth={k.deep} text={k.d} state={states[i]} />
       ))}
-      <Boss at={MOUNTAIN[5]} />
+      <Boss at={MOUNTAIN[5]} state={states[5]} />
     </>
   );
 };
 
-const SCENES: Record<Pillar, { scene: () => ReactNode; label: string }> = {
+const SCENES: Record<Pillar, { scene: (p: SceneProps) => ReactNode; label: string }> = {
   safe: { scene: CastleScene, label: "een kasteel met een schild" },
   smart: { scene: LighthouseScene, label: "een vuurtoren die alles checkt" },
   stronger: { scene: MountainScene, label: "een berg met een ster op de top" },
@@ -251,22 +279,39 @@ const DARK_TEXT: Record<Pillar, string> = {
   stronger: "text-stronger-dark",
 };
 
-export const WorldPortal = ({ world }: { world: World }) => {
+/** Just the arched scene. `states` marks each of the 6 stops; `locked` dims the world behind a padlock. */
+export const WorldPortalArt = ({ world, states = OPEN, locked = false, className }: { world: World; states?: StopState[]; locked?: boolean; className?: string }) => {
   const { scene: Scene, label } = SCENES[world.pillar];
   const k = COLORS[world.pillar];
   return (
+    <svg viewBox="0 0 352 448" className={cn("block h-auto w-full", className)} role="img" aria-label={`Wereld ${world.name}: ${label}${locked ? " (op slot)" : ""}`}>
+      <defs>
+        <clipPath id={`portal-${world.pillar}`}>
+          <path d={ARCH} />
+        </clipPath>
+      </defs>
+      <path d={ARCH} fill={k.d} transform="translate(0 8)" />
+      <g clipPath={`url(#portal-${world.pillar})`}>
+        <Scene states={states} />
+        {locked && (
+          <>
+            <rect width={352} height={440} fill="hsl(var(--night))" fillOpacity={0.62} />
+            <circle cx={176} cy={200} r={44} fill="hsl(var(--night))" fillOpacity={0.85} />
+            <g transform="translate(152 176) scale(2)" fill="none" stroke="#fff" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+              <rect x={5} y={11} width={14} height={10} rx={2} />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </g>
+          </>
+        )}
+      </g>
+    </svg>
+  );
+};
+
+export const WorldPortal = ({ world }: { world: World }) => {
+  return (
     <article className="flex flex-col gap-6">
-      <svg viewBox="0 0 352 448" className="block h-auto w-full" role="img" aria-label={`Wereld ${world.name}: ${label}`}>
-        <defs>
-          <clipPath id={`portal-${world.pillar}`}>
-            <path d={ARCH} />
-          </clipPath>
-        </defs>
-        <path d={ARCH} fill={k.d} transform="translate(0 8)" />
-        <g clipPath={`url(#portal-${world.pillar})`}>
-          <Scene />
-        </g>
-      </svg>
+      <WorldPortalArt world={world} />
       <div className="flex flex-col gap-1.5 px-1">
         <span className={cn("text-sm font-semibold uppercase tracking-[0.08em]", DARK_TEXT[world.pillar])}>
           Wereld {world.id} · {world.missions.length} missies

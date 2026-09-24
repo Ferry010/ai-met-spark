@@ -8,6 +8,7 @@ import { comboMultiplier } from "@/lib/gamification";
 import { playClick, playCombo, playCorrect, playLevelUp, playWrong, unlockAudio } from "@/lib/sounds";
 import { cancelSpeech } from "@/lib/speech";
 import { Spark } from "@/components/Spark";
+import { C, SceneEdge, StarSky } from "@/components/scenes";
 import { ReadAloud } from "@/components/ReadAloud";
 import { Button } from "@/components/ui/button";
 import {
@@ -177,39 +178,49 @@ export const MissionPlayer = ({ mission, onExit, onComplete, next, onReplay, pre
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top bar */}
-      <header className="sticky top-0 z-30 bg-background/90 backdrop-blur">
+      {/* Top bar, under the world's own sky */}
+      <header className={cn("sticky top-0 z-30", SKY[mission.pillar].bar)}>
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
           <button
             type="button"
             onClick={requestExit}
             aria-label="Missie stoppen"
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-muted-foreground hover:bg-muted"
+            className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl hover:bg-black/10", SKY[mission.pillar].ink)}
           >
             <X className="h-6 w-6" strokeWidth={2.5} />
           </button>
-          <div className="relative h-4 flex-1 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
-            <div className={cn("h-full rounded-full transition-[width] duration-500 ease-out", theme.bar)} style={{ width: `${pct}%` }} />
+          <div className="relative h-4 flex-1 overflow-hidden rounded-full bg-black/15" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+            <div className="h-full rounded-full bg-white transition-[width] duration-500 ease-out" style={{ width: `${pct}%` }} />
           </div>
           <div className="relative flex shrink-0 items-center gap-2">
             {combo >= 2 && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-1 font-display text-sm text-accent-foreground animate-combo-pulse">
+              <span className="inline-flex items-center gap-1 rounded-full bg-card px-2.5 py-1 font-display text-sm text-accent-dark animate-combo-pulse">
                 <Flame className="h-4 w-4" /> ×{combo}
               </span>
             )}
-            <span className="inline-flex items-center gap-1 rounded-full bg-secondary-soft px-2.5 py-1 font-display text-sm text-secondary-foreground">
+            <span className="inline-flex items-center gap-1 rounded-full bg-card px-2.5 py-1 font-display text-sm text-secondary-foreground">
               <Zap className="h-4 w-4 fill-current" /> {xp}
             </span>
             {burst && (
-              <span key={burst.id} className="pointer-events-none absolute -bottom-6 right-0 font-display text-sm text-secondary-dark animate-xp-burst">
+              <span key={burst.id} className={cn("pointer-events-none absolute -bottom-6 right-0 font-display text-sm animate-xp-burst", SKY[mission.pillar].ink)}>
                 +{burst.amount}
               </span>
             )}
           </div>
         </div>
       </header>
+      <div aria-hidden className={cn("relative h-14 overflow-hidden sm:h-20", SKY[mission.pillar].bar)}>
+        <StarSky seed={mission.id.charCodeAt(0) + mission.id.charCodeAt(2)} count={40} />
+        <SceneEdge
+          className="h-10 sm:h-14"
+          layers={[
+            { base: 30, amp: 16, seed: 91, color: SKY[mission.pillar].hill },
+            { base: 70, amp: 14, seed: 92, color: C.paper },
+          ]}
+        />
+      </div>
 
-      <main className="mx-auto max-w-2xl px-4 pb-10 pt-4 sm:pt-8">
+      <main className="mx-auto max-w-2xl px-4 pb-10 pt-2 sm:pt-4">
         {/* Enter-only transition: the previous step unmounts instantly, so a
             fast double-tap can never hit a view that is on its way out. */}
         <motion.div
@@ -262,6 +273,13 @@ export const MissionPlayer = ({ mission, onExit, onComplete, next, onReplay, pre
       </AlertDialog>
     </div>
   );
+};
+
+/** Each world's sky above the mission. */
+const SKY: Record<Mission["pillar"], { bar: string; ink: string; hill: string }> = {
+  safe: { bar: "bg-safe", ink: "text-white", hill: C.blueLight },
+  smart: { bar: "bg-smart", ink: "text-smart-foreground", hill: C.goldLight },
+  stronger: { bar: "bg-stronger", ink: "text-white", hill: C.pinkLight },
 };
 
 // ---------- Intro ----------
