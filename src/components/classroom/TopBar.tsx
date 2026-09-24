@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ChevronDown, LogOut, Settings, GraduationCap } from "lucide-react";
+import { ChevronDown, LogOut, Settings, GraduationCap, ShieldCheck } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +13,7 @@ import { useClassroom } from "@/hooks/useClassroom";
 
 export const TopBar = () => {
   const navigate = useNavigate();
-  const { profile } = useAuth();
+  const { profile, isAdmin } = useAuth();
   const { class: myClass } = useClassroom();
   const name = profile?.first_name || "Leerkracht";
   const initial = name.charAt(0).toUpperCase();
@@ -52,6 +52,11 @@ export const TopBar = () => {
             <DropdownMenuItem onClick={() => navigate("/teacher/class/settings")}>
               <Settings className="h-4 w-4 mr-2" /> Klasinstellingen
             </DropdownMenuItem>
+            {isAdmin && (
+              <DropdownMenuItem onClick={() => navigate("/admin")}>
+                <ShieldCheck className="h-4 w-4 mr-2" /> Admin
+              </DropdownMenuItem>
+            )}
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="h-4 w-4 mr-2" /> Uitloggen

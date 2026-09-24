@@ -41,14 +41,14 @@ const TeacherLogin = () => {
                 variant="outline"
                 className="w-full h-11 border-classroom-border text-classroom-dark rounded-lg"
               >
-                <Link to="/teacher/start">Nieuwe klas beginnen</Link>
+                <Link to="/teacher/start">Account maken met je code</Link>
               </Button>
             </div>
 
             <p className="text-sm text-classroom-muted mt-6 text-center">
-              Nog geen klas?{" "}
-              <Link to="/teacher/start" className="text-classroom-teal font-medium hover:underline">
-                Maak je klas aan
+              Doet je school nog niet mee?{" "}
+              <Link to="/scholen/aanmelden" className="text-classroom-teal font-medium hover:underline">
+                Meld je school aan
               </Link>
             </p>
           </div>

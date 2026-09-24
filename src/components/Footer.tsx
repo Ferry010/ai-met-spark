@@ -16,7 +16,7 @@ export const Footer = () => {
         </div>
         <nav className="flex flex-wrap items-center justify-center gap-5 text-sm text-muted-foreground">
           <Link to="/about" className="hover:text-foreground">{t("footer.about")}</Link>
-          <Link to="/teacher/start" className="hover:text-foreground">Voor leerkrachten</Link>
+          <Link to="/scholen/aanmelden" className="hover:text-foreground">Voor scholen</Link>
           <Link to="/privacy" className="hover:text-foreground">{t("footer.privacy")}</Link>
           <Link to="/terms" className="hover:text-foreground">{t("footer.terms")}</Link>
           <Link to="/contact" className="hover:text-foreground">{t("footer.contact")}</Link>

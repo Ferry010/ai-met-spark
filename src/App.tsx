@@ -26,6 +26,13 @@ import TeacherStart from "./pages/teacher/TeacherStart.tsx";
 import ClassroomDashboard from "./pages/teacher/ClassroomDashboard.tsx";
 import ClassSettings from "./pages/teacher/ClassSettings.tsx";
 import MissionPreview from "./pages/teacher/MissionPreview.tsx";
+import SchoolSignup from "./pages/SchoolSignup.tsx";
+import AdminOverview from "./pages/admin/AdminOverview.tsx";
+import AdminRequests from "./pages/admin/AdminRequests.tsx";
+import AdminSchools from "./pages/admin/AdminSchools.tsx";
+import AdminSchool from "./pages/admin/AdminSchool.tsx";
+import AdminTeachers from "./pages/admin/AdminTeachers.tsx";
+import AdminMessages from "./pages/admin/AdminMessages.tsx";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +44,7 @@ const LegacyLessonRedirect = () => {
 
 const kid = (el: JSX.Element) => <ProtectedRoute>{el}</ProtectedRoute>;
 const teacher = (el: JSX.Element) => <ProtectedRoute requireRole="teacher">{el}</ProtectedRoute>;
+const admin = (el: JSX.Element) => <ProtectedRoute requireRole="admin">{el}</ProtectedRoute>;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -49,6 +57,7 @@ const App = () => (
           {/* Public */}
           <Route path="/" element={<Index />} />
           <Route path="/contact" element={<SchoolContact />} />
+          <Route path="/scholen/aanmelden" element={<SchoolSignup />} />
           <Route path="/schools/contact" element={<Navigate to="/contact" replace />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
@@ -73,6 +82,13 @@ const App = () => (
           <Route path="/teacher" element={teacher(<ClassroomDashboard />)} />
           <Route path="/teacher/class/settings" element={teacher(<ClassSettings />)} />
           <Route path="/teacher/preview/:missionId" element={teacher(<MissionPreview />)} />
+
+          <Route path="/admin" element={admin(<AdminOverview />)} />
+          <Route path="/admin/aanvragen" element={admin(<AdminRequests />)} />
+          <Route path="/admin/scholen" element={admin(<AdminSchools />)} />
+          <Route path="/admin/scholen/:orgId" element={admin(<AdminSchool />)} />
+          <Route path="/admin/leerkrachten" element={admin(<AdminTeachers />)} />
+          <Route path="/admin/berichten" element={admin(<AdminMessages />)} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

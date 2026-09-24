@@ -109,7 +109,7 @@ export const Landing = () => {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/teacher/start">{t("landing.ctaTeacher")}</Link>
+              <Link to="/scholen/aanmelden">{t("landing.ctaTeacher")}</Link>
             </Button>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">{t("landing.micro")}</p>
@@ -258,7 +258,7 @@ export const Landing = () => {
             className="bg-background text-foreground hover:bg-background/90"
             style={{ ["--depth-color" as string]: "hsl(var(--primary-dark))" }}
           >
-            <Link to="/teacher/start">
+            <Link to="/scholen/aanmelden">
               {t("landing.schoolsCta")} <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>

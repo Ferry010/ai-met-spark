@@ -118,8 +118,8 @@
     ],
     "schoolsEyebrow": "Voor leerkrachten",
     "schoolsTitle": "Volg de voortgang van je klas",
-    "schoolsDesc": "Ook voor scholen helemaal gratis: geen licentie, geen offerte. Maak een klas aan en deel de klassencode. Je ziet per leerling welke missies af zijn, hoeveel sterren ze haalden en wie hulp kan gebruiken. Alleen jouw klas, niemand anders.",
-    "schoolsCta": "Maak je klas aan",
+    "schoolsDesc": "Meld je school aan en elke leerkracht krijgt een persoonlijke code. Daarmee maak je een klas en deel je de klassencode. Je ziet per leerling welke missies af zijn, hoeveel sterren ze haalden en wie hulp kan gebruiken. Alleen jouw klas, niemand anders. Ook voor scholen altijd gratis.",
+    "schoolsCta": "Meld je school aan",
     "faqTitle": "Veelgestelde vragen",
     "faq": [
       {
@@ -145,6 +145,10 @@
       {
         "q": "Wat ziet de leerkracht?",
         "a": "Alleen de voortgang van leerlingen in de eigen klas: welke missies af zijn, sterren en wanneer ze voor het laatst speelden."
+      },
+      {
+        "q": "Hoe doet mijn school mee?",
+        "a": "Meld je school aan via het formulier voor scholen. We nemen contact op en sturen elke leerkracht een persoonlijke code. Omdat leerkrachten de voortgang van kinderen zien, sluiten we elke school zelf aan. Ook dat is gratis."
       }
     ],
     "finalTitle": "Klaar voor je eerste missie?",

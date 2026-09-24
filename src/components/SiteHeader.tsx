@@ -13,7 +13,7 @@ export const SiteHeader = () => {
           <span className="truncate font-display text-xl">{t("common.appName")}</span>
         </Link>
         <nav className="flex shrink-0 items-center gap-1 sm:gap-2">
-          <Link to="/teacher/start" className="hidden rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground md:inline-flex">
+          <Link to="/scholen/aanmelden" className="hidden rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground md:inline-flex">
             Voor leerkrachten
           </Link>
           <Link to="/about" className="hidden rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground md:inline-flex">

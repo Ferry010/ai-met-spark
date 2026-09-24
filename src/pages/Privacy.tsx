@@ -23,6 +23,7 @@ export const Privacy = () => (
             <li>Bij een account thuis: het e-mailadres van de ouder en het moment waarop die toestemming gaf</li>
             <li>Bij een account met klassencode: in welke klas het kind zit</li>
             <li>Voortgang: gehaalde missies, sterren, XP en de score van de eindtoets</li>
+            <li>Voor scholen: de naam van de school, en naam en e-mailadres van de leerkrachten</li>
           </ul>
         </section>
 
@@ -50,6 +51,11 @@ export const Privacy = () => (
             Een leerkracht ziet alleen de leerlingen die met zijn of haar klassencode meedoen: voornaam, gebruikersnaam en voortgang.
             Nooit kinderen uit andere klassen. Een leerkracht kan een nieuw wachtwoord instellen voor een leerling in de eigen klas, of
             een leerling uit de klas halen.
+          </p>
+          <p className="mt-3">
+            Leerkrachten kunnen alleen meedoen met een persoonlijke code, nadat we hun school hebben aangesloten. Zo weten we dat alleen
+            echte leerkrachten meekijken. De beheerder van AI met Spark ziet per school en per klas alleen totalen, zoals het aantal
+            leerlingen en de gemiddelde voortgang. Nooit de namen van kinderen.
           </p>
         </section>
 

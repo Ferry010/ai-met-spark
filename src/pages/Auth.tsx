@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, School, Home, Check, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { homeRouteFor } from "@/lib/homeRoute";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +25,7 @@ export const Auth = () => {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate("/dashboard", { replace: true });
+      if (session) homeRouteFor(session.user.id).then((to) => navigate(to, { replace: true }));
     });
   }, [navigate]);
 
@@ -97,13 +98,13 @@ const LoginForm = () => {
     const password = String(form.get("password") ?? "");
     if (!identifier || !password) return;
     setBusy(true);
-    const { error } = await supabase.auth.signInWithPassword({ email: loginEmailFor(identifier), password });
-    setBusy(false);
+    const { data, error } = await supabase.auth.signInWithPassword({ email: loginEmailFor(identifier), password });
     if (error) {
+      setBusy(false);
       toast({ title: "Dat klopt niet helemaal", description: "Check je gebruikersnaam en wachtwoord.", variant: "destructive" });
       return;
     }
-    navigate("/dashboard");
+    navigate(await homeRouteFor(data.user.id));
   };
 
   return (
