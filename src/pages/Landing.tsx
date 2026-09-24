@@ -29,7 +29,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { Footer } from "@/components/Footer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { WORLDS } from "@/content/missions";
-import { PILLAR_THEME } from "@/lib/pillars";
+import { WorldPortal } from "@/components/WorldPortals";
 import { cn } from "@/lib/utils";
 
 type Item = { title: string; desc: string };
@@ -138,31 +138,20 @@ export const Landing = () => {
 
       {/* Worlds */}
       <section className="container pb-20">
-        <h2 className="mb-2 text-4xl sm:text-5xl">{t("landing.worldsTitle")}</h2>
-        <p className="mb-8 max-w-xl text-lg text-muted-foreground">{t("landing.worldsSubtitle")}</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {WORLDS.map((w) => {
-            const theme = PILLAR_THEME[w.pillar];
-            return (
-              <div key={w.id} className="tile overflow-hidden">
-                <div className={cn("p-6", theme.solid)}>
-                  <div className="mb-3 text-4xl" aria-hidden>
-                    {w.emoji}
-                  </div>
-                  <div className="text-sm font-semibold opacity-90">Wereld {w.id}</div>
-                  <div className="font-display text-3xl">{w.name}</div>
-                  <div className="opacity-90">{w.tagline}</div>
-                </div>
-                <ul className="flex flex-wrap gap-2 p-5">
-                  {w.missions.map((m) => (
-                    <li key={m.id} className={cn("rounded-full px-3 py-1 text-sm", theme.soft)}>
-                      {m.title}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="mb-2 text-4xl sm:text-5xl">{t("landing.worldsTitle")}</h2>
+            <p className="max-w-xl text-lg text-muted-foreground">{t("landing.worldsSubtitle")}</p>
+          </div>
+          <div className="hidden shrink-0 items-center gap-3 md:flex">
+            <div className="tile max-w-[200px] rounded-2xl px-4 py-3 font-display text-base leading-snug">{t("landing.worldsSpark")}</div>
+            <Spark size={96} mood="happy" />
+          </div>
+        </div>
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          {WORLDS.map((w) => (
+            <WorldPortal key={w.id} world={w} />
+          ))}
         </div>
       </section>
 
