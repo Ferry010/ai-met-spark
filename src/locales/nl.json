@@ -1,7 +1,7 @@
 {
   "common": {
     "appName": "AI met Spark",
-    "tagline": "Leer veilig én leuk met AI",
+    "tagline": "De AI-school voor kids",
     "login": "Inloggen",
     "signup": "Aanmelden",
     "logout": "Uitloggen",
@@ -16,9 +16,9 @@
     "no": "Nee"
   },
   "landing": {
-    "badge": "Altijd gratis · AI-school voor kids van 9 tot 12",
-    "title": "Word slim met AI. Speel je door 18 missies.",
-    "subtitle": "Korte missies vol mini-games waarin kids leren hoe AI werkt, wanneer je het kunt vertrouwen en hoe je het veilig gebruikt.",
+    "badge": "Altijd gratis · voor kids van 9 tot 12",
+    "title": "Leer AI met Spark.",
+    "subtitle": "Spark is je robot-gids. In 18 korte missies vol mini-games leer je hoe AI werkt, wanneer je het kunt vertrouwen en hoe je het veilig gebruikt.",
     "ctaPrimary": "Start je eerste missie",
     "ctaTeacher": "Voor leerkrachten",
     "micro": "100% gratis, voor altijd. Geen proefperiode, geen abonnement, geen reclame.",
@@ -89,7 +89,7 @@
         "desc": "Zet de stappen van het checken op volgorde."
       }
     ],
-    "parentsTitle": "Gemaakt voor kinderen, met ouders in gedachten",
+    "parentsTitle": "Veilig voor kids, fijn voor ouders",
     "parents": [
       {
         "title": "Geen chat met AI",
@@ -156,7 +156,8 @@
       "Voor kinderen en ouders",
       "Voor leerkrachten en hele scholen",
       "Geen reclame, geen verkoop van gegevens"
-    ]
+    ],
+    "titleAccent": "De AI-school voor kids."
   },
   "schoolForm": {
     "title": "Contact",
@@ -172,17 +173,17 @@
     "error": "Er ging iets mis. Probeer het opnieuw."
   },
   "about": {
-    "eyebrow": "Over Spark",
-    "title": "Spark is gratis en dat is niet zonder reden",
-    "subtitle": "Het verhaal van een vader die voor zijn eigen kinderen iets zocht, en het zelf bouwde.",
+    "eyebrow": "Over AI met Spark",
+    "title": "Gemaakt door een vader. Gratis voor elk kind.",
+    "subtitle": "Ferry Hoes zocht iets om zijn eigen kinderen te leren wat AI is. Dat bestond niet, dus bouwde hij het zelf.",
     "chips": [
       "Altijd gratis",
-      "Voor elk kind",
-      "Gemaakt door een vader"
+      "Geen reclame",
+      "Geen chat met AI"
     ],
     "sparkBubble": "Hoi! Ik ben Spark. Maar het was Ferry's idee. Lees even mee?",
     "paragraphs": [
-      "Ik ben Ferry Hoes. Spreker, auteur, AI-expert. Maar voor alles ben ik vader van twee kleine kinderen die opgroeien in een wereld die straks runt op AI en automatisering.",
+      "Ik ben Ferry Hoes. Spreker, auteur, AI-expert. Maar voor alles ben ik vader van twee kleine kinderen die opgroeien in een wereld die straks draait op AI en automatisering.",
       "Ze zijn nog jong. Ze begrijpen nog niet wat dat betekent. Maar ik wel.",
       "Ik reis de wereld over om bedrijven en overheden te vertellen hoe ze met AI moeten omgaan. Ik heb de AI Geletterdheid Academy opgericht zodat professionals begrijpen wat AI is, wat het kan en wat het niet kan. Ik schrijf erover. Ik spreek erover. Het is mijn vak.",
       "Maar thuis, aan de keukentafel, had ik niks.",
@@ -202,7 +203,7 @@
     "ctaMicro": "Altijd gratis, voor elk kind en elke school. Geen proefperiode, geen abonnement, geen reclame."
   },
   "footer": {
-    "tagline": "Altijd gratis AI-missies voor kids van 9 tot 12",
+    "tagline": "De AI-school voor kids. Altijd gratis.",
     "privacy": "Privacy",
     "terms": "Voorwaarden",
     "contact": "Contact",

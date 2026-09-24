@@ -100,7 +100,14 @@ export const Landing = () => {
           <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark">
             <Sparkles className="h-4 w-4" /> {t("landing.badge")}
           </span>
-          <h1 className="mb-5 text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">{t("landing.title")}</h1>
+          <h1 className="mb-5 text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">
+            {t("landing.title")}{" "}
+            <span className="block text-primary">
+              {t("landing.titleAccent")
+                .split(/(AI-school)/)
+                .map((part, i) => (part === "AI-school" ? <span key={i} className="whitespace-nowrap">{part}</span> : part))}
+            </span>
+          </h1>
           <p className="mb-8 max-w-lg text-lg text-muted-foreground sm:text-xl">{t("landing.subtitle")}</p>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
