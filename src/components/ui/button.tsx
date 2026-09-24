@@ -15,6 +15,7 @@ const buttonVariants = cva(
         secondary: "press press-secondary bg-secondary text-secondary-foreground hover:bg-secondary/95",
         success: "press press-success bg-success text-success-foreground hover:bg-success/95",
         ghost: "transition-colors hover:bg-muted",
+        night: "press press-night border-2 border-white/35 bg-transparent text-white hover:bg-white/10",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

@@ -13,7 +13,7 @@
 
 @layer base {
   :root {
-    --background: 240 25% 98%;
+    --background: 38 100% 96%;
     --foreground: 245 38% 14%;
 
     --card: 0 0% 100%;
@@ -47,12 +47,12 @@
     --destructive-dark: 2 65% 42%;
     --destructive-soft: 2 100% 96%;
 
-    --muted: 240 22% 95%;
-    --muted-foreground: 245 14% 42%;
+    --muted: 41 42% 93%;
+    --muted-foreground: 253 14% 43%;
 
-    --border: 240 18% 90%;
-    --border-strong: 240 14% 82%;
-    --input: 240 18% 88%;
+    --border: 39 43% 86%;
+    --border-strong: 40 36% 77%;
+    --input: 39 43% 84%;
     --ring: 252 86% 62%;
 
     --radius: 1rem;
@@ -72,6 +72,13 @@
     --stronger-soft: 338 100% 96%;
 
     /* Mascot */
+    /* Night-journey scenery */
+    --night: 245 50% 18%;
+    --dusk: 245 49% 27%;
+    --dusk-2: 246 49% 34%;
+    --dusk-3: 245 46% 42%;
+    --on-dark: 247 53% 87%;
+
     --spark: 252 86% 62%;
     --spark-dark: 245 38% 14%;
     --spark-eye: 165 85% 62%;
@@ -151,6 +158,7 @@
   .press-accent { --depth-color: hsl(var(--accent-dark)); }
   .press-safe { --depth-color: hsl(var(--safe-dark)); --pulse-color: hsl(var(--safe) / 0.45); }
   .press-smart { --depth-color: hsl(var(--smart-dark)); --pulse-color: hsl(var(--smart) / 0.5); }
+  .press-night { --depth-color: rgb(0 0 0 / 0.28); }
   .press-stronger { --depth-color: hsl(var(--stronger-dark)); --pulse-color: hsl(var(--stronger) / 0.45); }
 
   /* Flat card with a crisp edge. */

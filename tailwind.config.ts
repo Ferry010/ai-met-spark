@@ -67,6 +67,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        night: "hsl(var(--night))",
+        dusk: {
+          DEFAULT: "hsl(var(--dusk))",
+          2: "hsl(var(--dusk-2))",
+          3: "hsl(var(--dusk-3))",
+        },
+        "on-dark": "hsl(var(--on-dark))",
         safe: {
           DEFAULT: "hsl(var(--safe))",
           dark: "hsl(var(--safe-dark))",

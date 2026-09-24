@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, School, Home, Check, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { homeRouteFor } from "@/lib/homeRoute";
+import { C, Moon, StarSky } from "@/components/scenes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,16 +33,21 @@ export const Auth = () => {
   return (
     <div className="grid min-h-screen bg-background lg:grid-cols-2">
       {/* Brand panel (desktop) */}
-      <aside className="hidden flex-col justify-between bg-primary p-12 text-primary-foreground lg:flex">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl">
+      <aside className="relative hidden flex-col justify-between overflow-hidden bg-night p-12 text-white lg:flex">
+        <StarSky seed={61} count={90}>
+          <Moon x={1150} y={140} r={40} sky={C.night} />
+        </StarSky>
+        <Link to="/" className="relative flex items-center gap-2 font-display text-xl">
           <Spark size={40} animate={false} /> AI met Spark
         </Link>
-        <div>
+        <div className="relative">
           <Spark size={140} mood="happy" waving />
-          <h1 className="mt-6 text-5xl leading-[0.95] text-primary-foreground">Leer AI met Spark.</h1>
-          <p className="mt-4 max-w-md text-lg opacity-90">De AI-school voor kids: 18 korte missies vol mini-games. Altijd gratis, zonder reclame en zonder chat met een echte AI.</p>
+          <h1 className="mt-6 text-5xl leading-[0.95] text-white">
+            Leer AI met Spark. <span className="block text-secondary">De AI-school voor kids.</span>
+          </h1>
+          <p className="mt-4 max-w-md text-lg text-on-dark">18 korte missies vol mini-games. Altijd gratis, zonder reclame en zonder chat met een echte AI.</p>
         </div>
-        <p className="text-sm opacity-80">Voor kids van 9 tot 12 jaar</p>
+        <p className="relative text-sm text-on-dark">Voor kids van 9 tot 12 jaar</p>
       </aside>
 
       <main className="flex flex-col items-center justify-center px-4 py-10">

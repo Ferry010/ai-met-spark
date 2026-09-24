@@ -68,6 +68,7 @@
       }
     ],
     "gamesTitle": "Leren door te doen",
+    "gamesSubtitle": "Vijf soorten mini-games. Je doet iets, en Spark legt kort uit waarom.",
     "games": [
       {
         "name": "Veeg",
@@ -91,6 +92,7 @@
       }
     ],
     "parentsTitle": "Veilig voor kids, fijn voor ouders",
+    "parentsEyebrow": "Voor ouders",
     "parents": [
       {
         "title": "Geen chat met AI",
@@ -121,7 +123,14 @@
     "schoolsTitle": "Volg de voortgang van je klas",
     "schoolsDesc": "Meld je school aan en elke leerkracht krijgt een persoonlijke code. Daarmee maak je een klas en deel je de klassencode. Je ziet per leerling welke missies af zijn, hoeveel sterren ze haalden en wie hulp kan gebruiken. Alleen jouw klas, niemand anders. Ook voor scholen altijd gratis.",
     "schoolsCta": "Meld je school aan",
+    "schoolsSteps": [
+      "Meld je school aan",
+      "Je krijgt een persoonlijke code",
+      "Start met je klas en deel de klassencode"
+    ],
+    "schoolsLogin": "Heb je al een code of account?",
     "faqTitle": "Veelgestelde vragen",
+    "faqSpark": "Staat je vraag er niet bij? Stuur ons een bericht.",
     "faq": [
       {
         "q": "Is het echt gratis?",
@@ -156,6 +165,7 @@
     "finalSubtitle": "Het duurt 3 minuten en het kost niks. Spark wacht op je.",
     "finalCta": "Start je eerste missie",
     "freeTitle": "Altijd gratis. Echt.",
+    "freeEyebrow": "Voor iedereen",
     "freeDesc": "Geen proefperiode die afloopt, geen betaalde versie en geen reclame. Alle missies, games en het diploma zijn gratis voor elk kind, elke ouder en elke school.",
     "freePoints": [
       "Voor kinderen en ouders",
